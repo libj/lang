@@ -74,6 +74,6 @@ public class ClassesTest {
   @Test
   public void testStrictGetName() throws Exception {
     Assert.assertEquals("java.lang.String", Classes.getStrictName(String.class));
-    Assert.assertEquals("org.safris.commons.lang.ClassesTest.Inn$r.$nner.$nner$", Classes.getStrictName(Inn$r.$nner.$nner$.class));
+    Assert.assertEquals(ClassesTest.class.getName() + ".Inn$r.$nner.$nner$", Classes.getStrictName(Inn$r.$nner.$nner$.class));
   }
 }
