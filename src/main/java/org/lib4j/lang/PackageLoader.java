@@ -232,7 +232,7 @@ public abstract class PackageLoader extends ClassLoader {
             try {
               packageClasses.add(Class.forName(entry, initialize, resourceClassLoader));
             }
-            catch (final ClassNotFoundException | NoClassDefFoundError e) {
+            catch (final ClassNotFoundException | NoClassDefFoundError | VerifyError e) {
             }
             packageClassNames.add(entry);
           }

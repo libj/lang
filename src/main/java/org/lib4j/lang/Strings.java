@@ -242,6 +242,9 @@ public final class Strings {
   }
 
   public static String padFixed(final String string, final int length, final boolean right) {
+    if (length - string.length() < 0)
+      return string;
+
     final char[] chars = new char[length - string.length()];
     java.util.Arrays.fill(chars, ' ');
     return right ? string + String.valueOf(chars) : String.valueOf(chars) + string;

@@ -528,6 +528,10 @@ public final class Numbers {
     return zeroes;
   }
 
+  public static int numberOfDecimalPlaces(final BigDecimal bigDecimal) {
+    return Math.max(0, bigDecimal.stripTrailingZeros().scale());
+  }
+
   private Numbers() {
   }
 }

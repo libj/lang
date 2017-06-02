@@ -17,10 +17,432 @@
 package org.lib4j.lang;
 
 import java.lang.reflect.Array;
+import java.util.Comparator;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 public final class Arrays {
+  /**
+   * Find the index of the sorted array whose value most closely matches
+   * the value provided.
+   *
+   * @param a The sorted array.
+   * @param key The value to match.
+   *
+   * @return The closest index of the sorted array matching the desired value.
+   */
+  public static <T extends Comparable<T>>int binaryClosestSearch(final T[] a, final T key) {
+    return binaryClosestSearch0(a, 0, a.length, key);
+  }
+
+  /**
+   * Find the index of the sorted array whose value most closely matches
+   * the value provided.
+   *
+   * @param a The sorted array.
+   * @param from The starting index of the sorted array to search from.
+   * @param to The ending index of the sorted array to search to.
+   * @param key The value to match.
+   *
+   * @return The closest index of the sorted array matching the desired value.
+   */
+  public static <T extends Comparable<T>>int binaryClosestSearch(final T[] a, final int from, final int to, final T key) {
+    rangeCheck(a.length, from, to);
+    return binaryClosestSearch0(a, from, to, key);
+  }
+
+  /**
+   * Find the index of the sorted array whose value most closely matches
+   * the value provided.
+   *
+   * @param a The sorted array.
+   * @param key The value to match.
+   *
+   * @return The closest index of the sorted array matching the desired value.
+   */
+  public static <T>int binaryClosestSearch(final T[] a, final T key, final Comparator<T> comparator) {
+    return binaryClosestSearch0(a, 0, a.length, key, comparator);
+  }
+
+  /**
+   * Find the index of the sorted array whose value most closely matches
+   * the value provided.
+   *
+   * @param a The sorted array.
+   * @param from The starting index of the sorted array to search from.
+   * @param to The ending index of the sorted array to search to.
+   * @param key The value to match.
+   *
+   * @return The closest index of the sorted array matching the desired value.
+   */
+  public static <T>int binaryClosestSearch(final T[] a, final int from, final int to, final T key, final Comparator<T> comparator) {
+    rangeCheck(a.length, from, to);
+    return binaryClosestSearch0(a, from, to, key, comparator);
+  }
+
+  /**
+   * Checks that {@code fromIndex} and {@code toIndex} are in
+   * the range and throws an exception if they aren't.
+   */
+  private static void rangeCheck(final int arrayLength, final int fromIndex, final int toIndex) {
+    if (fromIndex > toIndex)
+      throw new IllegalArgumentException("fromIndex(" + fromIndex + ") > toIndex(" + toIndex + ")");
+
+    if (fromIndex < 0)
+      throw new ArrayIndexOutOfBoundsException(fromIndex);
+
+    if (toIndex > arrayLength)
+      throw new ArrayIndexOutOfBoundsException(toIndex);
+  }
+
+  private static <T extends Comparable<T>>int binaryClosestSearch0(final T[] a, final int from, final int to, final T key) {
+    if (to == 0)
+      return 0;
+
+    int first = 0;
+    int upto = to;
+    int mid = -1;
+    while (first < upto) {
+      mid = (first + upto) / 2;    // Compute mid point.
+      final int comparison = key.compareTo(a[mid]);
+      if (comparison < 0)
+        upto = mid;        // repeat search in bottom half.
+      else if (comparison > 0)
+        first = mid + 1;      // Repeat search in top half.
+      else
+        return mid;
+    }
+
+    return first == to - 1 && key.compareTo(a[first]) > 0 ? first + 1 : (first + upto) / 2;
+  }
+
+  private static <T>int binaryClosestSearch0(final T[] a, final int from, final int to, final T key, final Comparator<T> comparator) {
+    if (to == 0)
+      return 0;
+
+    int first = 0;
+    int upto = to;
+    int mid = -1;
+    while (first < upto) {
+      mid = (first + upto) / 2;    // Compute mid point.
+      final int comparison = comparator.compare(key, a[mid]);
+      if (comparison < 0)
+        upto = mid;        // repeat search in bottom half.
+      else if (comparison > 0)
+        first = mid + 1;      // Repeat search in top half.
+      else
+        return mid;
+    }
+
+    return first == to - 1 && comparator.compare(key, a[first]) > 0 ? first + 1 : (first + upto) / 2;
+  }
+
+  /**
+   * Find the index of the sorted array whose value most closely matches
+   * the value provided.
+   *
+   * @param a The sorted array.
+   * @param key The value to match.
+   *
+   * @return The closest index of the sorted array matching the desired value.
+   */
+  public static int binaryClosestSearch(final byte[] a, final byte key) {
+    return binaryClosestSearch0(a, 0, a.length, key);
+  }
+
+  /**
+   * Find the index of the sorted array whose value most closely matches
+   * the value provided.
+   *
+   * @param a The sorted array.
+   * @param from The starting index of the sorted array to search from.
+   * @param to The ending index of the sorted array to search to.
+   * @param key The value to match.
+   *
+   * @return The closest index of the sorted array matching the desired value.
+   */
+  public static int binaryClosestSearch(final byte[] a, final int from, final int to, final byte key) {
+    rangeCheck(a.length, from, to);
+    return binaryClosestSearch0(a, from, to, key);
+  }
+
+  private static int binaryClosestSearch0(final byte[] a, final int from, final int to, final byte key) {
+    if (to == 0)
+      return 0;
+
+    int first = 0;
+    int upto = to;
+    int mid = -1;
+    while (first < upto) {
+      mid = (first + upto) / 2;    // Compute mid point.
+      if (key < a[mid])
+        upto = mid;        // repeat search in bottom half.
+      else if (key > a[mid])
+        first = mid + 1;      // Repeat search in top half.
+      else
+        return mid;
+    }
+
+    return first == to - 1 && key > a[first] ? first + 1 : (first + upto) / 2;
+  }
+
+  /**
+   * Find the index of the sorted array whose value most closely matches
+   * the value provided.
+   *
+   * @param a The sorted array.
+   * @param key The value to match.
+   *
+   * @return The closest index of the sorted array matching the desired value.
+   */
+  public static int binaryClosestSearch(final short[] a, final short key) {
+    return binaryClosestSearch0(a, 0, a.length, key);
+  }
+
+  /**
+   * Find the index of the sorted array whose value most closely matches
+   * the value provided.
+   *
+   * @param a The sorted array.
+   * @param from The starting index of the sorted array to search from.
+   * @param to The ending index of the sorted array to search to.
+   * @param key The value to match.
+   *
+   * @return The closest index of the sorted array matching the desired value.
+   */
+  public static int binaryClosestSearch(final short[] a, final int from, final int to, final short key) {
+    rangeCheck(a.length, from, to);
+    return binaryClosestSearch0(a, from, to, key);
+  }
+
+  private static int binaryClosestSearch0(final short[] a, final int from, final int to, final short key) {
+    if (to == 0)
+      return 0;
+
+    int first = 0;
+    int upto = to;
+    int mid = -1;
+    while (first < upto) {
+      mid = (first + upto) / 2;    // Compute mid point.
+      if (key < a[mid])
+        upto = mid;        // repeat search in bottom half.
+      else if (key > a[mid])
+        first = mid + 1;      // Repeat search in top half.
+      else
+        return mid;
+    }
+
+    return first == to - 1 && key > a[first] ? first + 1 : (first + upto) / 2;
+  }
+
+  /**
+   * Find the index of the sorted array whose value most closely matches
+   * the value provided.
+   *
+   * @param a The sorted array.
+   * @param key The value to match.
+   *
+   * @return The closest index of the sorted array matching the desired value.
+   */
+  public static int binaryClosestSearch(final int[] a, final int key) {
+    return binaryClosestSearch0(a, 0, a.length, key);
+  }
+
+  /**
+   * Find the index of the sorted array whose value most closely matches
+   * the value provided.
+   *
+   * @param a The sorted array.
+   * @param from The starting index of the sorted array to search from.
+   * @param to The ending index of the sorted array to search to.
+   * @param key The value to match.
+   *
+   * @return The closest index of the sorted array matching the desired value.
+   */
+  public static int binaryClosestSearch(final int[] a, final int from, final int to, final int key) {
+    rangeCheck(a.length, from, to);
+    return binaryClosestSearch0(a, from, to, key);
+  }
+
+  private static int binaryClosestSearch0(final int[] a, final int from, final int to, final int key) {
+    if (to == 0)
+      return 0;
+
+    int first = 0;
+    int upto = to;
+    int mid = -1;
+    while (first < upto) {
+      mid = (first + upto) / 2;    // Compute mid point.
+      if (key < a[mid])
+        upto = mid;        // repeat search in bottom half.
+      else if (key > a[mid])
+        first = mid + 1;      // Repeat search in top half.
+      else
+        return mid;
+    }
+
+    return first == to - 1 && key > a[first] ? first + 1 : (first + upto) / 2;
+  }
+
+  /**
+   * Find the index of the sorted array whose value most closely matches
+   * the value provided.
+   *
+   * @param a The sorted array.
+   * @param from The starting index of the sorted array to search from.
+   * @param to The ending index of the sorted array to search to.
+   * @param key The value to match.
+   *
+   * @return The closest index of the sorted array matching the desired value.
+   */
+  public static int binaryClosestSearch(final float[] a, final float key) {
+    return binaryClosestSearch0(a, 0, a.length, key);
+  }
+
+  /**
+   * Find the index of the sorted array whose value most closely matches
+   * the value provided.
+   *
+   * @param a The sorted array.
+   * @param from The starting index of the sorted array to search from.
+   * @param to The ending index of the sorted array to search to.
+   * @param key The value to match.
+   *
+   * @return The closest index of the sorted array matching the desired value.
+   */
+  public static int binaryClosestSearch(final float[] a, final int from, final int to, final float key) {
+    rangeCheck(a.length, from, to);
+    return binaryClosestSearch0(a, from, to, key);
+  }
+
+  public static int binaryClosestSearch0(final float[] a, final int from, final int to, final float key) {
+    rangeCheck(a.length, from, to);
+
+    if (to == 0)
+      return 0;
+
+    int first = 0;
+    int upto = to;
+    int mid = -1;
+    while (first < upto) {
+      mid = (first + upto) / 2;    // Compute mid point.
+      if (key < a[mid])
+        upto = mid;        // repeat search in bottom half.
+      else if (key > a[mid])
+        first = mid + 1;      // Repeat search in top half.
+      else
+        return mid;
+    }
+
+    return first == to - 1 && key > a[first] ? first + 1 : (first + upto) / 2;
+  }
+
+  /**
+   * Find the index of the sorted array whose value most closely matches
+   * the value provided.
+   *
+   * @param a The sorted array.
+   * @param from The starting index of the sorted array to search from.
+   * @param to The ending index of the sorted array to search to.
+   * @param key The value to match.
+   *
+   * @return The closest index of the sorted array matching the desired value.
+   */
+  public static int binaryClosestSearch(final double[] a, final double key) {
+    return binaryClosestSearch0(a, 0, a.length, key);
+  }
+
+  /**
+   * Find the index of the sorted array whose value most closely matches
+   * the value provided.
+   *
+   * @param a The sorted array.
+   * @param from The starting index of the sorted array to search from.
+   * @param to The ending index of the sorted array to search to.
+   * @param key The value to match.
+   *
+   * @return The closest index of the sorted array matching the desired value.
+   */
+  public static int binaryClosestSearch(final double[] a, final int from, final int to, final double key) {
+    rangeCheck(a.length, from, to);
+    return binaryClosestSearch0(a, from, to, key);
+  }
+
+  public static int binaryClosestSearch0(final double[] a, final int from, final int to, final double key) {
+    rangeCheck(a.length, from, to);
+
+    if (to == 0)
+      return 0;
+
+    int first = 0;
+    int upto = to;
+    int mid = -1;
+    while (first < upto) {
+      mid = (first + upto) / 2;    // Compute mid point.
+      if (key < a[mid])
+        upto = mid;        // repeat search in bottom half.
+      else if (key > a[mid])
+        first = mid + 1;      // Repeat search in top half.
+      else
+        return mid;
+    }
+
+    return first == to - 1 && key > a[first] ? first + 1 : (first + upto) / 2;
+  }
+
+  /**
+   * Find the index of the sorted array whose value most closely matches
+   * the value provided.
+   *
+   * @param a The sorted array.
+   * @param from The starting index of the sorted array to search from.
+   * @param to The ending index of the sorted array to search to.
+   * @param key The value to match.
+   *
+   * @return The closest index of the sorted array matching the desired value.
+   */
+  public static int binaryClosestSearch(final long[] a, final long key) {
+    return binaryClosestSearch0(a, 0, a.length, key);
+  }
+
+  /**
+   * Find the index of the sorted array whose value most closely matches
+   * the value provided.
+   *
+   * @param a The sorted array.
+   * @param from The starting index of the sorted array to search from.
+   * @param to The ending index of the sorted array to search to.
+   * @param key The value to match.
+   *
+   * @return The closest index of the sorted array matching the desired value.
+   */
+  public static int binaryClosestSearch(final long[] a, final int from, final int to, final long key) {
+    rangeCheck(a.length, from, to);
+    return binaryClosestSearch0(a, from, to, key);
+  }
+
+  public static int binaryClosestSearch0(final long[] a, final int from, final int to, final long key) {
+    rangeCheck(a.length, from, to);
+
+    if (to == 0)
+      return 0;
+
+    int first = 0;
+    int upto = to;
+    int mid = -1;
+    while (first < upto) {
+      mid = (first + upto) / 2;    // Compute mid point.
+      if (key < a[mid])
+        upto = mid;        // repeat search in bottom half.
+      else if (key > a[mid])
+        first = mid + 1;      // Repeat search in top half.
+      else
+        return mid;
+    }
+
+    return first == to - 1 && key > a[first] ? first + 1 : (first + upto) / 2;
+  }
+
   @SafeVarargs
   public static <T>T[] replaceAll(final UnaryOperator<T> operator, final T ... array) {
     for (int i = 0; i < array.length; i++)

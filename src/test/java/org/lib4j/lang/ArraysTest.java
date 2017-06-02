@@ -24,6 +24,17 @@ import org.junit.Test;
 
 public class ArraysTest {
   @Test
+  public void testBinaryClosestSearch() {
+    final int[] sorted = new int[] {1, 3, 5, 9};
+    Assert.assertEquals(0, Arrays.binaryClosestSearch(sorted, 0));
+    Assert.assertEquals(1, Arrays.binaryClosestSearch(sorted, 2));
+    Assert.assertEquals(2, Arrays.binaryClosestSearch(sorted, 4));
+    Assert.assertEquals(3, Arrays.binaryClosestSearch(sorted, 6));
+    Assert.assertEquals(3, Arrays.binaryClosestSearch(sorted, 9));
+    Assert.assertEquals(4, Arrays.binaryClosestSearch(sorted, 10));
+  }
+
+  @Test
   public void testTransform() {
     Assert.assertArrayEquals(new String[] {"ONE", "TWO", "THREE"}, Arrays.<String>replaceAll(new UnaryOperator<String>() {
       @Override
