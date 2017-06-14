@@ -193,4 +193,25 @@ public class NumbersTest {
     Assert.assertEquals(1, Numbers.trailingZeroes(-10));
     Assert.assertEquals(4, Numbers.trailingZeroes(-14320000l));
   }
+
+  @Test
+  public void testToBigDecimal() {
+    Assert.assertEquals(BigDecimal.ONE, Numbers.toBigDecimal((short)1));
+    Assert.assertEquals(BigDecimal.ONE, Numbers.toBigDecimal(1));
+    Assert.assertEquals(BigDecimal.ONE, Numbers.toBigDecimal(1l));
+    Assert.assertEquals(BigDecimal.ONE, Numbers.toBigDecimal(1f));
+    Assert.assertEquals(BigDecimal.ONE, Numbers.toBigDecimal(1d));
+    Assert.assertEquals(BigDecimal.ONE, Numbers.toBigDecimal(BigInteger.ONE));
+  }
+
+  @Test
+  public void testAverage() {
+    Assert.assertEquals(BigDecimal.valueOf(3), Numbers.average(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.TEN, BigDecimal.ZERO));
+    Assert.assertEquals(BigDecimal.valueOf(3), Numbers.average(BigInteger.ONE, BigInteger.ONE, BigInteger.TEN, BigInteger.ZERO));
+    Assert.assertEquals(3d, Numbers.average((byte)1, (byte)1, (byte)10, (byte)0), 0.000000001);
+    Assert.assertEquals(3d, Numbers.average((short)1, (short)1, (short)10, (short)0), 0.000000001);
+    Assert.assertEquals(3d, Numbers.average(1, 1, 10, 0), 0.000000001);
+    Assert.assertEquals(3d, Numbers.average(1l, 1l, 10l, 0l), 0.000000001);
+    Assert.assertEquals(3d, Numbers.average((byte)1, 1l, 10, 0d), 0.000000001);
+  }
 }

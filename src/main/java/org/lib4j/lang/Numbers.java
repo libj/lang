@@ -532,6 +532,95 @@ public final class Numbers {
     return Math.max(0, bigDecimal.stripTrailingZeros().scale());
   }
 
+  public static BigDecimal toBigDecimal(final Number number) {
+    if (number instanceof BigDecimal)
+      return (BigDecimal)number;
+
+    if (number instanceof BigInteger)
+      return new BigDecimal((BigInteger)number);
+
+    if (number instanceof Byte)
+      return BigDecimal.valueOf(number.byteValue());
+
+    if (number instanceof Short)
+      return BigDecimal.valueOf(number.shortValue());
+
+    if (number instanceof Integer)
+      return BigDecimal.valueOf(number.intValue());
+
+    if (number instanceof Long)
+      return BigDecimal.valueOf(number.longValue());
+
+    if (number instanceof Float)
+      return BigDecimal.valueOf(number.floatValue()).stripTrailingZeros();
+
+    return BigDecimal.valueOf(number.doubleValue()).stripTrailingZeros();
+  }
+
+  public static BigDecimal average(final BigDecimal ... numbers) {
+    BigDecimal sum = numbers[0];
+    for (int i = 1; i < numbers.length; i++)
+      sum = sum.add(numbers[i]);
+
+    return sum.divide(BigDecimal.valueOf(numbers.length));
+  }
+
+  public static BigDecimal average(final BigInteger ... numbers) {
+    BigDecimal sum = new BigDecimal(numbers[0]);
+    for (int i = 1; i < numbers.length; i++)
+      sum = sum.add(new BigDecimal(numbers[i]));
+
+    return sum.divide(BigDecimal.valueOf(numbers.length));
+  }
+
+  public static double average(final byte ... numbers) {
+    long sum = numbers[0];
+    for (int i = 1; i < numbers.length; i++)
+      sum += numbers[i];
+
+    return sum / numbers.length;
+  }
+
+  public static double average(final short ... numbers) {
+    long sum = numbers[0];
+    for (int i = 1; i < numbers.length; i++)
+      sum += numbers[i];
+
+    return sum / numbers.length;
+  }
+
+  public static double average(final int ... numbers) {
+    long sum = numbers[0];
+    for (int i = 1; i < numbers.length; i++)
+      sum += numbers[i];
+
+    return sum / numbers.length;
+  }
+
+  public static double average(final long ... numbers) {
+    long sum = numbers[0];
+    for (int i = 1; i < numbers.length; i++)
+      sum += numbers[i];
+
+    return sum / numbers.length;
+  }
+
+  public static double average(final float ... numbers) {
+    double sum = numbers[0];
+    for (int i = 1; i < numbers.length; i++)
+      sum += numbers[i];
+
+    return sum / numbers.length;
+  }
+
+  public static double average(final double ... numbers) {
+    double sum = numbers[0];
+    for (int i = 1; i < numbers.length; i++)
+      sum += numbers[i];
+
+    return sum / numbers.length;
+  }
+
   private Numbers() {
   }
 }
