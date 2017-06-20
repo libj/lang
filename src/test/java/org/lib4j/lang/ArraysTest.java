@@ -163,4 +163,10 @@ public class ArraysTest {
     catch (final ArrayIndexOutOfBoundsException e) {
     }
   }
+
+  @Test
+  public void testCreateRepeat() {
+    final String[] array = Arrays.createRepeat("hello", 8);
+    Assert.assertArrayEquals(new String[] {"hello", "hello", "hello", "hello", "hello", "hello", "hello", "hello"}, array);
+  }
 }

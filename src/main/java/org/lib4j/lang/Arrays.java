@@ -887,8 +887,9 @@ public final class Arrays {
    * @return A new array with <code>length</code> number of repeated
    * <code>value</code> members.
    */
-  public static Object[] createRepeat(final Object value, final int length) {
-    final Object[] array = new Object[length];
+  @SuppressWarnings("unchecked")
+  public static <T>T[] createRepeat(final T value, final int length) {
+    final T[] array = (T[])Array.newInstance(value.getClass(), length);
     java.util.Arrays.fill(array, value);
     return array;
   }
