@@ -48,10 +48,10 @@ public final class Resources {
   }
 
   public static Resource getResourceOrFile(final String name) throws MalformedURLException {
-    if (name == null || name.length() == 0)
+    if (name.length() == 0)
       return null;
 
-    Resource resource = getResource(name);
+    final Resource resource = getResource(name);
     if (resource != null)
       return resource;
 
@@ -59,8 +59,19 @@ public final class Resources {
     return file.exists() ? new Resource(file.toURI().toURL(), ClassLoader.getSystemClassLoader()) : null;
   }
 
+  public static Resource getFileOrResource(final String name) throws MalformedURLException {
+    if (name.length() == 0)
+      return null;
+
+    final File file = new File(name);
+    if (file.exists())
+      return new Resource(file.toURI().toURL(), ClassLoader.getSystemClassLoader());
+
+    return getResource(name);
+  }
+
   public static Resource getResource(final String name) {
-    if (name == null || name.length() == 0)
+    if (name.length() == 0)
       return null;
 
     ClassLoader classLoader = ClassLoader.getSystemClassLoader();

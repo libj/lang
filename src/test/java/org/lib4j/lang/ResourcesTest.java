@@ -47,7 +47,12 @@ public class ResourcesTest {
 
   @Test
   public void testGetResource() throws Exception {
-    Assert.assertNull(Resources.getResource(null));
+    try {
+      Assert.assertNull(Resources.getResource(null));
+      Assert.fail("Expected NullPointerException");
+    }
+    catch (final NullPointerException e) {
+    }
     Assert.assertNull(Resources.getResource(""));
     Assert.assertTrue(Resources.getResource("META-INF").getURL().toString().endsWith(".jar!/META-INF"));
   }
