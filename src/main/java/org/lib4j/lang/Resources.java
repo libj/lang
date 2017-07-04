@@ -70,6 +70,20 @@ public final class Resources {
     return getResource(name);
   }
 
+  public static Resource getResource(final String name, final ClassLoader classLoader) {
+    if (name == null)
+      throw new NullPointerException("name == null");
+
+    if (name.length() == 0)
+      throw new IllegalArgumentException("name.length() == 0");
+
+    if (classLoader == null)
+      throw new NullPointerException("classLoader == null");
+
+    final URL url = classLoader.getResource(name);
+    return url != null ? new Resource(url, classLoader) : null;
+  }
+
   public static Resource getResource(final String name) {
     if (name.length() == 0)
       return null;
@@ -90,6 +104,24 @@ public final class Resources {
       return new Resource(url, classLoader);*/
 
     return null;
+  }
+
+  public static Enumeration<Resource> getResources(final String name, final ClassLoader classLoader) throws IOException {
+    if (name == null)
+      throw new NullPointerException("name == null");
+
+    if (name.length() == 0)
+      throw new IllegalArgumentException("name.length() == 0");
+
+    if (classLoader == null)
+      throw new NullPointerException("classLoader == null");
+
+    final Vector<Resource> resources = new Vector<Resource>(1, 1);
+    final Enumeration<URL> urls = classLoader.getResources(name);
+    while (urls.hasMoreElements())
+      resources.add(new Resource(urls.nextElement(), classLoader));
+
+    return resources.elements();
   }
 
   public static Enumeration<Resource> getResources(final String name) throws IOException {

@@ -32,20 +32,20 @@ public class PackageLoaderTest {
     if (ClassLoaders.isClassLoaded(classLoader, name))
       return true;
 
-    classLoader = Thread.currentThread().getContextClassLoader();
-    if (ClassLoaders.isClassLoaded(classLoader, name))
-      return true;
+//    classLoader = Thread.currentThread().getContextClassLoader();
+//    if (ClassLoaders.isClassLoaded(classLoader, name))
+//      return true;
 
-    /*final Class<?> callerClass = Reflection.getCallerClass();
-    classLoader = callerClass.getClassLoader();
-    if (ClassLoaders.isClassLoaded(classLoader, name))
-      return true;*/
+//    final Class<?> callerClass = Reflection.getCallerClass();
+//    classLoader = callerClass.getClassLoader();
+//    if (ClassLoaders.isClassLoaded(classLoader, name))
+//      return true;
 
     return false;
   }
 
   @Test
-  public void testPackageLoader() throws Exception {
+  public void testPackageLoader() throws PackageNotFoundException {
     final String[] testClasses = new String[] {
       "org.junit.PackageLoaderClass1",
       "org.junit.PackageLoaderClass2",
@@ -62,7 +62,7 @@ public class PackageLoaderTest {
       classNames.add(loadedClass.getName());
 
     for (final String testClass : testClasses) {
-      logger.info(testClass);
+      logger.debug(testClass);
       Assert.assertTrue(classNames.contains(testClass));
       Assert.assertTrue(isClassLoaded(testClass));
     }
@@ -73,5 +73,11 @@ public class PackageLoaderTest {
     }
     catch (final NullPointerException e) {
     }
+  }
+
+  @Test
+  public void testJar() throws ClassNotFoundException, PackageNotFoundException {
+    final Set<Class<?>> loadedClasses = PackageLoader.getSystemPackageLoader().loadPackage("org.junit.runner");
+    Assert.assertTrue(loadedClasses.contains(Class.forName("org.junit.runner.Runner", false, ClassLoader.getSystemClassLoader())));
   }
 }
