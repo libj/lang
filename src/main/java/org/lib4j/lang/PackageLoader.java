@@ -143,7 +143,7 @@ public final class PackageLoader extends ClassLoader {
    *
    * @param       pkg        The package.
    *
-   * @return      A set of all classes for which Class.forName() was called.
+   * @return      Set of all classes that have been loaded.
    *
    * @exception   PackageNotFoundException    Gets thrown for a package name
    * that cannot be found in any classpath resources.
@@ -164,7 +164,7 @@ public final class PackageLoader extends ClassLoader {
    * @param       pkg        The package.
    * @param       initialize Whether the classes must be initialized
    *
-   * @return      A set of all classes for which Class.forName() was called.
+   * @return      Set of all classes that have been loaded.
    *
    * @exception   PackageNotFoundException    Gets thrown for a package name
    * that cannot be found in any classpath resources.
@@ -185,7 +185,7 @@ public final class PackageLoader extends ClassLoader {
    * @param       name       The name of the package.
    * @param       initialize Whether the classes must be initialized
    *
-   * @return      A set of all classes for which Class.forName() was called.
+   * @return      Set of all classes that have been loaded.
    *
    * @exception   PackageNotFoundException    Gets thrown for a package name
    * that cannot be found in any classpath resources.
@@ -207,7 +207,7 @@ public final class PackageLoader extends ClassLoader {
    * @param       subPackages  Whether subPackages should be loaded
    * @param       initialize  Whether the classes must be initialized
    *
-   * @return      A set of all classes for which Class.forName() was called.
+   * @return      Set of all classes that have been loaded.
    *
    * @exception   PackageNotFoundException    Gets thrown for a package name
    * that cannot be found in any classpath resources.
