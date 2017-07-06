@@ -21,78 +21,64 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 public final class Bytes {
-  public static class Byte {
-    public static int indexOf(final byte[] bytes, final byte ... pattern) {
-      return indexOf(bytes, 0, pattern);
-    }
+  public static int indexOf(final byte[] bytes, final byte ... pattern) {
+    return indexOf(bytes, 0, pattern);
+  }
 
-    public static int indexOf(final byte[] bytes, final int fromIndex, final byte ... pattern) {
-      if (bytes == null)
-        throw new NullPointerException("data == null");
+  public static int indexOf(final byte[] bytes, final int fromIndex, final byte ... pattern) {
+    if (bytes == null)
+      throw new NullPointerException("data == null");
 
-      if (fromIndex < 0)
-        throw new IndexOutOfBoundsException("fromIndex < 0");
+    if (fromIndex < 0)
+      throw new IndexOutOfBoundsException("fromIndex < 0");
 
-      if (bytes.length <= fromIndex)
-        throw new IndexOutOfBoundsException(bytes.length + " <= " + fromIndex);
-
-      for (int i = fromIndex; i < bytes.length; i++)
-        for (int j = 0; j < pattern.length; j++)
-          if (bytes[i] == pattern[j])
-            return i;
-
+    if (bytes.length == 0 || pattern.length == 0 || bytes.length < pattern.length)
       return -1;
+
+    for (int i = fromIndex; i < bytes.length; i++) {
+      if (bytes[i] == pattern[0]) {
+        boolean match = true;
+        for (int j = 0; j < pattern.length && (match = bytes.length > i + j && pattern[j] == bytes[i + j]); j++);
+        if (match)
+          return i;
+      }
     }
 
-    public static IntArrayList indicesOf(final byte[] bytes, final char ... pattern) {
-      return indicesOf(bytes, 0, pattern);
-    }
-
-    public static IntArrayList indicesOf(final byte[] bytes, final int fromIndex, final char ... pattern) {
-      if (bytes == null)
-        throw new NullPointerException("data == null");
-
-      int index = fromIndex - 1;
-      final IntArrayList indices = new IntArrayList();
-      while ((index = indexOf(bytes, index + 1, pattern)) != -1)
-        indices.add(index);
-
-      return indices;
-    }
-
-    public static int indexOf(final byte[] bytes, final char ... pattern) {
-      return indexOf(bytes, 0, pattern);
-    }
-
-    public static int indexOf(final byte[] bytes, final int fromIndex, final char ... pattern) {
-      if (bytes == null)
-        throw new NullPointerException("data == null");
-
-      if (fromIndex < 0)
-        throw new IndexOutOfBoundsException("fromIndex < 0");
-
-      if (bytes.length <= fromIndex)
-        throw new IndexOutOfBoundsException(bytes.length + " <= " + fromIndex);
-
-      for (int i = fromIndex; i < bytes.length; i++)
-        for (int j = 0; j < pattern.length; j++)
-          if (bytes[i] == pattern[j])
-            return i;
-
-      return -1;
-    }
+    return -1;
   }
 
-  public static void replaceAll(final byte[] bytes, final char target, final char replacement) {
-    replaceAll(bytes, (byte)target, (byte)replacement);
+  public static int[] indicesOf(final byte[] bytes, final byte ... pattern) {
+    return indicesOf(0, 0, bytes, pattern);
   }
 
-  public static void replaceAll(final byte[] bytes, final byte target, final char replacement) {
-    replaceAll(bytes, target, (byte)replacement);
+  public static int[] indicesOf(final byte[] bytes, final int fromIndex, final byte ... pattern) {
+    if (bytes == null)
+      throw new NullPointerException("data == null");
+
+    if (fromIndex < 0)
+      throw new IllegalArgumentException("fromIndex < 0");
+
+    if (fromIndex >= bytes.length)
+      throw new IllegalArgumentException("fromIndex >= bytes.length");
+
+    if (pattern.length == 0)
+      return new int[0];
+
+   return indicesOf(0, fromIndex, bytes, pattern);
   }
 
-  public static void replaceAll(final byte[] bytes, final char target, final byte replacement) {
-    replaceAll(bytes, (byte)target, replacement);
+  private static int[] indicesOf(final int depth, final int fromIndex, final byte[] bytes, final byte ... pattern) {
+    final int index = indexOf(bytes, fromIndex, pattern);
+    final int[] indices;
+    if (index > -1) {
+      indices = fromIndex < bytes.length - 1 ? indicesOf(depth + 1, index + 1, bytes, pattern) : new int[depth + 1];
+      indices[depth] = index;
+    }
+    else {
+      indices = new int[depth];
+    }
+
+    return indices;
   }
 
   public static void replaceAll(final byte[] bytes, final byte target, final byte replacement) {
@@ -100,37 +86,11 @@ public final class Bytes {
       throw new NullPointerException("bytes == null");
 
     int index = 0;
-    while ((index = Byte.indexOf(bytes, index + 1, target)) != -1)
+    while ((index = Bytes.indexOf(bytes, index + 1, target)) != -1)
       bytes[index] = replacement;
   }
 
   public static void replaceAll(final byte[] bytes, final byte[] target, final byte[] replacement) {
-    if (bytes == null)
-      throw new NullPointerException("bytes == null");
-
-    if (target == null)
-      throw new NullPointerException("target == null");
-
-    if (replacement == null)
-      throw new NullPointerException("replacement == null");
-
-    if (target.length != replacement.length)
-      throw new IllegalArgumentException("target.length != replacement.length");
-
-    if (bytes.length < target.length || target.length == 0)
-      return;
-
-    if (target.length == 1) {
-      replaceAll(bytes, target[0], replacement[0]);
-      return;
-    }
-
-    int index = -1;
-    while ((index = indexOf(bytes, index + 1, target)) != -1)
-      System.arraycopy(replacement, 0, bytes, index, replacement.length);
-  }
-
-  public static void replaceAll(final byte[] bytes, final char[] target, final char[] replacement) {
     if (bytes == null)
       throw new NullPointerException("bytes == null");
 
@@ -191,58 +151,7 @@ public final class Bytes {
     return -1;
   }
 
-  public static int indexOf(final byte[] bytes, final int fromIndex, final char[] ... pattern) {
-    if (bytes == null)
-      throw new NullPointerException("data == null");
-
-    if (pattern == null)
-      throw new NullPointerException("pattern == null");
-
-    if (fromIndex < 0)
-      throw new IndexOutOfBoundsException("fromIndex < 0");
-
-    if (bytes.length <= fromIndex)
-      throw new IndexOutOfBoundsException(bytes.length + " <= " + fromIndex);
-
-    final int[][] failure = computeFailure(pattern);
-    final int[] k = new int[pattern.length];
-    for (int i = fromIndex; i < bytes.length; i++) {
-      for (int j = 0; j < pattern.length; j++) {
-        while (k[j] > 0 && pattern[j][k[j]] != bytes[i])
-          k[j] = failure[j][k[j] - 1];
-
-        if (pattern[j][k[j]] == bytes[i])
-          k[j]++;
-
-        if (k[j] == pattern[j].length)
-          return i - pattern[j].length + 1;
-      }
-    }
-
-    return -1;
-  }
-
   private static int[][] computeFailure(final byte[] ... pattern) {
-    final int[][] failure = new int[pattern.length][];
-
-    int k = 0;
-    for (int i = 0; i < pattern.length; i++) {
-      failure[i] = new int[pattern[i].length];
-      for (int j = 1; j < pattern[i].length; j++) {
-        while (k > 0 && pattern[i][k] != pattern[i][j])
-          k = failure[i][k - 1];
-
-        if (pattern[i][k] == pattern[i][j])
-          k++;
-
-        failure[i][j] = k;
-      }
-    }
-
-    return failure;
-  }
-
-  private static int[][] computeFailure(final char[] ... pattern) {
     final int[][] failure = new int[pattern.length][];
 
     int k = 0;

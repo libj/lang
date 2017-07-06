@@ -27,11 +27,11 @@ import org.slf4j.LoggerFactory;
 public class BytesTest {
   private static final Logger logger = LoggerFactory.getLogger(BytesTest.class);
 
-  public static String binary(final long byteValue, final int typeSize) {
+  public static String toBinaryString(final long value, final int typeSize) {
     String byteValueString = "";
     for (int j = 0; j <= typeSize - 1; j++) {
       final int mask = 1 << j;
-      byteValueString = ((mask & byteValue) > 0 ? "1" : "0") + byteValueString;
+      byteValueString = ((mask & value) > 0 ? "1" : "0") + byteValueString;
     }
 
     return byteValueString;
@@ -41,15 +41,18 @@ public class BytesTest {
   public void testIndexOf() {
     final byte[] bytes = new byte[] {1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7};
 
-    Assert.assertEquals(0, Bytes.Byte.indexOf(bytes, new byte[] {(byte)1}));
-    Assert.assertEquals(2, Bytes.Byte.indexOf(bytes, (byte)-1, (byte)3));
-    Assert.assertEquals(6, Bytes.Byte.indexOf(bytes, (byte)9, (byte)11, (byte)7));
-    Assert.assertEquals(-1, Bytes.Byte.indexOf(bytes, (byte)9, (byte)11, (byte)13, (byte)8));
+    Assert.assertEquals(-1, Bytes.indexOf(new byte[] {}, new byte[] {}));
+    Assert.assertEquals(-1, Bytes.indexOf(new byte[] {}, (byte)1));
 
-    Assert.assertEquals(7, Bytes.Byte.indexOf(bytes, 1, (byte)1));
-    Assert.assertEquals(9, Bytes.Byte.indexOf(bytes, 3, (byte)3));
-    Assert.assertEquals(13, Bytes.Byte.indexOf(bytes, 7, (byte)7));
-    Assert.assertEquals(-1, Bytes.Byte.indexOf(bytes, 7, (byte)8));
+    Assert.assertEquals(0, Bytes.indexOf(bytes, (byte)1));
+    Assert.assertEquals(1, Bytes.indexOf(bytes, (byte)2, (byte)3));
+    Assert.assertEquals(6, Bytes.indexOf(bytes, (byte)7, (byte)1, (byte)2));
+    Assert.assertEquals(-1, Bytes.indexOf(bytes, (byte)9, (byte)11, (byte)13, (byte)8));
+
+    Assert.assertEquals(7, Bytes.indexOf(bytes, 1, (byte)1));
+    Assert.assertEquals(9, Bytes.indexOf(bytes, 3, (byte)3));
+    Assert.assertEquals(13, Bytes.indexOf(bytes, 7, (byte)7));
+    Assert.assertEquals(-1, Bytes.indexOf(bytes, 7, (byte)8));
 
     Assert.assertEquals(0, Bytes.indexOf(bytes, new byte[] {1, 2, 3}));
     Assert.assertEquals(2, Bytes.indexOf(bytes, new byte[] {0, 4, 5}, new byte[] {3, 4, 5}));
@@ -60,6 +63,35 @@ public class BytesTest {
     Assert.assertEquals(9, Bytes.indexOf(bytes, 3, new byte[] {3, 4, 5}));
     Assert.assertEquals(11, Bytes.indexOf(bytes, 5, new byte[] {5, 6, 7}));
     Assert.assertEquals(-1, Bytes.indexOf(bytes, 7, new byte[] {6, 7, 8}));
+  }
+
+  @Test
+  public void testIndicesOf() {
+    try {
+      Assert.assertArrayEquals(new int[0], Bytes.indicesOf(new byte[] {0}, -1, (byte)0));
+      Assert.fail("Expected IllegalArgumentException");
+    }
+    catch (final IllegalArgumentException e) {
+    }
+
+    try {
+      Assert.assertArrayEquals(new int[0], Bytes.indicesOf(new byte[] {0}, 1, (byte)0));
+      Assert.fail("Expected IllegalArgumentException");
+    }
+    catch (final IllegalArgumentException e) {
+    }
+
+    final byte[] bytes = new byte[] {1, 2, 3, 1, 2, 3, 7, 1, 2, 3, 8, 1, 2, 3};
+    Assert.assertArrayEquals(new int[0], Bytes.indicesOf(bytes));
+    Assert.assertArrayEquals(new int[0], Bytes.indicesOf(bytes, (byte)0));
+    Assert.assertArrayEquals(new int[] {0, 3, 7, 11}, Bytes.indicesOf(bytes, (byte)1));
+    Assert.assertArrayEquals(new int[] {1, 4, 8, 12}, Bytes.indicesOf(bytes, (byte)2));
+    Assert.assertArrayEquals(new int[] {2, 5, 9, 13}, Bytes.indicesOf(bytes, (byte)3));
+    Assert.assertArrayEquals(new int[] {6}, Bytes.indicesOf(bytes, (byte)7));
+    Assert.assertArrayEquals(new int[] {0, 3, 7, 11}, Bytes.indicesOf(bytes, new byte[] {1, 2}));
+    Assert.assertArrayEquals(new int[] {1, 4, 8, 12}, Bytes.indicesOf(bytes, new byte[] {2, 3}));
+    Assert.assertArrayEquals(new int[] {2}, Bytes.indicesOf(bytes, new byte[] {3, 1}));
+    Assert.assertArrayEquals(new int[] {0, 3, 7, 11}, Bytes.indicesOf(bytes, new byte[] {1, 2, 3}));
   }
 
   @Test
@@ -81,9 +113,9 @@ public class BytesTest {
   public void testShort() {
     long l = 65535l;
     short s = (short)l;
-    String binary = binary(l, Short.SIZE);
+    String binary = toBinaryString(l, Short.SIZE);
     logger.info("Binary: " + binary);
-    logger.info("From binary: " + Integer.parseInt(binary(l, Short.SIZE), 2));
+    logger.info("From binary: " + Integer.parseInt(toBinaryString(l, Short.SIZE), 2));
     byte[] bytes = new byte[Short.SIZE / 8];
     Bytes.toBytes(s, bytes, 0, true);
     logger.info("Convert.toBytes: " + Arrays.toString(bytes));
@@ -101,9 +133,9 @@ public class BytesTest {
   public void testInt() {
     long l = 4294967295l;
     int i = (int)l;
-    String binary = binary(l, Integer.SIZE);
+    String binary = toBinaryString(l, Integer.SIZE);
     logger.info("Binary: " + binary);
-    logger.info("From binary: " + Long.parseLong(binary(l, Integer.SIZE), 2));
+    logger.info("From binary: " + Long.parseLong(toBinaryString(l, Integer.SIZE), 2));
     byte[] bytes = new byte[Integer.SIZE / 8];
     Bytes.toBytes(i, bytes, 0, true);
     logger.info("Convert.toBytes: " + Arrays.toString(bytes));
@@ -120,7 +152,7 @@ public class BytesTest {
   @Test
   public void testLong() {
     long l = 9223372036854775807l;
-    String binary = binary(l, Long.SIZE);
+    String binary = toBinaryString(l, Long.SIZE);
     logger.info("Binary: " + binary);
     //log("From binary: " + Long.parseLong(binary(l, Long.SIZE), 2));
     byte[] bytes = new byte[Long.SIZE / 8];
