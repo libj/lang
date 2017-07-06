@@ -26,17 +26,27 @@ import java.util.HashSet;
 import java.util.Map;
 
 public final class ClassLoaders {
+  private static final Method findLoadedClass;
+
+  static {
+    try {
+      findLoadedClass = ClassLoader.class.getDeclaredMethod("findLoadedClass", String.class);
+      findLoadedClass.setAccessible(true);
+    }
+    catch (final NoSuchMethodException | SecurityException e) {
+      throw new ExceptionInInitializerError(e);
+    }
+  }
+
   public static boolean isClassLoaded(final ClassLoader classLoader, final String name) {
     if (classLoader == null)
       throw new IllegalArgumentException("classLoader == null");
 
     try {
-      final Method method = ClassLoader.class.getDeclaredMethod("findLoadedClass", String.class);
-      method.setAccessible(true);
-      return method.invoke(classLoader, name) != null;
+      return findLoadedClass.invoke(classLoader, name) != null;
     }
-    catch (final InvocationTargetException | NoSuchMethodException e) {
-      return false;
+    catch (final InvocationTargetException e) {
+      throw new UnsupportedOperationException(e);
     }
     catch (final IllegalAccessException e) {
       throw new SecurityException(e);

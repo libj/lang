@@ -78,6 +78,6 @@ public class PackageLoaderTest {
   @Test
   public void testJar() throws ClassNotFoundException, PackageNotFoundException {
     final Set<Class<?>> loadedClasses = PackageLoader.getSystemContextPackageLoader().loadPackage("org.junit.runner");
-    Assert.assertTrue(loadedClasses.contains(Class.forName("org.junit.runner.Runner", false, ClassLoader.getSystemClassLoader())));
+    Assert.assertTrue(loadedClasses.contains(Class.forName("org.junit.runner.FilterFactory", false, ClassLoader.getSystemClassLoader())));
   }
 }

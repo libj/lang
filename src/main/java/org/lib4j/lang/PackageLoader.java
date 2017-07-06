@@ -30,7 +30,6 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -41,7 +40,6 @@ import java.util.jar.JarFile;
 
 public final class PackageLoader extends ClassLoader {
   private static final Map<Object,PackageLoader> instances = new HashMap<Object,PackageLoader>();
-  private static final Map<ClassLoader,Set<String>> loadedClassNames = new IdentityHashMap<ClassLoader,Set<String>>();
 
   private static BiPredicate<Path,BasicFileAttributes> classPredicate = new BiPredicate<Path,BasicFileAttributes>() {
     @Override
@@ -120,8 +118,11 @@ public final class PackageLoader extends ClassLoader {
   }
 
   private static boolean isClassLoaded(final ClassLoader classLoader, final String className) {
-    final Set<String> loadedClassNames = PackageLoader.loadedClassNames.get(classLoader);
-    return loadedClassNames != null && (loadedClassNames.contains(className) || isClassLoaded(instances.get(classLoader.getParent()), className));
+    if (ClassLoaders.isClassLoaded(classLoader, className))
+      return true;
+
+    final ClassLoader parent = classLoader.getParent();
+    return parent != null && isClassLoaded(parent, className);
   }
 
 
