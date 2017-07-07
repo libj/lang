@@ -42,9 +42,9 @@ public class BytesTest {
     final byte[] bytes = new byte[] {1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7};
 
     Assert.assertEquals(-1, Bytes.indexOf(new byte[] {}, new byte[] {}));
-    Assert.assertEquals(-1, Bytes.indexOf(new byte[] {}, (byte)1));
+    Assert.assertEquals(-1, Bytes.indexOf(new byte[] {}, new byte[] {1}));
 
-    Assert.assertEquals(0, Bytes.indexOf(bytes, (byte)1));
+    Assert.assertEquals(0, Bytes.indexOf(bytes, new byte[] {1}));
     Assert.assertEquals(1, Bytes.indexOf(bytes, (byte)2, (byte)3));
     Assert.assertEquals(6, Bytes.indexOf(bytes, (byte)7, (byte)1, (byte)2));
     Assert.assertEquals(-1, Bytes.indexOf(bytes, (byte)9, (byte)11, (byte)13, (byte)8));
