@@ -35,10 +35,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public final class PackageLoader extends ClassLoader {
+  private static final Logger logger = LoggerFactory.getLogger(PackageLoader.class);
+
   private static final Map<Object,PackageLoader> instances = new HashMap<Object,PackageLoader>();
 
   private static BiPredicate<Path,BasicFileAttributes> classPredicate = new BiPredicate<Path,BasicFileAttributes>() {
@@ -117,15 +123,6 @@ public final class PackageLoader extends ClassLoader {
     }
   }
 
-  private static boolean isClassLoaded(final ClassLoader classLoader, final String className) {
-    if (ClassLoaders.isClassLoaded(classLoader, className))
-      return true;
-
-    final ClassLoader parent = classLoader.getParent();
-    return parent != null && isClassLoaded(parent, className);
-  }
-
-
   private final ClassLoader[] classLoaders;
 
   private PackageLoader(final ClassLoader ... classLoaders) {
@@ -143,13 +140,34 @@ public final class PackageLoader extends ClassLoader {
    *
    * @param       pkg        The package.
    *
-   * @return      Set of all classes that have been loaded.
+   * @return      Set of all classes called with Class.forName().
    *
    * @exception   PackageNotFoundException    Gets thrown for a package name
    * that cannot be found in any classpath resources.
    */
   public Set<Class<?>> loadPackage(final Package pkg) throws PackageNotFoundException {
-    return PackageLoader.loadPackage(pkg.getName(), true, true, classLoaders);
+    return PackageLoader.loadPackage(pkg.getName(), true, true, null, classLoaders);
+  }
+
+  /**
+   * This method will call Class.forName() and initialize each final class in a
+   * given package and its sub-packages. This method will search for all
+   * existing package resources in all elements of the classpath. If the
+   * package exists in multiple classpath locations, such as a couple of jar
+   * files and a directory, each of the classpath references will be used to
+   * load all classes in each resource. This method will search for all
+   * classpath entries in all class loaders.
+   *
+   * @param       pkg        The package.
+   * @param       initialize Predicate to test whether to initialize each Class.
+   *
+   * @return      Set of all classes called with Class.forName().
+   *
+   * @exception   PackageNotFoundException    Gets thrown for a package name
+   * that cannot be found in any classpath resources.
+   */
+  public Set<Class<?>> loadPackage(final Package pkg, final Predicate<Class<?>> initialize) throws PackageNotFoundException {
+    return PackageLoader.loadPackage(pkg.getName(), true, false, initialize, classLoaders);
   }
 
   /**
@@ -164,13 +182,13 @@ public final class PackageLoader extends ClassLoader {
    * @param       pkg        The package.
    * @param       initialize Whether the classes must be initialized
    *
-   * @return      Set of all classes that have been loaded.
+   * @return      Set of all classes called with Class.forName().
    *
    * @exception   PackageNotFoundException    Gets thrown for a package name
    * that cannot be found in any classpath resources.
    */
   public Set<Class<?>> loadPackage(final Package pkg, final boolean initialize) throws PackageNotFoundException {
-    return PackageLoader.loadPackage(pkg.getName(), true, initialize, classLoaders);
+    return PackageLoader.loadPackage(pkg.getName(), true, initialize, null, classLoaders);
   }
 
   /**
@@ -185,13 +203,34 @@ public final class PackageLoader extends ClassLoader {
    * @param       name       The name of the package.
    * @param       initialize Whether the classes must be initialized
    *
-   * @return      Set of all classes that have been loaded.
+   * @return      Set of all classes called with Class.forName().
    *
    * @exception   PackageNotFoundException    Gets thrown for a package name
    * that cannot be found in any classpath resources.
    */
   public Set<Class<?>> loadPackage(final String name) throws PackageNotFoundException {
-    return PackageLoader.loadPackage(name, true, true, classLoaders);
+    return PackageLoader.loadPackage(name, true, true, null, classLoaders);
+  }
+
+  /**
+   * This method will call Class.forName() and initialize each final class in a
+   * given package and its sub-packages. This method will search for all
+   * existing package resources in all elements of the classpath. If the
+   * package exists in multiple classpath locations, such as a couple of jar
+   * files and a directory, each of the classpath references will be used to
+   * load all classes in each resource. This method will search for all
+   * classpath entries in all class loaders.
+   *
+   * @param       name       The name of the package.
+   * @param       initialize  Predicate to test whether to initialize each Class.
+   *
+   * @return      Set of all classes called with Class.forName().
+   *
+   * @exception   PackageNotFoundException    Gets thrown for a package name
+   * that cannot be found in any classpath resources.
+   */
+  public Set<Class<?>> loadPackage(final String name, final Predicate<Class<?>> initialize) throws PackageNotFoundException {
+    return PackageLoader.loadPackage(name, true, false, initialize, classLoaders);
   }
 
   /**
@@ -207,16 +246,16 @@ public final class PackageLoader extends ClassLoader {
    * @param       subPackages  Whether subPackages should be loaded
    * @param       initialize  Whether the classes must be initialized
    *
-   * @return      Set of all classes that have been loaded.
+   * @return      Set of all classes called with Class.forName().
    *
    * @exception   PackageNotFoundException    Gets thrown for a package name
    * that cannot be found in any classpath resources.
    */
   public Set<Class<?>> loadPackage(final String packageName, final boolean subPackages, final boolean initialize) throws PackageNotFoundException {
-    return PackageLoader.loadPackage(packageName, subPackages, initialize, classLoaders);
+    return PackageLoader.loadPackage(packageName, subPackages, initialize, null, classLoaders);
   }
 
-  public static Set<Class<?>> loadPackage(final String packageName, final boolean subPackages, final boolean initialize, final ClassLoader ... classLoaders) throws PackageNotFoundException {
+  private static Set<Class<?>> loadPackage(final String packageName, final boolean subPackages, final boolean initialize, final Predicate<Class<?>> predicate, final ClassLoader ... classLoaders) throws PackageNotFoundException {
     if (packageName == null)
       throw new NullPointerException("name == null");
 
@@ -253,15 +292,22 @@ public final class PackageLoader extends ClassLoader {
         final File directory = new File(decodedUrl);
         final Set<String> classNames = new HashSet<String>();
         if (directory.exists())
-          PackageLoader.loadDirectory(resource.getClassLoader(), classNames, directory, packageName, subPackages);
+          PackageLoader.loadDirectory(resourceClassLoader, classNames, directory, packageName, subPackages);
         else
-          PackageLoader.loadJar(resource.getClassLoader(), classNames, url, packageName, subPackages);
+          PackageLoader.loadJar(resourceClassLoader, classNames, url, packageName, subPackages);
 
         for (final String className : classNames) {
           try {
-            classes.add(Class.forName(className, initialize, resourceClassLoader));
+            final Class<?> cls = Class.forName(className, initialize, resourceClassLoader);
+            if (!initialize && predicate.test(cls))
+              Class.forName(className, true, resourceClassLoader);
+
+            classes.add(cls);
           }
-          catch (final ClassNotFoundException | NoClassDefFoundError | VerifyError e) {
+          catch (final ClassNotFoundException | VerifyError e) {
+            logger.warn(e.getMessage(), e);
+          }
+          catch (final NoClassDefFoundError e) {
           }
         }
       }
@@ -282,8 +328,7 @@ public final class PackageLoader extends ClassLoader {
       public void accept(final Path t) {
         final String classFile = path.relativize(t).toString();
         final String className = packagePrefix + classFile.substring(0, classFile.length() - 6).replace(File.separatorChar, '.');
-        if (!isClassLoaded(classLoader, className))
-          classNames.add(className);
+        classNames.add(className);
       }
     };
 
@@ -311,7 +356,7 @@ public final class PackageLoader extends ClassLoader {
       final String entry = enumeration.nextElement().getName();
       if (entry.startsWith(entryName) && entry.endsWith(".class")) {
         final String className = (entry.charAt(0) == '/' ? entry.substring(1, entry.length() - 6) : entry.substring(0, entry.length() - 6)).replace('/', '.');
-        if (className.startsWith(packagePrefix) && (subPackages || className.indexOf(".", packagePrefix.length() + 1) < 0) && !isClassLoaded(classLoader, className))
+        if (className.startsWith(packagePrefix) && (subPackages || className.indexOf(".", packagePrefix.length() + 1) < 0))
           classNames.add(className);
       }
     }

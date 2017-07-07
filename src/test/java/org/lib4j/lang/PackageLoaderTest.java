@@ -18,6 +18,7 @@ package org.lib4j.lang;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -76,11 +77,15 @@ public class PackageLoaderTest {
   }
 
   @Test
-  @SuppressWarnings("unused")
   public void testJar() throws ClassNotFoundException, PackageNotFoundException {
-    org.junit.runner.Runner[] init;
-    final Set<Class<?>> loadedClasses = PackageLoader.getSystemContextPackageLoader().loadPackage("org.junit.runner");
+    boolean[] encountered = new boolean[1];
+    final Set<Class<?>> loadedClasses = PackageLoader.getSystemContextPackageLoader().loadPackage("org.junit.runner", new Predicate<Class<?>>() {
+      @Override
+      public boolean test(final Class<?> t) {
+        return encountered[0] = "org.junit.runner.FilterFactory".equals(t.getName()) || encountered[0];
+      }
+    });
     Assert.assertTrue("Should have been loaded by PackageLoader", loadedClasses.contains(Class.forName("org.junit.runner.FilterFactory", false, ClassLoader.getSystemClassLoader())));
-    Assert.assertFalse("Should already be loaded", loadedClasses.contains(Class.forName("org.junit.runner.Runner", false, ClassLoader.getSystemClassLoader())));
+    Assert.assertTrue(encountered[0]);
   }
 }
