@@ -18,14 +18,11 @@ package org.lib4j.lang;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Comparator;
 
-/**
- * @author seva
- *
- */
 public final class Numbers {
   public static class Unsigned {
-    private static final BigInteger UNSIGNED_LONG_MAX_VALUE = new BigInteger("18446744073709551999");
+    public static final BigInteger UNSIGNED_LONG_MAX_VALUE = new BigInteger("18446744073709551615");
 
     public static short toSigned(final byte unsigned) {
       return (short)(unsigned - Byte.MIN_VALUE);
@@ -82,6 +79,65 @@ public final class Numbers {
     }
   }
 
+  private static final Comparator<Number> comparator = new Comparator<Number>() {
+    @Override
+    public int compare(final Number o1, final Number o2) {
+      if (o1 == null)
+        return o2 == null ? 0 : 1;
+
+      if (o2 == null)
+        return -1;
+
+      if (o1 instanceof BigDecimal) {
+        if (o2 instanceof BigDecimal)
+          return ((BigDecimal)o1).compareTo((BigDecimal)o2);
+
+        if (o2 instanceof BigInteger)
+          return ((BigDecimal)o1).compareTo(new BigDecimal((BigInteger)o2));
+
+        if (o2 instanceof Byte || o2 instanceof Short || o2 instanceof Integer || o2 instanceof Long)
+          return ((BigDecimal)o1).compareTo(BigDecimal.valueOf(o2.longValue()));
+
+        return ((BigDecimal)o1).compareTo(BigDecimal.valueOf(o2.doubleValue()));
+      }
+
+      if (o1 instanceof BigInteger) {
+        if (o2 instanceof BigInteger)
+          return ((BigInteger)o1).compareTo((BigInteger)o2);
+
+        if (o2 instanceof BigDecimal)
+          return new BigDecimal((BigInteger)o1).compareTo((BigDecimal)o2);
+
+        if (o2 instanceof Byte || o2 instanceof Short || o2 instanceof Integer || o2 instanceof Long)
+          return ((BigInteger)o1).compareTo(BigInteger.valueOf(o2.longValue()));
+
+        return new BigDecimal((BigInteger)o1).compareTo(BigDecimal.valueOf(o2.doubleValue()));
+      }
+
+      if (o1 instanceof Byte || o1 instanceof Short || o1 instanceof Integer || o1 instanceof Long) {
+        if (o2 instanceof BigInteger)
+          return BigInteger.valueOf(o1.longValue()).compareTo((BigInteger)o2);
+
+        if (o2 instanceof BigDecimal)
+          return BigDecimal.valueOf(o1.doubleValue()).compareTo((BigDecimal)o2);
+
+        return (o1.doubleValue() < o2.doubleValue()) ? -1 : ((o1.doubleValue() == o2.doubleValue()) ? 0 : 1);
+      }
+
+      if (o2 instanceof BigInteger)
+        return BigDecimal.valueOf(o1.doubleValue()).compareTo(new BigDecimal((BigInteger)o2));
+
+      if (o2 instanceof BigDecimal)
+        return BigDecimal.valueOf(o1.doubleValue()).compareTo((BigDecimal)o2);
+
+      return (o1.doubleValue() < o2.doubleValue()) ? -1 : ((o1.doubleValue() == o2.doubleValue()) ? 0 : 1);
+    }
+  };
+
+  public static int compare(final Number a, final Number b) {
+    return comparator.compare(a, b);
+  }
+
   private static final int[] highestBitSet = {
     0, 1, 2, 2, 3, 3, 3, 3,
     4, 4, 4, 4, 4, 4, 4, 4,
@@ -117,7 +173,61 @@ public final class Numbers {
     255, 255, 255, 255, 255, 255, 255, 255,
   };
 
-  public static final double LOG2 = Math.log(2);
+  public static final double LOG_2 = 0.6931471805599453;
+  public static final double LOG_10 = 2.302585092994046;
+
+  @SuppressWarnings("unchecked")
+  public static <T extends Number>T valueOf(final Class<T> clazz, final Number number) {
+    if (float.class == clazz || Float.class == clazz)
+      return (T)new Float(number.floatValue());
+
+    if (double.class == clazz || Double.class == clazz)
+      return (T)new Double(number.doubleValue());
+
+    if (byte.class == clazz || Byte.class == clazz)
+      return (T)new Byte(number.byteValue());
+
+    if (short.class == clazz || Short.class == clazz)
+      return (T)new Short(number.shortValue());
+
+    if (int.class == clazz || Integer.class == clazz)
+      return (T)new Integer(number.intValue());
+
+    if (long.class == clazz || Long.class == clazz)
+      return (T)new Long(number.longValue());
+
+    if (number instanceof Float || number instanceof Double || number instanceof Byte || number instanceof Short || number instanceof Integer || number instanceof Long) {
+      if (BigInteger.class.isAssignableFrom(clazz))
+        return (T)BigInteger.valueOf(number.longValue());
+
+      if (BigDecimal.class.isAssignableFrom(clazz))
+        return (T)BigDecimal.valueOf(number.doubleValue());
+
+      throw new UnsupportedOperationException(clazz.getName() + " is not a supported Number type");
+    }
+
+    if (number instanceof BigInteger) {
+      if (BigInteger.class.isAssignableFrom(clazz))
+        return (T)number;
+
+      if (BigDecimal.class.isAssignableFrom(clazz))
+        return (T)new BigDecimal((BigInteger)number);
+
+      throw new UnsupportedOperationException(clazz.getName() + " is not a supported Number type");
+    }
+
+    if (number instanceof BigDecimal) {
+      if (BigDecimal.class.isAssignableFrom(clazz))
+        return (T)number;
+
+      if (BigInteger.class.isAssignableFrom(clazz))
+        return (T)((BigDecimal)number).toBigInteger();
+
+      throw new UnsupportedOperationException(clazz.getName() + " is not a supported Number type");
+    }
+
+    throw new UnsupportedOperationException(clazz.getName() + " is not a supported Number type");
+  }
 
   public static long pow(long base, int exp) {
     long result = 1;
@@ -454,7 +564,7 @@ public final class Numbers {
       value = value.shiftRight(blex);
 
     final double result = Math.log(value.doubleValue());
-    return blex > 0 ? result + blex * LOG2 : result;
+    return blex > 0 ? result + blex * LOG_2 : result;
   }
 
   private static final double EPSILON = 0.000000000000001d;
@@ -619,6 +729,27 @@ public final class Numbers {
       sum += numbers[i];
 
     return sum / numbers.length;
+  }
+
+  // FIXME: Write a test for this
+  public static Number compress(final Number number) {
+    if (number == null || number instanceof Float || number instanceof Double || number instanceof BigDecimal || number instanceof Byte)
+      return number;
+
+    final double value = number.doubleValue();
+    if (Byte.MIN_VALUE <= value && value <= Byte.MAX_VALUE)
+      return number.byteValue();
+
+    if (Short.MIN_VALUE <= value && value <= Short.MAX_VALUE)
+      return number.shortValue();
+
+    if (Integer.MIN_VALUE <= value && value <= Integer.MAX_VALUE)
+      return number.intValue();
+
+    if (Long.MIN_VALUE <= value && value <= Long.MAX_VALUE)
+      return number.longValue();
+
+    return number;
   }
 
   private Numbers() {

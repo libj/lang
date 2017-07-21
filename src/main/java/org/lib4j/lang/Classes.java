@@ -27,6 +27,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.lib4j.util.Arrays;
 import org.lib4j.util.For;
 
 public final class Classes {
