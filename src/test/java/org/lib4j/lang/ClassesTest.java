@@ -32,7 +32,8 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.lib4j.util.Arrays;
+import org.lib4j.lang.Arrays;
+import org.lib4j.lang.Classes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -27,9 +27,6 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.lib4j.util.Arrays;
-import org.lib4j.util.For;
-
 public final class Classes {
   private static final Map<Class<?>,Map<String,Field>> classToFields = new HashMap<Class<?>,Map<String,Field>>();
 
@@ -131,14 +128,14 @@ public final class Classes {
     return null;
   }
 
-  private static final For.Recurser<Field,Class<?>> declaredFieldRecurser = new For.Recurser<Field,Class<?>>() {
+  private static final Repeat.Recurser<Field,Class<?>> declaredFieldRecurser = new Repeat.Recurser<Field,Class<?>>() {
     @Override
-    public boolean accept(final Field item, final Object ... args) {
+    public boolean accept(final Field member, final Object ... args) {
       return true;
     }
 
     @Override
-    public Field[] items(final Class<?> container) {
+    public Field[] members(final Class<?> container) {
       return container.getDeclaredFields();
     }
 
@@ -148,14 +145,14 @@ public final class Classes {
     }
   };
 
-  private static final For.Recurser<Method,Class<?>> declaredMethodRecurser = new For.Recurser<Method,Class<?>>() {
+  private static final Repeat.Recurser<Method,Class<?>> declaredMethodRecurser = new Repeat.Recurser<Method,Class<?>>() {
     @Override
-    public boolean accept(final Method item, final Object ... args) {
+    public boolean accept(final Method member, final Object ... args) {
       return true;
     }
 
     @Override
-    public Method[] items(final Class<?> container) {
+    public Method[] members(final Class<?> container) {
       return container.getDeclaredMethods();
     }
 
@@ -165,14 +162,14 @@ public final class Classes {
     }
   };
 
-  private static final For.Recurser<Field,Class<?>> fieldRecurser = new For.Recurser<Field,Class<?>>() {
+  private static final Repeat.Recurser<Field,Class<?>> fieldRecurser = new Repeat.Recurser<Field,Class<?>>() {
     @Override
     public boolean accept(final Field field, final Object ... args) {
       return Modifier.isPublic((field).getModifiers());
     }
 
     @Override
-    public Field[] items(final Class<?> clazz) {
+    public Field[] members(final Class<?> clazz) {
       return clazz.getDeclaredFields();
     }
 
@@ -182,39 +179,39 @@ public final class Classes {
     }
   };
 
-  private static final For.Filter<Field> declaredFieldWithAnnotationFilter = new For.Filter<Field>() {
+  private static final Repeat.Filter<Field> declaredFieldWithAnnotationFilter = new Repeat.Filter<Field>() {
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public boolean accept(final Field item, final Object ... args) {
-      return item.getAnnotation((Class)args[0]) != null;
+    public boolean accept(final Field member, final Object ... args) {
+      return member.getAnnotation((Class)args[0]) != null;
     }
   };
 
-  private static final For.Filter<Method> declaredMethodWithAnnotationFilter = new For.Filter<Method>() {
+  private static final Repeat.Filter<Method> declaredMethodWithAnnotationFilter = new Repeat.Filter<Method>() {
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public boolean accept(final Method item, final Object ... args) {
-      return item.getAnnotation((Class)args[0]) != null;
+    public boolean accept(final Method member, final Object ... args) {
+      return member.getAnnotation((Class)args[0]) != null;
     }
   };
 
-  private static final For.Filter<Class<?>> classWithAnnotationFilter = new For.Filter<Class<?>>() {
+  private static final Repeat.Filter<Class<?>> classWithAnnotationFilter = new Repeat.Filter<Class<?>>() {
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public boolean accept(final Class<?> item, final Object ... args) {
-      return item.getAnnotation((Class)args[0]) != null;
+    public boolean accept(final Class<?> member, final Object ... args) {
+      return member.getAnnotation((Class)args[0]) != null;
     }
   };
 
-  private static final For.Recurser<Class<?>,Class<?>> classWithAnnotationRecurser = new For.Recurser<Class<?>,Class<?>>() {
+  private static final Repeat.Recurser<Class<?>,Class<?>> classWithAnnotationRecurser = new Repeat.Recurser<Class<?>,Class<?>>() {
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public boolean accept(final Class<?> item, final Object ... args) {
-      return item.getAnnotation((Class)args[0]) != null;
+    public boolean accept(final Class<?> member, final Object ... args) {
+      return member.getAnnotation((Class)args[0]) != null;
     }
 
     @Override
-    public Class<?>[] items(final Class<?> container) {
+    public Class<?>[] members(final Class<?> container) {
       return container.getDeclaredClasses();
     }
 
@@ -236,11 +233,11 @@ public final class Classes {
    * @return
    */
   public static <T extends Annotation>Field[] getDeclaredFieldsWithAnnotation(final Class<?> clazz, final Class<T> annotationType) {
-    return For.<Field>recursiveOrdered(clazz.getDeclaredFields(), Field.class, declaredFieldWithAnnotationFilter, annotationType);
+    return Repeat.Recursive.<Field>ordered(clazz.getDeclaredFields(), Field.class, declaredFieldWithAnnotationFilter, annotationType);
   }
 
   public static <T extends Annotation>Field[] getDeclaredFieldsWithAnnotationDeep(final Class<?> clazz, final Class<T> annotationType) {
-    return For.<Field,Class<?>>recursiveInverted(clazz, clazz.getDeclaredFields(), Field.class, declaredFieldRecurser, annotationType);
+    return Repeat.Recursive.<Field,Class<?>>inverted(clazz, clazz.getDeclaredFields(), Field.class, declaredFieldRecurser, annotationType);
   }
 
   /**
@@ -255,11 +252,11 @@ public final class Classes {
    * @return
    */
   public static <T extends Annotation>Method[] getDeclaredMethodsWithAnnotation(final Class<?> clazz, final Class<T> annotationType) {
-    return For.<Method>recursiveOrdered(clazz.getDeclaredMethods(), Method.class, declaredMethodWithAnnotationFilter, annotationType);
+    return Repeat.Recursive.<Method>ordered(clazz.getDeclaredMethods(), Method.class, declaredMethodWithAnnotationFilter, annotationType);
   }
 
   public static <T extends Annotation>Method[] getDeclaredMethodsWithAnnotationDeep(final Class<?> clazz, final Class<T> annotationType) {
-    return For.<Method,Class<?>>recursiveInverted(clazz, clazz.getDeclaredMethods(), Method.class, declaredMethodRecurser, annotationType);
+    return Repeat.Recursive.<Method,Class<?>>inverted(clazz, clazz.getDeclaredMethods(), Method.class, declaredMethodRecurser, annotationType);
   }
 
   /**
@@ -275,20 +272,20 @@ public final class Classes {
    */
   @SuppressWarnings("unchecked")
   public static <T extends Annotation>Class<?>[] getDeclaredClassesWithAnnotation(final Class<?> clazz, final Class<T> annotationType) {
-    return For.<Class<?>>recursiveOrdered(clazz.getDeclaredClasses(), (Class<Class<?>>)Class.class.getClass(), classWithAnnotationFilter, annotationType);
+    return Repeat.Recursive.<Class<?>>ordered(clazz.getDeclaredClasses(), (Class<Class<?>>)Class.class.getClass(), classWithAnnotationFilter, annotationType);
   }
 
   @SuppressWarnings("unchecked")
   public static <T extends Annotation>Class<?>[] getDeclaredClassesWithAnnotationDeep(Class<?> clazz, final Class<T> annotationType) {
-    return For.<Class<?>,Class<?>>recursiveInverted(clazz, clazz.getDeclaredClasses(), (Class<Class<?>>)Class.class.getClass(), classWithAnnotationRecurser, annotationType);
+    return Repeat.Recursive.<Class<?>,Class<?>>inverted(clazz, clazz.getDeclaredClasses(), (Class<Class<?>>)Class.class.getClass(), classWithAnnotationRecurser, annotationType);
   }
 
   public static Field[] getFieldsDeep(final Class<?> clazz) {
-    return For.recursiveInverted(clazz, clazz.getDeclaredFields(), Field.class, fieldRecurser);
+    return Repeat.Recursive.ordered(clazz, clazz.getDeclaredFields(), Field.class, fieldRecurser);
   }
 
   public static Field[] getDeclaredFieldsDeep(final Class<?> clazz) {
-    return For.<Field,Class<?>>recursiveInverted(clazz, clazz.getDeclaredFields(), Field.class, declaredFieldRecurser);
+    return Repeat.Recursive.<Field,Class<?>>inverted(clazz, clazz.getDeclaredFields(), Field.class, declaredFieldRecurser);
   }
 
   public static Method getDeclaredMethod(final Class<?> clazz, final String name, final Class<?> ... parameters) {

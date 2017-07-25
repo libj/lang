@@ -25,8 +25,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 
-import org.lib4j.util.Arrays;
-
 public final class ClassLoaders {
   private static final Method findLoadedClass;
 

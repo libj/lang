@@ -24,29 +24,26 @@ import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
-import org.lib4j.util.Arrays;
-import org.lib4j.util.For;
-
 public final class Objects {
   private static final Map<Class<?>,Field[]> blackWhiteListMap = new HashMap<Class<?>,Field[]>();
 
-  private static final For.Filter<Field> nonBlacklistFilter = new For.Filter<Field>() {
+  private static final Repeat.Filter<Field> nonBlacklistFilter = new Repeat.Filter<Field>() {
     @Override
-    public boolean accept(final Field item, final Object ... args) {
-      final boolean accept = !item.isSynthetic() && !Modifier.isStatic(item.getModifiers()) && item.getAnnotation(NotEqualable.class) == null;
+    public boolean accept(final Field member, final Object ... args) {
+      final boolean accept = !member.isSynthetic() && !Modifier.isStatic(member.getModifiers()) && member.getAnnotation(NotEqualable.class) == null;
       if (accept)
-        item.setAccessible(true);
+        member.setAccessible(true);
 
       return accept;
     }
   };
 
-  private static final For.Filter<Field> whitelistFilter = new For.Filter<Field>() {
+  private static final Repeat.Filter<Field> whitelistFilter = new Repeat.Filter<Field>() {
     @Override
-    public boolean accept(final Field item, final Object ... args) {
-      final boolean accept = !item.isSynthetic() && !Modifier.isStatic(item.getModifiers()) && item.getAnnotation(Equalable.class) != null;
+    public boolean accept(final Field member, final Object ... args) {
+      final boolean accept = !member.isSynthetic() && !Modifier.isStatic(member.getModifiers()) && member.getAnnotation(Equalable.class) != null;
       if (accept)
-        item.setAccessible(true);
+        member.setAccessible(true);
 
       return accept;
     }
@@ -126,9 +123,9 @@ public final class Objects {
       Field[] fields = blackWhiteListMap.get(cls);
       if (fields == null) {
         final Field[] allFields = Classes.getDeclaredFieldsDeep(cls);
-        fields = For.<Field>recursiveOrdered(allFields, Field.class, whitelistFilter);
+        fields = Repeat.Recursive.<Field>ordered(allFields, Field.class, whitelistFilter);
         if (fields.length == 0)
-          fields = For.<Field>recursiveOrdered(allFields, Field.class, nonBlacklistFilter);
+          fields = Repeat.Recursive.<Field>ordered(allFields, Field.class, nonBlacklistFilter);
 
         blackWhiteListMap.put(cls, fields);
       }
@@ -229,9 +226,9 @@ public final class Objects {
       Field[] fields = blackWhiteListMap.get(cls);
       if (fields == null) {
         final Field[] allFields = Classes.getDeclaredFieldsDeep(cls);
-        fields = For.<Field>recursiveOrdered(allFields, Field.class, whitelistFilter);
+        fields = Repeat.Recursive.<Field>ordered(allFields, Field.class, whitelistFilter);
         if (fields.length == 0)
-          fields = For.<Field>recursiveOrdered(allFields, Field.class, nonBlacklistFilter);
+          fields = Repeat.Recursive.<Field>ordered(allFields, Field.class, nonBlacklistFilter);
 
         blackWhiteListMap.put(cls, fields);
       }

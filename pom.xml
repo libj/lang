@@ -39,12 +39,12 @@
   <dependencies>
     <dependency>
       <groupId>org.lib4j</groupId>
-      <artifactId>lib4j-test</artifactId>
-      <scope>test</scope>
+      <artifactId>lib4j-logging</artifactId>
     </dependency>
     <dependency>
       <groupId>org.lib4j</groupId>
-      <artifactId>lib4j-util</artifactId>
+      <artifactId>lib4j-test</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
   <repositories>
