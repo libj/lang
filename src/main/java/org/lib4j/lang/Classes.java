@@ -26,34 +26,30 @@ import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class Classes {
-  private static final Map<Class<?>,Map<String,Field>> classToFields = new HashMap<Class<?>,Map<String,Field>>();
+  private static final Map<Class<?>,Map<String,Field>> classToFields = new ConcurrentHashMap<Class<?>,Map<String,Field>>();
 
   public static Type[] getGenericSuperclasses(final Class<?> cls) {
     return cls.getGenericSuperclass() instanceof ParameterizedType ? ((ParameterizedType)cls.getGenericSuperclass()).getActualTypeArguments() : null;
   }
 
   private static Field checkAccessField(final Field field, final boolean declared) {
-    return declared || Modifier.isPublic(field.getModifiers()) ? field : null;
+    return field != null && (declared || Modifier.isPublic(field.getModifiers())) ? field : null;
   }
 
   private static Field getField(final Class<?> cls, final String fieldName, final boolean declared) {
-    Map<String,Field> fieldMap = classToFields.get(cls);
-    if (fieldMap != null)
+    Map<String,Field> fieldMap;
+    if ((fieldMap = classToFields.get(cls)) != null)
       return checkAccessField(fieldMap.get(fieldName), declared);
 
-    synchronized (classToFields) {
-      if ((fieldMap = classToFields.get(cls)) != null)
-        return checkAccessField(fieldMap.get(cls), declared);
+    final Field[] fields = declared ? cls.getDeclaredFields() : cls.getFields();
+    classToFields.put(cls, fieldMap = new HashMap<String,Field>());
+    for (final Field field : fields)
+      fieldMap.put(field.getName(), field);
 
-      final Field[] fields = declared ? cls.getDeclaredFields() : cls.getFields();
-      classToFields.put(cls, fieldMap = new HashMap<String,Field>());
-      for (final Field field : fields)
-        fieldMap.put(field.getName(), field);
-
-      return checkAccessField(fieldMap.get(fieldName), declared);
-    }
+    return checkAccessField(fieldMap.get(fieldName), declared);
   }
 
   public static Field getField(final Class<?> cls, final String fieldName) {
@@ -64,10 +60,18 @@ public final class Classes {
     return Classes.getField(cls, fieldName, true);
   }
 
+  public static Field getFieldDeep(Class<?> clazz, final String fieldName) {
+    Field field;
+    do
+      field = getField(clazz, fieldName, false);
+    while (field == null && (clazz = clazz.getSuperclass()) != null);
+    return field;
+  }
+
   public static Field getDeclaredFieldDeep(Class<?> clazz, final String name) {
     Field field;
     do
-      field = Classes.getDeclaredField(clazz, name);
+      field = getField(clazz, name, true);
     while (field == null && (clazz = clazz.getSuperclass()) != null);
     return field;
   }
