@@ -17,6 +17,8 @@
 package org.lib4j.lang;
 
 import java.text.ParseException;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -282,6 +284,51 @@ public final class Strings {
   public static String getAlpha(final int number) {
     int scale;
     return number < '{' - 'a' ? String.valueOf((char)('a' + number)) : getAlpha((scale = number / ('{' - 'a')) - 1) + String.valueOf((char)('a' + number - scale * ('{' - 'a')));
+  }
+
+  @SafeVarargs
+  public static String getCommonPrefix(final String ... strings) {
+    if (strings == null || strings.length == 0)
+      return null;
+
+    if (strings.length == 1)
+      return strings[0];
+
+    final char[] chars = strings[0].toCharArray();
+    for (int c = 0; c < chars.length; c++)
+      for (int i = 1; i < strings.length; i++)
+        if (chars[c] != strings[i].charAt(c))
+          return strings[0].substring(0, c);
+
+    return strings[0];
+  }
+
+  public static String getCommonPrefix(final Collection<String> strings) {
+    if (strings == null || strings.size() == 0)
+      return null;
+
+    Iterator<String> iterator = strings.iterator();
+    if (strings.size() == 1)
+      return iterator.next();
+
+    final String string0 = iterator.next();
+    final char[] chars = string0.toCharArray();
+    for (int c = 0; c < chars.length; c++) {
+      if (c > 0) {
+        iterator = strings.iterator();
+        iterator.next();
+      }
+
+      while (iterator.hasNext())
+        if (chars[c] != iterator.next().charAt(c))
+          return string0.substring(0, c);
+    }
+
+    return string0;
+  }
+
+  public static String escapeForJava(final String string) {
+    return string == null ? null : string.replace("\\", "\\\\").replace("\"", "\\\"");
   }
 
   private Strings() {

@@ -17,6 +17,7 @@
 package org.lib4j.lang;
 
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -192,5 +193,26 @@ public class StringsTest {
     Assert.assertEquals("foo", Strings.toCamelCase("foo_"));
     Assert.assertEquals("FOo", Strings.toCamelCase("FOo"));
     Assert.assertEquals("FOoBAr", Strings.toCamelCase("FOo_bAr"));
+  }
+
+  @Test
+  public void testGetCommonPrefix() {
+    Assert.assertNull(Strings.getCommonPrefix((String[])null));
+    Assert.assertNull(Strings.getCommonPrefix((String)null));
+    try {
+      Strings.getCommonPrefix(null, null);
+      Assert.fail("Expected NullPointerException");
+    }
+    catch (final NullPointerException e) {
+    }
+
+    Assert.assertEquals("a", Strings.getCommonPrefix("a"));
+    Assert.assertEquals("a", Strings.getCommonPrefix(Arrays.asList("a")));
+    Assert.assertEquals("", Strings.getCommonPrefix("a", "b"));
+    Assert.assertEquals("", Strings.getCommonPrefix(Arrays.asList("a", "b")));
+    Assert.assertEquals("a", Strings.getCommonPrefix("aa", "ab"));
+    Assert.assertEquals("a", Strings.getCommonPrefix(Arrays.asList("aa", "ab")));
+    Assert.assertEquals("aa", Strings.getCommonPrefix("aaa", "aab"));
+    Assert.assertEquals("aa", Strings.getCommonPrefix(Arrays.asList("aaa", "aab")));
   }
 }

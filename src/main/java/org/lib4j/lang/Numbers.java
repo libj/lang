@@ -21,6 +21,9 @@ import java.math.BigInteger;
 import java.util.Comparator;
 
 public final class Numbers {
+  public static final BigInteger LONG_MIN_VALUE = BigInteger.valueOf(Long.MIN_VALUE);
+  public static final BigInteger LONG_MAX_VALUE = BigInteger.valueOf(Long.MAX_VALUE);
+
   public static class Unsigned {
     public static final BigInteger UNSIGNED_LONG_MAX_VALUE = new BigInteger("18446744073709551615");
 
@@ -603,7 +606,7 @@ public final class Numbers {
   }
 
   public static int precision(final int number) {
-    return (int)Math.log10(Math.abs(number)) + 1;
+    return number == 0 ? 1 : (int)Math.log10(Math.abs(number)) + 1;
   }
 
   public static int precision(final long number) {

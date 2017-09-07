@@ -19,14 +19,17 @@ package org.lib4j.lang;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 public final class Classes {
   private static final Map<Class<?>,Map<String,Field>> classToFields = new ConcurrentHashMap<Class<?>,Map<String,Field>>();
@@ -329,6 +332,47 @@ public final class Classes {
     return gcc;
   }
 
+  private static final Function<Object,Class<?>> objectClassFunction = new Function<Object,Class<?>>() {
+    @Override
+    public Class<?> apply(final Object t) {
+      return t.getClass();
+    }
+  };
+
+  @SafeVarargs
+  private static <T>Class<?> getGreatestCommonSuperclass0(final Function<T,Class<?>> function, final T ... objects) {
+    if (objects == null || objects.length == 0)
+      return null;
+
+    if (objects.length == 1)
+      return objects[0].getClass();
+
+    Class<?> gcc = getGreatestCommonSuperclass(objects[0].getClass(), objects[1].getClass());
+    for (int i = 2; i < objects.length && gcc != null; i++)
+      gcc = getGreatestCommonSuperclass(gcc, objects[i].getClass());
+
+    return gcc;
+  }
+
+  @SafeVarargs
+  public static <T>Class<?> getGreatestCommonSuperclass(final T ... objects) {
+    return getGreatestCommonSuperclass0(objectClassFunction, objects);
+  }
+
+  public static <T>Class<?> getGreatestCommonSuperclass(final Collection<T> objects) {
+    return getGreatestCommonSuperclass0(objectClassFunction, objects.toArray());
+  }
+
+  @SafeVarargs
+  public static <T>Class<?> getGreatestCommonSuperclass(final Function<T,Class<?>> function, final T ... objects) {
+    return getGreatestCommonSuperclass0(function, objects);
+  }
+
+  @SuppressWarnings("unchecked")
+  public static <T>Class<?> getGreatestCommonSuperclass(final Function<T,Class<?>> function, final Collection<T> objects) {
+    return getGreatestCommonSuperclass0((Function<Object,Class<?>>)function, objects.toArray());
+  }
+
   public static Class<?> forName(final String className, final boolean initialize, final Class<?> callerClass) {
     if (className == null || className.length() == 0)
       return null;
@@ -361,13 +405,14 @@ public final class Classes {
     return Classes.forName(className, false, callerClass);
   }
 
-  private static Class<?> getGreatestCommonSuperclass(Class<?> class1, final Class<?> class2) {
+  private static Class<?> getGreatestCommonSuperclass(Class<?> class1, Class<?> class2) {
+    final Class<?> cls = class2;
     do {
-      Class<?> super2 = class2;
       do
-        if (class1.isAssignableFrom(super2))
+        if (class1.isAssignableFrom(class2))
           return class1;
-      while ((super2 = super2.getSuperclass()) != null);
+      while ((class2 = class2.getSuperclass()) != null);
+      class2 = cls;
     }
     while ((class1 = class1.getSuperclass()) != null);
     return null;
@@ -424,6 +469,24 @@ public final class Classes {
 
   public static Class<?>[] getCallingClasses() {
     return Arrays.subArray(new CallingClass().getClassContext(), 3);
+  }
+
+  public static <T>T newInstance(final Class<? extends T> clazz) {
+    try {
+      return clazz.newInstance();
+    }
+    catch (final IllegalAccessException | InstantiationException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public static <T>T newInstance(final Constructor<T> consctuctor, final Object ... initargs) {
+    try {
+      return consctuctor.newInstance(initargs);
+    }
+    catch (final IllegalAccessException | InstantiationException | InvocationTargetException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   private Classes() {

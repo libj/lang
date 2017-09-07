@@ -486,14 +486,9 @@ public final class Arrays {
     return filtered;
   }
 
-  /**
-   * Concatenate the supplied arrays of a common type into a single array.
-   *
-   * @param arrays The arrays to be concatenated.
-   * @return The concatenated array.
-   */
+  @SafeVarargs
   @SuppressWarnings("unchecked")
-  public static <T>T[] concat(final T[] ... arrays) {
+  private static <T>T[] concat0(final T[] ... arrays) {
     int length = 0;
     for (final T[] array : arrays)
       length += array.length;
@@ -502,6 +497,44 @@ public final class Arrays {
     for (int i = 0, l = 0; i < arrays.length; l += arrays[i].length, i++)
       System.arraycopy(arrays[i], 0, concat, l, arrays[i].length);
 
+    return concat;
+  }
+
+  /**
+   * Concatenate the supplied arrays of a common type into a single array.
+   *
+   * @param arrays The arrays to be concatenated.
+   * @return The concatenated array.
+   */
+  @SafeVarargs
+  public static <T>T[] concat(final T[] ... arrays) {
+    return concat0(arrays);
+  }
+
+  /**
+   * Concatenate the supplied arrays of a common type into a single array.
+   *
+   * @param array The base array to be concatenated.
+   * @param elements The additional elements to be concatenated.
+   * @return The concatenated array.
+   */
+  @SafeVarargs
+  public static <T>T[] concat(final T[] array, final T ... elements) {
+    return concat0(array, elements);
+  }
+
+  /**
+   * Concatenate the supplied arrays of a common type into a single array.
+   *
+   * @param array The base array to be concatenated.
+   * @param elements The additional elements to be concatenated.
+   * @return The concatenated array.
+   */
+  @SuppressWarnings("unchecked")
+  public static <T>T[] concat(final T[] array, final T element) {
+    final T[] concat = (T[])Array.newInstance(array.getClass().getComponentType(), array.length + 1);
+    System.arraycopy(array, 0, concat, 0, array.length);
+    concat[array.length] = element;
     return concat;
   }
 
