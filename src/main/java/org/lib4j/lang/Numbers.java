@@ -605,12 +605,12 @@ public final class Numbers {
     throw new UnsupportedOperationException("Unsupported Numebr type: " + type.getName());
   }
 
-  public static int precision(final int number) {
-    return number == 0 ? 1 : (int)Math.log10(Math.abs(number)) + 1;
+  public static byte precision(final int number) {
+    return (byte)(number == 0 ? 1 : Math.log10(Math.abs(number)) + 1);
   }
 
-  public static int precision(final long number) {
-    return (int)Math.log10(Math.abs(number)) + 1;
+  public static byte precision(final long number) {
+    return (byte)(Math.log10(Math.abs(number)) + 1);
   }
 
   public static int precision(final BigInteger number) {
