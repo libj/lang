@@ -176,11 +176,13 @@ public class NumbersTest {
     Assert.assertEquals(3, Numbers.precision(349));
     Assert.assertEquals(1, Numbers.precision(3));
     Assert.assertEquals(5, Numbers.precision(34329));
-    Assert.assertEquals(12, Numbers.precision(349349349349l));
+    Assert.assertEquals(10, Numbers.precision(Integer.MIN_VALUE));
     Assert.assertEquals(1, Numbers.precision(-1));
     Assert.assertEquals(5, Numbers.precision(-13423));
+    Assert.assertEquals(12, Numbers.precision(349349349349l));
     Assert.assertEquals(19, Numbers.precision(BigInteger.valueOf(4389429384493848239l)));
     Assert.assertEquals(19, Numbers.precision(BigInteger.valueOf(-4389429384493848239l)));
+    Assert.assertEquals(19, Numbers.precision(Long.MIN_VALUE));
     Assert.assertEquals(19, Numbers.precision(new BigDecimal("-4389429384.493848239")));
   }
 

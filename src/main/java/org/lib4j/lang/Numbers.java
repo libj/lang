@@ -606,11 +606,11 @@ public final class Numbers {
   }
 
   public static byte precision(final int number) {
-    return (byte)(number == 0 ? 1 : Math.log10(Math.abs(number)) + 1);
+    return (byte)(number == 0 ? 1 : Math.log10(number != Integer.MIN_VALUE ? Math.abs(number) : Math.abs((long)number)) + 1);
   }
 
   public static byte precision(final long number) {
-    return (byte)(Math.log10(Math.abs(number)) + 1);
+    return number != Long.MIN_VALUE ? (byte)(Math.log10(Math.abs(number)) + 1) : (byte)precision(BigInteger.valueOf(number));
   }
 
   public static int precision(final BigInteger number) {
