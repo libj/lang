@@ -53,6 +53,7 @@ public final class ClassLoaders {
     }
   }
 
+  // FIXME: This does not work in java 9.
   public static URL[] getClassPath() {
     final Collection<URL> urls = new HashSet<URL>();
     urls.addAll(java.util.Arrays.asList(((URLClassLoader)ClassLoader.getSystemClassLoader()).getURLs()));

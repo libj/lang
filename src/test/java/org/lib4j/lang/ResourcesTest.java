@@ -28,7 +28,9 @@ public class ResourcesTest {
 
   static {
     try {
-      if (System.getProperty("os.name").contains("Mac"))
+      if ("9".equals(System.getProperty("java.specification.version")))
+        RT_JAR = new File("/java.base");
+      else if (System.getProperty("os.name").contains("Mac"))
         RT_JAR = new File(JAVA_HOME, "../jre/lib/rt.jar").getCanonicalFile();
       else
         RT_JAR = new File(JAVA_HOME, "lib/rt.jar");
