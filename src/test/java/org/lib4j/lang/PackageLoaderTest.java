@@ -16,6 +16,8 @@
 
 package org.lib4j.lang;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -27,10 +29,36 @@ import org.slf4j.LoggerFactory;
 
 public class PackageLoaderTest {
   private static final Logger logger = LoggerFactory.getLogger(PackageLoaderTest.class);
+  private static final Method findLoadedClass;
+
+  static {
+    try {
+      findLoadedClass = ClassLoader.class.getDeclaredMethod("findLoadedClass", String.class);
+      findLoadedClass.setAccessible(true);
+    }
+    catch (final NoSuchMethodException | SecurityException e) {
+      throw new ExceptionInInitializerError(e);
+    }
+  }
+
+  private static boolean isClassLoaded(final ClassLoader classLoader, final String name) {
+    if (classLoader == null)
+      throw new IllegalArgumentException("classLoader == null");
+
+    try {
+      return findLoadedClass.invoke(classLoader, name) != null;
+    }
+    catch (final InvocationTargetException e) {
+      throw new UnsupportedOperationException(e);
+    }
+    catch (final IllegalAccessException e) {
+      throw new SecurityException(e);
+    }
+  }
 
   private static boolean isClassLoaded(final String name) {
     ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-    if (ClassLoaders.isClassLoaded(classLoader, name))
+    if (isClassLoaded(classLoader, name))
       return true;
 
 //    classLoader = Thread.currentThread().getContextClassLoader();

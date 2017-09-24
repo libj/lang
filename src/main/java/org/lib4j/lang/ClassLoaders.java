@@ -17,104 +17,36 @@
 package org.lib4j.lang;
 
 import java.io.File;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
 
 public final class ClassLoaders {
-  private static final Method findLoadedClass;
-
-  static {
+  private static URL[] getClassPath(final String property) {
     try {
-      findLoadedClass = ClassLoader.class.getDeclaredMethod("findLoadedClass", String.class);
-      findLoadedClass.setAccessible(true);
-    }
-    catch (final NoSuchMethodException | SecurityException e) {
-      throw new ExceptionInInitializerError(e);
-    }
-  }
+      final String classPathProperty = System.getProperty(property);
+      if (classPathProperty == null)
+        return null;
 
-  public static boolean isClassLoaded(final ClassLoader classLoader, final String name) {
-    if (classLoader == null)
-      throw new IllegalArgumentException("classLoader == null");
+      final String[] parts = classPathProperty.split(File.pathSeparator);
+      final URL[] urls = new URL[parts.length];
+      for (int i =  0; i < parts.length; i++)
+        urls[i] = new File(parts[i]).toURI().toURL();
 
-    try {
-      return findLoadedClass.invoke(classLoader, name) != null;
+      return urls;
     }
-    catch (final InvocationTargetException e) {
+    catch (final MalformedURLException e) {
       throw new UnsupportedOperationException(e);
-    }
-    catch (final IllegalAccessException e) {
-      throw new SecurityException(e);
     }
   }
 
   public static URL[] getClassPath() {
-    final Collection<URL> urls = new HashSet<URL>();
-    final ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
-    if (systemClassLoader instanceof URLClassLoader) {
-      // FIXME: This does not work in java 9.
-      urls.addAll(java.util.Arrays.asList(((URLClassLoader)systemClassLoader).getURLs()));
-      urls.addAll(java.util.Arrays.asList(((URLClassLoader)Thread.currentThread().getContextClassLoader()).getURLs()));
-      final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-      try {
-        // TODO: I don't know why, but when running forked JUnit tests
-        // TODO: the classpath is not available by calling the getURLs
-        // TODO: method. Instead, it is hidden deep inside the URLClassPath
-        final Field ucpField = URLClassLoader.class.getDeclaredField("ucp");
-        ucpField.setAccessible(true);
-        final Object ucp = ucpField.get(contextClassLoader); // This is a sun.misc.URLClassPath
-        final Field lmapField = ucp.getClass().getDeclaredField("lmap");
-        lmapField.setAccessible(true);
-        @SuppressWarnings("unchecked")
-        final Map<String,Object> lmap = (Map<String,Object>)lmapField.get(ucp);
-        for (final String key : lmap.keySet())
-          urls.add(new URL(key));
-      }
-      catch (final Exception e) {
-        if (contextClassLoader instanceof URLClassLoader)
-          urls.addAll(java.util.Arrays.asList(((URLClassLoader)contextClassLoader).getURLs()));
-      }
-    }
-    else {
-      try {
-        final String classPathProperty = System.getProperty("java.class.path");
-        if (classPathProperty == null) {
-          urls.add(new File(System.getProperty("user.dir")).toURI().toURL());
-        }
-        else {
-          for (final String classPath : classPathProperty.split(File.pathSeparator))
-            urls.add(new File(classPath).toURI().toURL());
-        }
-      }
-      catch (final MalformedURLException e) {
-        throw new UnsupportedOperationException(e);
-      }
-    }
-
-    return urls.toArray(new URL[urls.size()]);
+    final URL[] urls = getClassPath("java.class.path");
+    return urls != null ? urls : getClassPath("user.dir");
   }
 
-  public static void addURL(final URLClassLoader classLoader, final URL ... urls) {
-    for (final URL url : urls) {
-      if (Arrays.contains(classLoader.getURLs(), url))
-        continue;
-
-      try {
-        final Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
-        method.setAccessible(true);
-        method.invoke(classLoader, url);
-      }
-      catch (final ReflectiveOperationException e) {
-        throw new UnsupportedOperationException(e);
-      }
-    }
+  public static URL[] getTestClassPath() {
+    final URL[] urls = getClassPath("surefire.test.class.path");
+    return urls != null ? urls : getClassPath("user.dir");
   }
 
   private ClassLoaders() {
