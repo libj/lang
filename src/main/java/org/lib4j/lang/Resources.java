@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.Vector;
 
 public final class Resources {
+  // FIXME: This needs to be removed due to Java 9's jrt:/java.base/java/lang....
   public static File getLocationBase(final Class<?> clazz) {
     if (clazz == null)
       return null;
