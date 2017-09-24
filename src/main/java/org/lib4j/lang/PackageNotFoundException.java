@@ -16,7 +16,7 @@
 
 package org.lib4j.lang;
 
-public final class PackageNotFoundException extends Exception {
+public final class PackageNotFoundException extends ReflectiveOperationException {
   private static final long serialVersionUID = 4963238462943629433L;
 
   /**
