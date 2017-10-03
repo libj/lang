@@ -570,16 +570,165 @@ public final class Numbers {
     return blex > 0 ? result + blex * LOG_2 : result;
   }
 
-  private static final double EPSILON = 0.000000000000001d;
-
-  public static boolean equivalent(final Number a, final Number b) {
+  public static boolean equivalent(final Number a, final Number b, final double epsilon) {
     if (a == null)
       return b == null;
 
     if (b == null)
       return false;
 
-    return Math.abs(a.doubleValue() - b.doubleValue()) < EPSILON;
+    if (a instanceof Byte) {
+      if (b instanceof Byte)
+        return a.byteValue() == b.byteValue();
+
+      if (b instanceof Short)
+        return a.byteValue() == b.shortValue();
+
+      if (b instanceof Integer)
+        return a.byteValue() == b.intValue();
+
+      if (b instanceof Long)
+        return a.byteValue() == b.longValue();
+
+      if (b instanceof BigInteger)
+        return BigInteger.valueOf(a.byteValue()).equals(b);
+
+      if (b instanceof BigDecimal)
+        return BigDecimal.valueOf(a.byteValue()).equals(b);
+
+      if (b instanceof Float)
+        return Math.abs(a.byteValue() - b.floatValue()) < epsilon;
+
+      return Math.abs(a.byteValue() - b.doubleValue()) < epsilon;
+    }
+
+    if (a instanceof Short) {
+      if (b instanceof Byte)
+        return a.shortValue() == b.byteValue();
+
+      if (b instanceof Short)
+        return a.shortValue() == b.shortValue();
+
+      if (b instanceof Integer)
+        return a.shortValue() == b.intValue();
+
+      if (b instanceof Long)
+        return a.shortValue() == b.longValue();
+
+      if (b instanceof BigInteger)
+        return BigInteger.valueOf(a.shortValue()).equals(b);
+
+      if (b instanceof BigDecimal)
+        return BigDecimal.valueOf(a.shortValue()).equals(b);
+
+      if (b instanceof Float)
+        return Math.abs(a.shortValue() - b.floatValue()) < epsilon;
+
+      return Math.abs(a.shortValue() - b.doubleValue()) < epsilon;
+    }
+
+    if (a instanceof Integer) {
+      if (b instanceof Byte)
+        return a.intValue() == b.byteValue();
+
+      if (b instanceof Short)
+        return a.intValue() == b.shortValue();
+
+      if (b instanceof Integer)
+        return a.intValue() == b.intValue();
+
+      if (b instanceof Long)
+        return a.intValue() == b.longValue();
+
+      if (b instanceof BigInteger)
+        return BigInteger.valueOf(a.intValue()).equals(b);
+
+      if (b instanceof BigDecimal)
+        return BigDecimal.valueOf(a.intValue()).equals(b);
+
+      if (b instanceof Float)
+        return Math.abs(a.intValue() - b.floatValue()) < epsilon;
+
+      return Math.abs(a.intValue() - b.doubleValue()) < epsilon;
+    }
+
+    if (a instanceof Long) {
+      if (b instanceof Byte)
+        return a.longValue() == b.byteValue();
+
+      if (b instanceof Short)
+        return a.longValue() == b.shortValue();
+
+      if (b instanceof Integer)
+        return a.longValue() == b.intValue();
+
+      if (b instanceof Long)
+        return a.longValue() == b.longValue();
+
+      if (b instanceof BigInteger)
+        return BigInteger.valueOf(a.longValue()).equals(b);
+
+      if (b instanceof BigDecimal)
+        return BigDecimal.valueOf(a.longValue()).equals(b);
+
+      if (b instanceof Float)
+        return Math.abs(a.longValue() - b.floatValue()) < epsilon;
+
+      return Math.abs(a.longValue() - b.doubleValue()) < epsilon;
+    }
+
+    if (a instanceof BigInteger) {
+      if (b instanceof Byte)
+        return ((BigInteger)a).equals(BigInteger.valueOf(b.byteValue()));
+
+      if (b instanceof Short)
+        return ((BigInteger)a).equals(BigInteger.valueOf(b.shortValue()));
+
+      if (b instanceof Integer)
+        return ((BigInteger)a).equals(BigInteger.valueOf(b.intValue()));
+
+      if (b instanceof Long)
+        return ((BigInteger)a).equals(BigInteger.valueOf(b.longValue()));
+
+      if (b instanceof BigInteger)
+        return ((BigInteger)a).equals(b);
+
+      if (b instanceof BigDecimal)
+        return new BigDecimal((BigInteger)a).equals(b);
+
+      if (b instanceof Float)
+        return ((BigInteger)a).equals(BigDecimal.valueOf(b.floatValue()).toBigInteger());
+
+      if (b instanceof Double)
+        return ((BigInteger)a).equals(BigDecimal.valueOf(b.doubleValue()).toBigInteger());
+    }
+    else if (a instanceof BigDecimal) {
+      if (b instanceof Byte)
+        return ((BigDecimal)a).equals(BigDecimal.valueOf(b.byteValue()));
+
+      if (b instanceof Short)
+        return ((BigDecimal)a).equals(BigDecimal.valueOf(b.shortValue()));
+
+      if (b instanceof Integer)
+        return ((BigDecimal)a).equals(BigDecimal.valueOf(b.intValue()));
+
+      if (b instanceof Long)
+        return ((BigDecimal)a).equals(BigDecimal.valueOf(b.longValue()));
+
+      if (b instanceof BigInteger)
+        return ((BigDecimal)a).equals(new BigDecimal((BigInteger)b));
+
+      if (b instanceof BigDecimal)
+        return ((BigDecimal)a).equals(b);
+
+      if (b instanceof Float)
+        return ((BigInteger)a).equals(BigDecimal.valueOf(b.floatValue()).toBigInteger());
+
+      if (b instanceof Double)
+        return ((BigDecimal)a).equals(BigDecimal.valueOf(b.doubleValue()));
+    }
+
+    return Math.abs(a.doubleValue() - b.doubleValue()) < epsilon;
   }
 
   @SuppressWarnings("unchecked")
