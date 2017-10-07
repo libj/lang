@@ -305,7 +305,7 @@ public final class PackageLoader extends ClassLoader {
             classes.add(cls);
           }
           catch (final ClassNotFoundException | VerifyError e) {
-            logger.warn(e.getMessage(), e);
+            logger.warn("Loading package: " + packageName, e);
           }
           catch (final NoClassDefFoundError e) {
           }
