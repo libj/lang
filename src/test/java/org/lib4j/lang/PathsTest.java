@@ -16,9 +16,6 @@
 
 package org.lib4j.lang;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -64,29 +61,44 @@ public class PathsTest {
   }
 
   @Test
-  public void testGetName() throws Exception {
-    final Map<String,String> paths = new HashMap<String,String>();
-    paths.put("share", "file:///usr/share/../share");
-    paths.put("lib", "file:///usr/share/../share/../lib");
-    paths.put("var", "/usr/share/../share/../lib/../../var");
-    paths.put("var", "/usr/share/../share/../lib/../../var/");
-    paths.put("resolv.conf", "/etc/resolv.conf");
-    paths.put("name", "name");
-
-    for (final Map.Entry<String,String> entry : paths.entrySet())
-      Assert.assertEquals(entry.getKey(), Paths.getName(entry.getValue()));
+  public void testGetName() {
+    Assert.assertEquals(null, Paths.getName(null));
+    Assert.assertEquals("", Paths.getName(""));
+    Assert.assertEquals("share.txt", Paths.getName("file:///usr/share/../share.txt"));
+    Assert.assertEquals("lib", Paths.getName("file:///usr/share/../share/../lib"));
+    Assert.assertEquals("var.old", Paths.getName("/usr/share/../share/../lib/../../var.old"));
+    Assert.assertEquals("var", Paths.getName("/usr/share/../share/../lib/../../var/"));
+    Assert.assertEquals("resolv.conf", Paths.getName("/etc/resolv.conf"));
+    Assert.assertEquals("name", Paths.getName("name"));
   }
 
   @Test
-  public void testGetParent() throws Exception {
-    final Map<String,String> urls = new HashMap<String,String>();
-    urls.put("file:///usr", "file:///usr/share/../share");
-    urls.put("/usr", "/usr/share/../share/..");
-    urls.put(null, "arp/../pom.xml");
-    urls.put("", "/usr/share/../share/../../");
-    urls.put("file:///usr/local", "file:///usr/local/bin/../lib/../bin");
+  public void testGetShortName() {
+    Assert.assertEquals(null, Paths.getShortName(null));
+    Assert.assertEquals("", Paths.getShortName(""));
+    Assert.assertEquals("share", Paths.getShortName("file:///usr/share/../share.txt"));
+    Assert.assertEquals("lib", Paths.getShortName("file:///usr/share/../share/../lib"));
+    Assert.assertEquals("var", Paths.getShortName("/usr/share/../share/../lib/../../var.old"));
+    Assert.assertEquals("var", Paths.getShortName("/usr/share/../share/../lib/../../var/"));
+    Assert.assertEquals("resolv", Paths.getShortName("/etc/resolv.conf"));
+    Assert.assertEquals("name", Paths.getShortName("name"));
+  }
 
-    for (final Map.Entry<String,String> entry : urls.entrySet())
-      Assert.assertEquals(entry.getKey(), Paths.getParent(entry.getValue()));
+  @Test
+  public void testGetParent() {
+    Assert.assertEquals("file:///usr/share/..", Paths.getParent("file:///usr/share/../share"));
+    Assert.assertEquals("/usr/share/../share", Paths.getParent("/usr/share/../share/.."));
+    Assert.assertEquals("arp/..", Paths.getParent("arp/../pom.xml"));
+    Assert.assertEquals("/usr/share/../share/..", Paths.getParent("/usr/share/../share/../../"));
+    Assert.assertEquals("file:///usr/local/bin/../lib/..", Paths.getParent("file:///usr/local/bin/../lib/../bin"));
+  }
+
+  @Test
+  public void testGetCanonicalParent() {
+    Assert.assertEquals("file:///usr", Paths.getCanonicalParent("file:///usr/share/../share"));
+    Assert.assertEquals("/usr", Paths.getCanonicalParent("/usr/share/../share/.."));
+    Assert.assertEquals(null, Paths.getCanonicalParent("arp/../pom.xml"));
+    Assert.assertEquals("", Paths.getCanonicalParent("/usr/share/../share/../../"));
+    Assert.assertEquals("file:///usr/local", Paths.getCanonicalParent("file:///usr/local/bin/../lib/../bin"));
   }
 }

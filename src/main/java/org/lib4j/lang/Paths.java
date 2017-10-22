@@ -89,25 +89,37 @@ public final class Paths {
   public static String relativePath(final String dir, final String file) {
     final String filePath = Paths.canonicalize(file);
     final String dirPath = Paths.canonicalize(dir);
-
     return !filePath.startsWith(dirPath) ? filePath : filePath.length() == dirPath.length() ? "" : filePath.substring(dirPath.length() + 1);
   }
 
-  public static String getParent(String url) {
+  public static String getParent(final String url) {
+    final int end = url.charAt(url.length() - 1) == '/' ? url.lastIndexOf('/', url.length() - 2) : url.lastIndexOf('/');
+    return end == -1 ? null : url.substring(0, end);
+  }
+
+  public static String getCanonicalParent(String url) {
     url = canonicalize(url);
     final int separator = url.lastIndexOf('/');
     return separator < 0 ? null : url.substring(0, separator);
   }
 
-  public static String getName(String url) {
-    if (url.length() == 0)
-      throw new IllegalArgumentException("url.length() == 0");
+  private static String getName0(final String url) {
+    final boolean end = url.charAt(url.length() - 1) == '/';
+    final int start = end ? url.lastIndexOf('/', url.length() - 2) : url.lastIndexOf('/');
+    return start == -1 ? (end ? url.substring(0, url.length() - 1) : url) : end ? url.substring(start + 1, url.length() - 1) : url.substring(start + 1);
+  }
 
-    if (url.endsWith("/"))
-      url = url.substring(0, url.length() - 1);
+  public static String getName(final String url) {
+    return url == null || url.length() == 0 ? url : getName0(url);
+  }
 
-    final int separator = url.lastIndexOf('/');
-    return separator != -1 ? url.substring(separator + 1) : url;
+  public static String getShortName(String url) {
+    if (url == null || url.length() == 0)
+      return url;
+
+    url = getName0(url);
+    final int index = url.indexOf('.');
+    return index == -1 ? url : url.substring(0, index);
   }
 
   public static boolean equal(final File a, final File b) {
