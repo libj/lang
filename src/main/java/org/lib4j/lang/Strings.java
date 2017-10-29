@@ -331,6 +331,90 @@ public final class Strings {
     return string == null ? null : string.replace("\\", "\\\\").replace("\"", "\\\"");
   }
 
+  public static String printColumns(final String ... columns) {
+    // Split input strings into columns and rows
+    final String[][] strings = new String[columns.length][];
+    int maxLines = 0;
+    for (int i = 0; i < columns.length; i++) {
+      strings[i] = columns[i] == null ? null : columns[i].split("\n");
+      if (strings[i] != null && strings[i].length > maxLines)
+        maxLines = strings[i].length;
+    }
+
+    // Store an array of column widths
+    final int[] widths = new int[columns.length];
+    // calculate column widths
+    for (int i = 0; i < columns.length; i++) {
+      int maxWidth = 0;
+      if (strings[i] != null) {
+        for (int j = 0; j < strings[i].length; j++)
+          if (strings[i][j].length() > maxWidth)
+            maxWidth = strings[i][j].length();
+      }
+      else if (maxWidth < 4) {
+        maxWidth = 4;
+      }
+
+      widths[i] = maxWidth + 1;
+    }
+
+    // Print the lines
+    final StringBuilder builder = new StringBuilder();
+    for (int j = 0; j < maxLines; j++) {
+      builder.append('\n');
+      for (int i = 0; i < strings.length; i++) {
+        final String line = strings[i] == null ? "null" : j < strings[i].length ? strings[i][j] : "";
+        builder.append(String.format("%-" + widths[i] + "s", line));
+      }
+    }
+
+    return builder.length() == 0 ? "null" : builder.substring(1);
+  }
+
+  /**
+   * Returns a string consisting of a specific number of concatenated
+   * repetitions of an input string. For example,
+   * <code>Strings.repeat("ha", 3)</code> returns the string
+   * <code>"hahaha"</code>.
+   *
+   * @param string Any non-null string
+   * @param count A nonnegative number of times to repeat the string
+   * @return A string containing <code>string</code> repeated
+   *     <code>count</code> times; an empty string if <code>count == 0</code>;
+   *     the <code>string</code> if <code>count == 1</code>
+   * @throws NullPointerException If <code>string == null</code>
+   * @throws IllegalArgumentException If <code>count &lt; 0 </code>
+   * @throws ArrayIndexOutOfBoundsException If <code>string.length() * count &gt; Integer.MAX_VALUE</code>
+   */
+  public static String repeat(final String string, final int count) {
+    if (string == null)
+      throw new NullPointerException("string == null");
+
+    if (count < 0)
+      throw new IllegalArgumentException("count < 0");
+
+    if (count == 0 || string.length() == 0)
+      return "";
+
+    if (count == 1)
+      return string;
+
+    final int length = string.length();
+    final long longSize = (long)length * (long)count;
+    final int size = (int)longSize;
+    if (size != longSize)
+      throw new ArrayIndexOutOfBoundsException("Required array size too large: " + longSize);
+
+    final char[] chars = new char[size];
+    string.getChars(0, length, chars, 0);
+    int n;
+    for (n = length; n < size - n; n <<= 1)
+      System.arraycopy(chars, 0, chars, n, n);
+
+    System.arraycopy(chars, 0, chars, n, size - n);
+    return new String(chars);
+  }
+
   private Strings() {
   }
 }

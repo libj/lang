@@ -215,4 +215,33 @@ public class StringsTest {
     Assert.assertEquals("aa", Strings.getCommonPrefix("aaa", "aab"));
     Assert.assertEquals("aa", Strings.getCommonPrefix(Arrays.asList("aaa", "aab")));
   }
+
+  @Test
+  public void testRepeat() {
+    try {
+      Strings.repeat(null, 10);
+      Assert.fail("Expected a NullPointerException");
+    }
+    catch (final NullPointerException e) {
+    }
+
+    try {
+      Strings.repeat("", -1);
+      Assert.fail("Expected a IllegalArgumentException");
+    }
+    catch (final IllegalArgumentException e) {
+    }
+
+    Assert.assertEquals("a", Strings.repeat("a", 1));
+    Assert.assertEquals("aa", Strings.repeat("a", 2));
+    Assert.assertEquals("abab", Strings.repeat("ab", 2));
+    Assert.assertEquals("ab ab ab ", Strings.repeat("ab ", 3));
+
+    try {
+      Strings.repeat("abcdefghijklmnopqrstuvwxyz", 353892843);
+      Assert.fail("Expected an ArrayIndexOutOfBoundsException");
+    }
+    catch (final ArrayIndexOutOfBoundsException e) {
+    }
+  }
 }
