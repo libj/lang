@@ -135,8 +135,7 @@ public final class PackageLoader extends ClassLoader {
    * existing package resources in all elements of the classpath. If the
    * package exists in multiple classpath locations, such as a couple of jar
    * files and a directory, each of the classpath references will be used to
-   * load all classes in each resource. This method will search for all
-   * classpath entries in all class loaders.
+   * load all classes in each resource.
    *
    * @param       pkg        The package.
    *
@@ -155,8 +154,7 @@ public final class PackageLoader extends ClassLoader {
    * existing package resources in all elements of the classpath. If the
    * package exists in multiple classpath locations, such as a couple of jar
    * files and a directory, each of the classpath references will be used to
-   * load all classes in each resource. This method will search for all
-   * classpath entries in all class loaders.
+   * load all classes in each resource.
    *
    * @param       pkg        The package.
    * @param       initialize Predicate to test whether to initialize each Class.
@@ -197,8 +195,7 @@ public final class PackageLoader extends ClassLoader {
    * existing package resources in all elements of the classpath. If the
    * package exists in multiple classpath locations, such as a couple of jar
    * files and a directory, each of the classpath references will be used to
-   * load all classes in each resource. This method will search for all
-   * classpath entries in all class loaders.
+   * load all classes in each resource.
    *
    * @param       name       The name of the package.
    * @param       initialize Whether the classes must be initialized
@@ -218,8 +215,7 @@ public final class PackageLoader extends ClassLoader {
    * existing package resources in all elements of the classpath. If the
    * package exists in multiple classpath locations, such as a couple of jar
    * files and a directory, each of the classpath references will be used to
-   * load all classes in each resource. This method will search for all
-   * classpath entries in all class loaders.
+   * load all classes in each resource.
    *
    * @param       name       The name of the package.
    * @param       initialize  Predicate to test whether to initialize each Class.
@@ -238,8 +234,7 @@ public final class PackageLoader extends ClassLoader {
    * method will search for all existing package resources in all elements of
    * the classpath. If the package exists in multiple classpath locations, such
    * as a couple of jar files and a directory, each of the classpath references
-   * will be used to load all classes in each resource. This method will search
-   * for all classpath entries in all class loaders.
+   * will be used to load all classes in each resource.
    *
    * @param       packageName        The name of the package.
    * @param       classLoader ClassLoader containing the resource, or null for all other ClassLoaders

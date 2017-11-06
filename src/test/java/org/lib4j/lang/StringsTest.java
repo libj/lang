@@ -186,16 +186,6 @@ public class StringsTest {
   }
 
   @Test
-  public void testToCamelCase() {
-    Assert.assertEquals(null, Strings.toCamelCase(null));
-    Assert.assertEquals("fooBar", Strings.toCamelCase("foo_bar"));
-    Assert.assertEquals("FOOBarFoO", Strings.toCamelCase("FOO_bar_foO"));
-    Assert.assertEquals("foo", Strings.toCamelCase("foo_"));
-    Assert.assertEquals("FOo", Strings.toCamelCase("FOo"));
-    Assert.assertEquals("FOoBAr", Strings.toCamelCase("FOo_bAr"));
-  }
-
-  @Test
   public void testGetCommonPrefix() {
     Assert.assertNull(Strings.getCommonPrefix((String[])null));
     Assert.assertNull(Strings.getCommonPrefix((String)null));

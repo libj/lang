@@ -112,6 +112,20 @@ public final class Strings {
     return builder.length() == 0 ? "" : builder.substring(1);
   }
 
+  public static StringBuilder toLowerCase(final StringBuilder builder) {
+    for (int i = 0; i < builder.length(); i++)
+      builder.setCharAt(i, Character.toLowerCase(builder.charAt(i)));
+
+    return builder;
+  }
+
+  public static StringBuilder toUppereCase(final StringBuilder builder) {
+    for (int i = 0; i < builder.length(); i++)
+      builder.setCharAt(i, Character.toUpperCase(builder.charAt(i)));
+
+    return builder;
+  }
+
   private static String changeCase(final String string, final boolean upper, final int beginIndex, final int endIndex) {
     if (string == null || string.length() == 0)
       return string;
@@ -164,83 +178,6 @@ public final class Strings {
 
   public static String getRandomString(final int length) {
     return getRandomString(length, false);
-  }
-
-  public static String toInstanceCase(String string) {
-    if (string == null)
-      return null;
-
-    if (string.length() == 1)
-      return string.toLowerCase();
-
-    string = toCamelCase(string);
-    int index = 0;
-    final char[] chars = string.toCharArray();
-    for (int i = 0; i < chars.length; i++) {
-      index = i;
-      if (('0' <= chars[i] && chars[i] <= '9') || ('a' <= chars[i] && chars[i] <= 'z'))
-        break;
-    }
-
-    if (index == 1)
-      return string.substring(0, 1).toLowerCase() + string.substring(1, string.length());
-
-    if (index == string.length() - 1)
-      return string.toLowerCase();
-
-    if (index > 1)
-      return string.substring(0, index - 1).toLowerCase() + string.substring(index - 1, string.length());
-
-    return string;
-  }
-
-  public static String toTitleCase(String string) {
-    if (string == null)
-      return null;
-
-    string = toCamelCase(string);
-
-    // make sure that the fully qualified names are not changed
-    if (string.indexOf(".") != -1)
-      return string;
-
-    return string.substring(0, 1).toUpperCase() + string.substring(1, string.length());
-  }
-
-  // NOTE: This array is sorted
-  private static final char[] discardTokens = new char[] {'!', '"', '#', '%', '&', '\'', '(', ')', '*', ',', '-', '.', '.', '/', ':', ';', '<', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~'};
-
-  public static String toCamelCase(final String string) {
-    if (string == null)
-      return null;
-
-    final StringBuilder builder = new StringBuilder();
-    final char[] chars = string.toCharArray();
-    boolean capNext = false;
-    for (int i = 0; i < chars.length; i++) {
-      final int index = java.util.Arrays.binarySearch(discardTokens, chars[i]);
-      if (index >= 0) {
-        capNext = true;
-      }
-      else if (capNext) {
-        builder.append(Character.toUpperCase(chars[i]));
-        capNext = false;
-      }
-      else {
-        builder.append(chars[i]);
-      }
-    }
-
-    return builder.toString();
-  }
-
-  public static String toClassCase(final String string) {
-    return string == null ? null : string.length() != 0 ? Character.toUpperCase(string.charAt(0)) + toCamelCase(string).substring(1) : string;
-  }
-
-  // FIXME: This means that there can be name collisions!
-  public static String toJavaCase(final String string) {
-    return string.replace('-', '_').replace('.', '_').replace("#", "");
   }
 
   public static String padFixed(final String string, final int length, final boolean right) {

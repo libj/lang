@@ -18,6 +18,7 @@ package org.lib4j.lang;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.RandomAccessFile;
 
 public final class Bytes {
@@ -171,14 +172,32 @@ public final class Bytes {
     return failure;
   }
 
-  public static void toBytes(final short data, final byte[] bytes, final int offset, final boolean isBigEndian) {
+  /**
+   * Create a byte array representation of a short value with big- or little-
+   * endian encoding.
+   *
+   * A Java short is 2 bytes in size. If the byte array is shorter than 2 bytes
+   * minus the offset, the missing bytes are skipped. For each missing byte,
+   * the byte sequence is shifted such that the least significant bytes
+   * are skipped first.
+   *
+   * @param value The value.
+   * @param dest The destination bytes.
+   * @param offset The byte offset into the destination array.
+   * @param isBigEndian Is destination byte array in big-endian encoding.
+   */
+  public static void toBytes(final short data, final byte[] bytes, int offset, final boolean isBigEndian) {
     if (isBigEndian) {
-      bytes[offset] = (byte)((data >> 8) & 0xff);
-      bytes[offset + 1] = (byte)(data & 0xff);
+      offset = bytes.length - offset;
+      bytes[--offset] = (byte)(data & 0xff);
+      if (offset == 0)
+        return;
+
+      bytes[--offset] = (byte)((data >> 8) & 0xff);
     }
     else {
-      bytes[offset] = (byte)(data & 0xff);
-      bytes[offset + 1] = (byte)((data >> 8) & 0xff);
+      bytes[offset++] = (byte)(data & 0xff);
+      bytes[offset] = (byte)((data >> 8) & 0xff);
     }
   }
 
@@ -204,18 +223,51 @@ public final class Bytes {
     }
   }
 
-  public static void toBytes(final int data, final byte[] bytes, final int offset, final boolean isBigEndian) {
+  /**
+   * Create a byte array representation of a int value with big- or little-
+   * endian encoding.
+   *
+   * A Java int is 4 bytes in size. If the byte array is shorter than 4 bytes
+   * minus the offset, the missing bytes are skipped. For each missing byte,
+   * the byte sequence is shifted such that the least significant bytes
+   * are skipped first.
+   *
+   * @param value The value.
+   * @param dest The destination bytes.
+   * @param offset The byte offset into the destination array.
+   * @param isBigEndian Is destination byte array in big-endian encoding.
+   */
+  public static void toBytes(final int data, final byte[] bytes, int offset, final boolean isBigEndian) {
     if (isBigEndian) {
-      bytes[offset] = (byte)((data >> 24) & 0xff);
-      bytes[offset + 1] = (byte)((data >> 16) & 0xff);
-      bytes[offset + 2] = (byte)((data >> 8) & 0xff);
-      bytes[offset + 3] = (byte)(data & 0xff);
+      offset = bytes.length - offset;
+      bytes[--offset] = (byte)(data & 0xff);
+      if (offset == 0)
+        return;
+
+      bytes[--offset] = (byte)((data >> 8) & 0xff);
+      if (offset == 0)
+        return;
+
+      bytes[--offset] = (byte)((data >> 16) & 0xff);
+      if (offset == 0)
+        return;
+
+      bytes[--offset] = (byte)((data >> 24) & 0xff);
     }
     else {
-      bytes[offset] = (byte)(data & 0xff);
-      bytes[offset + 1] = (byte)((data >> 8) & 0xff);
-      bytes[offset + 2] = (byte)((data >> 16) & 0xff);
-      bytes[offset + 3] = (byte)((data >> 24) & 0xff);
+      bytes[offset++] = (byte)(data & 0xff);
+      if (offset == bytes.length)
+        return;
+
+      bytes[offset++] = (byte)((data >> 8) & 0xff);
+      if (offset == bytes.length)
+        return;
+
+      bytes[offset++] = (byte)((data >> 16) & 0xff);
+      if (offset == bytes.length)
+        return;
+
+      bytes[offset] = (byte)((data >> 24) & 0xff);
     }
   }
 
@@ -249,26 +301,83 @@ public final class Bytes {
     }
   }
 
-  public static void toBytes(final long data, final byte[] bytes, final int offset, final boolean isBigEndian) {
+  /**
+   * Create a byte array representation of a long value with big- or little-
+   * endian encoding.
+   *
+   * A Java long is 8 bytes in size. If the byte array is shorter than 8 bytes
+   * minus the offset, the missing bytes are skipped. For each missing byte,
+   * the byte sequence is shifted such that the least significant bytes
+   * are skipped first.
+   *
+   * @param value The value.
+   * @param dest The destination bytes.
+   * @param offset The byte offset into the destination array.
+   * @param isBigEndian Is destination byte array in big-endian encoding.
+   */
+  public static void toBytes(final long value, final byte[] dest, int offset, final boolean isBigEndian) {
     if (isBigEndian) {
-      bytes[offset] = (byte)((data >> 56) & 0xff);
-      bytes[offset + 1] = (byte)((data >> 48) & 0xff);
-      bytes[offset + 2] = (byte)((data >> 40) & 0xff);
-      bytes[offset + 3] = (byte)((data >> 32) & 0xff);
-      bytes[offset + 4] = (byte)((data >> 24) & 0xff);
-      bytes[offset + 5] = (byte)((data >> 16) & 0xff);
-      bytes[offset + 6] = (byte)((data >> 8) & 0xff);
-      bytes[offset + 7] = (byte)(data & 0xff);
+      offset = dest.length - offset;
+      dest[--offset] = (byte)(value & 0xff);
+      if (offset == 0)
+        return;
+
+      dest[--offset] = (byte)((value >> 8) & 0xff);
+      if (offset == 0)
+        return;
+
+      dest[--offset] = (byte)((value >> 16) & 0xff);
+      if (offset == 0)
+        return;
+
+      dest[--offset] = (byte)((value >> 24) & 0xff);
+      if (offset == 0)
+        return;
+
+      dest[--offset] = (byte)((value >> 32) & 0xff);
+      if (offset == 0)
+        return;
+
+      dest[--offset] = (byte)((value >> 40) & 0xff);
+      if (offset == 0)
+        return;
+
+      dest[--offset] = (byte)((value >> 48) & 0xff);
+      if (offset == 0)
+        return;
+
+      dest[--offset] = (byte)((value >> 56) & 0xff);
     }
     else {
-      bytes[offset] = (byte)(data & 0xff);
-      bytes[offset + 1] = (byte)((data >> 8) & 0xff);
-      bytes[offset + 2] = (byte)((data >> 16) & 0xff);
-      bytes[offset + 3] = (byte)((data >> 24) & 0xff);
-      bytes[offset + 4] = (byte)((data >> 32) & 0xff);
-      bytes[offset + 5] = (byte)((data >> 40) & 0xff);
-      bytes[offset + 6] = (byte)((data >> 48) & 0xff);
-      bytes[offset + 7] = (byte)((data >> 56) & 0xff);
+      dest[offset++] = (byte)(value & 0xff);
+      if (offset == dest.length)
+        return;
+
+      dest[offset++] = (byte)((value >> 8) & 0xff);
+      if (offset == dest.length)
+        return;
+
+      dest[offset++] = (byte)((value >> 16) & 0xff);
+      if (offset == dest.length)
+        return;
+
+      dest[offset++] = (byte)((value >> 24) & 0xff);
+      if (offset == dest.length)
+        return;
+
+      dest[offset++] = (byte)((value >> 32) & 0xff);
+      if (offset == dest.length)
+        return;
+
+      dest[offset++] = (byte)((value >> 40) & 0xff);
+      if (offset == dest.length)
+        return;
+
+      dest[offset++] = (byte)((value >> 48) & 0xff);
+      if (offset == dest.length)
+        return;
+
+      dest[offset++] = (byte)((value >> 56) & 0xff);
     }
   }
 
@@ -318,72 +427,240 @@ public final class Bytes {
     }
   }
 
-  public static void toBytes(final int byteLength, final long data, final byte[] bytes, final int offset, final boolean isBigEndian) {
+  public static void toBytes(final int byteLength, final long value, final byte[] bytes, final int offset, final boolean isBigEndian) {
     if (byteLength == Short.SIZE / 8)
-      toBytes((short)data, bytes, offset, isBigEndian);
+      toBytes((short)value, bytes, offset, isBigEndian);
     else if (byteLength == Integer.SIZE / 8)
-      toBytes((int)data, bytes, offset, isBigEndian);
+      toBytes((int)value, bytes, offset, isBigEndian);
     else if (byteLength == Long.SIZE / 8)
-      toBytes(data, bytes, offset, isBigEndian);
+      toBytes(value, bytes, offset, isBigEndian);
   }
 
-  public static void toBytes(final int byteLength, final long data, final ByteArrayOutputStream out, final boolean isBigEndian) {
+  public static void toBytes(final int byteLength, final long value, final ByteArrayOutputStream out, final boolean isBigEndian) {
     if (byteLength == Short.SIZE / 8)
-      toBytes((short)data, out, isBigEndian);
+      toBytes((short)value, out, isBigEndian);
     else if (byteLength == Integer.SIZE / 8)
-      toBytes((int)data, out, isBigEndian);
+      toBytes((int)value, out, isBigEndian);
     else if (byteLength == Long.SIZE / 8)
-      toBytes(data, out, isBigEndian);
+      toBytes(value, out, isBigEndian);
   }
 
-  public static void toBytes(final int byteLength, final long data, final RandomAccessFile out, final boolean isBigEndian) throws IOException {
+  public static void toBytes(final int byteLength, final long value, final RandomAccessFile out, final boolean isBigEndian) throws IOException {
     if (byteLength == Short.SIZE / 8)
-      toBytes((short)data, out, isBigEndian);
+      toBytes((short)value, out, isBigEndian);
     else if (byteLength == Integer.SIZE / 8)
-      toBytes((int)data, out, isBigEndian);
+      toBytes((int)value, out, isBigEndian);
     else if (byteLength == Long.SIZE / 8)
-      toBytes(data, out, isBigEndian);
+      toBytes(value, out, isBigEndian);
   }
 
   /**
-   * Build a Java short from a 2-byte signed binary representation. Depending on machine type, byte orders are Big Endian (AS/400, Unix, final System/390
-   * byte-order) for signed binary representations, and Little Endian (final Intel 80/86 reversed byte-order) for signed binary representations.
+   * Create a signed short representation of a source byte array with big- or
+   * little-endian encoding.
    *
-   * @exception IllegalArgumentException if the specified byte order is not recognized.
+   * A Java short is 2 bytes in size. If the byte array is shorter than 2 bytes
+   * minus the offset, the missing bytes are considered as the equivalent of
+   * 0x0.
+   *
+   * @param src The source byte array.
+   * @param offset The byte offset into the source byte array.
+   * @param isBigEndian Is value in big-endian encoding.
+   * @return A signed short representation of a byte array.
    */
-  public static short toShort(final byte[] bytes, final int offset, final boolean isBigEndian) {
-    return (short)toShort(bytes, offset, isBigEndian, true);
+  public static short toShort(final byte[] src, final int offset, final boolean isBigEndian) {
+    return (short)toShort(src, offset, isBigEndian, true);
   }
 
-  public static int toShort(final byte[] bytes, final int offset, final boolean isBigEndian, final boolean signed) {
-    final int value = isBigEndian ? ((bytes[offset] & 0xff) << 8) | (bytes[offset + 1] & 0xff) : (bytes[offset] & 0xff) | ((bytes[offset + 1] & 0xff) << 8);
+  /**
+   * Create a signed short or an unsigned int representation of a source byte
+   * array with big- or little-endian encoding.
+   *
+   * A Java short is 2 bytes in size. If the byte array is shorter than 2 bytes
+   * minus the offset, the missing bytes are considered as the equivalent of
+   * 0x0.
+   *
+   * @param src The source byte array.
+   * @param offset The byte offset into the source byte array.
+   * @param isBigEndian Is value in big-endian encoding.
+   * @param signed If <code>true</code>, return signed short value. If
+   *        <code>false</code>, return unsigned int value.
+   * @return A signed short or an unsigned int representation of a byte array.
+   */
+  public static int toShort(final byte[] src, int offset, final boolean isBigEndian, final boolean signed) {
+    int value = 0;
+    if (isBigEndian) {
+      offset = src.length - offset;
+      value |= (src[--offset] & 0xff);
+      if (offset == 0)
+        return value;
+
+      value |= ((src[--offset] & 0xff) << 8);
+      if (offset == 0)
+        return value;
+    }
+    else {
+      value |= (src[offset++] & 0xff);
+      if (offset == src.length)
+        return value;
+
+      value |= ((src[offset++] & 0xff) << 8);
+      if (offset == src.length)
+        return value;
+    }
+
     return signed ? (short)value : value;
   }
 
   /**
-   * Build a Java int from a 4-byte signed binary representation. Depending on machine type, byte orders are Big Endian (AS/400, Unix, final System/390
-   * byte-order) for signed binary representations, and Little Endian (final Intel 80/86 reversed byte-order) for signed binary representations.
+   * Create a signed int representation of a source byte array with big- or
+   * little-endian encoding.
    *
-   * @exception IllegalArgumentException if the specified byte order is not recognized.
+   * A Java int is 4 bytes in size. If the byte array is shorter than 4 bytes
+   * minus the offset, the missing bytes are considered as the equivalent of
+   * 0x0.
+   *
+   * @param src The source byte array.
+   * @param offset The byte offset into the source byte array.
+   * @param isBigEndian Is value in big-endian encoding.
+   * @return A signed int representation of a byte array.
    */
-  public static int toInt(final byte[] bytes, final int offset, final boolean isBigEndian) {
-    return (int)toInt(bytes, offset, isBigEndian, true);
+  public static int toInt(final byte[] src, final int offset, final boolean isBigEndian) {
+    return (int)toInt(src, offset, isBigEndian, true);
   }
 
-  public static long toInt(final byte[] bytes, final int offset, final boolean isBigEndian, final boolean signed) {
-    final long value = isBigEndian ? ((bytes[offset] & 0xffl) << 24) | ((bytes[offset + 1] & 0xffl) << 16) | ((bytes[offset + 2] & 0xffl) << 8) | (bytes[offset + 3] & 0xffl) : (bytes[offset] & 0xffl) | ((bytes[offset + 1] & 0xffl) << 8) | ((bytes[offset + 2] & 0xffl) << 16) | ((bytes[offset + 3] & 0xffl) << 24);
+  /**
+   * Create a signed int or an unsigned long representation of a source byte
+   * array with big- or little-endian encoding.
+   *
+   * A Java int is 4 bytes in size. If the byte array is shorter than 4 bytes
+   * minus the offset, the missing bytes are considered as the equivalent of
+   * 0x0.
+   *
+   * @param src The source byte array.
+   * @param offset The byte offset into the source byte array.
+   * @param isBigEndian Is value in big-endian encoding.
+   * @param signed If <code>true</code>, return signed int value. If
+   *        <code>false</code>, return unsigned long value.
+   * @return A signed int or an unsigned long representation of a byte array.
+   */
+  public static long toInt(final byte[] src, int offset, final boolean isBigEndian, final boolean signed) {
+    long value = 0;
+    if (isBigEndian) {
+      offset = src.length - offset;
+      value |= (src[--offset] & 0xffl);
+      if (offset == 0)
+        return value;
+
+      value |= ((src[--offset] & 0xffl) << 8);
+      if (offset == 0)
+        return value;
+
+      value |= ((src[--offset] & 0xffl) << 16);
+      if (offset == 0)
+        return value;
+
+      value |= ((src[--offset] & 0xffl) << 24);
+    }
+    else {
+      value |= (src[offset++] & 0xffl);
+      if (offset == src.length)
+        return value;
+
+      value |= ((src[offset++] & 0xffl) << 8);
+      if (offset == src.length)
+        return value;
+
+      value |= ((src[offset++] & 0xffl) << 16);
+      if (offset == src.length)
+        return value;
+
+      value |= ((src[offset] & 0xffl) << 24);
+    }
+
     return signed ? (int)value : value;
   }
 
   /**
-   * Build a Java long from an 8-byte signed binary representation. Depending on machine type, byte orders are Big Endian (AS/400, Unix, final System/390
-   * byte-order) for signed binary representations, and Little Endian (final Intel 80/86 reversed byte-order) for signed binary representations.
+   * Create a signed long representation of a source byte array with big- or
+   * little-endian encoding.
    *
-   * @exception IllegalArgumentException if the specified byte order is not recognized.
+   * A Java long is 8 bytes in size. If the byte array is shorter than 8 bytes
+   * minus the offset, the missing bytes are considered as the equivalent of
+   * 0x0.
+   *
+   * @param src The source byte array.
+   * @param offset The byte offset into the source byte array.
+   * @param isBigEndian Is value in big-endian encoding.
+   * @return A signed long representation of a byte array.
    */
   // FIXME: Support unsigned
-  public static long toLong(final byte[] bytes, final int offset, final boolean isBigEndian) {
-    return isBigEndian ? ((bytes[offset] & 0xffl) << 56) | ((bytes[offset + 1] & 0xffl) << 48) | ((bytes[offset + 2] & 0xffl) << 40) | ((bytes[offset + 3] & 0xffl) << 32) | ((bytes[offset + 4] & 0xffl) << 24) | ((bytes[offset + 5] & 0xffl) << 16) | ((bytes[offset + 6] & 0xffl) << 8) | (bytes[offset + 7] & 0xffl) : (bytes[offset] & 0xffl) | ((bytes[offset + 1] & 0xffl) << 8) | ((bytes[offset + 2] & 0xffl) << 16) | ((bytes[offset + 3] & 0xffl) << 24) | ((bytes[offset + 4] & 0xffl) << 32) | ((bytes[offset + 5] & 0xffl) << 40) | ((bytes[offset + 6] & 0xffl) << 48) | ((bytes[offset + 7] & 0xffl) << 56);
+  public static long toLong(final byte[] src, int offset, final boolean isBigEndian) {
+    long value = 0;
+    if (isBigEndian) {
+      offset = src.length - offset;
+      value |= (src[--offset] & 0xffl);
+      if (offset == 0)
+        return value;
+
+      value |= ((src[--offset] & 0xffl) << 8);
+      if (offset == 0)
+        return value;
+
+      value |= ((src[--offset] & 0xffl) << 16);
+      if (offset == 0)
+        return value;
+
+      value |= ((src[--offset] & 0xffl) << 24);
+      if (offset == 0)
+        return value;
+
+      value |= ((src[--offset] & 0xffl) << 32);
+      if (offset == 0)
+        return value;
+
+      value |= ((src[--offset] & 0xffl) << 40);
+      if (offset == 0)
+        return value;
+
+      value |= ((src[--offset] & 0xffl) << 48);
+      if (offset == 0)
+        return value;
+
+      value |= ((src[--offset] & 0xffl) << 56);
+    }
+    else {
+      value |= (src[offset++] & 0xffl);
+      if (offset == src.length)
+        return value;
+
+      value |= ((src[offset++] & 0xffl) << 8);
+      if (offset == src.length)
+        return value;
+
+      value |= ((src[offset++] & 0xffl) << 16);
+      if (offset == src.length)
+        return value;
+
+      value |= ((src[offset++] & 0xffl) << 24);
+      if (offset == src.length)
+        return value;
+
+      value |= ((src[offset++] & 0xffl) << 32);
+      if (offset == src.length)
+        return value;
+
+      value |= ((src[offset++] & 0xffl) << 40);
+      if (offset == src.length)
+        return value;
+
+      value |= ((src[offset++] & 0xffl) << 48);
+      if (offset == src.length)
+        return value;
+
+      value |= ((src[offset] & 0xffl) << 56);
+    }
+
+    return value;
   }
 
   public static long toArbitraryType(final int byteLength, final byte[] bytes, final int offset, final boolean isBigEndian) {
@@ -411,11 +688,43 @@ public final class Bytes {
   }
 
   public static String toString(final byte ... bytes) {
-    String out = "";
+    final StringBuilder builder = new StringBuilder();
     for (byte b : bytes)
-      out += String.format("%8s", Integer.toBinaryString(b & 0xFF)).replace(' ', '0');
+      builder.append(Integer.toBinaryString(b & 255 | 256)).delete(builder.length() - 9, builder.length() - 8);
 
-    return bytes.length > 0 ? out.substring(1) : "";
+    return builder.toString();
+  }
+
+  /**
+   * Print the binary representation of bytes to a <code>PrintStream</code>.
+   *
+   * @param ps The target <code>PrintStream</code>.
+   * @param bytes The bytes to print.
+   */
+  public static void println(final PrintStream ps, final byte ... bytes) {
+    for (int i = 0; i < bytes.length; i++) {
+      if (i % 8 == 0) {
+        if (i != 0)
+          ps.println();
+
+        ps.print(String.format("%8s", Integer.toHexString(i)).replace(' ', '0'));
+        ps.print(':');
+      }
+
+      ps.print(' ');
+      ps.print(Integer.toBinaryString(bytes[i] & 255 | 256).substring(1));
+    }
+
+    ps.println();
+  }
+
+  /**
+   * Print the binary representation of bytes to <code>System.out</code>.
+   *
+   * @param bytes The bytes to print.
+   */
+  public static void println(final byte ... bytes) {
+    println(System.out, bytes);
   }
 
   public static short toOctal(byte b) {
@@ -436,6 +745,113 @@ public final class Bytes {
       octal[i] = toOctal(bytes[i]);
 
     return octal;
+  }
+
+  /**
+   * Write a number of bits from a source byte to a destination byte array at
+   * an offset.
+   *
+   * @param dest The destination byte array.
+   * @param offset The bit offset into the destination byte array where to
+   *        begin writing.
+   * @param src The source byte to write.
+   * @param bits The number of bits of the byte to write (0 to 8).
+   * @return The new offset considering written bits.
+   */
+  public static int writeByte(final byte[] dest, final int offset, final byte src, final byte bits) {
+    final int i = offset / 8;
+    int left = 8 - bits - offset % 8;
+    if (left >= 0) {
+      dest[i] |= src << left;
+    }
+    else {
+      left += 8;
+      dest[i] |= (src & 0xff) >> 8 - left;
+      dest[i + 1] |= src << left;
+    }
+
+    return offset + bits;
+  }
+
+  /**
+   * Write a number of bits from a source byte array to a destination byte
+   * array at an offset.
+   *
+   * @param dest The destination byte array.
+   * @param offset The bit offset into the destination byte array where to
+   *        begin writing.
+   * @param src The source byte array to write.
+   * @param bits The number of bits to write from the source array (0 to 8 * src.length).
+   * @return The new offset considering written bits.
+   */
+  public static int writeBytes(final byte[] dest, int offset, final byte[] src, int bits) {
+    for (int i = 0; bits > 0; bits -= 8)
+      offset = writeByte(dest, offset, src[i++], (byte)(i == 1 ? 1 + (bits - 1) % 8 : 8));
+
+    return offset;
+  }
+
+  /**
+   * Return the byte representation of reading a number of bits (0 to 8) from a
+   * source byte array at an offset.
+   *
+   * @param src The source byte array.
+   * @param offset The offset in bits.
+   * @param bits The number of bits to read (0 to 8).
+   * @return The byte representation of the read bits from the source byte
+   *         array at the offset.
+   */
+  public static byte readByte(final byte[] src, final int offset, final byte bits) {
+    final int i = offset / 8;
+    int left = offset % 8;
+    if (left + bits <= 8)
+      return (byte)((src[i] << left & 0xff) >> 8 - bits);
+
+    byte dest = 0x0;
+    dest |= ((src[i] << left) & 0xff) >> 8 - bits;
+    dest |= (src[i + 1] & 0xff) >> 8 - bits - left + 8;
+    return dest;
+  }
+
+  /**
+   * Return the byte array representation of reading a number of bits from a
+   * source byte array at an offset.
+   *
+   * @param src The source byte array.
+   * @param offset The offset in bits.
+   * @param bits The number of bits to read.
+   * @return The byte array representation of the read bits from the source byte
+   *         array at the offset.
+   */
+  public static byte[] readBytes(final byte[] src, int offset, int bits) {
+    final byte[] dest = new byte[1 + (bits - 1) / 8];
+    for (int i = 0; bits > 0; bits -= 8) {
+      final byte b = (byte)(i == 0 ? 1 + (bits - 1) % 8 : 8);
+      dest[i++] = readByte(src, offset, b);
+      offset += b;
+    }
+
+    return dest;
+  }
+
+  /**
+   * Get the number of bits necessary to store a value.
+   *
+   * @param value The value.
+   * @return The number of bits necessary to store a value.
+   */
+  public static byte getSize(final int value) {
+    return (byte)(1 + Math.log(value) / Math.log(2));
+  }
+
+  /**
+   * Get the number of bits necessary to store a value.
+   *
+   * @param value The value.
+   * @return The number of bits necessary to store a value.
+   */
+  public static byte getSize(final long value) {
+    return (byte)(1 + Math.log(value) / Math.log(2));
   }
 
   private Bytes() {
