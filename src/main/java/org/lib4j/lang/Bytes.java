@@ -749,8 +749,18 @@ public final class Bytes {
 
   /**
    * Write a number of bits from a source byte to a destination byte array at
-   * an offset. This method reads the least significant bits first, and writes
-   * them as the most significant bits in the destination array.
+   * an offset. The bits are counted from right to left (least significant to
+   * most significant, as per big-endian encoding). The offset is counted left
+   * to right (most significant to least significant, as per big-endian
+   * encoding).
+   * <p>
+   * Examples:
+   * <p>
+   * If <code>src=0b00011101</code>, writing <code>bits=3</code> at
+   * <code>offset=1</code> will result in: <code>0b01010000</code>.
+   * <p>
+   * If <code>src=0b00011101</code>, writing <code>bits=5</code> at
+   * <code>offset=7</code> will result in: <code>{0b00000001, 0b11010000}</code>.
    *
    * @param dest The destination byte array.
    * @param offset The bit offset into the destination byte array where to
@@ -759,15 +769,15 @@ public final class Bytes {
    * @param bits The number of bits of the byte to write (0 to 8).
    * @return The new offset considering written bits.
    */
-  public static int writeByteL2B(final byte[] dest, final int offset, final byte src, final byte bits) {
+  public static int writeBitsB(final byte[] dest, final int offset, byte src, final byte bits) {
     final int i = offset / 8;
-    final int r = offset % 8;
+    final int right = offset % 8;
     final int left = 8 - bits;
-    if (left >= r) {
-      dest[i] |= (byte)((src << left & 0xff) >> r);
+    src = (byte)(src << left);
+    if (left >= right) {
+      dest[i] |= (byte)((src & 0xff) >> right);
     }
     else {
-      final int right = r - left;
       dest[i] |= (src & 0xff) >> right;
       dest[i + 1] |= src << 8 - right;
     }
@@ -777,10 +787,20 @@ public final class Bytes {
 
   /**
    * Write a number of bits from a source byte array to a destination byte
-   * array at an offset. This method reads the least significant bits first,
-   * and writes them as the most significant bits in the destination array.
-   * For <code>bits &gt; 8</code>, the starting bit to be read is the least
-   * significant bit in the <code>bits % 8</code> position in the source array.
+   * array at an offset. The bits are counted from right to left (least
+   * significant to most significant, as per big-endian encoding). The offset
+   * is counted left to right (most significant to least significant, as per
+   * big-endian encoding). If <code>bits &gt; 8</code>, the starting bit to be
+   * read is the least significant bit in the <code>bits % 8</code> position in
+   * the source array.
+   * <p>
+   * Examples:
+   * <p>
+   * If <code>src={0b01011011, 0b01101101}</code>, writing <code>bits=9</code> at
+   * <code>offset=7</code> will result in: <code>{0b00000001, 0b01101101}</code>.
+   * <p>
+   * If <code>src={0b01011011, 0b01101101}</code>, writing <code>bits=13</code> at
+   * <code>offset=3</code> will result in: <code>{0b00000011, (byte)0b01101101}</code>.
    *
    * @param dest The destination byte array.
    * @param offset The bit offset into the destination byte array where to
@@ -789,20 +809,30 @@ public final class Bytes {
    * @param bits The number of bits to write from the source array (0 to 8 * src.length).
    * @return The new offset considering written bits.
    */
-  public static int writeBytesL2B(final byte[] dest, int offset, final byte[] src, int bits) {
+  public static int writeBitsB(final byte[] dest, int offset, final byte[] src, long bits) {
     final byte remainder = (byte)(1 + (bits - 1) % 8);
-    offset = writeByteL2B(dest, offset, src[0], remainder);
+    offset = writeBitsB(dest, offset, src[0], remainder);
     bits -= remainder;
     for (int i = 1; bits > 0; bits -= 8)
-      offset = writeByteL2B(dest, offset, src[i++], (byte)8);
+      offset = writeBitsB(dest, offset, src[i++], (byte)8);
 
     return offset;
   }
 
   /**
    * Write a number of bits from a source byte to a destination byte array at
-   * an offset. This method reads the most significant bits first, and writes
-   * them as the most significant bits in the destination array.
+   * an offset. The bits are counted from right to left (least significant to
+   * most significant, as per little-endian encoding). The offset is counted left
+   * to right (least significant to most significant, as per little-endian
+   * encoding).
+   * <p>
+   * Examples:
+   * <p>
+   * If <code>src=0b11101000</code>, writing <code>bits=3</code> at
+   * <code>offset=1</code> will result in: <code>0b01110000</code>.
+   * <p>
+   * If <code>src=0b11101000</code>, writing <code>bits=5</code> at
+   * <code>offset=7</code> will result in: <code>{0b00000001, 0b11010000}</code>.
    *
    * @param dest The destination byte array.
    * @param offset The bit offset into the destination byte array where to
@@ -811,7 +841,7 @@ public final class Bytes {
    * @param bits The number of bits of the byte to write (0 to 8).
    * @return The new offset considering written bits.
    */
-  public static int writeByteB2B(final byte[] dest, final int offset, byte src, final byte bits) {
+  public static int writeBitsL(final byte[] dest, final int offset, byte src, final byte bits) {
     final int i = offset / 8;
     final int r = offset % 8;
     final int left = 8 - bits;
@@ -830,10 +860,18 @@ public final class Bytes {
 
   /**
    * Write a number of bits from a source byte array to a destination byte
-   * array at an offset. This method reads the most significant bits first,
-   * and writes them as the most significant bits in the destination array.
-   * For <code>bits &gt; 8</code>, the starting bit to be read is the most
-   * significant bit in the <code>0</code> position in the source array.
+   * array at an offset. The bits are counted from left to right (least
+   * significant to most significant, as per little-endian encoding). The offset
+   * is counted left to right (least significant to most significant, as per
+   * little-endian encoding).
+   * <p>
+   * Examples:
+   * <p>
+   * If <code>src={0b01011011, 0b01101101}</code>, writing <code>bits=10</code> at
+   * <code>offset=5</code> will result in: <code>{0b000000010, 0b11011010}</code>.
+   * <p>
+   * If <code>src={0b01011011, 0b01101101}</code>, writing <code>bits=13</code> at
+   * <code>offset=3</code> will result in: <code>{0b00001011, (byte)0b01101101}</code>.
    *
    * @param dest The destination byte array.
    * @param offset The bit offset into the destination byte array where to
@@ -842,12 +880,12 @@ public final class Bytes {
    * @param bits The number of bits to write from the source array (0 to 8 * src.length).
    * @return The new offset considering written bits.
    */
-  public static int writeBytesB2B(final byte[] dest, int offset, final byte[] src, int bits) {
+  public static int writeBitsL(final byte[] dest, int offset, final byte[] src, int bits) {
     int i = 0;
     for (; bits > 8; bits -= 8)
-      offset = writeByteB2B(dest, offset, src[i++], (byte)8);
+      offset = writeBitsL(dest, offset, src[i++], (byte)8);
 
-    return writeByteB2B(dest, offset, src[i], (byte)(1 + (bits - 1) % 8));
+    return writeBitsL(dest, offset, src[i], (byte)(1 + (bits - 1) % 8));
   }
 
   /**
@@ -865,7 +903,7 @@ public final class Bytes {
    * @return The byte representation of the read bits from the source byte
    *         array at the offset.
    */
-  public static byte readByteB2L(final byte[] src, final int offset, byte bits) {
+  public static byte readBitsFromByte(final byte[] src, final int offset, byte bits) {
     final int i = offset / 8;
     final int left = offset % 8;
     bits = (byte)(8 - bits);
@@ -888,16 +926,16 @@ public final class Bytes {
    * @return The byte array representation of the read bits from the source byte
    *         array at the offset.
    */
-  public static byte[] readBytesB2L(final byte[] src, int offset, final int bits) {
+  public static byte[] readBitsFromBytes(final byte[] src, int offset, final long bits) {
     if (bits <= 8)
-      return new byte[] {readByteB2L(src, offset, (byte)bits)};
+      return new byte[] {readBitsFromByte(src, offset, (byte)bits)};
 
-    final byte[] dest = new byte[1 + (bits - 1) / 8];
+    final byte[] dest = new byte[(int)(1 + (bits - 1) / 8)];
     final byte remainder = (byte)(1 + (bits - 1) % 8);
-    dest[0] = readByteB2L(src, offset, remainder);
+    dest[0] = readBitsFromByte(src, offset, remainder);
     offset += remainder;
     for (int i = 1; i < dest.length; i++, offset += 8)
-      dest[i] = readByteB2L(src, offset, (byte)8);
+      dest[i] = readBitsFromByte(src, offset, (byte)8);
 
     return dest;
   }

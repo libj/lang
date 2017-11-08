@@ -42,19 +42,19 @@ public class BytesReadWriteTest {
 
   // (1) Write the ordinal (2 bits)
   protected static int writeOrdinal(final byte[] dest, int offset, final byte ordinal) {
-    return Bytes.writeByteL2B(dest, offset, ordinal, (byte)2);
+    return Bytes.writeBitsB(dest, offset, ordinal, (byte)2);
   }
 
   // (2) Write the length (lengthSize bits)
   protected static int writeLength(final byte[] dest, int offset, final int length, final byte lengthSize) {
     final byte[] bytes = new byte[1 + (lengthSize - 1) / 8];
     Bytes.toBytes(length, bytes, 0, true);
-    return Bytes.writeBytesL2B(dest, offset, bytes, lengthSize);
+    return Bytes.writeBitsB(dest, offset, bytes, lengthSize);
   }
 
   // (3) Write the text (length * 8 bits)
   protected static int writeText(final byte[] dest, int offset, final byte[] text, final int length) {
-    return Bytes.writeBytesL2B(dest, offset, text, length * 8);
+    return Bytes.writeBitsB(dest, offset, text, length * 8);
   }
 
   protected static int encode(final byte[] dest, int offset, final byte ordinal, final int length, final byte lengthSize, final byte[] text) {
@@ -96,11 +96,11 @@ public class BytesReadWriteTest {
     final byte lengthSizeDecoded = getLengthSize(dest[0]);
     Assert.assertEquals(lengthSize, lengthSizeDecoded);
     offset = 5;
-    final byte ordinalDecoded = Bytes.readByteB2L(dest, offset, (byte)2);
+    final byte ordinalDecoded = Bytes.readBitsFromByte(dest, offset, (byte)2);
     Assert.assertEquals(ordinal, ordinalDecoded);
-    final int lengthDecoded = Bytes.toInt(Bytes.readBytesB2L(dest, offset + 2, lengthSizeDecoded), 0, true);
+    final int lengthDecoded = Bytes.toInt(Bytes.readBitsFromBytes(dest, offset + 2, lengthSizeDecoded), 0, true);
     Assert.assertEquals(length, lengthDecoded);
-    final byte[] decodedText = Bytes.readBytesB2L(dest, offset + 2 + lengthSizeDecoded, lengthDecoded * 8);
+    final byte[] decodedText = Bytes.readBitsFromBytes(dest, offset + 2 + lengthSizeDecoded, lengthDecoded * 8);
     Assert.assertArrayEquals(text, decodedText);
 //    System.err.println(out);
   }
