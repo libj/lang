@@ -473,9 +473,9 @@ public final class Classes {
 
   public static <T>T newInstance(final Class<? extends T> clazz) {
     try {
-      return clazz.newInstance();
+      return clazz.getDeclaredConstructor().newInstance();
     }
-    catch (final IllegalAccessException | InstantiationException e) {
+    catch (final IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
       throw new RuntimeException(e);
     }
   }

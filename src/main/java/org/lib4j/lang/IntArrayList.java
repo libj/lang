@@ -290,7 +290,7 @@ public class IntArrayList {
   public Integer[] toObjectArray() {
     final Integer[] objectArray = new Integer[size];
     for (int i = 0; i < objectArray.length; i++)
-      objectArray[i] = new Integer(array[i]);
+      objectArray[i] = Integer.valueOf(array[i]);
 
     return objectArray;
   }

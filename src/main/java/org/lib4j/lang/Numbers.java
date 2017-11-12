@@ -182,22 +182,22 @@ public final class Numbers {
   @SuppressWarnings("unchecked")
   public static <T extends Number>T valueOf(final Class<T> clazz, final Number number) {
     if (float.class == clazz || Float.class == clazz)
-      return (T)new Float(number.floatValue());
+      return (T)Float.valueOf(number.floatValue());
 
     if (double.class == clazz || Double.class == clazz)
-      return (T)new Double(number.doubleValue());
+      return (T)Double.valueOf(number.doubleValue());
 
     if (byte.class == clazz || Byte.class == clazz)
-      return (T)new Byte(number.byteValue());
+      return (T)Byte.valueOf(number.byteValue());
 
     if (short.class == clazz || Short.class == clazz)
-      return (T)new Short(number.shortValue());
+      return (T)Short.valueOf(number.shortValue());
 
     if (int.class == clazz || Integer.class == clazz)
-      return (T)new Integer(number.intValue());
+      return (T)Integer.valueOf(number.intValue());
 
     if (long.class == clazz || Long.class == clazz)
-      return (T)new Long(number.longValue());
+      return (T)Long.valueOf(number.longValue());
 
     if (number instanceof Float || number instanceof Double || number instanceof Byte || number instanceof Short || number instanceof Integer || number instanceof Long) {
       if (BigInteger.class.isAssignableFrom(clazz))
@@ -734,22 +734,22 @@ public final class Numbers {
   @SuppressWarnings("unchecked")
   public static <T extends Number>T cast(final Number number, final Class<T> type) {
     if (type == Byte.class)
-      return (T)new Byte(number.byteValue());
+      return (T)Byte.valueOf(number.byteValue());
 
     if (type == Short.class)
-      return (T)new Short(number.shortValue());
+      return (T)Short.valueOf(number.shortValue());
 
     if (type == Integer.class)
-      return (T)new Integer(number.intValue());
+      return (T)Integer.valueOf(number.intValue());
 
     if (type == Float.class)
-      return (T)new Float(number.floatValue());
+      return (T)Float.valueOf(number.floatValue());
 
     if (type == Double.class)
-      return (T)new Double(number.doubleValue());
+      return (T)Double.valueOf(number.doubleValue());
 
     if (type == Long.class)
-      return (T)new Long(number.longValue());
+      return (T)Long.valueOf(number.longValue());
 
     throw new UnsupportedOperationException("Unsupported Numebr type: " + type.getName());
   }
