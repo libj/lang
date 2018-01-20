@@ -16,6 +16,7 @@
 
 package org.lib4j.lang;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.Iterator;
@@ -350,6 +351,15 @@ public final class Strings {
 
     System.arraycopy(chars, 0, chars, n, size - n);
     return new String(chars);
+  }
+
+  public static byte[] getBytes(final String value, final String enc) {
+    try {
+      return value.getBytes(enc);
+    }
+    catch (final UnsupportedEncodingException e) {
+      throw new UnsupportedOperationException(e);
+    }
   }
 
   private Strings() {
