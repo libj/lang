@@ -169,6 +169,24 @@ public final class Classes {
     }
   };
 
+  private static final Repeat.Recurser<Method,Class<?>> declaredMethodWithAnnotationRecurser = new Repeat.Recurser<Method,Class<?>>() {
+    @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public boolean accept(final Method member, final Object ... args) {
+      return args[0] == null || member.getAnnotation((Class)args[0]) != null;
+    }
+
+    @Override
+    public Method[] members(final Class<?> container) {
+      return container.getDeclaredMethods();
+    }
+
+    @Override
+    public Class<?> next(final Class<?> container) {
+      return container.getSuperclass();
+    }
+  };
+
   private static final Repeat.Recurser<Field,Class<?>> fieldRecurser = new Repeat.Recurser<Field,Class<?>>() {
     @Override
     public boolean accept(final Field field, final Object ... args) {
@@ -190,7 +208,7 @@ public final class Classes {
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
     public boolean accept(final Field member, final Object ... args) {
-      return member.getAnnotation((Class)args[0]) != null;
+      return args[0] == null || member.getAnnotation((Class)args[0]) != null;
     }
   };
 
@@ -198,7 +216,7 @@ public final class Classes {
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
     public boolean accept(final Method member, final Object ... args) {
-      return member.getAnnotation((Class)args[0]) != null;
+      return args[0] == null || member.getAnnotation((Class)args[0]) != null;
     }
   };
 
@@ -206,7 +224,7 @@ public final class Classes {
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
     public boolean accept(final Class<?> member, final Object ... args) {
-      return member.getAnnotation((Class)args[0]) != null;
+      return args[0] == null || member.getAnnotation((Class)args[0]) != null;
     }
   };
 
@@ -214,7 +232,7 @@ public final class Classes {
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
     public boolean accept(final Class<?> member, final Object ... args) {
-      return member.getAnnotation((Class)args[0]) != null;
+      return args[0] == null || member.getAnnotation((Class)args[0]) != null;
     }
 
     @Override
@@ -248,7 +266,22 @@ public final class Classes {
   }
 
   /**
-   * Find declared Field(s) in the clazz that have an annotation annotationType, executing a comparator callback for content matching.
+   * Find declared Method(s) in the clazz, including methods inherited in all superclasses.
+   *
+   * The comparator compareTo method may return: 0 if there is a match, -1 if there if no match, and 1 if there is a match & to return Field result after this
+   * match.
+   *
+   * @param clazz
+   * @param annotationType
+   * @param comparable
+   * @return
+   */
+  public static <T extends Annotation>Method[] getDeclaredMethodsDeep(final Class<?> clazz) {
+    return Repeat.Recursive.<Method,Class<?>>inverted(clazz, clazz.getDeclaredMethods(), Method.class, declaredMethodRecurser);
+  }
+
+  /**
+   * Find declared Method(s) in the clazz that have an annotation annotationType, executing a comparator callback for content matching.
    *
    * The comparator compareTo method may return: 0 if there is a match, -1 if there if no match, and 1 if there is a match & to return Field result after this
    * match.
@@ -263,7 +296,7 @@ public final class Classes {
   }
 
   public static <T extends Annotation>Method[] getDeclaredMethodsWithAnnotationDeep(final Class<?> clazz, final Class<T> annotationType) {
-    return Repeat.Recursive.<Method,Class<?>>inverted(clazz, clazz.getDeclaredMethods(), Method.class, declaredMethodRecurser, annotationType);
+    return Repeat.Recursive.<Method,Class<?>>inverted(clazz, clazz.getDeclaredMethods(), Method.class, declaredMethodWithAnnotationRecurser, annotationType);
   }
 
   /**
