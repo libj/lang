@@ -28,6 +28,23 @@ import java.util.Vector;
 
 public final class Resources {
   // FIXME: This needs to be removed due to Java 9's jrt:/java.base/java/lang....
+  public static File[] getLocationBases(final Class<?> ... classes) {
+    return getLocationBases(0, 0, classes);
+  }
+
+  private static File[] getLocationBases(final int index, final int depth, final Class<?> ... classes) {
+    if (index == classes.length)
+      return new File[depth];
+
+    final File location = getLocationBase(classes[index]);
+    if (location == null)
+      return getLocationBases(index + 1, depth, classes);
+
+    final File[] locations = getLocationBases(index + 1, depth + 1, classes);
+    locations[depth] = location;
+    return locations;
+  }
+
   public static File getLocationBase(final Class<?> clazz) {
     if (clazz == null)
       return null;
