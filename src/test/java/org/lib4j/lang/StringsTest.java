@@ -234,4 +234,15 @@ public class StringsTest {
     catch (final ArrayIndexOutOfBoundsException e) {
     }
   }
+
+  @Test
+  public void testTrim() {
+    Assert.assertNull(Strings.trim(null, '\0'));
+    Assert.assertEquals("string", Strings.trim("xstring", 'x'));
+    Assert.assertEquals("string", Strings.trim("stringx", 'x'));
+    Assert.assertEquals("string", Strings.trim("xstringx", 'x'));
+    Assert.assertEquals("string", Strings.trim("xxstringxx", 'x'));
+    Assert.assertEquals("string", Strings.trim("xxxstringxxx", 'x'));
+    Assert.assertEquals("string", Strings.trim("\0string\0", '\0'));
+  }
 }

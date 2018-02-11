@@ -362,6 +362,20 @@ public final class Strings {
     }
   }
 
+  public static String trim(final String string, char ch) {
+    if (string == null)
+      return null;
+
+    int i = 0;
+    for (; i < string.length() && string.charAt(i) == ch; i++);
+    if (i == string.length())
+      return "";
+
+    int j = string.length() - 1;
+    for (; j > i + 1 && string.charAt(j) == ch; --j);
+    return i == 0 && j == string.length() - 1 ? string : string.substring(i, j + 1);
+  }
+
   private Strings() {
   }
 }
