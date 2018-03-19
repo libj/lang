@@ -490,7 +490,7 @@ public final class Classes {
   }
 
   private static StringBuilder recurseStrictName(final Class<?> cls) {
-    return cls.isMemberClass() ? recurseStrictName(cls.getEnclosingClass()).append(".").append(cls.getSimpleName()) : new StringBuilder(cls.getName());
+    return cls.isMemberClass() ? recurseStrictName(cls.getEnclosingClass()).append('.').append(cls.getSimpleName()) : new StringBuilder(cls.getName());
   }
 
   private static class CallingClass extends SecurityManager {

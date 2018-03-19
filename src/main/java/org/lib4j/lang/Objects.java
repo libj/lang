@@ -256,7 +256,7 @@ public final class Objects {
     final Field[] fields = Classes.getDeclaredFieldsDeep(obj.getClass());
     final char[] pad = Arrays.createRepeat(' ', depth * 2);
     final char[] pad2 = Arrays.createRepeat(' ', (depth + 1) * 2);
-    final StringBuilder builder = new StringBuilder(obj.getClass().getName()).append("@").append(Integer.toHexString(System.identityHashCode(obj))).append(" {\n");
+    final StringBuilder builder = new StringBuilder(obj.getClass().getName()).append('@').append(Integer.toHexString(System.identityHashCode(obj))).append(" {\n");
     try {
       for (final Field field : fields) {
         if (field.isSynthetic() || field.getType() == Field.class)
@@ -269,17 +269,17 @@ public final class Objects {
         else if (byte.class == field.getType())
           builder.append("0x").append(Integer.toHexString(field.getByte(obj)));
         else if (char.class == field.getType())
-          builder.append("'").append(String.valueOf(field.getChar(obj))).append("'");
+          builder.append('\'').append(String.valueOf(field.getChar(obj))).append('\'');
         else if (short.class == field.getType())
           builder.append("(short)").append(String.valueOf(field.getShort(obj)));
         else if (int.class == field.getType())
           builder.append(String.valueOf(field.getInt(obj)));
         else if (long.class == field.getType())
-          builder.append(String.valueOf(field.getLong(obj))).append("l");
+          builder.append(String.valueOf(field.getLong(obj))).append('l');
         else if (float.class == field.getType())
-          builder.append(String.valueOf(field.getFloat(obj))).append("f");
+          builder.append(String.valueOf(field.getFloat(obj))).append('f');
         else if (double.class == field.getType())
-          builder.append(String.valueOf(field.getDouble(obj))).append("d");
+          builder.append(String.valueOf(field.getDouble(obj))).append('d');
         else {
           final Object object = field.get(obj);
           if (object == obj)
@@ -308,10 +308,10 @@ public final class Objects {
               builder.append("\n");
             }
 
-            builder.append(pad).append("]");
+            builder.append(pad).append(']');
           }
           else if (Enum.class.isInstance(object))
-            builder.append(field.getType().getSimpleName()).append(".").append(object);
+            builder.append(field.getType().getSimpleName()).append('.').append(object);
           else if (Class.class == object.getClass())
             builder.append(((Class<?>)object).getName());
           else if (File.class == object.getClass())
@@ -326,7 +326,7 @@ public final class Objects {
       }
 
       builder.setLength(builder.length() - 2);
-      return builder.append("\n").append(Arrays.createRepeat(' ', (depth - 1) * 2)).append("}").toString();
+      return builder.append("\n").append(Arrays.createRepeat(' ', (depth - 1) * 2)).append('}').toString();
     }
     catch (final IllegalAccessException e) {
       throw new UnsupportedOperationException(e);
