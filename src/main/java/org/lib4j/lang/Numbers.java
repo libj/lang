@@ -40,7 +40,15 @@ public final class Numbers {
     }
 
     public static BigInteger toSigned(final long unsigned) {
-      return BigInteger.valueOf(unsigned).subtract(BigInteger.valueOf(Long.MIN_VALUE));
+      return BigInteger.valueOf(unsigned).subtract(LONG_MIN_VALUE);
+    }
+
+    public static BigInteger toSigned(final byte[] unsigned) {
+      return new BigInteger(1, unsigned);
+    }
+
+    public static BigInteger toSigned(final byte[] unsigned, final int off, final int len) {
+      return new BigInteger(1, unsigned, off, len);
     }
 
     public static byte toUnsigned(final byte signed) {
@@ -50,32 +58,38 @@ public final class Numbers {
       return (byte)(signed + Byte.MIN_VALUE);
     }
 
-    public static byte toUnsigned(final short signed) {
-      if (signed < 0 || Byte.MAX_VALUE - Byte.MIN_VALUE < signed)
-        throw new IllegalArgumentException("signed < 0 || 256 < signed");
-
-      return (byte)(signed + Byte.MIN_VALUE);
-    }
-
-    public static short toUnsigned(final int signed) {
-      if (signed < 0 || Short.MAX_VALUE - Short.MIN_VALUE < signed)
-        throw new IllegalArgumentException("signed < 0 || 65535 < signed");
+    public static short toUnsigned(final short signed) {
+      if (signed < 0)
+        throw new IllegalArgumentException("signed < 0: " + signed);
 
       return (short)(signed + Short.MIN_VALUE);
     }
 
-    public static int toUnsigned(final long signed) {
-      if (signed < 0 || Integer.MAX_VALUE - Integer.MIN_VALUE < signed)
-        throw new IllegalArgumentException("signed < 0 || 4294967295 < signed");
+    public static int toUnsigned(final int signed) {
+      if (signed < 0)
+        throw new IllegalArgumentException("signed < 0: " + signed);
 
-      return (int)(signed + Integer.MIN_VALUE);
+      return signed + Integer.MIN_VALUE;
     }
 
-    public static long toUnsigned(final BigInteger signed) {
-      if (signed.signum() == -1 || UNSIGNED_LONG_MAX_VALUE.compareTo(signed) == -1)
-        throw new IllegalArgumentException("signed < 0 || " + UNSIGNED_LONG_MAX_VALUE + " < signed");
+    public static long toUnsigned(final long signed) {
+      if (signed < 0)
+        throw new IllegalArgumentException("signed < 0: " + signed);
 
-      return signed.subtract(BigInteger.valueOf(Long.MIN_VALUE)).longValue();
+      return signed + Long.MIN_VALUE;
+    }
+
+    public static byte[] toUnsigned(final BigInteger signed) {
+      if (signed.signum() == -1)
+        throw new IllegalArgumentException("signed < 0: " + signed);
+
+      final byte[] bytes = signed.toByteArray();
+      if (bytes[0] != 0)
+        return bytes;
+
+      final byte[] trimmed = new byte[bytes.length - 1];
+      System.arraycopy(bytes, 1, trimmed, 0, trimmed.length);
+      return trimmed;
     }
 
     private Unsigned() {

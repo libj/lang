@@ -244,7 +244,15 @@ public final class Objects {
   }
 
   public static String toString(final Object obj) {
-    return obj != null ? toString(obj, 1, new IdentityHashMap<Object,Object>()) : null;
+    return obj == null ? null : toString(obj, 1, new IdentityHashMap<Object,Object>());
+  }
+
+  public static String identity(final Object obj) {
+    return obj.getClass().getName() + "@" + Integer.toHexString(System.identityHashCode(obj));
+  }
+
+  public static String simpleIdentity(final Object obj) {
+    return obj.getClass().getSimpleName() + "@" + Integer.toHexString(System.identityHashCode(obj));
   }
 
   static int i = 0;

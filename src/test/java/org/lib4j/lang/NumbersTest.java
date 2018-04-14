@@ -145,15 +145,33 @@ public class NumbersTest {
   }
 
   @Test
-  public void testUnsigned() {
-    Assert.assertEquals(0, Numbers.Unsigned.toSigned(Byte.MIN_VALUE));
-    Assert.assertEquals(255, Numbers.Unsigned.toSigned(Byte.MAX_VALUE));
-    Assert.assertEquals(0, Numbers.Unsigned.toSigned(Short.MIN_VALUE));
-    Assert.assertEquals(65535, Numbers.Unsigned.toSigned(Short.MAX_VALUE));
-    Assert.assertEquals(0, Numbers.Unsigned.toSigned(Integer.MIN_VALUE));
-    Assert.assertEquals(4294967295L, Numbers.Unsigned.toSigned(Integer.MAX_VALUE));
-    Assert.assertEquals(BigInteger.valueOf(0), Numbers.Unsigned.toSigned(Long.MIN_VALUE));
-    Assert.assertEquals(new BigInteger("18446744073709551615"), Numbers.Unsigned.toSigned(Long.MAX_VALUE));
+  public void testUnsignedByte() {
+    final byte value = Byte.MAX_VALUE;
+    Assert.assertEquals(value, Numbers.Unsigned.toSigned(Numbers.Unsigned.toUnsigned(value)));
+  }
+
+  @Test
+  public void testUnsignedShort() {
+    final short value = Short.MAX_VALUE;
+    Assert.assertEquals(value, Numbers.Unsigned.toSigned(Numbers.Unsigned.toUnsigned(value)));
+  }
+
+  @Test
+  public void testUnsignedInt() {
+    final int value = Integer.MAX_VALUE;
+    Assert.assertEquals(value, Numbers.Unsigned.toSigned(Numbers.Unsigned.toUnsigned(value)));
+  }
+
+  @Test
+  public void testUnsignedLong() {
+    final long value = Long.MAX_VALUE;
+    Assert.assertEquals(BigInteger.valueOf(value), Numbers.Unsigned.toSigned(Numbers.Unsigned.toUnsigned(value)));
+  }
+
+  @Test
+  public void testUnsignedBigInteger() {
+    final BigInteger value = new BigInteger("18446744073709551615");
+    Assert.assertEquals(value, Numbers.Unsigned.toSigned(Numbers.Unsigned.toUnsigned(value)));
   }
 
   private static final Class<?>[] numberTypes = new Class<?>[] {Byte.class, Short.class, Integer.class, Float.class, Double.class, Long.class};
