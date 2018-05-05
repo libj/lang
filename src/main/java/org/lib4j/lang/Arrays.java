@@ -96,46 +96,34 @@ public final class Arrays {
       throw new ArrayIndexOutOfBoundsException(toIndex);
   }
 
-  private static <T extends Comparable<T>>int binaryClosestSearch0(final T[] a, final int from, final int to, final T key) {
-    if (to == 0)
-      return 0;
-
-    int first = 0;
-    int upto = to;
-    int mid = -1;
-    while (first < upto) {
-      mid = (first + upto) / 2;    // Compute mid point.
+  private static <T extends Comparable<T>>int binaryClosestSearch0(final T[] a, int from, int to, final T key) {
+    for (int mid; from < to;) {
+      mid = (from + to) / 2;
       final int comparison = key.compareTo(a[mid]);
       if (comparison < 0)
-        upto = mid;        // repeat search in bottom half.
+        to = mid;
       else if (comparison > 0)
-        first = mid + 1;      // Repeat search in top half.
+        from = mid + 1;
       else
         return mid;
     }
 
-    return first == to - 1 && key.compareTo(a[first]) > 0 ? first + 1 : (first + upto) / 2;
+    return (from + to) / 2;
   }
 
-  private static <T>int binaryClosestSearch0(final T[] a, final int from, final int to, final T key, final Comparator<T> comparator) {
-    if (to == 0)
-      return 0;
-
-    int first = 0;
-    int upto = to;
-    int mid = -1;
-    while (first < upto) {
-      mid = (first + upto) / 2;    // Compute mid point.
+  private static <T>int binaryClosestSearch0(final T[] a, int from, int to, final T key, final Comparator<T> comparator) {
+    for (int mid; from < to;) {
+      mid = (from + to) / 2;
       final int comparison = comparator.compare(key, a[mid]);
       if (comparison < 0)
-        upto = mid;        // repeat search in bottom half.
+        to = mid;
       else if (comparison > 0)
-        first = mid + 1;      // Repeat search in top half.
+        from = mid + 1;
       else
         return mid;
     }
 
-    return first == to - 1 && comparator.compare(key, a[first]) > 0 ? first + 1 : (first + upto) / 2;
+    return (from + to) / 2;
   }
 
   /**
@@ -167,24 +155,18 @@ public final class Arrays {
     return binaryClosestSearch0(a, from, to, key);
   }
 
-  private static int binaryClosestSearch0(final byte[] a, final int from, final int to, final byte key) {
-    if (to == 0)
-      return 0;
-
-    int first = 0;
-    int upto = to;
-    int mid = -1;
-    while (first < upto) {
-      mid = (first + upto) / 2;    // Compute mid point.
+  private static int binaryClosestSearch0(final byte[] a, int from, int to, final byte key) {
+    for (int mid; from < to;) {
+      mid = (from + to) / 2;
       if (key < a[mid])
-        upto = mid;        // repeat search in bottom half.
+        to = mid;
       else if (key > a[mid])
-        first = mid + 1;      // Repeat search in top half.
+        from = mid + 1;
       else
         return mid;
     }
 
-    return first == to - 1 && key > a[first] ? first + 1 : (first + upto) / 2;
+    return (from + to) / 2;
   }
 
   /**
@@ -216,24 +198,18 @@ public final class Arrays {
     return binaryClosestSearch0(a, from, to, key);
   }
 
-  private static int binaryClosestSearch0(final short[] a, final int from, final int to, final short key) {
-    if (to == 0)
-      return 0;
-
-    int first = 0;
-    int upto = to;
-    int mid = -1;
-    while (first < upto) {
-      mid = (first + upto) / 2;    // Compute mid point.
+  private static int binaryClosestSearch0(final short[] a, int from, int to, final short key) {
+    for (int mid; from < to;) {
+      mid = (from + to) / 2;
       if (key < a[mid])
-        upto = mid;        // repeat search in bottom half.
+        to = mid;
       else if (key > a[mid])
-        first = mid + 1;      // Repeat search in top half.
+        from = mid + 1;
       else
         return mid;
     }
 
-    return first == to - 1 && key > a[first] ? first + 1 : (first + upto) / 2;
+    return (from + to) / 2;
   }
 
   /**
@@ -265,24 +241,18 @@ public final class Arrays {
     return binaryClosestSearch0(a, from, to, key);
   }
 
-  private static int binaryClosestSearch0(final int[] a, final int from, final int to, final int key) {
-    if (to == 0)
-      return 0;
-
-    int first = 0;
-    int upto = to;
-    int mid = -1;
-    while (first < upto) {
-      mid = (first + upto) / 2;    // Compute mid point.
+  private static int binaryClosestSearch0(final int[] a, int from, int to, final int key) {
+    for (int mid; from < to;) {
+      mid = (from + to) / 2;
       if (key < a[mid])
-        upto = mid;        // repeat search in bottom half.
+        to = mid;
       else if (key > a[mid])
-        first = mid + 1;      // Repeat search in top half.
+        from = mid + 1;
       else
         return mid;
     }
 
-    return first == to - 1 && key > a[first] ? first + 1 : (first + upto) / 2;
+    return (from + to) / 2;
   }
 
   /**
@@ -316,26 +286,18 @@ public final class Arrays {
     return binaryClosestSearch0(a, from, to, key);
   }
 
-  private static int binaryClosestSearch0(final float[] a, final int from, final int to, final float key) {
-    rangeCheck(a.length, from, to);
-
-    if (to == 0)
-      return 0;
-
-    int first = 0;
-    int upto = to;
-    int mid = -1;
-    while (first < upto) {
-      mid = (first + upto) / 2;    // Compute mid point.
+  private static int binaryClosestSearch0(final float[] a, int from, int to, final float key) {
+    for (int mid; from < to;) {
+      mid = (from + to) / 2;
       if (key < a[mid])
-        upto = mid;        // repeat search in bottom half.
+        to = mid;
       else if (key > a[mid])
-        first = mid + 1;      // Repeat search in top half.
+        from = mid + 1;
       else
         return mid;
     }
 
-    return first == to - 1 && key > a[first] ? first + 1 : (first + upto) / 2;
+    return (from + to) / 2;
   }
 
   /**
@@ -369,26 +331,18 @@ public final class Arrays {
     return binaryClosestSearch0(a, from, to, key);
   }
 
-  private static int binaryClosestSearch0(final double[] a, final int from, final int to, final double key) {
-    rangeCheck(a.length, from, to);
-
-    if (to == 0)
-      return 0;
-
-    int first = 0;
-    int upto = to;
-    int mid = -1;
-    while (first < upto) {
-      mid = (first + upto) / 2;    // Compute mid point.
+  private static int binaryClosestSearch0(final double[] a, int from, int to, final double key) {
+    for (int mid; from < to;) {
+      mid = (from + to) / 2;
       if (key < a[mid])
-        upto = mid;        // repeat search in bottom half.
+        to = mid;
       else if (key > a[mid])
-        first = mid + 1;      // Repeat search in top half.
+        from = mid + 1;
       else
         return mid;
     }
 
-    return first == to - 1 && key > a[first] ? first + 1 : (first + upto) / 2;
+    return (from + to) / 2;
   }
 
   /**
@@ -422,26 +376,18 @@ public final class Arrays {
     return binaryClosestSearch0(a, from, to, key);
   }
 
-  private static int binaryClosestSearch0(final long[] a, final int from, final int to, final long key) {
-    rangeCheck(a.length, from, to);
-
-    if (to == 0)
-      return 0;
-
-    int first = 0;
-    int upto = to;
-    int mid = -1;
-    while (first < upto) {
-      mid = (first + upto) / 2;    // Compute mid point.
+  private static int binaryClosestSearch0(final long[] a, int from, int to, final long key) {
+    for (int mid; from < to;) {
+      mid = (from + to) / 2;
       if (key < a[mid])
-        upto = mid;        // repeat search in bottom half.
+        to = mid;
       else if (key > a[mid])
-        first = mid + 1;      // Repeat search in top half.
+        from = mid + 1;
       else
         return mid;
     }
 
-    return first == to - 1 && key > a[first] ? first + 1 : (first + upto) / 2;
+    return (from + to) / 2;
   }
 
   /**
@@ -655,20 +601,7 @@ public final class Arrays {
    * the array.
    */
   public static String toString(final Object[] array, final char delimiter) {
-    if (array == null)
-      return null;
-
-    if (array.length == 0)
-      return "";
-
-    if (array.length == 1)
-      return String.valueOf(array[0]);
-
-    final StringBuilder buffer = new StringBuilder(String.valueOf(array[0]));
-    for (int i = 1; i < array.length; i++)
-      buffer.append(delimiter).append(String.valueOf(array[i]));
-
-    return buffer.toString();
+    return array == null ? null : toString(array, delimiter, 0, array.length);
   }
 
   /**
@@ -678,24 +611,98 @@ public final class Arrays {
    *
    * @param array The array.
    * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
    * @return The delimiter delimited <code>toString()</code> representation of
    * the array.
    */
-  public static String toString(final Object[] array, String delimiter) {
+  public static String toString(final Object[] array, final char delimiter, final int offset) {
+    return array == null ? null : toString(array, delimiter, offset, array.length - offset);
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>char</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final Object[] array, final char delimiter, final int offset, final int length) {
     if (array == null)
       return null;
 
-    if (delimiter == null)
-      delimiter = "";
-
-    if (array.length == 0)
+    if (array.length <= offset)
       return "";
 
-    if (array.length == 1)
-      return String.valueOf(array[0]);
+    if (array.length == offset + 1)
+      return String.valueOf(array[offset]);
 
-    final StringBuilder buffer = new StringBuilder(String.valueOf(array[0]));
-    for (int i = 1; i < array.length; i++)
+    final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
+    for (int i = offset + 1; i < length + offset; i++)
+      buffer.append(delimiter).append(String.valueOf(array[i]));
+
+    return buffer.toString();
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>String</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final Object[] array, final String delimiter) {
+    return array == null ? null : toString(array, delimiter, 0, array.length);
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>String</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final Object[] array, final String delimiter, final int offset) {
+    return array == null ? null : toString(array, delimiter, offset, array.length - offset);
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>String</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final Object[] array, final String delimiter, final int offset, final int length) {
+    if (array == null)
+      return null;
+
+    if (array.length <= offset)
+      return "";
+
+    if (array.length == offset + 1)
+      return String.valueOf(array[offset]);
+
+    final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
+    for (int i = offset + 1; i < length + offset; i++)
       buffer.append(delimiter).append(String.valueOf(array[i]));
 
     return buffer.toString();

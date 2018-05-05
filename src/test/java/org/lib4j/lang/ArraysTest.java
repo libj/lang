@@ -21,18 +21,31 @@ import java.util.function.UnaryOperator;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.lib4j.lang.Arrays;
 
 public class ArraysTest {
   @Test
   public void testBinaryClosestSearch() {
-    final int[] sorted = new int[] {1, 3, 5, 9};
+    final int[] sorted = new int[] {1, 3, 5, 9, 19};
+    try {
+      Arrays.binaryClosestSearch(sorted, 4, 3, -10);
+      Assert.fail("Expected IllegalArgumentException");
+    }
+    catch (final IllegalArgumentException e) {
+    }
+
+    Assert.assertEquals(0, Arrays.binaryClosestSearch(sorted, -10));
+    Assert.assertEquals(0, Arrays.binaryClosestSearch(sorted, -1));
     Assert.assertEquals(0, Arrays.binaryClosestSearch(sorted, 0));
     Assert.assertEquals(1, Arrays.binaryClosestSearch(sorted, 2));
     Assert.assertEquals(2, Arrays.binaryClosestSearch(sorted, 4));
     Assert.assertEquals(3, Arrays.binaryClosestSearch(sorted, 6));
     Assert.assertEquals(3, Arrays.binaryClosestSearch(sorted, 9));
     Assert.assertEquals(4, Arrays.binaryClosestSearch(sorted, 10));
+    Assert.assertEquals(4, Arrays.binaryClosestSearch(sorted, 14));
+    Assert.assertEquals(4, Arrays.binaryClosestSearch(sorted, 18));
+    Assert.assertEquals(4, Arrays.binaryClosestSearch(sorted, 19));
+    Assert.assertEquals(5, Arrays.binaryClosestSearch(sorted, 20));
+    Assert.assertEquals(5, Arrays.binaryClosestSearch(sorted, 40));
   }
 
   @Test
