@@ -716,9 +716,11 @@ public final class Arrays {
    * @param array The target array.
    * @param start The starting value.
    */
-  public static void fillIncremental(final byte[] array, byte start) {
+  public static byte[] fillIncremental(final byte[] array, byte start) {
     for (int i = 0; i < array.length; i++)
       array[i] = start++;
+
+    return array;
   }
 
   /**
@@ -729,9 +731,11 @@ public final class Arrays {
    * @param array The target array.
    * @param start The starting value.
    */
-  public static void fillIncremental(final char[] array, char start) {
+  public static char[] fillIncremental(final char[] array, char start) {
     for (int i = 0; i < array.length; i++)
       array[i] = start++;
+
+    return array;
   }
 
   /**
@@ -742,9 +746,11 @@ public final class Arrays {
    * @param array The target array.
    * @param start The starting value.
    */
-  public static void fillIncremental(final short[] array, short start) {
+  public static short[] fillIncremental(final short[] array, short start) {
     for (int i = 0; i < array.length; i++)
       array[i] = start++;
+
+    return array;
   }
 
   /**
@@ -755,9 +761,11 @@ public final class Arrays {
    * @param array The target array.
    * @param start The starting value.
    */
-  public static void fillIncremental(final int[] array, int start) {
+  public static int[] fillIncremental(final int[] array, int start) {
     for (int i = 0; i < array.length; i++)
       array[i] = start++;
+
+    return array;
   }
 
   /**
@@ -768,9 +776,11 @@ public final class Arrays {
    * @param array The target array.
    * @param start The starting value.
    */
-  public static void fillIncremental(final long[] array, long start) {
+  public static long[] fillIncremental(final long[] array, long start) {
     for (int i = 0; i < array.length; i++)
       array[i] = start++;
+
+    return array;
   }
 
   /**
@@ -781,9 +791,11 @@ public final class Arrays {
    * @param array The target array.
    * @param start The starting value.
    */
-  public static void fillIncremental(final float[] array, float start) {
+  public static float[] fillIncremental(final float[] array, float start) {
     for (int i = 0; i < array.length; i++)
       array[i] = start++;
+
+    return array;
   }
 
   /**
@@ -794,9 +806,11 @@ public final class Arrays {
    * @param array The target array.
    * @param start The starting value.
    */
-  public static void fillIncremental(final double[] array, double start) {
+  public static double[] fillIncremental(final double[] array, double start) {
     for (int i = 0; i < array.length; i++)
       array[i] = start++;
+
+    return array;
   }
 
   /**
