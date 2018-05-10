@@ -164,8 +164,13 @@ public final class PackageLoader extends ClassLoader {
    * @exception   PackageNotFoundException    Gets thrown for a package name
    * that cannot be found in any classpath resources.
    */
-  public Set<Class<?>> loadPackage(final Package pkg, final Predicate<Class<?>> initialize) throws PackageNotFoundException {
-    return PackageLoader.loadPackage(pkg.getName(), true, false, initialize, classLoaders);
+  public Set<Class<?>> loadPackage(final Package pkg, final Predicate<Class<?>> initialize) {
+    try {
+      return PackageLoader.loadPackage(pkg.getName(), true, false, initialize, classLoaders);
+    }
+    catch (final PackageNotFoundException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   /**
@@ -262,15 +267,10 @@ public final class PackageLoader extends ClassLoader {
     try {
       final String location = (firstChar == '/' || firstChar == '.' ? packageName.substring(1) : packageName).replace('.', '/');
       resources = Resources.getResources(location, classLoaders);
-    }
-    catch (final IOException e) {
-      throw new ResourceException(e.getMessage(), e);
-    }
 
-    if (resources == null)
-      throw new PackageNotFoundException(packageName);
+      if (resources == null)
+        throw new PackageNotFoundException(packageName);
 
-    try {
       final Set<Class<?>> classes = new HashSet<Class<?>>();
       while (resources.hasMoreElements()) {
         final Resource resource = resources.nextElement();
@@ -287,17 +287,19 @@ public final class PackageLoader extends ClassLoader {
         final File directory = new File(decodedUrl);
         final Set<String> classNames = new HashSet<String>();
         if (directory.exists())
-          PackageLoader.loadDirectory(resourceClassLoader, classNames, directory, packageName, subPackages);
+          PackageLoader.loadDirectory(classNames, directory, packageName, subPackages);
         else
-          PackageLoader.loadJar(resourceClassLoader, classNames, url, packageName, subPackages);
+          PackageLoader.loadJar(classNames, url, packageName, subPackages);
 
         for (final String className : classNames) {
           try {
             final Class<?> cls = Class.forName(className, initialize, resourceClassLoader);
-            if (!initialize && predicate.test(cls))
+            boolean add = predicate == null;
+            if (!initialize && !add && (add = predicate.test(cls)))
               Class.forName(className, true, resourceClassLoader);
 
-            classes.add(cls);
+            if (add)
+              classes.add(cls);
           }
           catch (final ClassNotFoundException | VerifyError e) {
             logger.trace("Problem loading package: " + packageName, e);
@@ -314,7 +316,7 @@ public final class PackageLoader extends ClassLoader {
     }
   }
 
-  private static void loadDirectory(final ClassLoader classLoader, final Set<String> classNames, final File directory, final String packageName, final boolean subPackages) throws IOException {
+  private static void loadDirectory(final Set<String> classNames, final File directory, final String packageName, final boolean subPackages) throws IOException {
     final Path path = directory.toPath();
     final Consumer<Path> consumer = new Consumer<Path>() {
       final String packagePrefix = packageName + ".";
@@ -333,7 +335,7 @@ public final class PackageLoader extends ClassLoader {
       Files.list(path).forEach(consumer);
   }
 
-  private static void loadJar(final ClassLoader classLoader, final Set<String> classNames, final URL url, final String packageName, final boolean subPackages) throws PackageNotFoundException {
+  private static void loadJar(final Set<String> classNames, final URL url, final String packageName, final boolean subPackages) throws PackageNotFoundException {
     final JarURLConnection jarURLConnection;
     final JarFile jarFile;
     try {
