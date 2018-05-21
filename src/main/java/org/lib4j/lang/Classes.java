@@ -365,12 +365,7 @@ public final class Classes {
     return gcc;
   }
 
-  private static final Function<Object,Class<?>> objectClassFunction = new Function<Object,Class<?>>() {
-    @Override
-    public Class<?> apply(final Object t) {
-      return t.getClass();
-    }
-  };
+  private static final Function<Object,Class<?>> objectClassFunction = o -> o.getClass();
 
   @SafeVarargs
   private static <T>Class<?> getGreatestCommonSuperclass0(final Function<T,Class<?>> function, final T ... objects) {
@@ -378,11 +373,11 @@ public final class Classes {
       return null;
 
     if (objects.length == 1)
-      return objects[0].getClass();
+      return function.apply(objects[0]);
 
-    Class<?> gcc = getGreatestCommonSuperclass(objects[0].getClass(), objects[1].getClass());
+    Class<?> gcc = getGreatestCommonSuperclass(function.apply(objects[0]), function.apply(objects[1]));
     for (int i = 2; i < objects.length && gcc != null; i++)
-      gcc = getGreatestCommonSuperclass(gcc, objects[i].getClass());
+      gcc = getGreatestCommonSuperclass(gcc, function.apply(objects[i]));
 
     return gcc;
   }

@@ -33,6 +33,11 @@ public final class Paths {
     return path.matches(windowsPath);
   }
 
+  public static String getProtocol(final String path) {
+    final int i = path.indexOf(":/");
+    return i == -1 ? null : path.substring(0, i);
+  }
+
   public static boolean isLocal(final String path) {
     return isLocalURL(path) || isLocalUnix(path) || isLocalWindows(path);
   }

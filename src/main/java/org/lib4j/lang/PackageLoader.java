@@ -164,13 +164,8 @@ public final class PackageLoader extends ClassLoader {
    * @exception   PackageNotFoundException    Gets thrown for a package name
    * that cannot be found in any classpath resources.
    */
-  public Set<Class<?>> loadPackage(final Package pkg, final Predicate<Class<?>> initialize) {
-    try {
-      return PackageLoader.loadPackage(pkg.getName(), true, false, initialize, classLoaders);
-    }
-    catch (final PackageNotFoundException e) {
-      throw new RuntimeException(e);
-    }
+  public Set<Class<?>> loadPackage(final Package pkg, final Predicate<Class<?>> initialize) throws PackageNotFoundException {
+    return PackageLoader.loadPackage(pkg.getName(), true, false, initialize, classLoaders);
   }
 
   /**
@@ -268,29 +263,33 @@ public final class PackageLoader extends ClassLoader {
       final String location = (firstChar == '/' || firstChar == '.' ? packageName.substring(1) : packageName).replace('.', '/');
       resources = Resources.getResources(location, classLoaders);
 
-      if (resources == null)
+      if (!resources.hasMoreElements())
         throw new PackageNotFoundException(packageName);
 
       final Set<Class<?>> classes = new HashSet<Class<?>>();
       while (resources.hasMoreElements()) {
         final Resource resource = resources.nextElement();
         final URL url = resource.getURL();
-        final ClassLoader resourceClassLoader = resource.getClassLoader();
-        String decodedUrl;
-        try {
-          decodedUrl = URLDecoder.decode(url.getPath(), "UTF-8");
-        }
-        catch (final UnsupportedEncodingException e) {
-          decodedUrl = url.getPath();
-        }
-
-        final File directory = new File(decodedUrl);
         final Set<String> classNames = new HashSet<String>();
-        if (directory.exists())
-          PackageLoader.loadDirectory(classNames, directory, packageName, subPackages);
-        else
-          PackageLoader.loadJar(classNames, url, packageName, subPackages);
+        if ("file".equals(url.getProtocol())) {
+          String decodedUrl;
+          try {
+            decodedUrl = URLDecoder.decode(url.getPath(), "UTF-8");
+          }
+          catch (final UnsupportedEncodingException e) {
+            decodedUrl = url.getPath();
+          }
 
+          PackageLoader.loadDirectory(classNames, new File(decodedUrl), packageName, subPackages);
+        }
+        else if ("jar".equals(url.getProtocol())) {
+          PackageLoader.loadJar(classNames, url, packageName, subPackages);
+        }
+        else {
+          throw new UnsupportedOperationException("Unsupported protocol in URL: " + url.toExternalForm());
+        }
+
+        final ClassLoader resourceClassLoader = resource.getClassLoader();
         for (final String className : classNames) {
           try {
             final Class<?> cls = Class.forName(className, initialize, resourceClassLoader);
@@ -340,6 +339,7 @@ public final class PackageLoader extends ClassLoader {
     final JarFile jarFile;
     try {
       jarURLConnection = (JarURLConnection)url.openConnection();
+      jarURLConnection.setUseCaches(false);
       jarFile = jarURLConnection.getJarFile();
     }
     catch (final IOException e) {
