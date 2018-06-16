@@ -18,7 +18,6 @@ package org.lib4j.lang;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Enumeration;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -56,30 +55,7 @@ public class ResourcesTest {
     }
     catch (final NullPointerException e) {
     }
-    Assert.assertNull(Resources.getResource(""));
-    Assert.assertTrue(Resources.getResource("META-INF").getURL().toString().endsWith(".jar!/META-INF"));
-  }
 
-  @Test
-  public void testGetResources() throws Exception {
-    try {
-      Assert.assertNull(Resources.getResources(null));
-      Assert.fail("Expected NPE");
-    }
-    catch (final NullPointerException e) {
-    }
-
-    final Enumeration<Resource> resources = Resources.getResources("META-INF");
-    boolean found = false;
-    while (resources.hasMoreElements()) {
-      final Resource resource = resources.nextElement();
-      if (!resource.getURL().toString().endsWith("!/META-INF"))
-        continue;
-
-      found = true;
-      break;
-    }
-
-    Assert.assertTrue(found);
+    Assert.assertTrue(Resources.getResource("META-INF", Thread.currentThread().getContextClassLoader()).getURL().toString().endsWith(".jar!/META-INF"));
   }
 }
