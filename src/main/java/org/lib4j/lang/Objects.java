@@ -313,7 +313,7 @@ public final class Objects {
               if (arrayString.length() > 0)
                 builder.append(arrayString.substring(2));
 
-              builder.append("\n");
+              builder.append('\n');
             }
 
             builder.append(pad).append(']');
@@ -334,7 +334,7 @@ public final class Objects {
       }
 
       builder.setLength(builder.length() - 2);
-      return builder.append("\n").append(Arrays.createRepeat(' ', (depth - 1) * 2)).append('}').toString();
+      return builder.append('\n').append(Arrays.createRepeat(' ', (depth - 1) * 2)).append('}').toString();
     }
     catch (final IllegalAccessException e) {
       throw new UnsupportedOperationException(e);

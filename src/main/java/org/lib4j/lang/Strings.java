@@ -108,7 +108,7 @@ public final class Strings {
     final StringTokenizer tokenizer = new StringTokenizer(text, "\r\n");
     final StringBuilder builder = new StringBuilder();
     while (tokenizer.hasMoreTokens())
-      builder.append("\n").append(Strings.interpolateLine(tokenizer.nextToken(), properties, "{{", "}}"));
+      builder.append('\n').append(Strings.interpolateLine(tokenizer.nextToken(), properties, open, close));
 
     return builder.length() == 0 ? "" : builder.substring(1);
   }
