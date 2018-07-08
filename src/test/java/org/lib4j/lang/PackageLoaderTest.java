@@ -85,7 +85,7 @@ public class PackageLoaderTest {
     for (final String testClass : testClasses)
       Assert.assertFalse(testClass, isClassLoaded(testClass));
 
-    final Set<Class<?>> loadedClasses = PackageLoader.getSystemContextPackageLoader().loadPackage("org.junit");
+    final Set<Class<?>> loadedClasses = PackageLoader.getContextPackageLoader().loadPackage("org.junit");
     final Set<String> classNames = new HashSet<String>();
     for (final Class<?> loadedClass : loadedClasses)
       classNames.add(loadedClass.getName());
@@ -97,7 +97,7 @@ public class PackageLoaderTest {
     }
 
     try {
-      PackageLoader.getSystemContextPackageLoader().loadPackage((String)null);
+      PackageLoader.getContextPackageLoader().loadPackage((String)null);
       Assert.fail("Expected a NullPointerException");
     }
     catch (final NullPointerException e) {
@@ -107,7 +107,7 @@ public class PackageLoaderTest {
   @Test
   public void testJar() throws ClassNotFoundException, PackageNotFoundException {
     boolean[] encountered = new boolean[1];
-    final Set<Class<?>> loadedClasses = PackageLoader.getSystemContextPackageLoader().loadPackage("org.junit.runner", new Predicate<Class<?>>() {
+    final Set<Class<?>> loadedClasses = PackageLoader.getContextPackageLoader().loadPackage("org.junit.runner", new Predicate<Class<?>>() {
       @Override
       public boolean test(final Class<?> t) {
         return encountered[0] = "org.junit.runner.FilterFactory".equals(t.getName()) || encountered[0];

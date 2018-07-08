@@ -80,30 +80,30 @@ public final class PackageLoader extends ClassLoader {
   };
 
   /**
-   * Returns a PackageLoader that traverses the system classLoader to find
-   * packages and load their classes.
+   * Returns a <code>PackageLoader</code> that traverses the system classLoader
+   * to find packages and load their classes.
    *
-   * @return The PackageLoader for the system classLoader
+   * @return The <code>PackageLoader</code> for the system classLoader
    */
   public static PackageLoader getSystemPackageLoader() {
     return getPackageLoader(ClassLoader.getSystemClassLoader());
   }
 
   /**
-   * Returns a PackageLoader that traverses the system and context classLoaders
+   * Returns a <code>PackageLoader</code> that traverses the context classLoader
    * to find packages and load their classes.
    *
-   * @return The PackageLoader for the system and context classLoaders
+   * @return The <code>PackageLoader</code> for the system and context classLoaders
    */
-  public static PackageLoader getSystemContextPackageLoader() {
-    return getPackageLoader(ClassLoader.getSystemClassLoader(), Thread.currentThread().getContextClassLoader());
+  public static PackageLoader getContextPackageLoader() {
+    return getPackageLoader(Thread.currentThread().getContextClassLoader());
   }
 
   /**
-   * Returns a PackageLoader that traverses the provided classLoaders to find
-   * packages and load their classes.
+   * Returns a <code>PackageLoader</code> that traverses the provided classLoaders
+   * to find packages and load their classes.
    *
-   * @return The PackageLoader for the provided classLoaders
+   * @return The <code>PackageLoader</code> for the provided classLoaders
    */
   public static PackageLoader getPackageLoader(final Collection<ClassLoader> classLoaders) {
     if (classLoaders.size() == 0)
@@ -113,10 +113,10 @@ public final class PackageLoader extends ClassLoader {
   }
 
   /**
-   * Returns a PackageLoader that traverses the provided classLoaders to find
-   * packages and load their classes.
+   * Returns a <code>PackageLoader</code> that traverses the provided classLoaders
+   * to find packages and load their classes.
    *
-   * @return The PackageLoader for the provided classLoaders
+   * @return The <code>PackageLoader</code> for the provided classLoaders
    */
   public static PackageLoader getPackageLoader(final ClassLoader ... classLoaders) {
     if (classLoaders.length == 0)
@@ -154,16 +154,16 @@ public final class PackageLoader extends ClassLoader {
   }
 
   /**
-   * This method will call Class.forName() and initialize each final class in a
-   * given package and its sub-packages. This method will search for all
-   * existing package resources in all elements of the classpath. If the
-   * package exists in multiple classpath locations, such as a couple of jar
-   * files and a directory, each of the classpath references will be used to
-   * load all classes in each resource.
+   * This method will call <code>Class.forName()</code> and initialize each
+   * final class in a given package and its sub-packages. This method will
+   * search for all existing package resources in all elements of the
+   * classpath. If the package exists in multiple classpath locations, such
+   * as a couple of jar files and a directory, each of the classpath
+   * references will be used to load all classes in each resource.
    *
    * @param       pkg        The package.
    *
-   * @return      Set of all classes called with Class.forName().
+   * @return      Set of all classes called with <code>Class.forName()</code>.
    *
    * @exception   PackageNotFoundException    Thrown when a package name
    *              cannot be found in any classpath resources.
@@ -173,17 +173,17 @@ public final class PackageLoader extends ClassLoader {
   }
 
   /**
-   * This method will call Class.forName() and initialize each final class in a
-   * given package and its sub-packages. This method will search for all
-   * existing package resources in all elements of the classpath. If the
-   * package exists in multiple classpath locations, such as a couple of jar
-   * files and a directory, each of the classpath references will be used to
-   * load all classes in each resource.
+   * This method will call <code>Class.forName()</code> and initialize each
+   * final class in a given package and its sub-packages. This method will
+   * search for all existing package resources in all elements of the
+   * classpath. If the package exists in multiple classpath locations, such as
+   * a couple of jar files and a directory, each of the classpath references
+   * will be used to load all classes in each resource.
    *
    * @param       pkg        The package.
    * @param       initialize Predicate to test whether to initialize each Class.
    *
-   * @return      Set of all classes called with Class.forName().
+   * @return      Set of all classes called with <code>Class.forName()</code>.
    *
    * @exception   PackageNotFoundException    Thrown when a package name
    *              cannot be found in any classpath resources.
@@ -193,18 +193,18 @@ public final class PackageLoader extends ClassLoader {
   }
 
   /**
-   * This method will call Class.forName() class in in a given package and its
-   * sub-packages. This method will search for all existing package resources
-   * in all elements of the classpath. If the package exists in multiple
-   * classpath locations, such as a couple of jar files and a directory, each
-   * of the classpath references will be used to load all classes in each
-   * resource. This method will search for all classpath entries in all class
-   * loaders.
+   * This method will call <code>Class.forName()</code> class in a given
+   * package and its sub-packages. This method will search for all existing
+   * package resources in all elements of the classpath. If the package exists
+   * in multiple classpath locations, such as a couple of jar files and a
+   * directory, each of the classpath references will be used to load all
+   * classes in each resource. This method will search for all classpath
+   * entries in all class loaders.
    *
    * @param       pkg        The package.
    * @param       initialize Whether the classes must be initialized
    *
-   * @return      Set of all classes called with Class.forName().
+   * @return      Set of all classes called with <code>Class.forName()</code>.
    *
    * @exception   PackageNotFoundException    Thrown when a package name
    *              that cannot be found in any classpath resources.
@@ -214,17 +214,17 @@ public final class PackageLoader extends ClassLoader {
   }
 
   /**
-   * This method will call Class.forName() and initialize each final class in a
-   * given package and its sub-packages. This method will search for all
-   * existing package resources in all elements of the classpath. If the
-   * package exists in multiple classpath locations, such as a couple of jar
-   * files and a directory, each of the classpath references will be used to
-   * load all classes in each resource.
+   * This method will call <code>Class.forName()</code> and initialize each
+   * final class in a given package and its sub-packages. This method will
+   * search for all existing package resources in all elements of the
+   * classpath. If the package exists in multiple classpath locations, such
+   * as a couple of jar files and a directory, each of the classpath references
+   * will be used to load all classes in each resource.
    *
    * @param       name       The name of the package.
    * @param       initialize Whether the classes must be initialized
    *
-   * @return      Set of all classes called with Class.forName().
+   * @return      Set of all classes called with <code>Class.forName()</code>.
    *
    * @exception   PackageNotFoundException    Thrown when a package name
    *              cannot be found in any classpath resources.
@@ -234,17 +234,17 @@ public final class PackageLoader extends ClassLoader {
   }
 
   /**
-   * This method will call Class.forName() and initialize each final class in a
-   * given package and its sub-packages. This method will search for all
-   * existing package resources in all elements of the classpath. If the
-   * package exists in multiple classpath locations, such as a couple of jar
-   * files and a directory, each of the classpath references will be used to
-   * load all classes in each resource.
+   * This method will call <code>Class.forName()</code> and initialize each
+   * final class in a given package and its sub-packages. This method will
+   * search for all existing package resources in all elements of the
+   * classpath. If the package exists in multiple classpath locations, such as
+   * a couple of jar files and a directory, each of the classpath references
+   * will be used to load all classes in each resource.
    *
    * @param       name       The name of the package.
    * @param       initialize Predicate to test whether to initialize each Class.
    *
-   * @return      Set of all classes called with Class.forName().
+   * @return      Set of all classes called with <code>Class.forName()</code>.
    *
    * @exception   PackageNotFoundException    Thrown when a package name
    *              that cannot be found in any classpath resources.
@@ -254,18 +254,18 @@ public final class PackageLoader extends ClassLoader {
   }
 
   /**
-   * This method will call Class.forName() class in in a given package. This
-   * method will search for all existing package resources in all elements of
-   * the classpath. If the package exists in multiple classpath locations, such
-   * as a couple of jar files and a directory, each of the classpath references
-   * will be used to load all classes in each resource.
+   * This method will call <code>Class.forName()</code> class in in a given
+   * package. This method will search for all existing package resources in all
+   * elements of the classpath. If the package exists in multiple classpath
+   * locations, such as a couple of jar files and a directory, each of the
+   * classpath references will be used to load all classes in each resource.
    *
    * @param       packageName The name of the package.
    * @param       classLoader ClassLoader containing the resource, or null for all other ClassLoaders
    * @param       subPackages Whether subPackages should be loaded
    * @param       initialize  Whether the classes must be initialized
    *
-   * @return      Set of all classes called with Class.forName().
+   * @return      Set of all classes called with <code>Class.forName()</code>.
    *
    * @exception   PackageNotFoundException    Thrown when a package name
    *              cannot be found in any classpath resources.
@@ -281,11 +281,9 @@ public final class PackageLoader extends ClassLoader {
     if (packageName.length() == 0)
       throw new IllegalArgumentException("packageName.length() == 0");
 
-    final char firstChar = packageName.charAt(0);
     try {
-      final String location = (firstChar == '/' || firstChar == '.' ? packageName.substring(1) : packageName).replace('.', '/');
+      final String location = packageName.replace('.', '/');
       final List<Resource> resources = Resources.getResources(location, classLoaders);
-
       if (resources.size() == 0)
         throw new PackageNotFoundException(packageName);
 
