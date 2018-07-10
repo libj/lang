@@ -25,12 +25,10 @@ import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiPredicate;
@@ -45,32 +43,7 @@ import org.slf4j.LoggerFactory;
 public final class PackageLoader extends ClassLoader {
   private static final Logger logger = LoggerFactory.getLogger(PackageLoader.class);
 
-  private static final Map<Key,PackageLoader> instances = new HashMap<Key,PackageLoader>();
-
-  private static class Key {
-    private final Object value;
-
-    private Key(final Object value) {
-      this.value = value;
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-      if (obj == this)
-        return true;
-
-      if (!(obj instanceof Key))
-        return false;
-
-      final Key that = (Key)obj;
-      return value.getClass().isArray() ? that.value.getClass().isArray() && Arrays.equals((Object[])value, (Object[])that.value) : value.equals(that.value);
-    }
-
-    @Override
-    public int hashCode() {
-      return value.getClass().isArray() ? Arrays.hashCode((Object[])value) : value.hashCode();
-    }
-  }
+  private static final Map<ClassLoader,PackageLoader> instances = new HashMap<ClassLoader,PackageLoader>();
 
   private static BiPredicate<Path,BasicFileAttributes> classPredicate = new BiPredicate<Path,BasicFileAttributes>() {
     @Override
@@ -99,58 +72,25 @@ public final class PackageLoader extends ClassLoader {
     return getPackageLoader(Thread.currentThread().getContextClassLoader());
   }
 
-  /**
-   * Returns a <code>PackageLoader</code> that traverses the provided classLoaders
-   * to find packages and load their classes.
-   *
-   * @return The <code>PackageLoader</code> for the provided classLoaders
-   */
-  public static PackageLoader getPackageLoader(final Collection<ClassLoader> classLoaders) {
-    if (classLoaders.size() == 0)
-      throw new IllegalArgumentException("classLoaders.size() == 0");
-
-    return getPackageLoader((Object)classLoaders);
-  }
-
-  /**
-   * Returns a <code>PackageLoader</code> that traverses the provided classLoaders
-   * to find packages and load their classes.
-   *
-   * @return The <code>PackageLoader</code> for the provided classLoaders
-   */
-  public static PackageLoader getPackageLoader(final ClassLoader ... classLoaders) {
-    if (classLoaders.length == 0)
-      throw new IllegalArgumentException("classLoaders.length == 0");
-
-    return getPackageLoader(classLoaders.length == 1 ? classLoaders[0] : classLoaders);
-  }
-
-  private static PackageLoader getPackageLoader(final Object classLoaderKey) {
-    final Key key = new Key(classLoaderKey);
-    PackageLoader packageLoader = instances.get(key);
+  public static PackageLoader getPackageLoader(final ClassLoader classLoader) {
+    PackageLoader packageLoader = instances.get(classLoader);
     if (packageLoader != null)
       return packageLoader;
 
     synchronized (instances) {
-      packageLoader = instances.get(key);
+      packageLoader = instances.get(classLoader);
       if (packageLoader != null)
         return packageLoader;
 
-      if (classLoaderKey instanceof ClassLoader)
-        instances.put(key, packageLoader = new PackageLoader((ClassLoader)classLoaderKey));
-      else if (classLoaderKey instanceof ClassLoader[])
-        instances.put(key, packageLoader = new PackageLoader((ClassLoader[])classLoaderKey));
-      else
-        throw new UnsupportedOperationException("Unsupported key type: " + classLoaderKey.getClass().getName());
-
+      instances.put(classLoader, packageLoader = new PackageLoader(classLoader));
       return packageLoader;
     }
   }
 
-  private final ClassLoader[] classLoaders;
+  private final ClassLoader classLoader;
 
-  private PackageLoader(final ClassLoader ... classLoaders) {
-    this.classLoaders = classLoaders;
+  private PackageLoader(final ClassLoader classLoader) {
+    this.classLoader = classLoader;
   }
 
   /**
@@ -169,7 +109,7 @@ public final class PackageLoader extends ClassLoader {
    *              cannot be found in any classpath resources.
    */
   public Set<Class<?>> loadPackage(final Package pkg) throws PackageNotFoundException {
-    return PackageLoader.loadPackage(pkg.getName(), true, true, null, classLoaders);
+    return PackageLoader.loadPackage(pkg.getName(), true, true, null, classLoader);
   }
 
   /**
@@ -189,7 +129,7 @@ public final class PackageLoader extends ClassLoader {
    *              cannot be found in any classpath resources.
    */
   public Set<Class<?>> loadPackage(final Package pkg, final Predicate<Class<?>> initialize) throws PackageNotFoundException {
-    return PackageLoader.loadPackage(pkg.getName(), true, false, initialize, classLoaders);
+    return PackageLoader.loadPackage(pkg.getName(), true, false, initialize, classLoader);
   }
 
   /**
@@ -210,7 +150,7 @@ public final class PackageLoader extends ClassLoader {
    *              that cannot be found in any classpath resources.
    */
   public Set<Class<?>> loadPackage(final Package pkg, final boolean initialize) throws PackageNotFoundException {
-    return PackageLoader.loadPackage(pkg.getName(), true, initialize, null, classLoaders);
+    return PackageLoader.loadPackage(pkg.getName(), true, initialize, null, classLoader);
   }
 
   /**
@@ -230,7 +170,7 @@ public final class PackageLoader extends ClassLoader {
    *              cannot be found in any classpath resources.
    */
   public Set<Class<?>> loadPackage(final String name) throws PackageNotFoundException {
-    return PackageLoader.loadPackage(name, true, true, null, classLoaders);
+    return PackageLoader.loadPackage(name, true, true, null, classLoader);
   }
 
   /**
@@ -250,7 +190,7 @@ public final class PackageLoader extends ClassLoader {
    *              that cannot be found in any classpath resources.
    */
   public Set<Class<?>> loadPackage(final String name, final Predicate<Class<?>> initialize) throws PackageNotFoundException {
-    return PackageLoader.loadPackage(name, true, false, initialize, classLoaders);
+    return PackageLoader.loadPackage(name, true, false, initialize, classLoader);
   }
 
   /**
@@ -271,10 +211,10 @@ public final class PackageLoader extends ClassLoader {
    *              cannot be found in any classpath resources.
    */
   public Set<Class<?>> loadPackage(final String packageName, final boolean subPackages, final boolean initialize) throws PackageNotFoundException {
-    return PackageLoader.loadPackage(packageName, subPackages, initialize, null, classLoaders);
+    return PackageLoader.loadPackage(packageName, subPackages, initialize, null, classLoader);
   }
 
-  private static Set<Class<?>> loadPackage(final String packageName, final boolean subPackages, final boolean initialize, final Predicate<Class<?>> predicate, final ClassLoader ... classLoaders) throws PackageNotFoundException {
+  private static Set<Class<?>> loadPackage(final String packageName, final boolean subPackages, final boolean initialize, final Predicate<Class<?>> predicate, final ClassLoader classLoader) throws PackageNotFoundException {
     if (packageName == null)
       throw new NullPointerException("name == null");
 
@@ -283,7 +223,11 @@ public final class PackageLoader extends ClassLoader {
 
     try {
       final String location = packageName.replace('.', '/');
-      final List<Resource> resources = Resources.getResources(location, classLoaders);
+      final Enumeration<URL> urls = classLoader.getResources(location);
+      final ArrayList<URL> resources = new ArrayList<URL>(1);
+      while (urls.hasMoreElements())
+        resources.add(urls.nextElement());
+
       if (resources.size() == 0)
         throw new PackageNotFoundException(packageName);
 
@@ -293,8 +237,7 @@ public final class PackageLoader extends ClassLoader {
       // and its parent, and its parent... are listed first -- thus, if the resource belongs to
       // the classLoader, it is guaranteed to always be the last element in the list
       for (int i = resources.size() - 1; i >= 0; --i) {
-        final Resource resource = resources.get(i);
-        final URL url = resource.getURL();
+        final URL url = resources.get(i);
         final Set<String> classNames = new HashSet<String>();
         if ("file".equals(url.getProtocol())) {
           String decodedUrl;
@@ -314,13 +257,12 @@ public final class PackageLoader extends ClassLoader {
           throw new UnsupportedOperationException("Unsupported protocol in URL: " + url.toExternalForm());
         }
 
-        final ClassLoader resourceClassLoader = resource.getClassLoader();
         for (final String className : classNames) {
           try {
-            final Class<?> cls = Class.forName(className, initialize, resourceClassLoader);
+            final Class<?> cls = Class.forName(className, initialize, classLoader);
             boolean add = predicate == null;
             if (!initialize && !add && (add = predicate.test(cls)))
-              Class.forName(className, true, resourceClassLoader);
+              Class.forName(className, true, classLoader);
 
             if (add)
               classes.add(cls);
@@ -377,6 +319,7 @@ public final class PackageLoader extends ClassLoader {
     while (enumeration.hasMoreElements()) {
       final String entry = enumeration.nextElement().getName();
       if (entry.startsWith(entryName) && entry.endsWith(".class")) {
+        System.err.println(entry);
         final String className = (entry.charAt(0) == '/' ? entry.substring(1, entry.length() - 6) : entry.substring(0, entry.length() - 6)).replace('/', '.');
         if (className.startsWith(packagePrefix) && (subPackages || className.indexOf(".", packagePrefix.length() + 1) < 0))
           classNames.add(className);

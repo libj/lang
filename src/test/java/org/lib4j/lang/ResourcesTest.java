@@ -46,16 +46,4 @@ public class ResourcesTest {
     Assert.assertTrue(Resources.getLocationBase(ResourcesTest.class).isDirectory());
     Assert.assertEquals(RT_JAR, Resources.getLocationBase(String.class));
   }
-
-  @Test
-  public void testGetResource() throws Exception {
-    try {
-      Assert.assertNull(Resources.getResource(null));
-      Assert.fail("Expected NullPointerException");
-    }
-    catch (final NullPointerException e) {
-    }
-
-    Assert.assertTrue(Resources.getResource("META-INF", Thread.currentThread().getContextClassLoader()).getURL().toString().endsWith(".jar!/META-INF"));
-  }
 }

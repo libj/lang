@@ -17,19 +17,10 @@
 package org.lib4j.lang;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
 
 public final class Resources {
-  // FIXME: This needs to be removed due to Java 9's jrt:/java.base/java/lang....
-  public static File[] getLocationBases(final Class<?> ... classes) {
-    return getLocationBases(0, 0, classes);
-  }
-
   public static URL getResourceOrFile(final String name) throws MalformedURLException {
     final URL resource = Thread.currentThread().getContextClassLoader().getResource(name);
     if (resource != null)
@@ -47,42 +38,6 @@ public final class Resources {
     return Thread.currentThread().getContextClassLoader().getResource(name);
   }
 
-  /**
-   * @see ClassLoader#getResource(String)
-   */
-  public static Resource getResource(final String name, final ClassLoader ... classLoaders) {
-    if (name == null)
-      throw new NullPointerException("name == null");
-
-    for (final ClassLoader classLoader : classLoaders) {
-      final URL url = classLoader.getResource(name);
-      if (url != null)
-        return new Resource(url, classLoader);
-    }
-
-    return null;
-  }
-
-  /**
-   * @see ClassLoader#getResources(String)
-   */
-  public static List<Resource> getResources(final String name, final ClassLoader ... classLoaders) throws IOException {
-    if (name == null)
-      throw new NullPointerException("name == null");
-
-    final ArrayList<Resource> resources = new ArrayList<Resource>(1);
-    for (final ClassLoader classLoader : classLoaders) {
-      if (classLoader == null)
-        throw new NullPointerException("classLoader == null");
-
-      final Enumeration<URL> urls = classLoader.getResources(name);
-      while (urls.hasMoreElements())
-        resources.add(new Resource(urls.nextElement(), classLoader));
-    }
-
-    return resources;
-  }
-
   public static File getLocationBase(final Class<?> clazz) {
     if (clazz == null)
       return null;
@@ -97,6 +52,11 @@ public final class Resources {
       classFile = classFile.substring(0, classFile.length() - clazz.getName().length() - 7);
 
     return new File(classFile);
+  }
+
+  // FIXME: This needs to be removed due to Java 9's jrt:/java.base/java/lang....
+  public static File[] getLocationBases(final Class<?> ... classes) {
+    return getLocationBases(0, 0, classes);
   }
 
   private static File[] getLocationBases(final int index, final int depth, final Class<?> ... classes) {
