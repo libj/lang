@@ -34,6 +34,51 @@ import java.util.function.Function;
 public final class Classes {
   private static final Map<Class<?>,Map<String,Field>> classToFields = new ConcurrentHashMap<Class<?>,Map<String,Field>>();
 
+  public static String getDeclaringClassName(final String className) {
+    if (!JavaIdentifiers.isValid(className))
+      throw new IllegalArgumentException("Not a valid java identifier: " + className);
+
+    int index = className.length() - 1;
+    while ((index = className.lastIndexOf('$', index - 1)) > 1) {
+      char ch = className.charAt(index - 1);
+      if (ch != '.' && ch != '$')
+        break;
+    }
+
+    return index <= 0 ? className : className.substring(0, index);
+  }
+
+  public static String getRootDeclaringClassName(final String className) {
+    if (!JavaIdentifiers.isValid(className))
+      throw new IllegalArgumentException("Not a valid java identifier: " + className);
+
+    int index = 0;
+    while ((index = className.indexOf('$', index + 1)) > 1) {
+      char ch = className.charAt(index - 1);
+      if (ch != '.' && ch != '$')
+        break;
+    }
+
+    return index == -1 ? className : className.substring(0, index);
+  }
+
+  public static String toCanonicalClassName(final String className) {
+    if (!JavaIdentifiers.isValid(className))
+      throw new IllegalArgumentException("Not a valid java identifier: " + className);
+
+    final StringBuilder builder = new StringBuilder();
+    builder.append(className.charAt(0));
+    builder.append(className.charAt(1));
+    char last = '\0';
+    for (int i = 2; i < className.length(); i++) {
+      final char ch = className.charAt(i);
+      builder.append(last != '.' && last != '$' && ch == '$' ? '.' : ch);
+      last = ch;
+    }
+
+    return builder.toString();
+  }
+
   public static Type[] getGenericSuperclasses(final Class<?> cls) {
     return cls.getGenericSuperclass() instanceof ParameterizedType ? ((ParameterizedType)cls.getGenericSuperclass()).getActualTypeArguments() : null;
   }

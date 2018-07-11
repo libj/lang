@@ -32,8 +32,6 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.lib4j.lang.Arrays;
-import org.lib4j.lang.Classes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,5 +75,87 @@ public class ClassesTest {
   public void testStrictGetName() throws Exception {
     Assert.assertEquals("java.lang.String", Classes.getStrictName(String.class));
     Assert.assertEquals(ClassesTest.class.getName() + ".Inn$r.$nner.$nner$", Classes.getStrictName(Inn$r.$nner.$nner$.class));
+  }
+
+  @Test
+  public void testGetDeclaringClassName() {
+    try {
+      Classes.getRootDeclaringClassName(null);
+      Assert.fail("Expected NullPointerException");
+    }
+    catch (final NullPointerException e) {
+    }
+
+    try {
+      Classes.getRootDeclaringClassName("");
+      Assert.fail("Expected IllegalArgumentException");
+    }
+    catch (final IllegalArgumentException e) {
+    }
+
+    Assert.assertEquals("One", Classes.getDeclaringClassName("One$Two"));
+    Assert.assertEquals("$Two", Classes.getDeclaringClassName("$Two"));
+    Assert.assertEquals("foo.One", Classes.getDeclaringClassName("foo.One$Two"));
+    Assert.assertEquals("foo.bar.One", Classes.getDeclaringClassName("foo.bar.One$Two"));
+    Assert.assertEquals("foo.bar.One$Two", Classes.getDeclaringClassName("foo.bar.One$Two$Three"));
+
+    Assert.assertEquals("foo.bar.One.$Two", Classes.getDeclaringClassName("foo.bar.One.$Two"));
+    Assert.assertEquals("foo.bar.One.$Two", Classes.getDeclaringClassName("foo.bar.One.$Two$$Three"));
+    Assert.assertEquals("foo.bar.One.$Two$$Three", Classes.getDeclaringClassName("foo.bar.One.$Two$$Three$$$Four"));
+    Assert.assertEquals("foo.bar.One.$Two.$$Three", Classes.getDeclaringClassName("foo.bar.One.$Two.$$Three"));
+  }
+
+  @Test
+  public void testGetRootDeclaringClassName() {
+    try {
+      Classes.getRootDeclaringClassName(null);
+      Assert.fail("Expected NullPointerException");
+    }
+    catch (final NullPointerException e) {
+    }
+
+    try {
+      Classes.getRootDeclaringClassName("");
+      Assert.fail("Expected IllegalArgumentException");
+    }
+    catch (final IllegalArgumentException e) {
+    }
+
+    Assert.assertEquals("One", Classes.getRootDeclaringClassName("One$Two"));
+    Assert.assertEquals("$Two", Classes.getRootDeclaringClassName("$Two"));
+    Assert.assertEquals("foo.One", Classes.getRootDeclaringClassName("foo.One$Two"));
+    Assert.assertEquals("foo.bar.One", Classes.getRootDeclaringClassName("foo.bar.One$Two"));
+    Assert.assertEquals("foo.bar.One", Classes.getRootDeclaringClassName("foo.bar.One$Two$Three"));
+
+    Assert.assertEquals("foo.bar.One.$Two", Classes.getRootDeclaringClassName("foo.bar.One.$Two"));
+    Assert.assertEquals("foo.bar.One.$Two", Classes.getRootDeclaringClassName("foo.bar.One.$Two$$Three"));
+    Assert.assertEquals("foo.bar.One.$Two", Classes.getRootDeclaringClassName("foo.bar.One.$Two$$Three$$$Four"));
+    Assert.assertEquals("foo.bar.One.$Two.$$Three", Classes.getRootDeclaringClassName("foo.bar.One.$Two.$$Three"));
+  }
+
+  @Test
+  public void testToCanonicalClassName() {
+    try {
+      Classes.toCanonicalClassName(null);
+      Assert.fail("Expected NullPointerException");
+    }
+    catch (final NullPointerException e) {
+    }
+
+    try {
+      Classes.toCanonicalClassName("");
+      Assert.fail("Expected IllegalArgumentException");
+    }
+    catch (final IllegalArgumentException e) {
+    }
+
+    Assert.assertEquals("$Two", Classes.toCanonicalClassName("$Two"));
+    Assert.assertEquals("One.Two", Classes.toCanonicalClassName("One$Two"));
+    Assert.assertEquals("foo.One.Two", Classes.toCanonicalClassName("foo.One$Two"));
+    Assert.assertEquals("foo.bar.One.Two", Classes.toCanonicalClassName("foo.bar.One$Two"));
+
+    Assert.assertEquals("foo.bar.One.$Two", Classes.toCanonicalClassName("foo.bar.One.$Two"));
+    Assert.assertEquals("foo.bar.One.$Two.$Three", Classes.toCanonicalClassName("foo.bar.One.$Two$$Three"));
+    Assert.assertEquals("foo.bar.One.$Two.$$Three", Classes.toCanonicalClassName("foo.bar.One.$Two.$$Three"));
   }
 }
