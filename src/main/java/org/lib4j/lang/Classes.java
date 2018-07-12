@@ -84,6 +84,16 @@ public final class Classes {
     return builder.toString();
   }
 
+  public static String getCompoundName(final Class<?> cls) {
+    final String pkg = cls.getPackageName();
+    return pkg.length() == 0 ? cls.getName() : cls.getName().substring(pkg.length() + 1);
+  }
+
+  public static String getCanonicalCompoundName(final Class<?> cls) {
+    final String pkg = cls.getPackageName();
+    return pkg.length() == 0 ? cls.getCanonicalName() : cls.getCanonicalName().substring(pkg.length() + 1);
+  }
+
   public static Type[] getGenericSuperclasses(final Class<?> cls) {
     return cls.getGenericSuperclass() instanceof ParameterizedType ? ((ParameterizedType)cls.getGenericSuperclass()).getActualTypeArguments() : null;
   }

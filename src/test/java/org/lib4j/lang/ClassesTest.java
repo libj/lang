@@ -185,4 +185,28 @@ public class ClassesTest {
     Assert.assertEquals("foo.bar.One.$Two.$$Three", Classes.toCanonicalClassName("foo.bar.One.$Two.$$Three"));
     Assert.assertEquals("foo.bar.One.$Two.$$Three$", Classes.toCanonicalClassName("foo.bar.One.$Two.$$Three$"));
   }
+
+  @Test
+  public void testGetCompoundName() {
+    try {
+      Classes.getCompoundName(null);
+      Assert.fail("Expected NullPointerException");
+    }
+    catch (final NullPointerException e) {
+    }
+
+    Assert.assertEquals("Map$Entry", Classes.getCompoundName(Map.Entry.class));
+  }
+
+  @Test
+  public void testGetCanonicalCompoundName() {
+    try {
+      Classes.getCompoundName(null);
+      Assert.fail("Expected NullPointerException");
+    }
+    catch (final NullPointerException e) {
+    }
+
+    Assert.assertEquals("Map.Entry", Classes.getCanonicalCompoundName(Map.Entry.class));
+  }
 }
