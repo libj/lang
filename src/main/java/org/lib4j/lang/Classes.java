@@ -52,9 +52,13 @@ public final class Classes {
     if (!JavaIdentifiers.isValid(className))
       throw new IllegalArgumentException("Not a valid java identifier: " + className);
 
+    final int limit = className.length() - 1;
     int index = 0;
     while ((index = className.indexOf('$', index + 1)) > 1) {
       char ch = className.charAt(index - 1);
+      if (index == limit)
+        return className;
+
       if (ch != '.' && ch != '$')
         break;
     }
@@ -70,12 +74,13 @@ public final class Classes {
     builder.append(className.charAt(0));
     builder.append(className.charAt(1));
     char last = '\0';
-    for (int i = 2; i < className.length(); i++) {
+    for (int i = 2; i < className.length() - 1; i++) {
       final char ch = className.charAt(i);
       builder.append(last != '.' && last != '$' && ch == '$' ? '.' : ch);
       last = ch;
     }
 
+    builder.append(className.charAt(className.length() - 1));
     return builder.toString();
   }
 
