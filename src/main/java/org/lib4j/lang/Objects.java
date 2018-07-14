@@ -81,7 +81,7 @@ public final class Objects {
 
   public static boolean equals(final Object a, final Object b, final String ... fieldName) {
     if (fieldName == null)
-      throw new NullPointerException("fieldName == null");
+      throw new IllegalArgumentException("fieldName == null");
 
     if (a == b || fieldName.length == 0)
       return true;
@@ -192,7 +192,7 @@ public final class Objects {
 
   public static int hashCode(final Object obj, final String ... fieldName) {
     if (fieldName == null)
-      throw new NullPointerException("fieldName == null");
+      throw new IllegalArgumentException("fieldName == null");
 
     if (obj == null || fieldName.length == 0)
       return 0;
@@ -259,7 +259,7 @@ public final class Objects {
 
   private static String toString(final Object obj, final int depth, final IdentityHashMap<Object,Object> visited) {
     if (obj == null)
-      throw new NullPointerException("obj == null");
+      throw new IllegalArgumentException("obj == null");
 
     final Field[] fields = Classes.getDeclaredFieldsDeep(obj.getClass());
     final char[] pad = Arrays.createRepeat(' ', depth * 2);

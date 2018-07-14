@@ -390,10 +390,10 @@ public final class Classes {
 
   public static Method getDeclaredMethod(final Class<?> clazz, final String name, final Class<?> ... parameters) {
     if (clazz == null)
-      throw new NullPointerException("clazz == null");
+      throw new IllegalArgumentException("clazz == null");
 
     if (name == null)
-      throw new NullPointerException("name == null");
+      throw new IllegalArgumentException("name == null");
 
     final Method[] methods = clazz.getDeclaredMethods();
     for (final Method method : methods)

@@ -326,7 +326,7 @@ public final class Strings {
    */
   public static String repeat(final String string, final int count) {
     if (string == null)
-      throw new NullPointerException("string == null");
+      throw new IllegalArgumentException("string == null");
 
     if (count < 0)
       throw new IllegalArgumentException("count < 0");

@@ -216,7 +216,7 @@ public final class PackageLoader extends ClassLoader {
 
   private static Set<Class<?>> loadPackage(final String packageName, final boolean subPackages, final boolean initialize, final Predicate<Class<?>> predicate, final ClassLoader classLoader) throws PackageNotFoundException {
     if (packageName == null)
-      throw new NullPointerException("name == null");
+      throw new IllegalArgumentException("name == null");
 
     if (packageName.length() == 0)
       throw new IllegalArgumentException("packageName.length() == 0");

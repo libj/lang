@@ -210,9 +210,9 @@ public class StringsTest {
   public void testRepeat() {
     try {
       Strings.repeat(null, 10);
-      Assert.fail("Expected a NullPointerException");
+      Assert.fail("Expected a IllegalArgumentException");
     }
-    catch (final NullPointerException e) {
+    catch (final IllegalArgumentException e) {
     }
 
     try {

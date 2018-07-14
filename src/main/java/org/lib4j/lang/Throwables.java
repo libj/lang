@@ -30,13 +30,7 @@ public final class Throwables {
       causeField.setAccessible(true);
       causeField.set(t, cause);
     }
-    catch (final SecurityException e) {
-    }
-    catch (final NoSuchFieldException e) {
-    }
-    catch (final IllegalAccessException e) {
-    }
-    catch (final IllegalArgumentException e) {
+    catch (final IllegalAccessException | IllegalArgumentException | NoSuchFieldException | SecurityException e) {
     }
   }
 
@@ -46,13 +40,7 @@ public final class Throwables {
       detailMessageField.setAccessible(true);
       detailMessageField.set(t, message);
     }
-    catch (final SecurityException e) {
-    }
-    catch (final NoSuchFieldException e) {
-    }
-    catch (final IllegalAccessException e) {
-    }
-    catch (final IllegalArgumentException e) {
+    catch (final IllegalAccessException | IllegalArgumentException | NoSuchFieldException | SecurityException e) {
     }
   }
 
@@ -63,11 +51,10 @@ public final class Throwables {
 
   public static String toString(final Throwable t) {
     if (t == null)
-      throw new NullPointerException("t == null");
+      throw new IllegalArgumentException("t == null");
 
     final StringWriter stringWriter = new StringWriter();
-    final PrintWriter printWriter = new PrintWriter(stringWriter);
-    t.printStackTrace(printWriter);
+    t.printStackTrace(new PrintWriter(stringWriter));
     return stringWriter.toString();
   }
 

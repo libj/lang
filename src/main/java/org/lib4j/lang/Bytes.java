@@ -28,7 +28,7 @@ public final class Bytes {
 
   public static int indexOf(final byte[] bytes, final int fromIndex, final byte ... pattern) {
     if (bytes == null)
-      throw new NullPointerException("data == null");
+      throw new IllegalArgumentException("data == null");
 
     if (fromIndex < 0)
       throw new IndexOutOfBoundsException("fromIndex < 0");
@@ -54,7 +54,7 @@ public final class Bytes {
 
   public static int[] indicesOf(final byte[] bytes, final int fromIndex, final byte ... pattern) {
     if (bytes == null)
-      throw new NullPointerException("data == null");
+      throw new IllegalArgumentException("data == null");
 
     if (fromIndex < 0)
       throw new IllegalArgumentException("fromIndex < 0");
@@ -84,7 +84,7 @@ public final class Bytes {
 
   public static void replaceAll(final byte[] bytes, final byte target, final byte replacement) {
     if (bytes == null)
-      throw new NullPointerException("bytes == null");
+      throw new IllegalArgumentException("bytes == null");
 
     int index = 0;
     while ((index = Bytes.indexOf(bytes, index + 1, target)) != -1)
@@ -93,13 +93,13 @@ public final class Bytes {
 
   public static void replaceAll(final byte[] bytes, final byte[] target, final byte[] replacement) {
     if (bytes == null)
-      throw new NullPointerException("bytes == null");
+      throw new IllegalArgumentException("bytes == null");
 
     if (target == null)
-      throw new NullPointerException("target == null");
+      throw new IllegalArgumentException("target == null");
 
     if (replacement == null)
-      throw new NullPointerException("replacement == null");
+      throw new IllegalArgumentException("replacement == null");
 
     if (target.length != replacement.length)
       throw new IllegalArgumentException("target.length != replacement.length");
@@ -123,10 +123,10 @@ public final class Bytes {
 
   public static int indexOf(final byte[] bytes, final int fromIndex, final byte[] ... pattern) {
     if (bytes == null)
-      throw new NullPointerException("data == null");
+      throw new IllegalArgumentException("data == null");
 
     if (pattern == null)
-      throw new NullPointerException("pattern == null");
+      throw new IllegalArgumentException("pattern == null");
 
     if (fromIndex < 0)
       throw new IndexOutOfBoundsException("fromIndex < 0");

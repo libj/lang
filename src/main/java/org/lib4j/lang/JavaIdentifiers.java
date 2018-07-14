@@ -34,7 +34,7 @@ public final class JavaIdentifiers {
    */
   public static boolean isValid(final String className, final boolean qualified) {
     if (className == null)
-      throw new NullPointerException("className == null");
+      throw new IllegalArgumentException("className == null");
 
     return className.matches(qualified ? qualifiedJavaIdentifierPattern : unqualifiedJavaIdentifierPattern);
   }

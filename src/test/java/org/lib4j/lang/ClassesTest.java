@@ -81,9 +81,9 @@ public class ClassesTest {
   public void testGetDeclaringClassName() {
     try {
       Classes.getDeclaringClassName(null);
-      Assert.fail("Expected NullPointerException");
+      Assert.fail("Expected IllegalArgumentException");
     }
-    catch (final NullPointerException e) {
+    catch (final IllegalArgumentException e) {
     }
 
     try {
@@ -119,9 +119,9 @@ public class ClassesTest {
   public void testGetRootDeclaringClassName() {
     try {
       Classes.getRootDeclaringClassName(null);
-      Assert.fail("Expected NullPointerException");
+      Assert.fail("Expected IllegalArgumentException");
     }
-    catch (final NullPointerException e) {
+    catch (final IllegalArgumentException e) {
     }
 
     try {
@@ -156,9 +156,9 @@ public class ClassesTest {
   public void testToCanonicalClassName() {
     try {
       Classes.toCanonicalClassName(null);
-      Assert.fail("Expected NullPointerException");
+      Assert.fail("Expected IllegalArgumentException");
     }
-    catch (final NullPointerException e) {
+    catch (final IllegalArgumentException e) {
     }
 
     try {

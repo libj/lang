@@ -46,10 +46,10 @@ public final class Repeat {
         return null;
 
       if (type == null)
-        throw new NullPointerException("type == null");
+        throw new IllegalArgumentException("type == null");
 
       if (filter == null)
-        throw new NullPointerException("filter == null");
+        throw new IllegalArgumentException("filter == null");
 
       return null;
     }
@@ -68,10 +68,10 @@ public final class Repeat {
           return null;
 
         if (type == null)
-          throw new NullPointerException("type == null");
+          throw new IllegalArgumentException("type == null");
 
         if (recurser == null)
-          throw new NullPointerException("recurser == null");
+          throw new IllegalArgumentException("recurser == null");
 
         return recurse(container, array, type, recurser, args, 0, 0);
       }
