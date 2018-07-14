@@ -62,7 +62,7 @@ public class StringsTest {
 
   @Test
   public void testInterpolate() throws BadLocationException, ParseException {
-    final Map<String,String> properties = new HashMap<String,String>();
+    final Map<String,String> properties = new HashMap<>();
     properties.put("prop1", "prop1");
     properties.put("prop2", "prop2");
     properties.put("prop3", "prop3");
@@ -70,7 +70,7 @@ public class StringsTest {
     properties.put("prop5", "{{prop4}} plus {{prop3}}");
     properties.put("prop6", "{{prop5}} plus {{prop6}}");
 
-    final Map<String,String> tests = new HashMap<String,String>();
+    final Map<String,String> tests = new HashMap<>();
     tests.put("Bla bla {{prop1}} with {{prop2}} and {{prop3}}", "Bla bla prop1 with prop2 and prop3");
     tests.put("Bla bla {{prop2}} with {{prop3}} and {{prop4}}", "Bla bla prop2 with prop3 and prop2");
     tests.put("Bla bla {{prop3}} with {{prop4}} and {{prop5}}", "Bla bla prop3 with prop2 and prop2 plus prop3");

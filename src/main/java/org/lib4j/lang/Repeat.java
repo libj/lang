@@ -177,7 +177,7 @@ public final class Repeat {
     @SuppressWarnings("unchecked")
     protected <M>M[] simple(final M[] array, final Class<M> type, final Filter<M> filter, final Object ... args) {
       super.simple(array, type, filter, args);
-      final List<M> list = new ArrayList<M>(array.length);
+      final List<M> list = new ArrayList<>(array.length);
       for (int i = 0; i < array.length; i++)
         if (filter.accept(array[i], args))
           list.add(array[i]);

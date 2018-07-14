@@ -29,7 +29,7 @@ public class RepeatTest {
 
   private static final Integer[] values1 = {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 3, 4, 0, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 8};
   private static final Integer[] values2 = {0, 0, 0, 0, 0, 0, 0, 0};
-  private static final Repeat.Filter<Integer> filter = new Repeat.Filter<Integer>() {
+  private static final Repeat.Filter<Integer> filter = new Repeat.Filter<>() {
     @Override
     public boolean accept(final Integer member, final Object ... args) {
       return 1 == member || (3 < member && member < 7) || member == 8;

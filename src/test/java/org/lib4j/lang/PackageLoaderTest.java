@@ -86,7 +86,7 @@ public class PackageLoaderTest {
       Assert.assertFalse(testClass, isClassLoaded(testClass));
 
     final Set<Class<?>> loadedClasses = PackageLoader.getContextPackageLoader().loadPackage("org.junit");
-    final Set<String> classNames = new HashSet<String>();
+    final Set<String> classNames = new HashSet<>();
     for (final Class<?> loadedClass : loadedClasses)
       classNames.add(loadedClass.getName());
 

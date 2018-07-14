@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 public class ClassesTest {
   private static final Logger logger = LoggerFactory.getLogger(ClassesTest.class);
 
-  private final Map<Class<?>[],Class<?>> classes = new HashMap<Class<?>[],Class<?>>();
+  private final Map<Class<?>[],Class<?>> classes = new HashMap<>();
 
   @Before
   public void setUp() {

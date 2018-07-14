@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 public final class Classes {
-  private static final Map<Class<?>,Map<String,Field>> classToFields = new ConcurrentHashMap<Class<?>,Map<String,Field>>();
+  private static final Map<Class<?>,Map<String,Field>> classToFields = new ConcurrentHashMap<>();
 
   public static String getDeclaringClassName(final String className) {
     if (!JavaIdentifiers.isValid(className))
@@ -108,7 +108,7 @@ public final class Classes {
       return checkAccessField(fieldMap.get(fieldName), declared);
 
     final Field[] fields = declared ? cls.getDeclaredFields() : cls.getFields();
-    classToFields.put(cls, fieldMap = new HashMap<String,Field>());
+    classToFields.put(cls, fieldMap = new HashMap<>());
     for (final Field field : fields)
       fieldMap.put(field.getName(), field);
 
@@ -195,7 +195,7 @@ public final class Classes {
     return null;
   }
 
-  private static final Repeat.Recurser<Field,Class<?>> declaredFieldRecurser = new Repeat.Recurser<Field,Class<?>>() {
+  private static final Repeat.Recurser<Field,Class<?>> declaredFieldRecurser = new Repeat.Recurser<>() {
     @Override
     public boolean accept(final Field member, final Object ... args) {
       return true;
@@ -212,7 +212,7 @@ public final class Classes {
     }
   };
 
-  private static final Repeat.Recurser<Method,Class<?>> declaredMethodRecurser = new Repeat.Recurser<Method,Class<?>>() {
+  private static final Repeat.Recurser<Method,Class<?>> declaredMethodRecurser = new Repeat.Recurser<>() {
     @Override
     public boolean accept(final Method member, final Object ... args) {
       return true;
@@ -229,7 +229,7 @@ public final class Classes {
     }
   };
 
-  private static final Repeat.Recurser<Method,Class<?>> declaredMethodWithAnnotationRecurser = new Repeat.Recurser<Method,Class<?>>() {
+  private static final Repeat.Recurser<Method,Class<?>> declaredMethodWithAnnotationRecurser = new Repeat.Recurser<>() {
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
     public boolean accept(final Method member, final Object ... args) {
@@ -247,7 +247,7 @@ public final class Classes {
     }
   };
 
-  private static final Repeat.Recurser<Field,Class<?>> fieldRecurser = new Repeat.Recurser<Field,Class<?>>() {
+  private static final Repeat.Recurser<Field,Class<?>> fieldRecurser = new Repeat.Recurser<>() {
     @Override
     public boolean accept(final Field field, final Object ... args) {
       return Modifier.isPublic((field).getModifiers());
@@ -264,7 +264,7 @@ public final class Classes {
     }
   };
 
-  private static final Repeat.Filter<Field> declaredFieldWithAnnotationFilter = new Repeat.Filter<Field>() {
+  private static final Repeat.Filter<Field> declaredFieldWithAnnotationFilter = new Repeat.Filter<>() {
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
     public boolean accept(final Field member, final Object ... args) {
@@ -272,7 +272,7 @@ public final class Classes {
     }
   };
 
-  private static final Repeat.Filter<Method> declaredMethodWithAnnotationFilter = new Repeat.Filter<Method>() {
+  private static final Repeat.Filter<Method> declaredMethodWithAnnotationFilter = new Repeat.Filter<>() {
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
     public boolean accept(final Method member, final Object ... args) {
@@ -280,7 +280,7 @@ public final class Classes {
     }
   };
 
-  private static final Repeat.Filter<Class<?>> classWithAnnotationFilter = new Repeat.Filter<Class<?>>() {
+  private static final Repeat.Filter<Class<?>> classWithAnnotationFilter = new Repeat.Filter<>() {
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
     public boolean accept(final Class<?> member, final Object ... args) {
@@ -288,7 +288,7 @@ public final class Classes {
     }
   };
 
-  private static final Repeat.Recurser<Class<?>,Class<?>> classWithAnnotationRecurser = new Repeat.Recurser<Class<?>,Class<?>>() {
+  private static final Repeat.Recurser<Class<?>,Class<?>> classWithAnnotationRecurser = new Repeat.Recurser<>() {
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
     public boolean accept(final Class<?> member, final Object ... args) {

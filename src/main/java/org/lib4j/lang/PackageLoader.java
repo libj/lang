@@ -43,9 +43,9 @@ import org.slf4j.LoggerFactory;
 public final class PackageLoader extends ClassLoader {
   private static final Logger logger = LoggerFactory.getLogger(PackageLoader.class);
 
-  private static final Map<ClassLoader,PackageLoader> instances = new HashMap<ClassLoader,PackageLoader>();
+  private static final Map<ClassLoader,PackageLoader> instances = new HashMap<>();
 
-  private static BiPredicate<Path,BasicFileAttributes> classPredicate = new BiPredicate<Path,BasicFileAttributes>() {
+  private static BiPredicate<Path,BasicFileAttributes> classPredicate = new BiPredicate<>() {
     @Override
     public boolean test(final Path t, final BasicFileAttributes u) {
       return u.isRegularFile() && t.toString().endsWith(".class");
@@ -224,21 +224,21 @@ public final class PackageLoader extends ClassLoader {
     try {
       final String location = packageName.replace('.', '/');
       final Enumeration<URL> urls = classLoader.getResources(location);
-      final ArrayList<URL> resources = new ArrayList<URL>(1);
+      final ArrayList<URL> resources = new ArrayList<>(1);
       while (urls.hasMoreElements())
         resources.add(urls.nextElement());
 
       if (resources.size() == 0)
         throw new PackageNotFoundException(packageName);
 
-      final Set<Class<?>> classes = new HashSet<Class<?>>();
+      final Set<Class<?>> classes = new HashSet<>();
 
       // Reverse the order of resources, because the resources from the classLoader's parent,
       // and its parent, and its parent... are listed first -- thus, if the resource belongs to
       // the classLoader, it is guaranteed to always be the last element in the list
       for (int i = resources.size() - 1; i >= 0; --i) {
         final URL url = resources.get(i);
-        final Set<String> classNames = new HashSet<String>();
+        final Set<String> classNames = new HashSet<>();
         if ("file".equals(url.getProtocol())) {
           String decodedUrl;
           try {
@@ -284,7 +284,7 @@ public final class PackageLoader extends ClassLoader {
 
   private static void loadDirectory(final Set<String> classNames, final File directory, final String packageName, final boolean subPackages) throws IOException {
     final Path path = directory.toPath();
-    final Consumer<Path> consumer = new Consumer<Path>() {
+    final Consumer<Path> consumer = new Consumer<>() {
       final String packagePrefix = packageName + ".";
 
       @Override
@@ -319,7 +319,6 @@ public final class PackageLoader extends ClassLoader {
     while (enumeration.hasMoreElements()) {
       final String entry = enumeration.nextElement().getName();
       if (entry.startsWith(entryName) && entry.endsWith(".class")) {
-        System.err.println(entry);
         final String className = (entry.charAt(0) == '/' ? entry.substring(1, entry.length() - 6) : entry.substring(0, entry.length() - 6)).replace('/', '.');
         if (className.startsWith(packagePrefix) && (subPackages || className.indexOf(".", packagePrefix.length() + 1) < 0))
           classNames.add(className);

@@ -25,9 +25,9 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 
 public final class Objects {
-  private static final Map<Class<?>,Field[]> blackWhiteListMap = new HashMap<Class<?>,Field[]>();
+  private static final Map<Class<?>,Field[]> blackWhiteListMap = new HashMap<>();
 
-  private static final Repeat.Filter<Field> nonBlacklistFilter = new Repeat.Filter<Field>() {
+  private static final Repeat.Filter<Field> nonBlacklistFilter = new Repeat.Filter<>() {
     @Override
     public boolean accept(final Field member, final Object ... args) {
       final boolean accept = !member.isSynthetic() && !Modifier.isStatic(member.getModifiers()) && member.getAnnotation(NotEqualable.class) == null;
@@ -38,7 +38,7 @@ public final class Objects {
     }
   };
 
-  private static final Repeat.Filter<Field> whitelistFilter = new Repeat.Filter<Field>() {
+  private static final Repeat.Filter<Field> whitelistFilter = new Repeat.Filter<>() {
     @Override
     public boolean accept(final Field member, final Object ... args) {
       final boolean accept = !member.isSynthetic() && !Modifier.isStatic(member.getModifiers()) && member.getAnnotation(Equalable.class) != null;
@@ -244,7 +244,7 @@ public final class Objects {
   }
 
   public static String toString(final Object obj) {
-    return obj == null ? null : toString(obj, 1, new IdentityHashMap<Object,Object>());
+    return obj == null ? null : toString(obj, 1, new IdentityHashMap<>());
   }
 
   public static String identity(final Object obj) {
