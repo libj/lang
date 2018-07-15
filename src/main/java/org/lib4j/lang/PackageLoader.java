@@ -120,16 +120,16 @@ public final class PackageLoader extends ClassLoader {
    * a couple of jar files and a directory, each of the classpath references
    * will be used to load all classes in each resource.
    *
-   * @param       pkg        The package.
-   * @param       initialize Predicate to test whether to initialize each Class.
+   * @param       pkg    The package.
+   * @param       filter Filter which classes will be initialized and returned.
    *
    * @return      Set of all classes called with <code>Class.forName()</code>.
    *
    * @exception   PackageNotFoundException    Thrown when a package name
    *              cannot be found in any classpath resources.
    */
-  public Set<Class<?>> loadPackage(final Package pkg, final Predicate<Class<?>> initialize) throws PackageNotFoundException {
-    return PackageLoader.loadPackage(pkg.getName(), true, false, initialize, classLoader);
+  public Set<Class<?>> loadPackage(final Package pkg, final Predicate<Class<?>> filter) throws PackageNotFoundException {
+    return PackageLoader.loadPackage(pkg.getName(), true, false, filter, classLoader);
   }
 
   /**
@@ -214,7 +214,7 @@ public final class PackageLoader extends ClassLoader {
     return PackageLoader.loadPackage(packageName, subPackages, initialize, null, classLoader);
   }
 
-  private static Set<Class<?>> loadPackage(final String packageName, final boolean subPackages, final boolean initialize, final Predicate<Class<?>> predicate, final ClassLoader classLoader) throws PackageNotFoundException {
+  private static Set<Class<?>> loadPackage(final String packageName, final boolean subPackages, final boolean initialize, final Predicate<Class<?>> filter, final ClassLoader classLoader) throws PackageNotFoundException {
     if (packageName == null)
       throw new IllegalArgumentException("name == null");
 
@@ -260,8 +260,8 @@ public final class PackageLoader extends ClassLoader {
         for (final String className : classNames) {
           try {
             final Class<?> cls = Class.forName(className, initialize, classLoader);
-            boolean add = predicate == null;
-            if (!initialize && !add && (add = predicate.test(cls)))
+            boolean add = filter == null;
+            if (!initialize && !add && (add = filter.test(cls)))
               Class.forName(className, true, classLoader);
 
             if (add)

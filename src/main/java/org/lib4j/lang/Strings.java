@@ -232,10 +232,9 @@ public final class Strings {
     if (strings.length == 1)
       return strings[0];
 
-    final char[] chars = strings[0].toCharArray();
-    for (int c = 0; c < chars.length; c++)
+    for (int c = 0; c < strings[0].length(); c++)
       for (int i = 1; i < strings.length; i++)
-        if (chars[c] != strings[i].charAt(c))
+        if (strings[0].charAt(c) != strings[i].charAt(c))
           return strings[0].substring(0, c);
 
     return strings[0];
@@ -250,15 +249,14 @@ public final class Strings {
       return iterator.next();
 
     final String string0 = iterator.next();
-    final char[] chars = string0.toCharArray();
-    for (int c = 0; c < chars.length; c++) {
+    for (int c = 0; c < string0.length(); c++) {
       if (c > 0) {
         iterator = strings.iterator();
         iterator.next();
       }
 
       while (iterator.hasNext())
-        if (chars[c] != iterator.next().charAt(c))
+        if (string0.charAt(c) != iterator.next().charAt(c))
           return string0.substring(0, c);
     }
 
