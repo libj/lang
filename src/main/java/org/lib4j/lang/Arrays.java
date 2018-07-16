@@ -600,6 +600,620 @@ public final class Arrays {
    * @return The delimiter delimited <code>toString()</code> representation of
    * the array.
    */
+  public static String toString(final byte[] array, final char delimiter) {
+    return array == null ? null : toString(array, delimiter, 0, array.length);
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>char</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final byte[] array, final char delimiter, final int offset) {
+    return array == null ? null : toString(array, delimiter, offset, array.length - offset);
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>char</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final byte[] array, final char delimiter, final int offset, final int length) {
+    if (array == null)
+      return null;
+
+    if (array.length < offset)
+      throw new ArrayIndexOutOfBoundsException(offset);
+
+    if (array.length == offset)
+      return "";
+
+    if (array.length == offset + 1)
+      return String.valueOf(array[offset]);
+
+    final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
+    for (int i = offset + 1; i < length + offset; i++)
+      buffer.append(delimiter).append(String.valueOf(array[i]));
+
+    return buffer.toString();
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>String</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final byte[] array, final String delimiter) {
+    return array == null ? null : toString(array, delimiter, 0, array.length);
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>String</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final byte[] array, final String delimiter, final int offset) {
+    return array == null ? null : toString(array, delimiter, offset, array.length - offset);
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>String</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final byte[] array, final String delimiter, final int offset, final int length) {
+    if (array == null)
+      return null;
+
+    if (array.length < offset)
+      throw new ArrayIndexOutOfBoundsException(offset);
+
+    if (array.length == offset)
+      return "";
+
+    if (array.length == offset + 1)
+      return String.valueOf(array[offset]);
+
+    final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
+    for (int i = offset + 1; i < length + offset; i++)
+      buffer.append(delimiter).append(String.valueOf(array[i]));
+
+    return buffer.toString();
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>char</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final char[] array, final char delimiter) {
+    return array == null ? null : toString(array, delimiter, 0, array.length);
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>char</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final char[] array, final char delimiter, final int offset) {
+    return array == null ? null : toString(array, delimiter, offset, array.length - offset);
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>char</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final char[] array, final char delimiter, final int offset, final int length) {
+    if (array == null)
+      return null;
+
+    if (array.length < offset)
+      throw new ArrayIndexOutOfBoundsException(offset);
+
+    if (array.length == offset)
+      return "";
+
+    if (array.length == offset + 1)
+      return String.valueOf(array[offset]);
+
+    final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
+    for (int i = offset + 1; i < length + offset; i++)
+      buffer.append(delimiter).append(String.valueOf(array[i]));
+
+    return buffer.toString();
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>String</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final char[] array, final String delimiter) {
+    return array == null ? null : toString(array, delimiter, 0, array.length);
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>String</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final char[] array, final String delimiter, final int offset) {
+    return array == null ? null : toString(array, delimiter, offset, array.length - offset);
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>String</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final char[] array, final String delimiter, final int offset, final int length) {
+    if (array == null)
+      return null;
+
+    if (array.length < offset)
+      throw new ArrayIndexOutOfBoundsException(offset);
+
+    if (array.length == offset)
+      return "";
+
+    if (array.length == offset + 1)
+      return String.valueOf(array[offset]);
+
+    final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
+    for (int i = offset + 1; i < length + offset; i++)
+      buffer.append(delimiter).append(String.valueOf(array[i]));
+
+    return buffer.toString();
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>char</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final short[] array, final char delimiter) {
+    return array == null ? null : toString(array, delimiter, 0, array.length);
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>char</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final short[] array, final char delimiter, final int offset) {
+    return array == null ? null : toString(array, delimiter, offset, array.length - offset);
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>char</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final short[] array, final char delimiter, final int offset, final int length) {
+    if (array == null)
+      return null;
+
+    if (array.length < offset)
+      throw new ArrayIndexOutOfBoundsException(offset);
+
+    if (array.length == offset)
+      return "";
+
+    if (array.length == offset + 1)
+      return String.valueOf(array[offset]);
+
+    final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
+    for (int i = offset + 1; i < length + offset; i++)
+      buffer.append(delimiter).append(String.valueOf(array[i]));
+
+    return buffer.toString();
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>String</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final short[] array, final String delimiter) {
+    return array == null ? null : toString(array, delimiter, 0, array.length);
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>String</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final short[] array, final String delimiter, final int offset) {
+    return array == null ? null : toString(array, delimiter, offset, array.length - offset);
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>String</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final short[] array, final String delimiter, final int offset, final int length) {
+    if (array == null)
+      return null;
+
+    if (array.length < offset)
+      throw new ArrayIndexOutOfBoundsException(offset);
+
+    if (array.length == offset)
+      return "";
+
+    if (array.length == offset + 1)
+      return String.valueOf(array[offset]);
+
+    final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
+    for (int i = offset + 1; i < length + offset; i++)
+      buffer.append(delimiter).append(String.valueOf(array[i]));
+
+    return buffer.toString();
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>char</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final int[] array, final char delimiter) {
+    return array == null ? null : toString(array, delimiter, 0, array.length);
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>char</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final int[] array, final char delimiter, final int offset) {
+    return array == null ? null : toString(array, delimiter, offset, array.length - offset);
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>char</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final int[] array, final char delimiter, final int offset, final int length) {
+    if (array == null)
+      return null;
+
+    if (array.length < offset)
+      throw new ArrayIndexOutOfBoundsException(offset);
+
+    if (array.length == offset)
+      return "";
+
+    if (array.length == offset + 1)
+      return String.valueOf(array[offset]);
+
+    final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
+    for (int i = offset + 1; i < length + offset; i++)
+      buffer.append(delimiter).append(String.valueOf(array[i]));
+
+    return buffer.toString();
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>String</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final int[] array, final String delimiter) {
+    return array == null ? null : toString(array, delimiter, 0, array.length);
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>String</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final int[] array, final String delimiter, final int offset) {
+    return array == null ? null : toString(array, delimiter, offset, array.length - offset);
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>String</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final int[] array, final String delimiter, final int offset, final int length) {
+    if (array == null)
+      return null;
+
+    if (array.length < offset)
+      throw new ArrayIndexOutOfBoundsException(offset);
+
+    if (array.length == offset)
+      return "";
+
+    if (array.length == offset + 1)
+      return String.valueOf(array[offset]);
+
+    final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
+    for (int i = offset + 1; i < length + offset; i++)
+      buffer.append(delimiter).append(String.valueOf(array[i]));
+
+    return buffer.toString();
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>char</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final long[] array, final char delimiter) {
+    return array == null ? null : toString(array, delimiter, 0, array.length);
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>char</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final long[] array, final char delimiter, final int offset) {
+    return array == null ? null : toString(array, delimiter, offset, array.length - offset);
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>char</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final long[] array, final char delimiter, final int offset, final int length) {
+    if (array == null)
+      return null;
+
+    if (array.length <= offset)
+      return "";
+
+    if (array.length == offset + 1)
+      return String.valueOf(array[offset]);
+
+    final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
+    for (int i = offset + 1; i < length + offset; i++)
+      buffer.append(delimiter).append(String.valueOf(array[i]));
+
+    return buffer.toString();
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>String</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final long[] array, final String delimiter) {
+    return array == null ? null : toString(array, delimiter, 0, array.length);
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>String</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final long[] array, final String delimiter, final int offset) {
+    return array == null ? null : toString(array, delimiter, offset, array.length - offset);
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>String</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @param offset The starting offset in the array.
+   * @param length The number of array elements to be included.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
+  public static String toString(final long[] array, final String delimiter, final int offset, final int length) {
+    if (array == null)
+      return null;
+
+    if (array.length <= offset)
+      return "";
+
+    if (array.length == offset + 1)
+      return String.valueOf(array[offset]);
+
+    final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
+    for (int i = offset + 1; i < length + offset; i++)
+      buffer.append(delimiter).append(String.valueOf(array[i]));
+
+    return buffer.toString();
+  }
+
+  /**
+   * Create a <code>String</code> representation of the array by calling each
+   * member's <code>toString()</code> method, delimited by the supplied delimiter
+   * <code>char</code>.
+   *
+   * @param array The array.
+   * @param delimiter The delimiter.
+   * @return The delimiter delimited <code>toString()</code> representation of
+   * the array.
+   */
   public static String toString(final Object[] array, final char delimiter) {
     return array == null ? null : toString(array, delimiter, 0, array.length);
   }
