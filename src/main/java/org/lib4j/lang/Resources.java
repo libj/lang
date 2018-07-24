@@ -21,55 +21,35 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public final class Resources {
-  public static URL getResourceOrFile(final String name) throws MalformedURLException {
+  public static URL getResourceOrFile(final String name) {
     final URL resource = Thread.currentThread().getContextClassLoader().getResource(name);
     if (resource != null)
       return resource;
 
     final File file = new File(name);
-    return file.exists() ? file.toURI().toURL() : null;
-  }
-
-  public static URL getFileOrResource(final String name) throws MalformedURLException {
-    final File file = new File(name);
-    if (file.exists())
-      return file.toURI().toURL();
-
-    return Thread.currentThread().getContextClassLoader().getResource(name);
-  }
-
-  public static File getLocationBase(final Class<?> clazz) {
-    if (clazz == null)
+    if (!file.exists())
       return null;
 
-    final URL url = Thread.currentThread().getContextClassLoader().getResource(clazz.getName().replace('.', '/') + ".class");
-    String classFile = url.getFile();
-    final int colon = classFile.indexOf(':');
-    final int bang = classFile.indexOf('!');
-    if (bang != -1 && colon != -1)
-      classFile = classFile.substring(colon + 1, bang);
-    else
-      classFile = classFile.substring(0, classFile.length() - clazz.getName().length() - 7);
-
-    return new File(classFile);
+    try {
+      return file.toURI().toURL();
+    }
+    catch (final MalformedURLException e) {
+      throw new IllegalArgumentException(name, e);
+    }
   }
 
-  // FIXME: This needs to be removed due to Java 9's jrt:/java.base/java/lang....
-  public static File[] getLocationBases(final Class<?> ... classes) {
-    return getLocationBases(0, 0, classes);
-  }
+  public static URL getFileOrResource(final String name) {
+    final File file = new File(name);
+    if (file.exists()) {
+      try {
+        return file.toURI().toURL();
+      }
+      catch (final MalformedURLException e) {
+        throw new IllegalArgumentException(name, e);
+      }
+    }
 
-  private static File[] getLocationBases(final int index, final int depth, final Class<?> ... classes) {
-    if (index == classes.length)
-      return new File[depth];
-
-    final File location = getLocationBase(classes[index]);
-    if (location == null)
-      return getLocationBases(index + 1, depth, classes);
-
-    final File[] locations = getLocationBases(index + 1, depth + 1, classes);
-    locations[depth] = location;
-    return locations;
+    return Thread.currentThread().getContextClassLoader().getResource(name);
   }
 
   private Resources() {
