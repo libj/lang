@@ -56,13 +56,13 @@ public final class JavaIdentifiers {
   private static final String[] reservedWords = {"abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class", "const", "continue", "default", "do", "double", "else", "enum", "extends", "false", "final", "finally", "float", "for", "goto", "if", "implements", "import", "instanceof", "int", "interface", "long", "native", "new", "null", "package", "private", "protected", "public", "return", "short", "static", "strictfp", "super", "switch", "synchronized", "this", "throw", "throws", "transient", "true", "try", "void", "volatile", "while"};
   private static final char[] discardTokens = {'!', '"', '#', '%', '&', '\'', '(', ')', '*', ',', '-', '.', '.', '/', ':', ';', '<', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~'};
 
-  private static boolean isJavaReservedWord(final String word) {
+  public static boolean isReservedWord(final String word) {
     return Arrays.binarySearch(reservedWords, word) >= 0;
   }
 
   private static String transformNotReserved(final char prefix, final char suffix, final StringBuilder builder) {
     final String word = builder.toString();
-    return !isJavaReservedWord(word) ? word : suffix == '\0' ? builder.insert(0, prefix).toString() : builder.append(suffix).toString();
+    return !isReservedWord(word) ? word : suffix == '\0' ? builder.insert(0, prefix).toString() : builder.append(suffix).toString();
   }
 
   /**
