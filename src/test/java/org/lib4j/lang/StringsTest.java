@@ -198,12 +198,39 @@ public class StringsTest {
 
     Assert.assertEquals("a", Strings.getCommonPrefix("a"));
     Assert.assertEquals("a", Strings.getCommonPrefix(Arrays.asList("a")));
+
+    Assert.assertEquals("", Strings.getCommonPrefix("", "b"));
+    Assert.assertEquals("", Strings.getCommonPrefix(Arrays.asList("", "b")));
+
+    Assert.assertEquals("", Strings.getCommonPrefix("a", ""));
+    Assert.assertEquals("", Strings.getCommonPrefix(Arrays.asList("a", "")));
+
     Assert.assertEquals("", Strings.getCommonPrefix("a", "b"));
     Assert.assertEquals("", Strings.getCommonPrefix(Arrays.asList("a", "b")));
+
+    Assert.assertEquals("", Strings.getCommonPrefix("aa", "b"));
+    Assert.assertEquals("", Strings.getCommonPrefix(Arrays.asList("aa", "b")));
+
+    Assert.assertEquals("", Strings.getCommonPrefix("a", "bb"));
+    Assert.assertEquals("", Strings.getCommonPrefix(Arrays.asList("a", "bb")));
+
     Assert.assertEquals("a", Strings.getCommonPrefix("aa", "ab"));
     Assert.assertEquals("a", Strings.getCommonPrefix(Arrays.asList("aa", "ab")));
+
+    Assert.assertEquals("a", Strings.getCommonPrefix("aaa", "ab"));
+    Assert.assertEquals("a", Strings.getCommonPrefix(Arrays.asList("aaa", "ab")));
+
+    Assert.assertEquals("a", Strings.getCommonPrefix("aa", "abb"));
+    Assert.assertEquals("a", Strings.getCommonPrefix(Arrays.asList("aa", "abb")));
+
     Assert.assertEquals("aa", Strings.getCommonPrefix("aaa", "aab"));
     Assert.assertEquals("aa", Strings.getCommonPrefix(Arrays.asList("aaa", "aab")));
+
+    Assert.assertEquals("aa", Strings.getCommonPrefix("aaaa", "aab"));
+    Assert.assertEquals("aa", Strings.getCommonPrefix(Arrays.asList("aaaa", "aab")));
+
+    Assert.assertEquals("aa", Strings.getCommonPrefix("aaa", "aabb"));
+    Assert.assertEquals("aa", Strings.getCommonPrefix(Arrays.asList("aaa", "aabb")));
   }
 
   @Test

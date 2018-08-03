@@ -234,7 +234,7 @@ public final class Strings {
 
     for (int c = 0; c < strings[0].length(); c++)
       for (int i = 1; i < strings.length; i++)
-        if (strings[0].charAt(c) != strings[i].charAt(c))
+        if (c == strings[i].length() || strings[0].charAt(c) != strings[i].charAt(c))
           return strings[0].substring(0, c);
 
     return strings[0];
@@ -255,9 +255,11 @@ public final class Strings {
         iterator.next();
       }
 
-      while (iterator.hasNext())
-        if (string0.charAt(c) != iterator.next().charAt(c))
+      while (iterator.hasNext()) {
+        final String next = iterator.next();
+        if (c == next.length() || string0.charAt(c) != next.charAt(c))
           return string0.substring(0, c);
+      }
     }
 
     return string0;
