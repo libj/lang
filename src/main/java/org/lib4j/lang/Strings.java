@@ -376,6 +376,73 @@ public final class Strings {
     return i == 0 && j == string.length() - 1 ? string : string.substring(i, j + 1);
   }
 
+  public static int indexOfUnQuoted(final String string, final char ch) {
+    return indexOfUnQuoted(string, ch, 0);
+  }
+
+  public static int indexOfUnQuoted(final String string, final char ch, final int fromIndex) {
+    if (string == null)
+      throw new IllegalArgumentException("string == null");
+
+    boolean esacped = false;
+    boolean inSingleQuote = false;
+    boolean inDoubleQuote = false;
+    for (int i = fromIndex; i < string.length(); ++i) {
+      final char c = string.charAt(i);
+      if (c == '\\')
+        esacped = true;
+      else if (esacped)
+        esacped = false;
+      else if (c == '\'')
+        inSingleQuote = !inSingleQuote;
+      else if (c == '"')
+        inDoubleQuote = !inDoubleQuote;
+      else if (c == ch && !inSingleQuote && !inDoubleQuote)
+        return i;
+    }
+
+    return -1;
+  }
+
+  public static int lastIndexOfUnQuoted(final String string, final char ch) {
+    return lastIndexOfUnQuoted(string, ch, string.length());
+  }
+
+  public static int lastIndexOfUnQuoted(final String string, final char ch, final int fromIndex) {
+    if (string == null)
+      throw new IllegalArgumentException("string == null");
+
+    boolean esacped = false;
+    boolean inSingleQuote = false;
+    boolean inDoubleQuote = false;
+    char n = '\0';
+    for (int i = fromIndex - 1; i >= 0; --i) {
+      final char c = string.charAt(i);
+      if (c == '\\')
+        esacped = true;
+      else if (esacped)
+        esacped = false;
+      else if (n == '\'')
+        inSingleQuote = !inSingleQuote;
+      else if (n == '"')
+        inDoubleQuote = !inDoubleQuote;
+      else if (n == ch && !inSingleQuote && !inDoubleQuote)
+        return i + 1;
+
+      n = c;
+    }
+
+    return n == ch ? 0 : -1;
+  }
+
+  public static String toTruncatedString(final Object obj, final int length) {
+    if (length < 4)
+      throw new IllegalArgumentException("length < 4: " + length);
+
+    final String str = obj == null ? "null" : obj.toString();
+    return str.length() > length ? str.substring(0, length - 3) + "..." : str;
+ }
+
   private Strings() {
   }
 }

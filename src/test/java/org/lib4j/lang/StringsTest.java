@@ -16,6 +16,8 @@
 
 package org.lib4j.lang;
 
+import static org.junit.Assert.*;
+
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -23,7 +25,6 @@ import java.util.Map;
 
 import javax.swing.text.BadLocationException;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 public class StringsTest {
@@ -34,14 +35,14 @@ public class StringsTest {
   public void testGetRandomAlphaString() {
     try {
       Strings.getRandomAlphaString(-1);
-      Assert.fail("Expecting an IllegalArgumentException");
+      fail("Expecting an IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {
     }
 
     for (int length = 0; length < 100; length++) {
       final String randomAlpha = Strings.getRandomAlphaString(length);
-      Assert.assertEquals(randomAlpha.length(), length);
+      assertEquals(randomAlpha.length(), length);
     }
   }
 
@@ -49,14 +50,14 @@ public class StringsTest {
   public void testGetRandomAlphaNumericString() {
     try {
       Strings.getRandomAlphaNumericString(-1);
-      Assert.fail("Expecting an IllegalArgumentException");
+      fail("Expecting an IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {
     }
 
     for (int length = 0; length < 100; length++) {
       final String randomAlpha = Strings.getRandomAlphaNumericString(length);
-      Assert.assertEquals(randomAlpha.length(), length);
+      assertEquals(randomAlpha.length(), length);
     }
   }
 
@@ -76,11 +77,11 @@ public class StringsTest {
     tests.put("Bla bla {{prop3}} with {{prop4}} and {{prop5}}", "Bla bla prop3 with prop2 and prop2 plus prop3");
 
     for (final Map.Entry<String,String> entry : tests.entrySet())
-      Assert.assertEquals(entry.getValue(), Strings.interpolate(entry.getKey(), properties, "{{", "}}"));
+      assertEquals(entry.getValue(), Strings.interpolate(entry.getKey(), properties, "{{", "}}"));
 
     try {
       Strings.interpolate("Bla bla {{prop4}} with {{prop5}} and {{prop6}}", properties, "{{", "}}");
-      Assert.fail("Expected IllegalArgumentException");
+      fail("Expected IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {
       if (!"Loop detected.".equals(e.getMessage()))
@@ -89,7 +90,7 @@ public class StringsTest {
 
     try {
       Strings.interpolate(properties, "{{", "}}");
-      Assert.fail("Expected IllegalArgumentException");
+      fail("Expected IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {
       if (!"Loop detected.".equals(e.getMessage()))
@@ -98,7 +99,7 @@ public class StringsTest {
 
     properties.remove("prop6");
     Strings.interpolate(properties, "{{", "}}");
-    Assert.assertEquals("prop2 plus prop3", properties.get("prop5"));
+    assertEquals("prop2 plus prop3", properties.get("prop5"));
   }
 
   @Test
@@ -107,156 +108,156 @@ public class StringsTest {
       Strings.toLowerCase(null, 0, 1);
     }
     catch (final Exception e) {
-      Assert.assertSame(IllegalArgumentException.class, e.getClass());
+      assertSame(IllegalArgumentException.class, e.getClass());
     }
 
     try {
       Strings.toLowerCase("", 0, 0);
     }
     catch (final Exception e) {
-      Assert.assertSame(IllegalArgumentException.class, e.getClass());
+      assertSame(IllegalArgumentException.class, e.getClass());
     }
 
     try {
       Strings.toLowerCase(UPPER_CASE, 10, 4);
     }
     catch (final Exception e) {
-      Assert.assertSame(IllegalArgumentException.class, e.getClass());
+      assertSame(IllegalArgumentException.class, e.getClass());
     }
 
     try {
       Strings.toLowerCase(UPPER_CASE, 12, 13);
     }
     catch (final Exception e) {
-      Assert.assertSame(StringIndexOutOfBoundsException.class, e.getClass());
+      assertSame(StringIndexOutOfBoundsException.class, e.getClass());
     }
 
     try {
       Strings.toLowerCase(UPPER_CASE, -1, 1);
     }
     catch (final Exception e) {
-      Assert.assertSame(StringIndexOutOfBoundsException.class, e.getClass());
+      assertSame(StringIndexOutOfBoundsException.class, e.getClass());
     }
 
     try {
       Strings.toLowerCase(UPPER_CASE, -2, -1);
     }
     catch (final Exception e) {
-      Assert.assertSame(StringIndexOutOfBoundsException.class, e.getClass());
+      assertSame(StringIndexOutOfBoundsException.class, e.getClass());
     }
 
     try {
       Strings.toLowerCase(UPPER_CASE, 1, 12);
     }
     catch (final Exception e) {
-      Assert.assertSame(StringIndexOutOfBoundsException.class, e.getClass());
+      assertSame(StringIndexOutOfBoundsException.class, e.getClass());
     }
 
-    Assert.assertEquals(UPPER_CASE, Strings.toLowerCase(UPPER_CASE, 0, 0));
-    Assert.assertEquals("hELLO WORLD", Strings.toLowerCase(UPPER_CASE, 0, 1));
-    Assert.assertEquals("HeLLO WORLD", Strings.toLowerCase(UPPER_CASE, 1, 2));
-    Assert.assertEquals("HelLO WORLD", Strings.toLowerCase(UPPER_CASE, 1, 3));
-    Assert.assertEquals("HELLO WORLd", Strings.toLowerCase(UPPER_CASE, 10, 11));
-    Assert.assertEquals("HELLO WORld", Strings.toLowerCase(UPPER_CASE, 9, 11));
-    Assert.assertEquals("HELLO WOrld", Strings.toLowerCase(UPPER_CASE, 8));
-    Assert.assertEquals("HELLO world", Strings.toLowerCase(UPPER_CASE, 6));
+    assertEquals(UPPER_CASE, Strings.toLowerCase(UPPER_CASE, 0, 0));
+    assertEquals("hELLO WORLD", Strings.toLowerCase(UPPER_CASE, 0, 1));
+    assertEquals("HeLLO WORLD", Strings.toLowerCase(UPPER_CASE, 1, 2));
+    assertEquals("HelLO WORLD", Strings.toLowerCase(UPPER_CASE, 1, 3));
+    assertEquals("HELLO WORLd", Strings.toLowerCase(UPPER_CASE, 10, 11));
+    assertEquals("HELLO WORld", Strings.toLowerCase(UPPER_CASE, 9, 11));
+    assertEquals("HELLO WOrld", Strings.toLowerCase(UPPER_CASE, 8));
+    assertEquals("HELLO world", Strings.toLowerCase(UPPER_CASE, 6));
 
-    Assert.assertEquals(LOWER_CASE, Strings.toLowerCase(LOWER_CASE, 0, 0));
-    Assert.assertEquals("Hello world", Strings.toUpperCase(LOWER_CASE, 0, 1));
-    Assert.assertEquals("hEllo world", Strings.toUpperCase(LOWER_CASE, 1, 2));
-    Assert.assertEquals("hELlo world", Strings.toUpperCase(LOWER_CASE, 1, 3));
-    Assert.assertEquals("hello worlD", Strings.toUpperCase(LOWER_CASE, 10, 11));
-    Assert.assertEquals("hello worLD", Strings.toUpperCase(LOWER_CASE, 9, 11));
-    Assert.assertEquals("hello woRLD", Strings.toUpperCase(LOWER_CASE, 8));
-    Assert.assertEquals("hello WORLD", Strings.toUpperCase(LOWER_CASE, 6));
+    assertEquals(LOWER_CASE, Strings.toLowerCase(LOWER_CASE, 0, 0));
+    assertEquals("Hello world", Strings.toUpperCase(LOWER_CASE, 0, 1));
+    assertEquals("hEllo world", Strings.toUpperCase(LOWER_CASE, 1, 2));
+    assertEquals("hELlo world", Strings.toUpperCase(LOWER_CASE, 1, 3));
+    assertEquals("hello worlD", Strings.toUpperCase(LOWER_CASE, 10, 11));
+    assertEquals("hello worLD", Strings.toUpperCase(LOWER_CASE, 9, 11));
+    assertEquals("hello woRLD", Strings.toUpperCase(LOWER_CASE, 8));
+    assertEquals("hello WORLD", Strings.toUpperCase(LOWER_CASE, 6));
   }
 
   @Test
   public void testGetAlpha() {
-    Assert.assertEquals("a", Strings.getAlpha(0));
-    Assert.assertEquals("aa", Strings.getAlpha(26));
-    Assert.assertEquals("aaa", Strings.getAlpha(26 * 26 + 26));
-    Assert.assertEquals("aaaa", Strings.getAlpha(26 * 26 * 26 + 26 * 26 + 26));
+    assertEquals("a", Strings.getAlpha(0));
+    assertEquals("aa", Strings.getAlpha(26));
+    assertEquals("aaa", Strings.getAlpha(26 * 26 + 26));
+    assertEquals("aaaa", Strings.getAlpha(26 * 26 * 26 + 26 * 26 + 26));
 
-    Assert.assertEquals("f", Strings.getAlpha(5));
-    Assert.assertEquals("z", Strings.getAlpha(25));
+    assertEquals("f", Strings.getAlpha(5));
+    assertEquals("z", Strings.getAlpha(25));
 
-    Assert.assertEquals("ac", Strings.getAlpha(28));
-    Assert.assertEquals("za", Strings.getAlpha(676));
+    assertEquals("ac", Strings.getAlpha(28));
+    assertEquals("za", Strings.getAlpha(676));
   }
 
   @Test
   public void testGetCommonPrefix() {
-    Assert.assertNull(Strings.getCommonPrefix((String[])null));
-    Assert.assertNull(Strings.getCommonPrefix((String)null));
+    assertNull(Strings.getCommonPrefix((String[])null));
+    assertNull(Strings.getCommonPrefix((String)null));
     try {
       Strings.getCommonPrefix(null, null);
-      Assert.fail("Expected NullPointerException");
+      fail("Expected NullPointerException");
     }
     catch (final NullPointerException e) {
     }
 
-    Assert.assertEquals("a", Strings.getCommonPrefix("a"));
-    Assert.assertEquals("a", Strings.getCommonPrefix(Arrays.asList("a")));
+    assertEquals("a", Strings.getCommonPrefix("a"));
+    assertEquals("a", Strings.getCommonPrefix(Arrays.asList("a")));
 
-    Assert.assertEquals("", Strings.getCommonPrefix("", "b"));
-    Assert.assertEquals("", Strings.getCommonPrefix(Arrays.asList("", "b")));
+    assertEquals("", Strings.getCommonPrefix("", "b"));
+    assertEquals("", Strings.getCommonPrefix(Arrays.asList("", "b")));
 
-    Assert.assertEquals("", Strings.getCommonPrefix("a", ""));
-    Assert.assertEquals("", Strings.getCommonPrefix(Arrays.asList("a", "")));
+    assertEquals("", Strings.getCommonPrefix("a", ""));
+    assertEquals("", Strings.getCommonPrefix(Arrays.asList("a", "")));
 
-    Assert.assertEquals("", Strings.getCommonPrefix("a", "b"));
-    Assert.assertEquals("", Strings.getCommonPrefix(Arrays.asList("a", "b")));
+    assertEquals("", Strings.getCommonPrefix("a", "b"));
+    assertEquals("", Strings.getCommonPrefix(Arrays.asList("a", "b")));
 
-    Assert.assertEquals("", Strings.getCommonPrefix("aa", "b"));
-    Assert.assertEquals("", Strings.getCommonPrefix(Arrays.asList("aa", "b")));
+    assertEquals("", Strings.getCommonPrefix("aa", "b"));
+    assertEquals("", Strings.getCommonPrefix(Arrays.asList("aa", "b")));
 
-    Assert.assertEquals("", Strings.getCommonPrefix("a", "bb"));
-    Assert.assertEquals("", Strings.getCommonPrefix(Arrays.asList("a", "bb")));
+    assertEquals("", Strings.getCommonPrefix("a", "bb"));
+    assertEquals("", Strings.getCommonPrefix(Arrays.asList("a", "bb")));
 
-    Assert.assertEquals("a", Strings.getCommonPrefix("aa", "ab"));
-    Assert.assertEquals("a", Strings.getCommonPrefix(Arrays.asList("aa", "ab")));
+    assertEquals("a", Strings.getCommonPrefix("aa", "ab"));
+    assertEquals("a", Strings.getCommonPrefix(Arrays.asList("aa", "ab")));
 
-    Assert.assertEquals("a", Strings.getCommonPrefix("aaa", "ab"));
-    Assert.assertEquals("a", Strings.getCommonPrefix(Arrays.asList("aaa", "ab")));
+    assertEquals("a", Strings.getCommonPrefix("aaa", "ab"));
+    assertEquals("a", Strings.getCommonPrefix(Arrays.asList("aaa", "ab")));
 
-    Assert.assertEquals("a", Strings.getCommonPrefix("aa", "abb"));
-    Assert.assertEquals("a", Strings.getCommonPrefix(Arrays.asList("aa", "abb")));
+    assertEquals("a", Strings.getCommonPrefix("aa", "abb"));
+    assertEquals("a", Strings.getCommonPrefix(Arrays.asList("aa", "abb")));
 
-    Assert.assertEquals("aa", Strings.getCommonPrefix("aaa", "aab"));
-    Assert.assertEquals("aa", Strings.getCommonPrefix(Arrays.asList("aaa", "aab")));
+    assertEquals("aa", Strings.getCommonPrefix("aaa", "aab"));
+    assertEquals("aa", Strings.getCommonPrefix(Arrays.asList("aaa", "aab")));
 
-    Assert.assertEquals("aa", Strings.getCommonPrefix("aaaa", "aab"));
-    Assert.assertEquals("aa", Strings.getCommonPrefix(Arrays.asList("aaaa", "aab")));
+    assertEquals("aa", Strings.getCommonPrefix("aaaa", "aab"));
+    assertEquals("aa", Strings.getCommonPrefix(Arrays.asList("aaaa", "aab")));
 
-    Assert.assertEquals("aa", Strings.getCommonPrefix("aaa", "aabb"));
-    Assert.assertEquals("aa", Strings.getCommonPrefix(Arrays.asList("aaa", "aabb")));
+    assertEquals("aa", Strings.getCommonPrefix("aaa", "aabb"));
+    assertEquals("aa", Strings.getCommonPrefix(Arrays.asList("aaa", "aabb")));
   }
 
   @Test
   public void testRepeat() {
     try {
       Strings.repeat(null, 10);
-      Assert.fail("Expected a IllegalArgumentException");
+      fail("Expected a IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {
     }
 
     try {
       Strings.repeat("", -1);
-      Assert.fail("Expected a IllegalArgumentException");
+      fail("Expected a IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {
     }
 
-    Assert.assertEquals("a", Strings.repeat("a", 1));
-    Assert.assertEquals("aa", Strings.repeat("a", 2));
-    Assert.assertEquals("abab", Strings.repeat("ab", 2));
-    Assert.assertEquals("ab ab ab ", Strings.repeat("ab ", 3));
+    assertEquals("a", Strings.repeat("a", 1));
+    assertEquals("aa", Strings.repeat("a", 2));
+    assertEquals("abab", Strings.repeat("ab", 2));
+    assertEquals("ab ab ab ", Strings.repeat("ab ", 3));
 
     try {
       Strings.repeat("abcdefghijklmnopqrstuvwxyz", 353892843);
-      Assert.fail("Expected an ArrayIndexOutOfBoundsException");
+      fail("Expected an ArrayIndexOutOfBoundsException");
     }
     catch (final ArrayIndexOutOfBoundsException e) {
     }
@@ -264,12 +265,71 @@ public class StringsTest {
 
   @Test
   public void testTrim() {
-    Assert.assertNull(Strings.trim(null, '\0'));
-    Assert.assertEquals("string", Strings.trim("xstring", 'x'));
-    Assert.assertEquals("string", Strings.trim("stringx", 'x'));
-    Assert.assertEquals("string", Strings.trim("xstringx", 'x'));
-    Assert.assertEquals("string", Strings.trim("xxstringxx", 'x'));
-    Assert.assertEquals("string", Strings.trim("xxxstringxxx", 'x'));
-    Assert.assertEquals("string", Strings.trim("\0string\0", '\0'));
+    assertNull(Strings.trim(null, '\0'));
+    assertEquals("string", Strings.trim("xstring", 'x'));
+    assertEquals("string", Strings.trim("stringx", 'x'));
+    assertEquals("string", Strings.trim("xstringx", 'x'));
+    assertEquals("string", Strings.trim("xxstringxx", 'x'));
+    assertEquals("string", Strings.trim("xxxstringxxx", 'x'));
+    assertEquals("string", Strings.trim("\0string\0", '\0'));
+  }
+
+  @Test
+  public void testIndexOfUnQuoted() {
+    try {
+      Strings.indexOfUnQuoted(null, '\0');
+      fail("Expected a IllegalArgumentException");
+    }
+    catch (final IllegalArgumentException e) {
+    }
+
+    final String testString = "random \"quoted 'x' \\'x\\' \\\"t\\\" \\\\\"s\\\\\"\" texts";
+    assertEquals(-1, Strings.indexOfUnQuoted(testString, '1'));
+    assertEquals(0, Strings.indexOfUnQuoted(testString, 'r'));
+    assertEquals(4, Strings.indexOfUnQuoted(testString, 'o'));
+    assertEquals(-1, Strings.indexOfUnQuoted(testString, 'o', 5));
+    assertEquals(-1, Strings.indexOfUnQuoted(testString, 'q'));
+    assertEquals(41, Strings.indexOfUnQuoted(testString, 'e'));
+    assertEquals(42, Strings.indexOfUnQuoted(testString, 'x'));
+    assertEquals(44, Strings.indexOfUnQuoted(testString, 's'));
+  }
+
+  @Test
+  public void testLastIndexOfUnQuoted() {
+    try {
+      Strings.indexOfUnQuoted(null, '\0');
+      fail("Expected a IllegalArgumentException");
+    }
+    catch (final IllegalArgumentException e) {
+    }
+
+    final String testString = "random \"quoted 'n' \\'n\\' \\\"d\\\" \\\\\"s\\\\\"\" texts";
+    assertEquals(-1, Strings.lastIndexOfUnQuoted(testString, '1'));
+    assertEquals(0, Strings.lastIndexOfUnQuoted(testString, 'r'));
+    assertEquals(-1, Strings.lastIndexOfUnQuoted(testString, 'q'));
+    assertEquals(2, Strings.lastIndexOfUnQuoted(testString, 'n'));
+    assertEquals(3, Strings.lastIndexOfUnQuoted(testString, 'd'));
+    assertEquals(4, Strings.lastIndexOfUnQuoted(testString, 'o'));
+    assertEquals(4, Strings.lastIndexOfUnQuoted(testString, 'o', 5));
+  }
+
+  @Test
+  public void testToTruncatedString() {
+    try {
+      Strings.toTruncatedString("", 3);
+      fail("Expected a IllegalArgumentException");
+    }
+    catch (final IllegalArgumentException e) {
+    }
+
+    assertEquals("null", Strings.toTruncatedString(null, 4));
+    assertEquals("", Strings.toTruncatedString("", 4));
+    assertEquals("a", Strings.toTruncatedString("a", 4));
+    assertEquals("aa", Strings.toTruncatedString("aa", 4));
+    assertEquals("aaa", Strings.toTruncatedString("aaa", 4));
+    assertEquals("aaaa", Strings.toTruncatedString("aaaa", 4));
+    assertEquals("aaaaa", Strings.toTruncatedString("aaaaa", 5));
+    assertEquals("aa...", Strings.toTruncatedString("aaaaaa", 5));
+    assertEquals("aaa...", Strings.toTruncatedString("aaaaaaa", 6));
   }
 }
