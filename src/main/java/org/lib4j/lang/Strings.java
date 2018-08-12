@@ -26,25 +26,19 @@ import java.util.StringTokenizer;
 import javax.swing.text.BadLocationException;
 
 public final class Strings {
-  private static final char[] alpha = new char[] {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
-  private static final char[] alphaNumeric = new char[] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+  private static final char[] alphaNumeric = new char[] {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
   private static String getRandomString(final int length, final boolean alphanumeric) {
     if (length < 0)
-      throw new IllegalArgumentException("length = " + length);
+      throw new IllegalArgumentException("length < 0: " + length);
 
     if (length == 0)
       return "";
 
-    final char[] chars;
-    if (alphanumeric)
-      chars = alphaNumeric;
-    else
-      chars = alpha;
-
+    final int len = !alphanumeric ? alphaNumeric.length - 10 : alphaNumeric.length;
     final char[] array = new char[length];
     for (int i = 0; i < length; i++)
-      array[i] = chars[(int)(Math.random() * chars.length)];
+      array[i] = alphaNumeric[(int)(Math.random() * len)];
 
     return new String(array);
   }
@@ -128,7 +122,10 @@ public final class Strings {
   }
 
   private static String changeCase(final String string, final boolean upper, final int beginIndex, final int endIndex) {
-    if (string == null || string.length() == 0)
+    if (string == null)
+      throw new IllegalArgumentException("string == null");
+
+    if (string.length() == 0)
       return string;
 
     if (beginIndex > endIndex)
@@ -376,14 +373,7 @@ public final class Strings {
     return i == 0 && j == string.length() - 1 ? string : string.substring(i, j + 1);
   }
 
-  public static int indexOfUnQuoted(final String string, final char ch) {
-    return indexOfUnQuoted(string, ch, 0);
-  }
-
-  public static int indexOfUnQuoted(final String string, final char ch, final int fromIndex) {
-    if (string == null)
-      throw new IllegalArgumentException("string == null");
-
+  private static int indexOfUnQuoted0(final String string, final char ch, final int fromIndex) {
     boolean esacped = false;
     boolean inSingleQuote = false;
     boolean inDoubleQuote = false;
@@ -404,14 +394,21 @@ public final class Strings {
     return -1;
   }
 
-  public static int lastIndexOfUnQuoted(final String string, final char ch) {
-    return lastIndexOfUnQuoted(string, ch, string.length());
-  }
-
-  public static int lastIndexOfUnQuoted(final String string, final char ch, final int fromIndex) {
+  public static int indexOfUnQuoted(final String string, final char ch, final int fromIndex) {
     if (string == null)
       throw new IllegalArgumentException("string == null");
 
+    return indexOfUnQuoted0(string, ch, fromIndex);
+  }
+
+  public static int indexOfUnQuoted(final String string, final char ch) {
+    if (string == null)
+      throw new IllegalArgumentException("string == null");
+
+    return indexOfUnQuoted0(string, ch, 0);
+  }
+
+  private static int lastIndexOfUnQuoted0(final String string, final char ch, final int fromIndex) {
     boolean esacped = false;
     boolean inSingleQuote = false;
     boolean inDoubleQuote = false;
@@ -435,13 +432,27 @@ public final class Strings {
     return n == ch ? 0 : -1;
   }
 
+  public static int lastIndexOfUnQuoted(final String string, final char ch, final int fromIndex) {
+    if (string == null)
+      throw new IllegalArgumentException("string == null");
+
+    return lastIndexOfUnQuoted0(string, ch, fromIndex);
+  }
+
+  public static int lastIndexOfUnQuoted(final String string, final char ch) {
+    if (string == null)
+      throw new IllegalArgumentException("string == null");
+
+    return lastIndexOfUnQuoted0(string, ch, string.length());
+  }
+
   public static String toTruncatedString(final Object obj, final int length) {
     if (length < 4)
       throw new IllegalArgumentException("length < 4: " + length);
 
     final String str = obj == null ? "null" : obj.toString();
     return str.length() > length ? str.substring(0, length - 3) + "..." : str;
- }
+  }
 
   private Strings() {
   }

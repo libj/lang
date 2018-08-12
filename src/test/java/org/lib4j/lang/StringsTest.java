@@ -41,8 +41,9 @@ public class StringsTest {
     }
 
     for (int length = 0; length < 100; length++) {
-      final String randomAlpha = Strings.getRandomAlphaString(length);
-      assertEquals(randomAlpha.length(), length);
+      final String random = Strings.getRandomAlphaString(length);
+      assertEquals(random.length(), length);
+      assertTrue(random, random.matches("^[a-zA-Z]*$"));
     }
   }
 
@@ -56,8 +57,9 @@ public class StringsTest {
     }
 
     for (int length = 0; length < 100; length++) {
-      final String randomAlpha = Strings.getRandomAlphaNumericString(length);
-      assertEquals(randomAlpha.length(), length);
+      final String random = Strings.getRandomAlphaNumericString(length);
+      assertEquals(random.length(), length);
+      assertTrue(random, random.matches("^[0-9a-zA-Z]*$"));
     }
   }
 
@@ -106,53 +108,47 @@ public class StringsTest {
   public void testChangeCase() throws Exception {
     try {
       Strings.toLowerCase(null, 0, 1);
+      fail("Expected IllegalArgumentException");
     }
-    catch (final Exception e) {
-      assertSame(IllegalArgumentException.class, e.getClass());
-    }
-
-    try {
-      Strings.toLowerCase("", 0, 0);
-    }
-    catch (final Exception e) {
-      assertSame(IllegalArgumentException.class, e.getClass());
+    catch (final IllegalArgumentException e) {
     }
 
     try {
       Strings.toLowerCase(UPPER_CASE, 10, 4);
+      fail("Expected IllegalArgumentException");
     }
-    catch (final Exception e) {
-      assertSame(IllegalArgumentException.class, e.getClass());
+    catch (final IllegalArgumentException e) {
     }
 
     try {
       Strings.toLowerCase(UPPER_CASE, 12, 13);
+      fail("Expected StringIndexOutOfBoundsException");
     }
-    catch (final Exception e) {
-      assertSame(StringIndexOutOfBoundsException.class, e.getClass());
+    catch (final StringIndexOutOfBoundsException e) {
     }
 
     try {
       Strings.toLowerCase(UPPER_CASE, -1, 1);
+      fail("Expected StringIndexOutOfBoundsException");
     }
-    catch (final Exception e) {
-      assertSame(StringIndexOutOfBoundsException.class, e.getClass());
+    catch (final StringIndexOutOfBoundsException e) {
     }
 
     try {
       Strings.toLowerCase(UPPER_CASE, -2, -1);
+      fail("Expected StringIndexOutOfBoundsException");
     }
-    catch (final Exception e) {
-      assertSame(StringIndexOutOfBoundsException.class, e.getClass());
+    catch (final StringIndexOutOfBoundsException e) {
     }
 
     try {
       Strings.toLowerCase(UPPER_CASE, 1, 12);
+      fail("Expected StringIndexOutOfBoundsException");
     }
     catch (final Exception e) {
-      assertSame(StringIndexOutOfBoundsException.class, e.getClass());
     }
 
+    assertEquals("", Strings.toLowerCase("", 0, 0));
     assertEquals(UPPER_CASE, Strings.toLowerCase(UPPER_CASE, 0, 0));
     assertEquals("hELLO WORLD", Strings.toLowerCase(UPPER_CASE, 0, 1));
     assertEquals("HeLLO WORLD", Strings.toLowerCase(UPPER_CASE, 1, 2));
@@ -162,6 +158,7 @@ public class StringsTest {
     assertEquals("HELLO WOrld", Strings.toLowerCase(UPPER_CASE, 8));
     assertEquals("HELLO world", Strings.toLowerCase(UPPER_CASE, 6));
 
+    assertEquals("", Strings.toUpperCase("", 0, 0));
     assertEquals(LOWER_CASE, Strings.toLowerCase(LOWER_CASE, 0, 0));
     assertEquals("Hello world", Strings.toUpperCase(LOWER_CASE, 0, 1));
     assertEquals("hEllo world", Strings.toUpperCase(LOWER_CASE, 1, 2));
@@ -283,15 +280,15 @@ public class StringsTest {
     catch (final IllegalArgumentException e) {
     }
 
-    final String testString = "random \"quoted 'x' \\'x\\' \\\"t\\\" \\\\\"s\\\\\"\" texts";
+    final String testString = "random 'x' \"quoted \\'x\\' \\\"t\\\" \\\\\"s\\\\\"\" te'\\''xts";
     assertEquals(-1, Strings.indexOfUnQuoted(testString, '1'));
     assertEquals(0, Strings.indexOfUnQuoted(testString, 'r'));
     assertEquals(4, Strings.indexOfUnQuoted(testString, 'o'));
     assertEquals(-1, Strings.indexOfUnQuoted(testString, 'o', 5));
     assertEquals(-1, Strings.indexOfUnQuoted(testString, 'q'));
     assertEquals(41, Strings.indexOfUnQuoted(testString, 'e'));
-    assertEquals(42, Strings.indexOfUnQuoted(testString, 'x'));
-    assertEquals(44, Strings.indexOfUnQuoted(testString, 's'));
+    assertEquals(46, Strings.indexOfUnQuoted(testString, 'x'));
+    assertEquals(48, Strings.indexOfUnQuoted(testString, 's'));
   }
 
   @Test
@@ -303,14 +300,14 @@ public class StringsTest {
     catch (final IllegalArgumentException e) {
     }
 
-    final String testString = "random \"quoted 'n' \\'n\\' \\\"d\\\" \\\\\"s\\\\\"\" texts";
+    final String testString = "ran'\\''dom 'n' \"quoted \\'n\\' \\\"d\\\" \\\\\"s\\\\\"\" texts";
     assertEquals(-1, Strings.lastIndexOfUnQuoted(testString, '1'));
     assertEquals(0, Strings.lastIndexOfUnQuoted(testString, 'r'));
     assertEquals(-1, Strings.lastIndexOfUnQuoted(testString, 'q'));
     assertEquals(2, Strings.lastIndexOfUnQuoted(testString, 'n'));
-    assertEquals(3, Strings.lastIndexOfUnQuoted(testString, 'd'));
-    assertEquals(4, Strings.lastIndexOfUnQuoted(testString, 'o'));
-    assertEquals(4, Strings.lastIndexOfUnQuoted(testString, 'o', 5));
+    assertEquals(7, Strings.lastIndexOfUnQuoted(testString, 'd'));
+    assertEquals(8, Strings.lastIndexOfUnQuoted(testString, 'o'));
+    assertEquals(8, Strings.lastIndexOfUnQuoted(testString, 'o', 9));
   }
 
   @Test
