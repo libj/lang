@@ -23,6 +23,57 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 public final class Arrays {
+  public static int lengthDeep(final Object[] array) {
+    return lengthDeep(array, false);
+  }
+
+  public static int lengthDeep(final Object[] array, final boolean countArrayReferences) {
+    int size = 0;
+    for (int i = 0; i < array.length; i++) {
+      final Object member = array[i];
+      if (member != null && member.getClass().isArray()) {
+        size += lengthDeep((Object[])member, countArrayReferences);
+        if (countArrayReferences)
+          ++size;
+      }
+      else {
+        ++size;
+      }
+    }
+
+    return size;
+  }
+
+  public static Object[] flatten(final Object[] array) {
+    return flatten(array, false);
+  }
+
+  public static Object[] flatten(final Object[] array, final boolean retainArrayReferences) {
+    if (array == null)
+      throw new IllegalArgumentException("array == null");
+
+    final Object[] out = new Object[lengthDeep(array, retainArrayReferences)];
+    flatten0(array, out, retainArrayReferences, -1);
+    return out;
+  }
+
+  private static int flatten0(final Object[] in, final Object[] out, final boolean retainArrayReferences, int index) {
+    for (int i = 0; i < in.length; i++) {
+      final Object member = in[i];
+      if (member != null && member.getClass().isArray()) {
+        if (retainArrayReferences)
+          out[++index] = member;
+
+        index = flatten0((Object[])member, out, retainArrayReferences, index);
+      }
+      else {
+        out[++index] = member;
+      }
+    }
+
+    return index;
+  }
+
   /**
    * Find the index of the sorted array whose value most closely matches
    * the value provided.

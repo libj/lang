@@ -16,6 +16,8 @@
 
 package org.lib4j.lang;
 
+import static org.junit.Assert.*;
+
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
@@ -23,6 +25,34 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class ArraysTest {
+  private static Object[] createRandomNestedArray() {
+    final Object[] array = new Object[4];
+    for (int i = 0; i < array.length; i++)
+      array[i] = Math.random() < 0.2 ? createRandomNestedArray() : Strings.getRandomAlphaString(4);
+
+    return array;
+  }
+
+  @Test
+  public void testFlattenArrayRetainingReferences() {
+    final Object[] array = {"a", "b", new Object[] {"c", "d"}, "e", new Object[] {"f", new Object[] {"g", "h"}}, "i"};
+    final Object[] result = Arrays.flatten(array);
+    assertEquals("[" + java.util.Arrays.deepToString(array).replace("[", "").replace("]", "") + "]", java.util.Arrays.deepToString(result).toString());
+
+    final Object[] expected = {array[0], array[1], array[2], ((Object[])array[2])[0], ((Object[])array[2])[1], array[3], array[4], ((Object[])array[4])[0], ((Object[])array[4])[1], ((Object[])((Object[])array[4])[1])[0], ((Object[])((Object[])array[4])[1])[1], array[5]};
+    final Object[] resultRetainingReferences = Arrays.flatten(array, true);
+    assertArrayEquals(expected, resultRetainingReferences);
+  }
+
+  @Test
+  public void testFlattenArray() {
+    for (int i = 0; i < 100; i++) {
+      final Object[] array = createRandomNestedArray();
+      final Object[] result = Arrays.flatten(array);
+      assertEquals("[" + java.util.Arrays.deepToString(array).replace("[", "").replace("]", "") + "]", java.util.Arrays.deepToString(result).toString());
+    }
+  }
+
   @Test
   public void testBinaryClosestSearch() {
     final int[] sorted = new int[] {1, 3, 5, 9, 19};
