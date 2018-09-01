@@ -33,9 +33,6 @@ public final class JavaIdentifiers {
    * @return Whether the argument <code>className</code> is a valid identifier.
    */
   public static boolean isValid(final String className, final boolean qualified) {
-    if (className == null)
-      throw new IllegalArgumentException("className == null");
-
     return className.matches(qualified ? qualifiedJavaIdentifierPattern : unqualifiedJavaIdentifierPattern);
   }
 
