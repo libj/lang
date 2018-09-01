@@ -90,7 +90,7 @@ public class BytesReadWriteTest {
     offset = encode(dest, offset, ordinal, length, lengthSize, text);
 
 //    if (debug)
-//      Bytes.println(dest);
+//      System.out.println(dest);
 
     // Decode...
     final byte lengthSizeDecoded = getLengthSize(dest[0]);

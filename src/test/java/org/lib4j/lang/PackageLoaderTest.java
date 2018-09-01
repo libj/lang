@@ -57,25 +57,12 @@ public class PackageLoaderTest {
   }
 
   private static boolean isClassLoaded(final String name) {
-    ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-    if (isClassLoaded(classLoader, name))
-      return true;
-
-//    classLoader = Thread.currentThread().getContextClassLoader();
-//    if (ClassLoaders.isClassLoaded(classLoader, name))
-//      return true;
-
-//    final Class<?> callerClass = Reflection.getCallerClass();
-//    classLoader = callerClass.getClassLoader();
-//    if (ClassLoaders.isClassLoaded(classLoader, name))
-//      return true;
-
-    return false;
+    return isClassLoaded(Thread.currentThread().getContextClassLoader(), name);
   }
 
   @Test
   public void testPackageLoader() throws PackageNotFoundException {
-    final String[] testClasses = new String[] {
+    final String[] testClasses = {
       "org.junit.PackageLoaderClass1",
       "org.junit.PackageLoaderClass2",
       "org.junit.PackageLoaderClass3",
@@ -98,9 +85,9 @@ public class PackageLoaderTest {
 
     try {
       PackageLoader.getContextPackageLoader().loadPackage((String)null);
-      Assert.fail("Expected a IllegalArgumentException");
+      Assert.fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
   }
 

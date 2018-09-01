@@ -35,11 +35,11 @@ public final class Repeat {
      * Default implementation of simple variation of abstract algorithm.
      *
      * @param array The array to consume.
-     * @param type The component type of the <code>array</code>.
-     * @param filter Filter to be applied to each member of the <code>array</code>.
-     * @param args Type-agnostic args to be passed to the <code>filter</code>.
+     * @param type The component type of the {@code array}.
+     * @param filter Filter to be applied to each member of the {@code array}.
+     * @param args Type-agnostic args to be passed to the {@code filter}.
      *
-     * @return The <code>type</code>-typed array of <code>filter</code>-accepted members of <code>array</code> argument.
+     * @return The {@code type}-typed array of {@code filter}-accepted members of {@code array} argument.
      */
     protected <M>M[] simple(final M[] array, final Class<M> type, final Filter<M> filter, final Object ... args) {
       if (array == null)

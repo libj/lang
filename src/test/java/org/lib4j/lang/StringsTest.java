@@ -108,9 +108,9 @@ public class StringsTest {
   public void testChangeCase() throws Exception {
     try {
       Strings.toLowerCase(null, 0, 1);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     try {
@@ -235,9 +235,9 @@ public class StringsTest {
   public void testRepeat() {
     try {
       Strings.repeat(null, 10);
-      fail("Expected a IllegalArgumentException");
+      fail("Expected a NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     try {
@@ -275,9 +275,9 @@ public class StringsTest {
   public void testIndexOfUnQuoted() {
     try {
       Strings.indexOfUnQuoted(null, '\0');
-      fail("Expected a IllegalArgumentException");
+      fail("Expected a NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     final String testString = "random 'x' \"quoted \\'x\\' \\\"t\\\" \\\\\"s\\\\\"\" te'\\''xts";
@@ -289,15 +289,21 @@ public class StringsTest {
     assertEquals(41, Strings.indexOfUnQuoted(testString, 'e'));
     assertEquals(46, Strings.indexOfUnQuoted(testString, 'x'));
     assertEquals(48, Strings.indexOfUnQuoted(testString, 's'));
+
+    final String doubleQuote = "\"The \\\"meaning\\\" of life\"";
+    assertEquals(doubleQuote.length() - 1, Strings.indexOfUnQuoted(doubleQuote, '"', 1));
+
+    final String singleQuote = "'The \\'meaning\\' of life'";
+    assertEquals(singleQuote.length() - 1, Strings.indexOfUnQuoted(singleQuote, '\'', 1));
   }
 
   @Test
   public void testLastIndexOfUnQuoted() {
     try {
       Strings.indexOfUnQuoted(null, '\0');
-      fail("Expected a IllegalArgumentException");
+      fail("Expected a NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     final String testString = "ran'\\''dom 'n' \"quoted \\'n\\' \\\"d\\\" \\\\\"s\\\\\"\" texts";
@@ -308,6 +314,12 @@ public class StringsTest {
     assertEquals(7, Strings.lastIndexOfUnQuoted(testString, 'd'));
     assertEquals(8, Strings.lastIndexOfUnQuoted(testString, 'o'));
     assertEquals(8, Strings.lastIndexOfUnQuoted(testString, 'o', 9));
+
+    final String doubleQuote = "\"The \\\"meaning\\\" of life\"";
+    assertEquals(0, Strings.lastIndexOfUnQuoted(doubleQuote, '"', doubleQuote.length() - 1));
+
+    final String singleQuote = "'The \\'meaning\\' of life'";
+    assertEquals(0, Strings.lastIndexOfUnQuoted(singleQuote, '\'', singleQuote.length() - 1));
   }
 
   @Test

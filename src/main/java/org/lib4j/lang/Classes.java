@@ -330,7 +330,7 @@ public final class Classes {
    *
    * The comparator compareTo method may return: 0 if there is a match, -1 if there if no match, and 1 if there is a match & to return Field result after this
    * match.
-   *
+   * FIXME: finish
    * @param clazz
    * @param annotationType
    * @param comparable
@@ -345,7 +345,7 @@ public final class Classes {
    *
    * The comparator compareTo method may return: 0 if there is a match, -1 if there if no match, and 1 if there is a match & to return Field result after this
    * match.
-   *
+   * FIXME: finish
    * @param clazz
    * @param annotationType
    * @param comparable
@@ -364,7 +364,7 @@ public final class Classes {
    *
    * The comparator compareTo method may return: 0 if there is a match, -1 if there if no match, and 1 if there is a match & to return Class<?> result after this
    * match.
-   *
+   * FIXME: finish
    * @param clazz
    * @param annotationType
    * @param comparable
@@ -389,12 +389,6 @@ public final class Classes {
   }
 
   public static Method getDeclaredMethod(final Class<?> clazz, final String name, final Class<?> ... parameters) {
-    if (clazz == null)
-      throw new IllegalArgumentException("clazz == null");
-
-    if (name == null)
-      throw new IllegalArgumentException("name == null");
-
     final Method[] methods = clazz.getDeclaredMethods();
     for (final Method method : methods)
       if (method.getName().equals(name) && java.util.Arrays.equals(method.getParameterTypes(), parameters))

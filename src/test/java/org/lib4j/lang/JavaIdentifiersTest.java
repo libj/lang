@@ -34,9 +34,9 @@ public class JavaIdentifiersTest {
   public void testIsValid() {
     try {
       JavaIdentifiers.isValid(null);
-      Assert.fail("Expected IllegalArgumentException");
+      Assert.fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     Assert.assertFalse(JavaIdentifiers.isValid(""));

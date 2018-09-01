@@ -122,9 +122,6 @@ public final class Strings {
   }
 
   private static String changeCase(final String string, final boolean upper, final int beginIndex, final int endIndex) {
-    if (string == null)
-      throw new IllegalArgumentException("string == null");
-
     if (string.length() == 0)
       return string;
 
@@ -322,9 +319,6 @@ public final class Strings {
    * @throws ArrayIndexOutOfBoundsException If <code>string.length() * count &gt; Integer.MAX_VALUE</code>
    */
   public static String repeat(final String string, final int count) {
-    if (string == null)
-      throw new IllegalArgumentException("string == null");
-
     if (count < 0)
       throw new IllegalArgumentException("count < 0");
 
@@ -373,7 +367,7 @@ public final class Strings {
     return i == 0 && j == string.length() - 1 ? string : string.substring(i, j + 1);
   }
 
-  private static int indexOfUnQuoted0(final String string, final char ch, final int fromIndex) {
+  public static int indexOfUnQuoted(final String string, final char ch, final int fromIndex) {
     boolean esacped = false;
     boolean inSingleQuote = false;
     boolean inDoubleQuote = false;
@@ -383,32 +377,22 @@ public final class Strings {
         esacped = true;
       else if (esacped)
         esacped = false;
+      else if (c == ch && !inSingleQuote && !inDoubleQuote)
+        return i;
       else if (c == '\'')
         inSingleQuote = !inSingleQuote;
       else if (c == '"')
         inDoubleQuote = !inDoubleQuote;
-      else if (c == ch && !inSingleQuote && !inDoubleQuote)
-        return i;
     }
 
     return -1;
   }
 
-  public static int indexOfUnQuoted(final String string, final char ch, final int fromIndex) {
-    if (string == null)
-      throw new IllegalArgumentException("string == null");
-
-    return indexOfUnQuoted0(string, ch, fromIndex);
-  }
-
   public static int indexOfUnQuoted(final String string, final char ch) {
-    if (string == null)
-      throw new IllegalArgumentException("string == null");
-
-    return indexOfUnQuoted0(string, ch, 0);
+    return indexOfUnQuoted(string, ch, 0);
   }
 
-  private static int lastIndexOfUnQuoted0(final String string, final char ch, final int fromIndex) {
+  public static int lastIndexOfUnQuoted(final String string, final char ch, final int fromIndex) {
     boolean esacped = false;
     boolean inSingleQuote = false;
     boolean inDoubleQuote = false;
@@ -419,12 +403,12 @@ public final class Strings {
         esacped = true;
       else if (esacped)
         esacped = false;
+      else if (n == ch && !inSingleQuote && !inDoubleQuote)
+        return i + 1;
       else if (n == '\'')
         inSingleQuote = !inSingleQuote;
       else if (n == '"')
         inDoubleQuote = !inDoubleQuote;
-      else if (n == ch && !inSingleQuote && !inDoubleQuote)
-        return i + 1;
 
       n = c;
     }
@@ -432,18 +416,8 @@ public final class Strings {
     return n == ch ? 0 : -1;
   }
 
-  public static int lastIndexOfUnQuoted(final String string, final char ch, final int fromIndex) {
-    if (string == null)
-      throw new IllegalArgumentException("string == null");
-
-    return lastIndexOfUnQuoted0(string, ch, fromIndex);
-  }
-
   public static int lastIndexOfUnQuoted(final String string, final char ch) {
-    if (string == null)
-      throw new IllegalArgumentException("string == null");
-
-    return lastIndexOfUnQuoted0(string, ch, string.length());
+    return lastIndexOfUnQuoted(string, ch, string.length());
   }
 
   public static String toTruncatedString(final Object obj, final int length) {

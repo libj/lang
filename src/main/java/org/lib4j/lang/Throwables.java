@@ -50,9 +50,6 @@ public final class Throwables {
   }
 
   public static String toString(final Throwable t) {
-    if (t == null)
-      throw new IllegalArgumentException("t == null");
-
     final StringWriter stringWriter = new StringWriter();
     t.printStackTrace(new PrintWriter(stringWriter));
     return stringWriter.toString();
