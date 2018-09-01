@@ -97,7 +97,7 @@ public final class Primitives {
         return Boolean.valueOf(((Character)primitive).charValue() != 0);
     }
 
-    throw new IllegalArgumentException("Unknown cast from " + primitive.getClass().getName() + " to " + cls.getName());
+    throw new UnsupportedOperationException("Unsupported cast from " + primitive.getClass().getName() + " to " + cls.getName());
   }
 
   private Primitives() {
