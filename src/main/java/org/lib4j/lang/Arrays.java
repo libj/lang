@@ -19,6 +19,7 @@ package org.lib4j.lang;
 import java.lang.reflect.Array;
 import java.util.Comparator;
 import java.util.Random;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
@@ -27,12 +28,18 @@ public final class Arrays {
     return lengthDeep(array, false);
   }
 
-  public static int lengthDeep(final Object[] array, final boolean countArrayReferences) {
+  public static <T>int lengthDeep(final T[] array, final boolean countArrayReferences) {
+    return lengthDeep(array, null, countArrayReferences);
+  }
+
+  @SuppressWarnings("unchecked")
+  public static <T>int lengthDeep(final T[] array, final Function<T,T[]> resolver, final boolean countArrayReferences) {
     int size = 0;
-    for (int i = 0; i < array.length; i++) {
-      final Object member = array[i];
-      if (member != null && member.getClass().isArray()) {
-        size += lengthDeep((Object[])member, countArrayReferences);
+    for (int i = 0; i < array.length; ++i) {
+      final T member = array[i];
+      final T[] inner = member == null ? null : resolver != null ? resolver.apply(member) : member.getClass().isArray() ? (T[])member : null;
+      if (inner != null) {
+        size += lengthDeep(inner, resolver, countArrayReferences);
         if (countArrayReferences)
           ++size;
       }
@@ -45,26 +52,34 @@ public final class Arrays {
   }
 
   public static Object[] flatten(final Object[] array) {
-    return flatten(array, false);
+    return flatten(array, null, false);
+  }
+
+  public static Object[] flatten(final Object[] array, final Function<Object,Object[]> resolver) {
+    return flatten(array, resolver, false);
   }
 
   public static Object[] flatten(final Object[] array, final boolean retainArrayReferences) {
-    if (array == null)
-      throw new IllegalArgumentException("array == null");
+    return flatten(array, null, retainArrayReferences);
+  }
 
-    final Object[] out = new Object[lengthDeep(array, retainArrayReferences)];
-    flatten0(array, out, retainArrayReferences, -1);
+  @SuppressWarnings("unchecked")
+  public static <T>T[] flatten(final T[] array, final Function<T,T[]> resolver, final boolean retainArrayReferences) {
+    final T[] out = (T[])Array.newInstance(array.getClass().getComponentType(), lengthDeep(array, resolver, retainArrayReferences));
+    flatten0(array, out, resolver, retainArrayReferences, -1);
     return out;
   }
 
-  private static int flatten0(final Object[] in, final Object[] out, final boolean retainArrayReferences, int index) {
-    for (int i = 0; i < in.length; i++) {
-      final Object member = in[i];
-      if (member != null && member.getClass().isArray()) {
+  @SuppressWarnings("unchecked")
+  private static <T>int flatten0(final T[] in, final Object[] out, final Function<T,T[]> resolver, final boolean retainArrayReferences, int index) {
+    for (int i = 0; i < in.length; ++i) {
+      final T member = in[i];
+      final T[] inner = member == null ? null : resolver != null ? resolver.apply(member) : member.getClass().isArray() ? (T[])member : null;
+      if (inner != null) {
         if (retainArrayReferences)
           out[++index] = member;
 
-        index = flatten0((Object[])member, out, retainArrayReferences, index);
+        index = flatten0(inner, out, resolver, retainArrayReferences, index);
       }
       else {
         out[++index] = member;
@@ -450,7 +465,7 @@ public final class Arrays {
    */
   @SafeVarargs
   public static <T>T[] replaceAll(final UnaryOperator<T> operator, final T ... array) {
-    for (int i = 0; i < array.length; i++)
+    for (int i = 0; i < array.length; ++i)
       array[i] = operator.apply(array[i]);
 
     return array;
@@ -491,7 +506,7 @@ public final class Arrays {
       length += array.length;
 
     final T[] concat = (T[])Array.newInstance(arrays[0].getClass().getComponentType(), length);
-    for (int i = 0, l = 0; i < arrays.length; l += arrays[i].length, i++)
+    for (int i = 0, l = 0; i < arrays.length; l += arrays[i].length, ++i)
       System.arraycopy(arrays[i], 0, concat, l, arrays[i].length);
 
     return concat;
@@ -623,7 +638,7 @@ public final class Arrays {
    * @return The index of the object if it is found, or -1 otherwise.
    */
   public static <T>int indexOf(final T[] array, final T obj) {
-    for (int i = 0; i < array.length; i++)
+    for (int i = 0; i < array.length; ++i)
       if (obj.equals(array[i]))
         return i;
 
@@ -697,7 +712,7 @@ public final class Arrays {
       return String.valueOf(array[offset]);
 
     final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
-    for (int i = offset + 1; i < length + offset; i++)
+    for (int i = offset + 1; i < length + offset; ++i)
       buffer.append(delimiter).append(String.valueOf(array[i]));
 
     return buffer.toString();
@@ -759,7 +774,7 @@ public final class Arrays {
       return String.valueOf(array[offset]);
 
     final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
-    for (int i = offset + 1; i < length + offset; i++)
+    for (int i = offset + 1; i < length + offset; ++i)
       buffer.append(delimiter).append(String.valueOf(array[i]));
 
     return buffer.toString();
@@ -821,7 +836,7 @@ public final class Arrays {
       return String.valueOf(array[offset]);
 
     final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
-    for (int i = offset + 1; i < length + offset; i++)
+    for (int i = offset + 1; i < length + offset; ++i)
       buffer.append(delimiter).append(String.valueOf(array[i]));
 
     return buffer.toString();
@@ -883,7 +898,7 @@ public final class Arrays {
       return String.valueOf(array[offset]);
 
     final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
-    for (int i = offset + 1; i < length + offset; i++)
+    for (int i = offset + 1; i < length + offset; ++i)
       buffer.append(delimiter).append(String.valueOf(array[i]));
 
     return buffer.toString();
@@ -945,7 +960,7 @@ public final class Arrays {
       return String.valueOf(array[offset]);
 
     final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
-    for (int i = offset + 1; i < length + offset; i++)
+    for (int i = offset + 1; i < length + offset; ++i)
       buffer.append(delimiter).append(String.valueOf(array[i]));
 
     return buffer.toString();
@@ -1007,7 +1022,7 @@ public final class Arrays {
       return String.valueOf(array[offset]);
 
     final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
-    for (int i = offset + 1; i < length + offset; i++)
+    for (int i = offset + 1; i < length + offset; ++i)
       buffer.append(delimiter).append(String.valueOf(array[i]));
 
     return buffer.toString();
@@ -1069,7 +1084,7 @@ public final class Arrays {
       return String.valueOf(array[offset]);
 
     final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
-    for (int i = offset + 1; i < length + offset; i++)
+    for (int i = offset + 1; i < length + offset; ++i)
       buffer.append(delimiter).append(String.valueOf(array[i]));
 
     return buffer.toString();
@@ -1131,7 +1146,7 @@ public final class Arrays {
       return String.valueOf(array[offset]);
 
     final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
-    for (int i = offset + 1; i < length + offset; i++)
+    for (int i = offset + 1; i < length + offset; ++i)
       buffer.append(delimiter).append(String.valueOf(array[i]));
 
     return buffer.toString();
@@ -1190,7 +1205,7 @@ public final class Arrays {
       return String.valueOf(array[offset]);
 
     final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
-    for (int i = offset + 1; i < length + offset; i++)
+    for (int i = offset + 1; i < length + offset; ++i)
       buffer.append(delimiter).append(String.valueOf(array[i]));
 
     return buffer.toString();
@@ -1249,7 +1264,7 @@ public final class Arrays {
       return String.valueOf(array[offset]);
 
     final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
-    for (int i = offset + 1; i < length + offset; i++)
+    for (int i = offset + 1; i < length + offset; ++i)
       buffer.append(delimiter).append(String.valueOf(array[i]));
 
     return buffer.toString();
@@ -1308,7 +1323,7 @@ public final class Arrays {
       return String.valueOf(array[offset]);
 
     final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
-    for (int i = offset + 1; i < length + offset; i++)
+    for (int i = offset + 1; i < length + offset; ++i)
       buffer.append(delimiter).append(String.valueOf(array[i]));
 
     return buffer.toString();
@@ -1367,7 +1382,7 @@ public final class Arrays {
       return String.valueOf(array[offset]);
 
     final StringBuilder buffer = new StringBuilder(String.valueOf(array[offset]));
-    for (int i = offset + 1; i < length + offset; i++)
+    for (int i = offset + 1; i < length + offset; ++i)
       buffer.append(delimiter).append(String.valueOf(array[i]));
 
     return buffer.toString();
@@ -1382,7 +1397,7 @@ public final class Arrays {
    * @param start The starting value.
    */
   public static byte[] fillIncremental(final byte[] array, byte start) {
-    for (int i = 0; i < array.length; i++)
+    for (int i = 0; i < array.length; ++i)
       array[i] = start++;
 
     return array;
@@ -1397,7 +1412,7 @@ public final class Arrays {
    * @param start The starting value.
    */
   public static char[] fillIncremental(final char[] array, char start) {
-    for (int i = 0; i < array.length; i++)
+    for (int i = 0; i < array.length; ++i)
       array[i] = start++;
 
     return array;
@@ -1412,7 +1427,7 @@ public final class Arrays {
    * @param start The starting value.
    */
   public static short[] fillIncremental(final short[] array, short start) {
-    for (int i = 0; i < array.length; i++)
+    for (int i = 0; i < array.length; ++i)
       array[i] = start++;
 
     return array;
@@ -1427,7 +1442,7 @@ public final class Arrays {
    * @param start The starting value.
    */
   public static int[] fillIncremental(final int[] array, int start) {
-    for (int i = 0; i < array.length; i++)
+    for (int i = 0; i < array.length; ++i)
       array[i] = start++;
 
     return array;
@@ -1442,7 +1457,7 @@ public final class Arrays {
    * @param start The starting value.
    */
   public static long[] fillIncremental(final long[] array, long start) {
-    for (int i = 0; i < array.length; i++)
+    for (int i = 0; i < array.length; ++i)
       array[i] = start++;
 
     return array;
@@ -1457,7 +1472,7 @@ public final class Arrays {
    * @param start The starting value.
    */
   public static float[] fillIncremental(final float[] array, float start) {
-    for (int i = 0; i < array.length; i++)
+    for (int i = 0; i < array.length; ++i)
       array[i] = start++;
 
     return array;
@@ -1472,7 +1487,7 @@ public final class Arrays {
    * @param start The starting value.
    */
   public static double[] fillIncremental(final double[] array, double start) {
-    for (int i = 0; i < array.length; i++)
+    for (int i = 0; i < array.length; ++i)
       array[i] = start++;
 
     return array;
