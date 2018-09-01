@@ -27,19 +27,16 @@ public final class Bytes {
   }
 
   public static int indexOf(final byte[] bytes, final int fromIndex, final byte ... pattern) {
-    if (bytes == null)
-      throw new IllegalArgumentException("data == null");
-
     if (fromIndex < 0)
       throw new IndexOutOfBoundsException("fromIndex < 0");
 
     if (bytes.length == 0 || pattern.length == 0 || bytes.length < pattern.length)
       return -1;
 
-    for (int i = fromIndex; i < bytes.length; i++) {
+    for (int i = fromIndex; i < bytes.length; ++i) {
       if (bytes[i] == pattern[0]) {
         boolean match = true;
-        for (int j = 0; j < pattern.length && (match = bytes.length > i + j && pattern[j] == bytes[i + j]); j++);
+        for (int j = 0; j < pattern.length && (match = bytes.length > i + j && pattern[j] == bytes[i + j]); ++j);
         if (match)
           return i;
       }
@@ -53,9 +50,6 @@ public final class Bytes {
   }
 
   public static int[] indicesOf(final byte[] bytes, final int fromIndex, final byte ... pattern) {
-    if (bytes == null)
-      throw new IllegalArgumentException("data == null");
-
     if (fromIndex < 0)
       throw new IllegalArgumentException("fromIndex < 0");
 
@@ -83,24 +77,10 @@ public final class Bytes {
   }
 
   public static void replaceAll(final byte[] bytes, final byte target, final byte replacement) {
-    if (bytes == null)
-      throw new IllegalArgumentException("bytes == null");
-
-    int index = 0;
-    while ((index = Bytes.indexOf(bytes, index + 1, target)) != -1)
-      bytes[index] = replacement;
+    for (int index = 0; (index = Bytes.indexOf(bytes, index + 1, target)) != -1; bytes[index] = replacement);
   }
 
   public static void replaceAll(final byte[] bytes, final byte[] target, final byte[] replacement) {
-    if (bytes == null)
-      throw new IllegalArgumentException("bytes == null");
-
-    if (target == null)
-      throw new IllegalArgumentException("target == null");
-
-    if (replacement == null)
-      throw new IllegalArgumentException("replacement == null");
-
     if (target.length != replacement.length)
       throw new IllegalArgumentException("target.length != replacement.length");
 
@@ -112,9 +92,7 @@ public final class Bytes {
       return;
     }
 
-    int index = -1;
-    while ((index = indexOf(bytes, index + 1, target)) != -1)
-      System.arraycopy(replacement, 0, bytes, index, replacement.length);
+    for (int index = -1; (index = indexOf(bytes, index + 1, target)) != -1; System.arraycopy(replacement, 0, bytes, index, replacement.length));
   }
 
   public static int indexOf(final byte[] bytes, final byte[] ... pattern) {
@@ -122,12 +100,6 @@ public final class Bytes {
   }
 
   public static int indexOf(final byte[] bytes, final int fromIndex, final byte[] ... pattern) {
-    if (bytes == null)
-      throw new IllegalArgumentException("data == null");
-
-    if (pattern == null)
-      throw new IllegalArgumentException("pattern == null");
-
     if (fromIndex < 0)
       throw new IndexOutOfBoundsException("fromIndex < 0");
 
@@ -136,8 +108,8 @@ public final class Bytes {
 
     final int[][] failure = computeFailure(pattern);
     final int[] k = new int[pattern.length];
-    for (int i = fromIndex; i < bytes.length; i++) {
-      for (int j = 0; j < pattern.length; j++) {
+    for (int i = fromIndex; i < bytes.length; ++i) {
+      for (int j = 0; j < pattern.length; ++j) {
         while (k[j] > 0 && pattern[j][k[j]] != bytes[i])
           k[j] = failure[j][k[j] - 1];
 
@@ -154,18 +126,16 @@ public final class Bytes {
 
   private static int[][] computeFailure(final byte[] ... pattern) {
     final int[][] failure = new int[pattern.length][];
-
-    int k = 0;
-    for (int i = 0; i < pattern.length; i++) {
+    for (int i = 0, j = 0; i < pattern.length; ++i) {
       failure[i] = new int[pattern[i].length];
-      for (int j = 1; j < pattern[i].length; j++) {
-        while (k > 0 && pattern[i][k] != pattern[i][j])
-          k = failure[i][k - 1];
+      for (int k = 1; k < pattern[i].length; ++k) {
+        while (j > 0 && pattern[i][j] != pattern[i][k])
+          j = failure[i][j - 1];
 
-        if (pattern[i][k] == pattern[i][j])
-          k++;
+        if (pattern[i][j] == pattern[i][k])
+          j++;
 
-        failure[i][j] = k;
+        failure[i][k] = j;
       }
     }
 
@@ -689,8 +659,8 @@ public final class Bytes {
 
   public static String toString(final byte ... bytes) {
     final StringBuilder builder = new StringBuilder();
-    for (byte b : bytes)
-      builder.append(Integer.toBinaryString(b & 255 | 256)).delete(builder.length() - 9, builder.length() - 8);
+    for (int i = 0; i < bytes.length; ++i)
+      builder.append(Integer.toBinaryString(bytes[i] & 255 | 256)).delete(builder.length() - 9, builder.length() - 8);
 
     return builder.toString();
   }
@@ -702,7 +672,7 @@ public final class Bytes {
    * @param bytes The bytes to print.
    */
   public static void println(final PrintStream ps, final byte ... bytes) {
-    for (int i = 0; i < bytes.length; i++) {
+    for (int i = 0; i < bytes.length; ++i) {
       if (i % 8 == 0) {
         if (i != 0)
           ps.println();
@@ -718,22 +688,12 @@ public final class Bytes {
     ps.println();
   }
 
-  /**
-   * Print the binary representation of bytes to <code>System.out</code>.
-   *
-   * @param bytes The bytes to print.
-   */
-  public static void println(final byte ... bytes) {
-    println(System.out, bytes);
-  }
-
   public static short toOctal(byte b) {
-    int i = 0;
     short value = 0;
-    while (b != 0) {
+    for (int i = 0; b != 0; ++i) {
       final int remainder = b % 8;
       b /= 8;
-      value += remainder * Math.pow(10, i++);
+      value += remainder * Math.pow(10, i);
     }
 
     return value;
@@ -741,7 +701,7 @@ public final class Bytes {
 
   public static short[] toOctal(final byte ... bytes) {
     final short[] octal = new short[bytes.length];
-    for (int i = 0; i < bytes.length; i++)
+    for (int i = 0; i < bytes.length; ++i)
       octal[i] = toOctal(bytes[i]);
 
     return octal;
