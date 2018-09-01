@@ -28,9 +28,6 @@ public final class Annotations {
   }
 
   public static String toSortedString(final Annotation annotation, final Comparator<String> comparator) {
-    if (annotation == null)
-      throw new IllegalArgumentException("annotation == null");
-
     final String str = annotation.toString();
     final int start = str.indexOf('(') + 1;
     if (start == 0)
