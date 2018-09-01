@@ -80,9 +80,6 @@ public final class Objects {
   }
 
   public static boolean equals(final Object a, final Object b, final String ... fieldName) {
-    if (fieldName == null)
-      throw new IllegalArgumentException("fieldName == null");
-
     if (a == b || fieldName.length == 0)
       return true;
 
@@ -118,7 +115,6 @@ public final class Objects {
       return false;
 
     try {
-      boolean equals;
       final Class<?> cls = a.getClass();
       Field[] fields = blackWhiteListMap.get(cls);
       if (fields == null) {
@@ -130,13 +126,10 @@ public final class Objects {
         blackWhiteListMap.put(cls, fields);
       }
 
-      if (fields != null) {
-        for (int i = 0; i < fields.length; i++) {
-          equals = equals(a, b, fields[i]);
-          if (!equals)
+      if (fields != null)
+        for (int i = 0; i < fields.length; ++i)
+          if (!equals(a, b, fields[i]))
             return false;
-        }
-      }
 
       return true;
     }
@@ -160,8 +153,8 @@ public final class Objects {
   }
 
   public static int hashCode(final Object obj, final Field field) throws IllegalAccessException {
-    int normal;
-    Object member;
+    final int normal;
+    final Object member;
     if (boolean.class == field.getType())
       normal = field.getBoolean(obj) ? 1231 : 1237;
     else if (byte.class == field.getType())
@@ -191,9 +184,6 @@ public final class Objects {
   }
 
   public static int hashCode(final Object obj, final String ... fieldName) {
-    if (fieldName == null)
-      throw new IllegalArgumentException("fieldName == null");
-
     if (obj == null || fieldName.length == 0)
       return 0;
 
@@ -233,7 +223,7 @@ public final class Objects {
         blackWhiteListMap.put(cls, fields);
       }
 
-      for (int i = 0; i < fields.length; i++)
+      for (int i = 0; i < fields.length; ++i)
         hashCode = 31 * hashCode + hashCode(obj, fields[i]);
 
       return hashCode;
@@ -255,12 +245,7 @@ public final class Objects {
     return obj.getClass().getSimpleName() + "@" + Integer.toHexString(System.identityHashCode(obj));
   }
 
-  static int i = 0;
-
   private static String toString(final Object obj, final int depth, final IdentityHashMap<Object,Object> visited) {
-    if (obj == null)
-      throw new IllegalArgumentException("obj == null");
-
     final Field[] fields = Classes.getDeclaredFieldsDeep(obj.getClass());
     final char[] pad = Arrays.createRepeat(' ', depth * 2);
     final char[] pad2 = Arrays.createRepeat(' ', (depth + 1) * 2);
@@ -302,7 +287,7 @@ public final class Objects {
             builder.append("[\n");
             if (length > 0) {
               final StringBuilder arrayString = new StringBuilder();
-              for (int i = 0; i < length; i++) {
+              for (int i = 0; i < length; ++i) {
                 final Object member = Array.get(object, i);
                 if (!visited.containsKey(member)) {
                   visited.put(member, null);

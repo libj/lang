@@ -78,8 +78,7 @@ public final class Paths {
 
     // Process "/../" correctly. This probably isn't very efficient in
     // the general case, but it's probably not bad most of the time.
-    int index;
-    while ((index = path.indexOf("/../")) != -1) {
+    for (int index; (index = path.indexOf("/../")) != -1; ) {
       // Strip of the previous directory - if it exists.
       final int previous = path.lastIndexOf('/', index - 1);
       if (previous != -1)

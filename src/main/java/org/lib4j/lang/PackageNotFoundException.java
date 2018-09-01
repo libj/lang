@@ -16,36 +16,41 @@
 
 package org.lib4j.lang;
 
+/**
+ * Thrown when an application tries to load in a package using
+ * {@link PackageLoader}, but no definition for the specified package could be
+ * found.
+ */
 public final class PackageNotFoundException extends ReflectiveOperationException {
   private static final long serialVersionUID = 4963238462943629433L;
 
   /**
    * This field holds the exception cause if the
-   * PackageNotFoundException(final String s, final Throwable cause) constructor was
+   * {@code #PackageNotFoundException(String, Throwable)} constructor was
    * used to instantiate the object
    * @serial
    */
   private Throwable cause;
 
   /**
-   * Constructs a <code>PackageNotFoundException</code> with no detail message.
+   * Constructs a {@code PackageNotFoundException} with no detail message.
    */
   public PackageNotFoundException() {
     super((Throwable)null);  // Disallow initCause
   }
 
   /**
-   * Constructs a <code>PackageNotFoundException</code> with the
+   * Constructs a {@code PackageNotFoundException} with the
    * specified detail message.
    *
-   * @param   message   the detail message.
+   * @param message the detail message.
    */
   public PackageNotFoundException(final String message) {
     super(message, null);  //  Disallow initCause
   }
 
   /**
-   * Constructs a <code>PackageNotFoundException</code> with the
+   * Constructs a {@code PackageNotFoundException} with the
    * specified detail message and optional exception that was
    * raised while loading the class.
    *
@@ -60,9 +65,9 @@ public final class PackageNotFoundException extends ReflectiveOperationException
   /**
    * Returns the cause of this exception (final the exception that was raised
    * if an error occurred while attempting to load the class; otherwise
-   * <tt>null</tt>).
+   * {@code null}).
    *
-   * @return  the cause of this exception.
+   * @return the cause of this exception.
    */
   @Override
   public Throwable getCause() {

@@ -101,11 +101,9 @@ public final class PackageLoader extends ClassLoader {
    * as a couple of jar files and a directory, each of the classpath
    * references will be used to load all classes in each resource.
    *
-   * @param       pkg        The package.
-   *
-   * @return      Set of all classes called with <code>Class.forName()</code>.
-   *
-   * @exception   PackageNotFoundException    Thrown when a package name
+   * @param pkg The package.
+   * @return Set of all classes called with {@code Class#forName(String)}
+   * @exception PackageNotFoundException Thrown when a package name
    *              cannot be found in any classpath resources.
    */
   public Set<Class<?>> loadPackage(final Package pkg) throws PackageNotFoundException {
@@ -120,12 +118,10 @@ public final class PackageLoader extends ClassLoader {
    * a couple of jar files and a directory, each of the classpath references
    * will be used to load all classes in each resource.
    *
-   * @param       pkg    The package.
-   * @param       filter Filter which classes will be initialized and returned.
-   *
-   * @return      Set of all classes called with <code>Class.forName()</code>.
-   *
-   * @exception   PackageNotFoundException    Thrown when a package name
+   * @param pkg The package.
+   * @param filter Filter which classes will be initialized and returned.
+   * @return Set of all classes called with <code>Class.forName()</code>.
+   * @exception PackageNotFoundException Thrown when a package name
    *              cannot be found in any classpath resources.
    */
   public Set<Class<?>> loadPackage(final Package pkg, final Predicate<Class<?>> filter) throws PackageNotFoundException {
@@ -141,12 +137,10 @@ public final class PackageLoader extends ClassLoader {
    * classes in each resource. This method will search for all classpath
    * entries in all class loaders.
    *
-   * @param       pkg        The package.
-   * @param       initialize Whether the classes must be initialized
-   *
-   * @return      Set of all classes called with <code>Class.forName()</code>.
-   *
-   * @exception   PackageNotFoundException    Thrown when a package name
+   * @param pkg The package.
+   * @param initialize Whether the classes must be initialized
+   * @return Set of all classes called with <code>Class.forName()</code>.
+   * @exception PackageNotFoundException Thrown when a package name
    *              that cannot be found in any classpath resources.
    */
   public Set<Class<?>> loadPackage(final Package pkg, final boolean initialize) throws PackageNotFoundException {
@@ -161,12 +155,10 @@ public final class PackageLoader extends ClassLoader {
    * as a couple of jar files and a directory, each of the classpath references
    * will be used to load all classes in each resource.
    *
-   * @param       name       The name of the package.
-   * @param       initialize Whether the classes must be initialized
-   *
-   * @return      Set of all classes called with <code>Class.forName()</code>.
-   *
-   * @exception   PackageNotFoundException    Thrown when a package name
+   * @param name The name of the package.
+   * @param initialize Whether the classes must be initialized
+   * @return Set of all classes called with <code>Class.forName()</code>.
+   * @exception PackageNotFoundException Thrown when a package name
    *              cannot be found in any classpath resources.
    */
   public Set<Class<?>> loadPackage(final String name) throws PackageNotFoundException {
@@ -181,12 +173,10 @@ public final class PackageLoader extends ClassLoader {
    * a couple of jar files and a directory, each of the classpath references
    * will be used to load all classes in each resource.
    *
-   * @param       name       The name of the package.
-   * @param       initialize Predicate to test whether to initialize each Class.
-   *
-   * @return      Set of all classes called with <code>Class.forName()</code>.
-   *
-   * @exception   PackageNotFoundException    Thrown when a package name
+   * @param name The name of the package.
+   * @param initialize Predicate to test whether to initialize each Class.
+   * @return Set of all classes called with <code>Class.forName()</code>.
+   * @exception PackageNotFoundException Thrown when a package name
    *              that cannot be found in any classpath resources.
    */
   public Set<Class<?>> loadPackage(final String name, final Predicate<Class<?>> initialize) throws PackageNotFoundException {
@@ -200,14 +190,12 @@ public final class PackageLoader extends ClassLoader {
    * locations, such as a couple of jar files and a directory, each of the
    * classpath references will be used to load all classes in each resource.
    *
-   * @param       packageName The name of the package.
-   * @param       classLoader ClassLoader containing the resource, or null for all other ClassLoaders
-   * @param       subPackages Whether subPackages should be loaded
-   * @param       initialize  Whether the classes must be initialized
-   *
-   * @return      Set of all classes called with <code>Class.forName()</code>.
-   *
-   * @exception   PackageNotFoundException    Thrown when a package name
+   * @param packageName The name of the package.
+   * @param classLoader ClassLoader containing the resource, or null for all other ClassLoaders
+   * @param subPackages Whether subPackages should be loaded
+   * @param initialize Whether the classes must be initialized
+   * @return Set of all classes called with <code>Class.forName()</code>.
+   * @exception PackageNotFoundException Thrown when a package name
    *              cannot be found in any classpath resources.
    */
   public Set<Class<?>> loadPackage(final String packageName, final boolean subPackages, final boolean initialize) throws PackageNotFoundException {
@@ -215,9 +203,6 @@ public final class PackageLoader extends ClassLoader {
   }
 
   private static Set<Class<?>> loadPackage(final String packageName, final boolean subPackages, final boolean initialize, final Predicate<Class<?>> filter, final ClassLoader classLoader) throws PackageNotFoundException {
-    if (packageName == null)
-      throw new IllegalArgumentException("name == null");
-
     if (packageName.length() == 0)
       throw new IllegalArgumentException("packageName.length() == 0");
 
