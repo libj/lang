@@ -16,8 +16,6 @@
 
 package org.lib4j.lang;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -28,37 +26,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class PackageLoaderTest {
+  private static class TestClassLoader extends ClassLoader {
+    public boolean isClassLoaded(final String className) {
+      return findLoadedClass(className) != null;
+    }
+  };
+
   private static final Logger logger = LoggerFactory.getLogger(PackageLoaderTest.class);
-  private static final Method findLoadedClass;
-
-  static {
-    try {
-      findLoadedClass = ClassLoader.class.getDeclaredMethod("findLoadedClass", String.class);
-      findLoadedClass.setAccessible(true);
-    }
-    catch (final NoSuchMethodException | SecurityException e) {
-      throw new ExceptionInInitializerError(e);
-    }
-  }
-
-  private static boolean isClassLoaded(final ClassLoader classLoader, final String name) {
-    if (classLoader == null)
-      throw new IllegalArgumentException("classLoader == null");
-
-    try {
-      return findLoadedClass.invoke(classLoader, name) != null;
-    }
-    catch (final InvocationTargetException e) {
-      throw new UnsupportedOperationException(e);
-    }
-    catch (final IllegalAccessException e) {
-      throw new SecurityException(e);
-    }
-  }
-
-  private static boolean isClassLoaded(final String name) {
-    return isClassLoaded(Thread.currentThread().getContextClassLoader(), name);
-  }
+  private static final TestClassLoader classLoader = new TestClassLoader();
 
   @Test
   public void testPackageLoader() throws PackageNotFoundException {
@@ -70,17 +45,17 @@ public class PackageLoaderTest {
     };
 
     for (final String testClass : testClasses)
-      Assert.assertFalse(testClass, isClassLoaded(testClass));
+      Assert.assertFalse(testClass, classLoader.isClassLoaded(testClass));
 
-    final Set<Class<?>> loadedClasses = PackageLoader.getContextPackageLoader().loadPackage("org.junit");
+    final Set<Class<?>> loadedClasses = PackageLoader.getPackageLoader(classLoader).loadPackage("org.junit");
     final Set<String> classNames = new HashSet<>();
     for (final Class<?> loadedClass : loadedClasses)
       classNames.add(loadedClass.getName());
 
     for (final String testClass : testClasses) {
       logger.debug(testClass);
-      Assert.assertTrue(classNames.contains(testClass));
-      Assert.assertTrue(isClassLoaded(testClass));
+      Assert.assertTrue(testClass, classNames.contains(testClass));
+      Assert.assertTrue(testClass, classLoader.isClassLoaded(testClass));
     }
 
     try {
