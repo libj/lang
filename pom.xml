@@ -38,8 +38,8 @@
   </properties>
   <dependencies>
     <dependency>
-      <groupId>org.lib4j</groupId>
-      <artifactId>lib4j-logging</artifactId>
+      <groupId>org.fastjax</groupId>
+      <artifactId>fastjax-logging</artifactId>
       <version>1.0.7-SNAPSHOT</version>
     </dependency>
   </dependencies>
