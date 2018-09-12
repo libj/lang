@@ -1,4 +1,4 @@
-/* Copyright (c) 2014 lib4j
+/* Copyright (c) 2014 FastJAX
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.lib4j.lang;
+package org.fastjax.lang;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -23,5 +23,5 @@ import java.lang.annotation.Target;
 
 @Target(value=ElementType.FIELD)
 @Retention(value=RetentionPolicy.RUNTIME)
-public @interface Hashable {
+public @interface NotHashable {
 }

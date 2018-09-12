@@ -1,4 +1,4 @@
-/* Copyright (c) 2014 lib4j
+/* Copyright (c) 2017 FastJAX
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -14,14 +14,28 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.lib4j.lang;
+package org.fastjax.lang;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.Annotation;
 
-@Target(value=ElementType.FIELD)
-@Retention(value=RetentionPolicy.RUNTIME)
-public @interface Equalable {
+/**
+ * Thrown to indicate that an illegal annotation was encountered.
+ */
+public class IllegalAnnotationException extends RuntimeException {
+  private static final long serialVersionUID = 2242697897127221243L;
+  private final Annotation annotation;
+
+  public IllegalAnnotationException(final Annotation annotation) {
+    super();
+    this.annotation = annotation;
+  }
+
+  public IllegalAnnotationException(final Annotation annotation, final String message) {
+    super(message);
+    this.annotation = annotation;
+  }
+
+  public Annotation annotation() {
+    return this.annotation;
+  }
 }
