@@ -70,7 +70,7 @@ public class PackageLoaderTest {
 
   @Test
   public void testJar() throws ClassNotFoundException, PackageNotFoundException {
-    boolean[] encountered = new boolean[1];
+    final boolean[] encountered = new boolean[1];
     final Set<Class<?>> loadedClasses = PackageLoader.getContextPackageLoader().loadPackage("org.junit.runner", new Predicate<Class<?>>() {
       @Override
       public boolean test(final Class<?> t) {

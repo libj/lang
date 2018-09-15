@@ -26,21 +26,19 @@
   </parent>
   <groupId>org.fastjax</groupId>
   <artifactId>fastjax-lang</artifactId>
-  <version>1.6.6-SNAPSHOT</version>
+  <version>0.7.3-SNAPSHOT</version>
   <name>${project.groupId}:${project.artifactId}</name>
   <description>
     Extra functionality for classes in the java.lang package.
   </description>
   <properties>
-    <maven.compiler.source>9</maven.compiler.source>
-    <maven.compiler.target>9</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
     <dependency>
       <groupId>org.fastjax</groupId>
       <artifactId>fastjax-logging</artifactId>
-      <version>1.0.7-SNAPSHOT</version>
+      <version>0.4.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>

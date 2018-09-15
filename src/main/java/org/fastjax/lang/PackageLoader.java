@@ -47,7 +47,7 @@ public final class PackageLoader extends ClassLoader {
 
   private static final Map<ClassLoader,PackageLoader> instances = new HashMap<>();
 
-  private static BiPredicate<Path,BasicFileAttributes> classPredicate = new BiPredicate<>() {
+  private static BiPredicate<Path,BasicFileAttributes> classPredicate = new BiPredicate<Path,BasicFileAttributes>() {
     @Override
     public boolean test(final Path t, final BasicFileAttributes u) {
       return u.isRegularFile() && t.toString().endsWith(".class");
@@ -271,7 +271,7 @@ public final class PackageLoader extends ClassLoader {
 
   private static void loadDirectory(final Set<String> classNames, final File directory, final String packageName, final boolean subPackages) throws IOException {
     final Path path = directory.toPath();
-    final Consumer<Path> consumer = new Consumer<>() {
+    final Consumer<Path> consumer = new Consumer<Path>() {
       final String packagePrefix = packageName + ".";
 
       @Override
