@@ -23,18 +23,39 @@ import java.lang.annotation.Annotation;
  */
 public class AnnotationParameterException extends RuntimeException {
   private static final long serialVersionUID = -5403129096514741253L;
+
   private final Annotation annotation;
 
+  /**
+   * Constructs an {@code AnnotationParameterException} for the specified
+   * annotation.
+   *
+   * @param annotation The {@code Annotation} that is the subject of this
+   *          exception.
+   */
   public AnnotationParameterException(final Annotation annotation) {
     super();
     this.annotation = annotation;
   }
 
+  /**
+   * Constructs an {@code AnnotationParameterException} for the specified
+   * annotation.
+   *
+   * @param annotation The {@code Annotation} that is the subject of this
+   *          exception.
+   * @param message The detail message.
+   */
   public AnnotationParameterException(final Annotation annotation, final String message) {
     super(message);
     this.annotation = annotation;
   }
 
+  /**
+   * Returns the {@code Annotation} that is the subject of this exception.
+   *
+   * @return The {@code Annotation} that is the subject of this exception.
+   */
   public Annotation annotation() {
     return this.annotation;
   }
