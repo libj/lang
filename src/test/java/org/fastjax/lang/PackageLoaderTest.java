@@ -16,13 +16,12 @@
 
 package org.fastjax.lang;
 
+import static org.junit.Assert.*;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import org.fastjax.lang.PackageLoader;
-import org.fastjax.lang.PackageNotFoundException;
-import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +46,7 @@ public class PackageLoaderTest {
     };
 
     for (final String testClass : testClasses)
-      Assert.assertFalse(testClass, classLoader.isClassLoaded(testClass));
+      assertFalse(testClass, classLoader.isClassLoaded(testClass));
 
     final Set<Class<?>> loadedClasses = PackageLoader.getPackageLoader(classLoader).loadPackage("org.junit");
     final Set<String> classNames = new HashSet<>();
@@ -56,13 +55,13 @@ public class PackageLoaderTest {
 
     for (final String testClass : testClasses) {
       logger.debug(testClass);
-      Assert.assertTrue(testClass, classNames.contains(testClass));
-      Assert.assertTrue(testClass, classLoader.isClassLoaded(testClass));
+      assertTrue(testClass, classNames.contains(testClass));
+      assertTrue(testClass, classLoader.isClassLoaded(testClass));
     }
 
     try {
       PackageLoader.getContextPackageLoader().loadPackage((String)null);
-      Assert.fail("Expected NullPointerException");
+      fail("Expected NullPointerException");
     }
     catch (final NullPointerException e) {
     }
@@ -77,7 +76,7 @@ public class PackageLoaderTest {
         return encountered[0] = "org.junit.runner.FilterFactory".equals(t.getName()) || encountered[0];
       }
     });
-    Assert.assertTrue("Should have been loaded by PackageLoader", loadedClasses.contains(Class.forName("org.junit.runner.FilterFactory", false, ClassLoader.getSystemClassLoader())));
-    Assert.assertTrue(encountered[0]);
+    assertTrue("Should have been loaded by PackageLoader", loadedClasses.contains(Class.forName("org.junit.runner.FilterFactory", false, ClassLoader.getSystemClassLoader())));
+    assertTrue(encountered[0]);
   }
 }
