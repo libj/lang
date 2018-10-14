@@ -46,7 +46,7 @@ public enum OperatingSystem {
    * system of the current java process.
    *
    * @return The {@code OperatingSystem} enum representing the host operating
-   * system of the current java process.
+   *         system of the current java process.
    */
   public static OperatingSystem get() {
     return current;
@@ -64,44 +64,44 @@ public enum OperatingSystem {
   }
 
   /**
-   * Returns whether this {@code OperatingSystem} represents a Windows operating
-   * system.
+   * Returns {@code true} if this {@code OperatingSystem} represents a Windows
+   * operating system; {@code false} otherwise.
    *
-   * @return Whether this {@code OperatingSystem} represents a Windows operating
-   *         system.
+   * @return {@code true} if this {@code OperatingSystem} represents a Windows
+   *         operating system; {@code false} otherwise.
    */
   public boolean isWindows() {
     return this == WINDOWS;
   }
 
   /**
-   * Returns whether this {@code OperatingSystem} represents a UNIX operating
-   * system.
+   * Returns {@code true} if this {@code OperatingSystem} represents a UNIX
+   * operating system; {@code false} otherwise.
    *
-   * @return Whether this {@code OperatingSystem} represents a UNIX operating
-   *         system.
+   * @return {@code true} if this {@code OperatingSystem} represents a UNIX
+   *         operating system; {@code false} otherwise.
    */
   public boolean isUnix() {
     return this == UNIX;
   }
 
   /**
-   * Returns whether this {@code OperatingSystem} represents a Solaris operating
-   * system.
+   * Returns {@code true} if this {@code OperatingSystem} represents a Solaris
+   * operating system; {@code false} otherwise.
    *
-   * @return Whether this {@code OperatingSystem} represents a Solaris operating
-   *         system.
+   * @return {@code true} if this {@code OperatingSystem} represents a Solaris
+   *         operating system; {@code false} otherwise.
    */
   public boolean isSolaris() {
     return this == SOLARIS;
   }
 
   /**
-   * Returns whether this {@code OperatingSystem} represents a Mac operating
-   * system.
+   * Returns {@code true} if this {@code OperatingSystem} represents a Mac
+   * operating system; {@code false} otherwise.
    *
-   * @return Whether this {@code OperatingSystem} represents a Mac operating
-   *         system.
+   * @return {@code true} if this {@code OperatingSystem} represents a Mac
+   *         operating system; {@code false} otherwise.
    */
   public boolean isMac() {
     return this == MAC;

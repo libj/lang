@@ -25,16 +25,34 @@ public class IllegalAnnotationException extends RuntimeException {
   private static final long serialVersionUID = 2242697897127221243L;
   private final Annotation annotation;
 
+  /**
+   * Creates an {@code IllegalAnnotationException} for the specified annotation.
+   *
+   * @param annotation The {@code Annotation} that is the subject of this
+   *          exception.
+   */
   public IllegalAnnotationException(final Annotation annotation) {
     super();
     this.annotation = annotation;
   }
 
+  /**
+   * Creates an {@code IllegalAnnotationException} for the specified annotation.
+   *
+   * @param annotation The {@code Annotation} that is the subject of this
+   *          exception.
+   * @param message The detail message.
+   */
   public IllegalAnnotationException(final Annotation annotation, final String message) {
     super(message);
     this.annotation = annotation;
   }
 
+  /**
+   * Returns the {@code Annotation} that is the subject of this exception.
+   *
+   * @return The {@code Annotation} that is the subject of this exception.
+   */
   public Annotation annotation() {
     return this.annotation;
   }

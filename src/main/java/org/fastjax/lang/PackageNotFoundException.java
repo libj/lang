@@ -42,10 +42,10 @@ public final class PackageNotFoundException extends ReflectiveOperationException
   }
 
   /**
-   * Constructs a {@code PackageNotFoundException} with the specified detail
-   * exception that was raised while loading the class.
+   * Constructs a {@code PackageNotFoundException} with the specified
+   * exception that was the cause of this exception.
    *
-   * @param cause The exception that was raised while loading the class.
+   * @param cause The exception that was the cause of this exception.
    */
   public PackageNotFoundException(final Throwable cause) {
     super(cause);
@@ -53,10 +53,10 @@ public final class PackageNotFoundException extends ReflectiveOperationException
 
   /**
    * Constructs a {@code PackageNotFoundException} with the specified detail
-   * message and exception that was raised while loading the class.
+   * message and exception that was the cause of this exception.
    *
    * @param message The detail message.
-   * @param cause The exception that was raised while loading the class.
+   * @param cause The exception that was the cause of this exception.
    */
   public PackageNotFoundException(final String message, final Throwable cause) {
     super(message, cause);

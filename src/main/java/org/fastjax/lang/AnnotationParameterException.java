@@ -27,7 +27,7 @@ public class AnnotationParameterException extends RuntimeException {
   private final Annotation annotation;
 
   /**
-   * Constructs an {@code AnnotationParameterException} for the specified
+   * Creates an {@code AnnotationParameterException} for the specified
    * annotation.
    *
    * @param annotation The {@code Annotation} that is the subject of this
@@ -39,7 +39,7 @@ public class AnnotationParameterException extends RuntimeException {
   }
 
   /**
-   * Constructs an {@code AnnotationParameterException} for the specified
+   * Creates an {@code AnnotationParameterException} for the specified
    * annotation.
    *
    * @param annotation The {@code Annotation} that is the subject of this
