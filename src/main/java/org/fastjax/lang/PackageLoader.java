@@ -82,9 +82,11 @@ public class PackageLoader {
   }
 
   /**
-   * Returns a {@code PackageLoader} that uses the specified {@code classLoader}
+   * Returns a {@code PackageLoader} that uses the specified {@link ClassLoader}
    * for the discovery of packages and the loading of their classes.
    *
+   * @param classLoader The {@link ClassLoader} to be used for the discovery of
+   *          packages and the loading of their classes.
    * @return The {@code PackageLoader} that uses the specified
    *         {@code classLoader} for the discovery of packages and the loading
    *         of their classes.
