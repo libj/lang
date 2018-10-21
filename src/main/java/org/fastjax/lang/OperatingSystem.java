@@ -24,21 +24,13 @@ class Sys {
  * Enum representing the host operating system of the java runtime.
  */
 public enum OperatingSystem {
-  /**
-   * Enum representing the Windows operating system.
-   */
+  /** Enum representing the Windows operating system. */
   WINDOWS(Sys.OS_NAME.indexOf("win") != -1),
-  /**
-   * Enum representing the UNIX operating system.
-   */
+  /** Enum representing the UNIX operating system. */
   UNIX(Sys.OS_NAME.indexOf("nix") != -1 || Sys.OS_NAME.indexOf("nux") != -1 || Sys.OS_NAME.indexOf("aix") != -1),
-  /**
-   * Enum representing the Solaris operating system.
-   */
+  /** Enum representing the Solaris operating system. */
   SOLARIS(Sys.OS_NAME.indexOf("sunos") != -1),
-  /**
-   * Enum representing the Mac operating system.
-   */
+  /** Enum representing the Mac operating system. */
   MAC(Sys.OS_NAME.indexOf("mac") != -1);
 
   /**
@@ -64,44 +56,40 @@ public enum OperatingSystem {
   }
 
   /**
-   * Returns {@code true} if this {@code OperatingSystem} represents a Windows
-   * operating system; {@code false} otherwise.
+   * States whether this instance represents a Windows operating system.
    *
-   * @return {@code true} if this {@code OperatingSystem} represents a Windows
-   *         operating system; {@code false} otherwise.
+   * @return {@code true} if this instance represents a Windows operating
+   *         system; {@code false} otherwise.
    */
   public boolean isWindows() {
     return this == WINDOWS;
   }
 
   /**
-   * Returns {@code true} if this {@code OperatingSystem} represents a UNIX
-   * operating system; {@code false} otherwise.
+   * States whether this instance represents a UNIX operating system.
    *
-   * @return {@code true} if this {@code OperatingSystem} represents a UNIX
-   *         operating system; {@code false} otherwise.
+   * @return {@code true} if this instance represents a UNIX operating system;
+   *         {@code false} otherwise.
    */
   public boolean isUnix() {
     return this == UNIX;
   }
 
   /**
-   * Returns {@code true} if this {@code OperatingSystem} represents a Solaris
-   * operating system; {@code false} otherwise.
+   * States whether this instance represents a Solaris operating system.
    *
-   * @return {@code true} if this {@code OperatingSystem} represents a Solaris
-   *         operating system; {@code false} otherwise.
+   * @return {@code true} if this instance represents a Solaris operating
+   *         system; {@code false} otherwise.
    */
   public boolean isSolaris() {
     return this == SOLARIS;
   }
 
   /**
-   * Returns {@code true} if this {@code OperatingSystem} represents a Mac
-   * operating system; {@code false} otherwise.
+   * States whether this instance represents a Mac operating system.
    *
-   * @return {@code true} if this {@code OperatingSystem} represents a Mac
-   *         operating system; {@code false} otherwise.
+   * @return {@code true} if this instance represents a Mac operating system;
+   *         {@code false} otherwise.
    */
   public boolean isMac() {
     return this == MAC;
