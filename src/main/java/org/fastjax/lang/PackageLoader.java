@@ -25,7 +25,6 @@ import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -124,12 +123,13 @@ public class PackageLoader {
    *
    * @param pkg The {@link Package}.
    * @return Set of classes discovered, loaded, and initialized.
+   * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If {@code pkg} cannot be found in the
    *           class loader of this {@code PackageLoader} instance.
    * @throws NullPointerException If {@code pkg} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
-  public Set<Class<?>> loadPackage(final Package pkg) throws PackageNotFoundException {
+  public Set<Class<?>> loadPackage(final Package pkg) throws IOException, PackageNotFoundException {
     return loadPackage(pkg.getName(), true, true);
   }
 
@@ -146,12 +146,13 @@ public class PackageLoader {
    * @param pkg The {@link Package}.
    * @param initialize {@link Predicate} specifying which discovered classes to
    *          initialize, or {@code null} to initialize discovered all classes.
+   * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If {@code pkg} cannot be found in the
    *           class loader of this {@code PackageLoader} instance.
    * @throws NullPointerException If {@code pkg} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
-  public void loadPackage(final Package pkg, final Predicate<Class<?>> initialize) throws PackageNotFoundException {
+  public void loadPackage(final Package pkg, final Predicate<Class<?>> initialize) throws IOException, PackageNotFoundException {
     PackageLoader.loadPackage(pkg.getName(), true, false, initialize, classLoader);
   }
 
@@ -169,12 +170,13 @@ public class PackageLoader {
    * @param initialize If {@code true}, initialize discovered classes; if
    *          {@code false}, do not initialize discovered classes.
    * @return Set of discovered classes, whether they were initialized or not.
+   * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If {@code pkg} cannot be found in the
    *           class loader of this {@code PackageLoader} instance.
    * @throws NullPointerException If {@code pkg} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
-  public Set<Class<?>> loadPackage(final Package pkg, final boolean initialize) throws PackageNotFoundException {
+  public Set<Class<?>> loadPackage(final Package pkg, final boolean initialize) throws IOException, PackageNotFoundException {
     return loadPackage(pkg.getName(), true, initialize);
   }
 
@@ -195,12 +197,13 @@ public class PackageLoader {
    * @param initialize If {@code true}, initialize discovered classes; if
    *          {@code false}, do not initialize discovered classes.
    * @return Set of discovered classes, whether they were initialized or not.
+   * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If {@code pkg} cannot be found in the
    *           class loader of this {@code PackageLoader} instance.
    * @throws NullPointerException If {@code pkg} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
-  public Set<Class<?>> loadPackage(final Package pkg, final boolean includeSubPackages, final boolean initialize) throws PackageNotFoundException {
+  public Set<Class<?>> loadPackage(final Package pkg, final boolean includeSubPackages, final boolean initialize) throws IOException, PackageNotFoundException {
     return loadPackage(pkg.getName(), includeSubPackages, initialize);
   }
 
@@ -216,13 +219,14 @@ public class PackageLoader {
    *
    * @param name The name of the package.
    * @return Set of classes discovered, loaded, and initialized.
+   * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the package specified by {@code name}
    *           cannot be found in the class loader of this {@code PackageLoader}
    *           instance.
    * @throws NullPointerException If {@code name} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
-  public Set<Class<?>> loadPackage(final String name) throws PackageNotFoundException {
+  public Set<Class<?>> loadPackage(final String name) throws IOException, PackageNotFoundException {
     return loadPackage(name, true, true);
   }
 
@@ -240,13 +244,14 @@ public class PackageLoader {
    * @param initialize If {@code true}, initialize discovered classes; if
    *          {@code false}, do not initialize discovered classes.
    * @return Set of classes discovered, loaded, and initialized.
+   * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the package specified by {@code name}
    *           cannot be found in the class loader of this {@code PackageLoader}
    *           instance.
    * @throws NullPointerException If {@code name} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
-  public Set<Class<?>> loadPackage(final String name, final boolean initialize) throws PackageNotFoundException {
+  public Set<Class<?>> loadPackage(final String name, final boolean initialize) throws IOException, PackageNotFoundException {
     return loadPackage(name, true, initialize);
   }
 
@@ -263,13 +268,14 @@ public class PackageLoader {
    * @param name The name of the package.
    * @param initialize {@link Predicate} specifying which discovered classes to
    *          initialize, or {@code null} to initialize discovered all classes.
+   * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the package specified by {@code name}
    *           cannot be found in the class loader of this {@code PackageLoader}
    *           instance.
    * @throws NullPointerException If {@code name} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
-  public void loadPackage(final String name, final Predicate<Class<?>> initialize) throws PackageNotFoundException {
+  public void loadPackage(final String name, final Predicate<Class<?>> initialize) throws IOException, PackageNotFoundException {
     PackageLoader.loadPackage(name, true, false, initialize, classLoader);
   }
 
@@ -289,13 +295,14 @@ public class PackageLoader {
    *          {@code false}, classes of sub-packages will not be included.
    * @param initialize {@link Predicate} specifying which discovered classes to
    *          initialize, or {@code null} to initialize discovered all classes.
+   * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the package specified by {@code name}
    *           cannot be found in the class loader of this {@code PackageLoader}
    *           instance.
    * @throws NullPointerException If {@code name} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
-  public void loadPackage(final String name, final boolean includeSubPackages, final Predicate<Class<?>> initialize) throws PackageNotFoundException {
+  public void loadPackage(final String name, final boolean includeSubPackages, final Predicate<Class<?>> initialize) throws IOException, PackageNotFoundException {
     PackageLoader.loadPackage(name, includeSubPackages, false, initialize, classLoader);
   }
 
@@ -316,13 +323,14 @@ public class PackageLoader {
    * @param initialize If {@code true}, initialize discovered classes; if
    *          {@code false}, do not initialize discovered classes.
    * @return Set of classes discovered, loaded, and initialized.
+   * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the package specified by {@code name}
    *           cannot be found in the class loader of this {@code PackageLoader}
    *           instance.
    * @throws NullPointerException If {@code name} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
-  public Set<Class<?>> loadPackage(final String name, final boolean includeSubPackages, final boolean initialize) throws PackageNotFoundException {
+  public Set<Class<?>> loadPackage(final String name, final boolean includeSubPackages, final boolean initialize) throws IOException, PackageNotFoundException {
     final Set<Class<?>> classes = new HashSet<>();
     PackageLoader.loadPackage(name, includeSubPackages, initialize, new Predicate<Class<?>>() {
       @Override
@@ -334,71 +342,62 @@ public class PackageLoader {
     return classes;
   }
 
-  private static void loadPackage(final String packageName, final boolean includeSubPackages, final boolean initialize, final Predicate<Class<?>> filter, final ClassLoader classLoader) throws PackageNotFoundException {
-    try {
-      final String location = packageName.replace('.', '/');
-      final Enumeration<URL> urls = classLoader.getResources(location);
-      final ArrayList<URL> resources = new ArrayList<>(1);
-      while (urls.hasMoreElements())
-        resources.add(urls.nextElement());
+  private static void loadPackage(final String packageName, final boolean includeSubPackages, final boolean initialize, final Predicate<Class<?>> filter, final ClassLoader classLoader) throws IOException, PackageNotFoundException {
+    final String location = packageName.replace('.', '/');
+    final Enumeration<URL> resources = classLoader.getResources(location);
 
-      if (resources.size() == 0)
-        throw new PackageNotFoundException(packageName.length() > 0 ? packageName : "<default>");
+    if (!resources.hasMoreElements())
+      throw new PackageNotFoundException(packageName.length() > 0 ? packageName : "<default>");
 
-      // Reverse the order of resources, because the resources from the classLoader's parent,
-      // and its parent, and its parent... are listed first -- thus, if the resource belongs to
-      // the classLoader, it is guaranteed to always be the last element in the list
-      for (int i = resources.size() - 1; i >= 0; --i) {
-        final URL url = resources.get(i);
-        final Set<String> classNames = new HashSet<>();
-        if ("file".equals(url.getProtocol())) {
-          String decodedUrl;
-          try {
-            decodedUrl = URLDecoder.decode(url.getPath(), "UTF-8");
-          }
-          catch (final UnsupportedEncodingException e) {
-            decodedUrl = url.getPath();
-          }
-
-          PackageLoader.loadDirectory(classNames, new File(decodedUrl), packageName, includeSubPackages);
+    final Consumer<String> action = new Consumer<String>() {
+      @Override
+      public void accept(final String t) {
+        try {
+          final Class<?> cls = Class.forName(t, initialize, classLoader);
+          if (filter != null && filter.test(cls))
+            Class.forName(t, true, classLoader);
         }
-        else if ("jar".equals(url.getProtocol())) {
-          PackageLoader.loadJar(classNames, url, packageName, includeSubPackages);
+        catch (final ClassNotFoundException | VerifyError e) {
+          if (logger.isTraceEnabled())
+            logger.trace("Problem loading package: " + (packageName.length() > 0 ? packageName : "<default>"), e);
         }
-        else {
-          throw new UnsupportedOperationException("Unsupported protocol in URL: " + url.toExternalForm());
-        }
-
-        for (final String className : classNames) {
-          try {
-            final Class<?> cls = Class.forName(className, initialize, classLoader);
-            if (filter != null && filter.test(cls) || initialize)
-              Class.forName(className, true, classLoader);
-          }
-          catch (final ClassNotFoundException | VerifyError e) {
-            if (logger.isTraceEnabled())
-              logger.trace("Problem loading package: " + (packageName.length() > 0 ? packageName : "<default>"), e);
-          }
-          catch (final NoClassDefFoundError e) {
-          }
+        catch (final NoClassDefFoundError e) {
         }
       }
+    };
+
+    do {
+      final URL url = resources.nextElement();
+      if ("file".equals(url.getProtocol())) {
+        String decodedUrl;
+        try {
+          decodedUrl = URLDecoder.decode(url.getPath(), "UTF-8");
+        }
+        catch (final UnsupportedEncodingException e) {
+          decodedUrl = url.getPath();
+        }
+
+        PackageLoader.loadDirectory(new File(decodedUrl), packageName, includeSubPackages, action);
+      }
+      else if ("jar".equals(url.getProtocol())) {
+        PackageLoader.loadJar(url, packageName, includeSubPackages, action);
+      }
+      else {
+        throw new UnsupportedOperationException("Unsupported protocol in URL: " + url.toExternalForm());
+      }
     }
-    catch (final IOException e) {
-      throw new PackageNotFoundException(e.getMessage(), e);
-    }
+    while (resources.hasMoreElements());
   }
 
-  private static void loadDirectory(final Set<String> classNames, final File directory, final String packageName, final boolean includeSubPackages) throws IOException {
+  private static void loadDirectory(final File directory, final String packageName, final boolean includeSubPackages, final Consumer<String> action) throws IOException {
     final Path path = directory.toPath();
+    final String packagePrefix = packageName.length() > 0 ? packageName + "." : "";
     final Consumer<Path> consumer = new Consumer<Path>() {
-      final String packagePrefix = packageName.length() > 0 ? packageName + "." : "";
-
       @Override
       public void accept(final Path t) {
         final String classFile = path.relativize(t).toString();
         final String className = packagePrefix + classFile.substring(0, classFile.length() - 6).replace(File.separatorChar, '.');
-        classNames.add(className);
+        action.accept(className);
       }
     };
 
@@ -408,7 +407,7 @@ public class PackageLoader {
       Files.list(path).forEach(consumer);
   }
 
-  private static void loadJar(final Set<String> classNames, final URL url, final String packageName, final boolean includeSubPackages) throws PackageNotFoundException {
+  private static void loadJar(final URL url, final String packageName, final boolean includeSubPackages, final Consumer<String> action) throws PackageNotFoundException {
     final JarURLConnection jarURLConnection;
     final JarFile jarFile;
     try {
@@ -428,7 +427,7 @@ public class PackageLoader {
       if (entry.startsWith(entryName) && entry.endsWith(".class")) {
         final String className = (entry.charAt(0) == '/' ? entry.substring(1, entry.length() - 6) : entry.substring(0, entry.length() - 6)).replace('/', '.');
         if (className.startsWith(packagePrefix) && (includeSubPackages || className.indexOf(".", packagePrefix.length() + 1) < 0))
-          classNames.add(className);
+          action.accept(className);
       }
     }
   }

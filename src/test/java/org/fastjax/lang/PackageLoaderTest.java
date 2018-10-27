@@ -18,6 +18,7 @@ package org.fastjax.lang;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -37,7 +38,7 @@ public class PackageLoaderTest {
   private static final TestClassLoader classLoader = new TestClassLoader();
 
   @Test
-  public void testPackageLoader() throws PackageNotFoundException {
+  public void testPackageLoader() throws IOException, PackageNotFoundException {
     final String[] testClasses = {
       "org.junit.PackageLoaderClass1",
       "org.junit.PackageLoaderClass2",
@@ -68,7 +69,7 @@ public class PackageLoaderTest {
   }
 
   @Test
-  public void testJar() throws ClassNotFoundException, PackageNotFoundException {
+  public void testJar() throws ClassNotFoundException, IOException, PackageNotFoundException {
     final boolean[] encountered = new boolean[1];
     final Set<Class<?>> loadedClasses = new HashSet<>();
     PackageLoader.getContextPackageLoader().loadPackage("org.junit.runner", new Predicate<Class<?>>() {
