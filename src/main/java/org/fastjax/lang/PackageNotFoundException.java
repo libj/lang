@@ -42,8 +42,8 @@ public final class PackageNotFoundException extends ReflectiveOperationException
   }
 
   /**
-   * Constructs a {@code PackageNotFoundException} with the specified
-   * exception that was the cause of this exception.
+   * Constructs a {@code PackageNotFoundException} with the specified exception
+   * that was the cause of this exception.
    *
    * @param cause The exception that was the cause of this exception.
    */

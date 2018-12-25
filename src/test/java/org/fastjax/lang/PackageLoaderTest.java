@@ -16,12 +16,12 @@
 
 package org.fastjax.lang;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
-
-import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.slf4j.Logger;
