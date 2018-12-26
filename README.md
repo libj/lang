@@ -33,7 +33,7 @@ PackageLoader.getContextPackageLoader().loadPackage("org.junit.runner", new Pred
 
 ### JavaDocs
 
-JavaDocs are available [here](https://www.fastjax.org/javadocs/org/fastjax/lang/package-summary.html).
+JavaDocs are available [here](https://lang.fastjax.org/javadocs/).
 
 ## Contributing
 
