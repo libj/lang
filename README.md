@@ -1,4 +1,4 @@
-# FastJAX lang
+# FastJAX Lang
 
 **Java API Extension for `java.lang`**
 
