@@ -27,6 +27,7 @@
   <artifactId>lang</artifactId>
   <version>0.7.3-SNAPSHOT</version>
   <name>${project.groupId}:${project.artifactId}</name>
+  <url>https://lang.fastjax.org/</url>
   <description>
     Extra functionality for classes in the java.lang package.
   </description>
