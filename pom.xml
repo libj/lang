@@ -31,9 +31,6 @@
   <description>
     Extra functionality for classes in the java.lang package.
   </description>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>org.fastjax</groupId>
