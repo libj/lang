@@ -1,5 +1,5 @@
 <!--
-  Copyright (c) 2008 FastJAX
+  Copyright (c) 2008 OpenJAX
   
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -20,21 +20,20 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.fastjax</groupId>
-    <artifactId>fastjax</artifactId>
+    <groupId>org.openjax.classic</groupId>
+    <artifactId>classic</artifactId>
     <version>1.11.15-SNAPSHOT</version>
   </parent>
-  <artifactId>lang</artifactId>
+  <artifactId>classic-lang</artifactId>
   <version>0.7.3-SNAPSHOT</version>
   <name>${project.groupId}:${project.artifactId}</name>
-  <url>https://lang.fastjax.org/</url>
   <description>
     Extra functionality for classes in the java.lang package.
   </description>
   <dependencies>
     <dependency>
-      <groupId>org.fastjax</groupId>
-      <artifactId>logging</artifactId>
+      <groupId>org.openjax.classic</groupId>
+      <artifactId>classic-logging</artifactId>
       <version>0.4.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
