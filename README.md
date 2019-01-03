@@ -1,18 +1,18 @@
-# OpenJAX Classic Lang
+# OpenJAX Standard Lang
 
 **Java API Extension for `java.lang`**
 
 ## Introduction
 
-The OpenJAX Classic Lang library provides supplementary utilities for classes that belong to `java.lang`, or are considered essential as to justify existence in `java.lang`.
+The OpenJAX Standard Lang library provides supplementary utilities for classes that belong to `java.lang`, or are considered essential as to justify existence in `java.lang`.
 
 ## Classes
 
-* **[AnnotationParameterException](src/main/java/org/openjax/classic/lang/AnnotationParameterException.java)**: Thrown to indicate an exception in a parameter value of an annotation.
-* **[IllegalAnnotationException](src/main/java/org/openjax/classic/lang/IllegalAnnotationException.java)**: Thrown to indicate that an illegal annotation was encountered.
-* **[OperatingSystem](src/main/java/org/openjax/classic/lang/OperatingSystem.java)**: Enum representing the host operating system of the java runtime.
-* **[PackageLoader](src/main/java/org/openjax/classic/lang/PackageLoader.java)**: The `PackageLoader` is a class used to discover and load classes in a package. Given a package name, the `PackageLoader` should attempt to locate and/or load the classes of the package. The `PackageLoader` uses a `ClassLoader`, either specified or default, for the discovery of packages and loading of classes.
-* **[PackageNotFoundException](src/main/java/org/openjax/classic/lang/PackageNotFoundException.java)**: Thrown when an application tries to load in a package using `PackageLoader`, but no definition for the specified package could be found.
+* **[AnnotationParameterException](src/main/java/org/openjax/standard/lang/AnnotationParameterException.java)**: Thrown to indicate an exception in a parameter value of an annotation.
+* **[IllegalAnnotationException](src/main/java/org/openjax/standard/lang/IllegalAnnotationException.java)**: Thrown to indicate that an illegal annotation was encountered.
+* **[OperatingSystem](src/main/java/org/openjax/standard/lang/OperatingSystem.java)**: Enum representing the host operating system of the java runtime.
+* **[PackageLoader](src/main/java/org/openjax/standard/lang/PackageLoader.java)**: The `PackageLoader` is a class used to discover and load classes in a package. Given a package name, the `PackageLoader` should attempt to locate and/or load the classes of the package. The `PackageLoader` uses a `ClassLoader`, either specified or default, for the discovery of packages and loading of classes.
+* **[PackageNotFoundException](src/main/java/org/openjax/standard/lang/PackageNotFoundException.java)**: Thrown when an application tries to load in a package using `PackageLoader`, but no definition for the specified package could be found.
 
 ### PackageLoader
 
@@ -33,7 +33,7 @@ PackageLoader.getContextPackageLoader().loadPackage("org.junit.runner", new Pred
 
 ### JavaDocs
 
-JavaDocs are available [here](https://classic.openjax.org/lang/apidocs/).
+JavaDocs are available [here](https://standard.openjax.org/lang/apidocs/).
 
 ## Contributing
 

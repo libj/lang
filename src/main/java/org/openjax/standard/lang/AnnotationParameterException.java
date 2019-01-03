@@ -14,36 +14,39 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.classic.lang;
+package org.openjax.standard.lang;
 
 import java.lang.annotation.Annotation;
 
 /**
- * Thrown to indicate that an illegal annotation was encountered.
+ * Thrown to indicate an exception in a parameter value of an annotation.
  */
-public class IllegalAnnotationException extends RuntimeException {
-  private static final long serialVersionUID = 2242697897127221243L;
+public class AnnotationParameterException extends RuntimeException {
+  private static final long serialVersionUID = -5403129096514741253L;
+
   private final Annotation annotation;
 
   /**
-   * Creates an {@code IllegalAnnotationException} for the specified annotation.
+   * Creates an {@code AnnotationParameterException} for the specified
+   * annotation.
    *
    * @param annotation The {@code Annotation} that is the subject of this
    *          exception.
    */
-  public IllegalAnnotationException(final Annotation annotation) {
+  public AnnotationParameterException(final Annotation annotation) {
     super();
     this.annotation = annotation;
   }
 
   /**
-   * Creates an {@code IllegalAnnotationException} for the specified annotation.
+   * Creates an {@code AnnotationParameterException} for the specified
+   * annotation.
    *
    * @param annotation The {@code Annotation} that is the subject of this
    *          exception.
    * @param message The detail message.
    */
-  public IllegalAnnotationException(final Annotation annotation, final String message) {
+  public AnnotationParameterException(final Annotation annotation, final String message) {
     super(message);
     this.annotation = annotation;
   }

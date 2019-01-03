@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.classic.lang;
+package org.openjax.standard.lang;
 
 import static org.junit.Assert.*;
 
@@ -24,6 +24,8 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 import org.junit.Test;
+import org.openjax.standard.lang.PackageLoader;
+import org.openjax.standard.lang.PackageNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
