@@ -1,6 +1,8 @@
 # OpenJAX Standard Lang
 
-**Java API Extension for `java.lang`**
+> Java API Extension for `java.lang`
+
+[![Build Status](https://travis-ci.org/openjax/standard-lang.png)](https://travis-ci.org/openjax/standard-lang)
 
 ## Introduction
 
