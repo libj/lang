@@ -3,6 +3,7 @@
 > Java API Extension for `java.lang`
 
 [![Build Status](https://travis-ci.org/openjax/standard-lang.png)](https://travis-ci.org/openjax/standard-lang)
+[![Coverage Status](https://coveralls.io/repos/github/openjax/standard-lang/badge.svg)](https://coveralls.io/github/openjax/standard-lang)
 
 ## Introduction
 
