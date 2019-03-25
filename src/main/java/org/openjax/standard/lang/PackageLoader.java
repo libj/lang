@@ -426,7 +426,7 @@ public class PackageLoader {
       final String entry = enumeration.nextElement().getName();
       if (entry.startsWith(entryName) && entry.endsWith(".class")) {
         final String className = (entry.charAt(0) == '/' ? entry.substring(1, entry.length() - 6) : entry.substring(0, entry.length() - 6)).replace('/', '.');
-        if (className.startsWith(packagePrefix) && (includeSubPackages || className.indexOf(".", packagePrefix.length() + 1) < 0))
+        if (className.startsWith(packagePrefix) && (includeSubPackages || className.indexOf('.', packagePrefix.length() + 1) < 0))
           action.accept(className);
       }
     }
