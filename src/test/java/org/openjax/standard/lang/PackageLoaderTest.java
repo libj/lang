@@ -24,8 +24,6 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 import org.junit.Test;
-import org.openjax.standard.lang.PackageLoader;
-import org.openjax.standard.lang.PackageNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
