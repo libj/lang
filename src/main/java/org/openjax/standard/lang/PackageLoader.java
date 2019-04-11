@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.JarURLConnection;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -342,9 +343,12 @@ public class PackageLoader {
     return classes;
   }
 
+  private static final ClassLoader bootLoaderProxy = new URLClassLoader(new URL[0], null);
+
   private static void loadPackage(final String packageName, final boolean includeSubPackages, final boolean initialize, final Predicate<Class<?>> filter, final ClassLoader classLoader) throws IOException, PackageNotFoundException {
+    final ClassLoader loader = classLoader != null ? classLoader : bootLoaderProxy;
     final String location = packageName.replace('.', '/');
-    final Enumeration<URL> resources = classLoader.getResources(location);
+    final Enumeration<URL> resources = loader.getResources(location);
 
     if (!resources.hasMoreElements())
       throw new PackageNotFoundException(packageName.length() > 0 ? packageName : "<default>");
@@ -353,9 +357,9 @@ public class PackageLoader {
       @Override
       public void accept(final String t) {
         try {
-          final Class<?> cls = Class.forName(t, initialize, classLoader);
+          final Class<?> cls = Class.forName(t, initialize, loader);
           if (filter != null && filter.test(cls))
-            Class.forName(t, true, classLoader);
+            Class.forName(t, true, loader);
         }
         catch (final ClassNotFoundException | VerifyError e) {
           if (logger.isTraceEnabled())
