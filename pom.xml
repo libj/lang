@@ -33,8 +33,9 @@
   <dependencies>
     <dependency>
       <groupId>org.openjax.standard</groupId>
-      <artifactId>logging</artifactId>
-      <version>0.4.1-SNAPSHOT</version>
+      <artifactId>test</artifactId>
+      <version>0.6.9-SNAPSHOT</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>
