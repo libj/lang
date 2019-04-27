@@ -4,6 +4,8 @@
 
 [![Build Status](https://travis-ci.org/openjax/standard-lang.png)](https://travis-ci.org/openjax/standard-lang)
 [![Coverage Status](https://coveralls.io/repos/github/openjax/standard-lang/badge.svg)](https://coveralls.io/github/openjax/standard-lang)
+[![Javadocs](https://www.javadoc.io/badge/org.openjax.standard/lang.svg)](https://www.javadoc.io/doc/org.openjax.standard/lang)
+[![Released Version](https://img.shields.io/maven-central/v/org.openjax.standard/lang.svg)](https://mvnrepository.com/artifact/org.openjax.standard/lang)
 
 ## Introduction
 
@@ -33,10 +35,6 @@ PackageLoader.getContextPackageLoader().loadPackage("org.junit.runner", new Pred
   }
 })
 ```
-
-### JavaDocs
-
-JavaDocs are available [here](https://standard.openjax.org/lang/apidocs/).
 
 ## Contributing
 
