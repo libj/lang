@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.standard.lang;
+package org.openjax.ext.lang;
 
 class Sys {
   public static final String OS_NAME = System.getProperty("os.name").toLowerCase();
