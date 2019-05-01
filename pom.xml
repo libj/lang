@@ -26,9 +26,9 @@
   </parent>
   <artifactId>lang</artifactId>
   <version>0.7.3-SNAPSHOT</version>
-  <name>${project.groupId}:${project.artifactId}</name>
+  <name>OpenJAX Extensions Lang</name>
   <description>
-    Extra functionality for classes in the java.lang package.
+    Provides supplementary utilities for classes that belong to java.lang, or are considered essential as to justify existence in java.lang.
   </description>
   <dependencies>
     <dependency>
