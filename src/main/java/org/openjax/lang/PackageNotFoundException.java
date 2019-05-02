@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.ext.lang;
+package org.openjax.lang;
 
 /**
  * Thrown when an application tries to load in a package using
