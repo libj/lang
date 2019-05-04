@@ -1,23 +1,23 @@
-# OpenJAX Lang
+# LibJ Lang
 
 > Java API Extension for `java.lang`
 
-[![Build Status](https://travis-ci.org/openjax/lang.png)](https://travis-ci.org/openjax/lang)
-[![Coverage Status](https://coveralls.io/repos/github/openjax/lang/badge.svg)](https://coveralls.io/github/openjax/lang)
-[![Javadocs](https://www.javadoc.io/badge/org.openjax/lang.svg)](https://www.javadoc.io/doc/org.openjax/lang)
-[![Released Version](https://img.shields.io/maven-central/v/org.openjax/lang.svg)](https://mvnrepository.com/artifact/org.openjax/lang)
+[![Build Status](https://travis-ci.org/libj/lang.png)](https://travis-ci.org/libj/lang)
+[![Coverage Status](https://coveralls.io/repos/github/libj/lang/badge.svg)](https://coveralls.io/github/libj/lang)
+[![Javadocs](https://www.javadoc.io/badge/org.libj/lang.svg)](https://www.javadoc.io/doc/org.libj/lang)
+[![Released Version](https://img.shields.io/maven-central/v/org.libj/lang.svg)](https://mvnrepository.com/artifact/org.libj/lang)
 
 ## Introduction
 
-The OpenJAX Lang library provides supplementary utilities for classes that belong to `java.lang`, or are considered essential as to justify existence in `java.lang`.
+The LibJ Lang library provides supplementary utilities for classes that belong to `java.lang`, or are considered essential as to justify existence in `java.lang`.
 
 ## Classes
 
-* **[AnnotationParameterException](src/main/java/org.openjax/lang/AnnotationParameterException.java)**: Thrown to indicate an exception in a parameter value of an annotation.
-* **[IllegalAnnotationException](src/main/java/org.openjax/lang/IllegalAnnotationException.java)**: Thrown to indicate that an illegal annotation was encountered.
-* **[OperatingSystem](src/main/java/org.openjax/lang/OperatingSystem.java)**: Enum representing the host operating system of the java runtime.
-* **[PackageLoader](src/main/java/org.openjax/lang/PackageLoader.java)**: The `PackageLoader` is a class used to discover and load classes in a package. Given a package name, the `PackageLoader` should attempt to locate and/or load the classes of the package. The `PackageLoader` uses a `ClassLoader`, either specified or default, for the discovery of packages and loading of classes.
-* **[PackageNotFoundException](src/main/java/org.openjax/lang/PackageNotFoundException.java)**: Thrown when an application tries to load in a package using `PackageLoader`, but no definition for the specified package could be found.
+* **[AnnotationParameterException](src/main/java/org.libj/lang/AnnotationParameterException.java)**: Thrown to indicate an exception in a parameter value of an annotation.
+* **[IllegalAnnotationException](src/main/java/org.libj/lang/IllegalAnnotationException.java)**: Thrown to indicate that an illegal annotation was encountered.
+* **[OperatingSystem](src/main/java/org.libj/lang/OperatingSystem.java)**: Enum representing the host operating system of the java runtime.
+* **[PackageLoader](src/main/java/org.libj/lang/PackageLoader.java)**: The `PackageLoader` is a class used to discover and load classes in a package. Given a package name, the `PackageLoader` should attempt to locate and/or load the classes of the package. The `PackageLoader` uses a `ClassLoader`, either specified or default, for the discovery of packages and loading of classes.
+* **[PackageNotFoundException](src/main/java/org.libj/lang/PackageNotFoundException.java)**: Thrown when an application tries to load in a package using `PackageLoader`, but no definition for the specified package could be found.
 
 ### PackageLoader
 

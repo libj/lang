@@ -1,4 +1,4 @@
-/* Copyright (c) 2006 OpenJAX
+/* Copyright (c) 2006 LibJ
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.lang;
+package org.libj.lang;
 
 import static org.junit.Assert.*;
 
@@ -24,6 +24,8 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 import org.junit.Test;
+import org.libj.lang.PackageLoader;
+import org.libj.lang.PackageNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
