@@ -28,7 +28,7 @@
   <version>0.7.3-SNAPSHOT</version>
   <name>LibJ Lang</name>
   <description>
-    Provides supplementary utilities for classes that belong to java.lang, or are considered essential as to justify existence in java.lang.
+    Supplementary utilities for classes that belong to java.lang, or are considered essential as to justify existence in java.lang.
   </description>
   <dependencies>
     <dependency>
