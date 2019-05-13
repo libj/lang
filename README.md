@@ -1,7 +1,5 @@
 # LibJ Lang
 
-> Java API Extension for `java.lang`
-
 [![Build Status](https://travis-ci.org/libj/lang.png)](https://travis-ci.org/libj/lang)
 [![Coverage Status](https://coveralls.io/repos/github/libj/lang/badge.svg)](https://coveralls.io/github/libj/lang)
 [![Javadocs](https://www.javadoc.io/badge/org.libj/lang.svg)](https://www.javadoc.io/doc/org.libj/lang)
