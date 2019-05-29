@@ -49,8 +49,6 @@ public class IllegalAnnotationException extends RuntimeException {
   }
 
   /**
-   * Returns the {@code Annotation} that is the subject of this exception.
-   *
    * @return The {@code Annotation} that is the subject of this exception.
    */
   public Annotation annotation() {
