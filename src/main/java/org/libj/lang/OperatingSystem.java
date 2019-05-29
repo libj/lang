@@ -17,7 +17,7 @@
 package org.libj.lang;
 
 class Sys {
-  public static final String OS_NAME = System.getProperty("os.name").toLowerCase();
+  static final String OS_NAME = System.getProperty("os.name").toLowerCase();
 }
 
 /**
