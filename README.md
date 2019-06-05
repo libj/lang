@@ -26,12 +26,7 @@ The `PackageLoader` is a class used to discover and load classes in a package. G
 The following example illustrates how to load the classes in the `org.junit.runner` package, and to initialize classes whose name starts with `org.junit.runner.Filter`.
 
 ```java
-PackageLoader.getContextPackageLoader().loadPackage("org.junit.runner", new Predicate<Class<?>>() {
-  @Override
-  public boolean test(Class<?> t) {
-    return t.getName().startsWith("org.junit.runner.Filter");
-  }
-})
+PackageLoader.getContextPackageLoader().loadPackage("org.junit.runner", c -> c.getName().startsWith("org.junit.runner.Filter"));
 ```
 
 ## Contributing
