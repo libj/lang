@@ -74,16 +74,13 @@ public class PackageLoaderTest {
   public void testJar() throws ClassNotFoundException, IOException, PackageNotFoundException {
     final boolean[] encountered = new boolean[1];
     final Set<Class<?>> loadedClasses = new HashSet<>();
-    PackageLoader.getContextPackageLoader().loadPackage("org.junit.runner", new Predicate<Class<?>>() {
-      @Override
-      public boolean test(final Class<?> t) {
-        if (encountered[0] = "org.junit.runner.FilterFactory".equals(t.getName()) || encountered[0]) {
-          loadedClasses.add(t);
-          return true;
-        }
-
-        return false;
+    PackageLoader.getContextPackageLoader().loadPackage("org.junit.runner", t -> {
+      if (encountered[0] = "org.junit.runner.FilterFactory".equals(t.getName()) || encountered[0]) {
+        loadedClasses.add(t);
+        return true;
       }
+
+      return false;
     });
     assertTrue("Should have been loaded by PackageLoader", loadedClasses.contains(Class.forName("org.junit.runner.FilterFactory", false, ClassLoader.getSystemClassLoader())));
     assertTrue(encountered[0]);

@@ -52,12 +52,7 @@ public class PackageLoader {
 
   private static final Map<ClassLoader,PackageLoader> instances = new HashMap<>();
 
-  private static final BiPredicate<Path,BasicFileAttributes> classPredicate = new BiPredicate<Path,BasicFileAttributes>() {
-    @Override
-    public boolean test(final Path t, final BasicFileAttributes u) {
-      return u.isRegularFile() && t.toString().endsWith(".class");
-    }
-  };
+  private static final BiPredicate<Path,BasicFileAttributes> classPredicate = (t, u) -> u.isRegularFile() && t.toString().endsWith(".class");
 
   /**
    * Returns a {@code PackageLoader} that uses the system class loader for the
@@ -333,12 +328,9 @@ public class PackageLoader {
    */
   public Set<Class<?>> loadPackage(final String name, final boolean includeSubPackages, final boolean initialize) throws IOException, PackageNotFoundException {
     final Set<Class<?>> classes = new HashSet<>();
-    PackageLoader.loadPackage(name, includeSubPackages, initialize, new Predicate<Class<?>>() {
-      @Override
-      public boolean test(final Class<?> t) {
-        classes.add(t);
-        return true;
-      }
+    PackageLoader.loadPackage(name, includeSubPackages, initialize, t -> {
+      classes.add(t);
+      return true;
     }, classLoader);
     return classes;
   }
@@ -353,20 +345,17 @@ public class PackageLoader {
     if (!resources.hasMoreElements())
       throw new PackageNotFoundException(packageName.length() > 0 ? packageName : "<default>");
 
-    final Consumer<String> action = new Consumer<String>() {
-      @Override
-      public void accept(final String t) {
-        try {
-          final Class<?> cls = Class.forName(t, initialize, loader);
-          if (filter != null && filter.test(cls))
-            Class.forName(t, true, loader);
-        }
-        catch (final ClassNotFoundException | VerifyError e) {
-          if (logger.isTraceEnabled())
-            logger.trace("Problem loading package: " + (packageName.length() > 0 ? packageName : "<default>"), e);
-        }
-        catch (final NoClassDefFoundError e) {
-        }
+    final Consumer<String> action = t -> {
+      try {
+        final Class<?> cls = Class.forName(t, initialize, loader);
+        if (filter != null && filter.test(cls))
+          Class.forName(t, true, loader);
+      }
+      catch (final ClassNotFoundException | VerifyError e) {
+        if (logger.isTraceEnabled())
+          logger.trace("Problem loading package: " + (packageName.length() > 0 ? packageName : "<default>"), e);
+      }
+      catch (final NoClassDefFoundError e) {
       }
     };
 
@@ -396,13 +385,10 @@ public class PackageLoader {
   private static void loadDirectory(final File directory, final String packageName, final boolean includeSubPackages, final Consumer<String> action) throws IOException {
     final Path path = directory.toPath();
     final String packagePrefix = packageName.length() > 0 ? packageName + "." : "";
-    final Consumer<Path> consumer = new Consumer<Path>() {
-      @Override
-      public void accept(final Path t) {
-        final String classFile = path.relativize(t).toString();
-        final String className = packagePrefix + classFile.substring(0, classFile.length() - 6).replace(File.separatorChar, '.');
-        action.accept(className);
-      }
+    final Consumer<Path> consumer = t -> {
+      final String classFile = path.relativize(t).toString();
+      final String className = packagePrefix + classFile.substring(0, classFile.length() - 6).replace(File.separatorChar, '.');
+      action.accept(className);
     };
 
     if (includeSubPackages)
