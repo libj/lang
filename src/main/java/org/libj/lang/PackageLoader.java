@@ -345,11 +345,11 @@ public class PackageLoader {
     if (!resources.hasMoreElements())
       throw new PackageNotFoundException(packageName.length() > 0 ? packageName : "<default>");
 
-    final Consumer<String> action = t -> {
+    final Consumer<String> action = className -> {
       try {
-        final Class<?> cls = Class.forName(t, initialize, loader);
+        final Class<?> cls = Class.forName(className, initialize, loader);
         if (filter != null && filter.test(cls))
-          Class.forName(t, true, loader);
+          Class.forName(className, true, loader);
       }
       catch (final ClassNotFoundException | VerifyError e) {
         if (logger.isTraceEnabled())
