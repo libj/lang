@@ -17,8 +17,8 @@
 package org.libj.lang;
 
 /**
- * Thrown when an application tries to load in a package using
- * {@link PackageLoader}, but no definition for the specified package could be
+ * Thrown when an application attempts to load in a package using
+ * {@link PackageLoader}, but no definition for the specified package can be
  * found.
  */
 public final class PackageNotFoundException extends ReflectiveOperationException {

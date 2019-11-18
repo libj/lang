@@ -41,17 +41,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The {@link PackageLoader} is a class used to discover and load classes in a
- * package. Given a package name, the {@link PackageLoader} should attempt to
- * locate and/or load the classes of the package. The {@link PackageLoader} uses
- * a {@link ClassLoader}, either specified or default, for the discovery of
- * packages and loading of classes.
+ * The {@link PackageLoader} is a class used to discover and to load classes in
+ * a package. Given a package name, the {@link PackageLoader} attempts to locate
+ * and to optionally load the classes of the package.
  */
 public class PackageLoader {
   private static final Logger logger = LoggerFactory.getLogger(PackageLoader.class);
-
   private static final Map<ClassLoader,PackageLoader> instances = new HashMap<>();
-
   private static final BiPredicate<Path,BasicFileAttributes> classPredicate = (t, u) -> u.isRegularFile() && t.toString().endsWith(".class");
 
   /**
