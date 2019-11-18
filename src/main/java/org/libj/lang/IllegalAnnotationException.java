@@ -26,9 +26,9 @@ public class IllegalAnnotationException extends RuntimeException {
   private final Annotation annotation;
 
   /**
-   * Creates an {@code IllegalAnnotationException} for the specified annotation.
+   * Creates an {@link IllegalAnnotationException} for the specified annotation.
    *
-   * @param annotation The {@code Annotation} that is the subject of this
+   * @param annotation The {@link Annotation} that is the subject of this
    *          exception.
    */
   public IllegalAnnotationException(final Annotation annotation) {
@@ -37,9 +37,9 @@ public class IllegalAnnotationException extends RuntimeException {
   }
 
   /**
-   * Creates an {@code IllegalAnnotationException} for the specified annotation.
+   * Creates an {@link IllegalAnnotationException} for the specified annotation.
    *
-   * @param annotation The {@code Annotation} that is the subject of this
+   * @param annotation The {@link Annotation} that is the subject of this
    *          exception.
    * @param message The detail message.
    */
@@ -49,7 +49,9 @@ public class IllegalAnnotationException extends RuntimeException {
   }
 
   /**
-   * @return The {@code Annotation} that is the subject of this exception.
+   * Returns the {@link Annotation} that is the subject of this exception.
+   *
+   * @return The {@link Annotation} that is the subject of this exception.
    */
   public Annotation annotation() {
     return this.annotation;

@@ -41,9 +41,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The {@code PackageLoader} is a class used to discover and load classes in a
- * package. Given a package name, the {@code PackageLoader} should attempt to
- * locate and/or load the classes of the package. The {@code PackageLoader} uses
+ * The {@link PackageLoader} is a class used to discover and load classes in a
+ * package. Given a package name, the {@link PackageLoader} should attempt to
+ * locate and/or load the classes of the package. The {@link PackageLoader} uses
  * a {@link ClassLoader}, either specified or default, for the discovery of
  * packages and loading of classes.
  */
@@ -55,10 +55,10 @@ public class PackageLoader {
   private static final BiPredicate<Path,BasicFileAttributes> classPredicate = (t, u) -> u.isRegularFile() && t.toString().endsWith(".class");
 
   /**
-   * Returns a {@code PackageLoader} that uses the system class loader for the
+   * Returns a {@link PackageLoader} that uses the system class loader for the
    * discovery of packages and the loading of their classes.
    *
-   * @return The {@code PackageLoader} that uses the system class loader for the
+   * @return The {@link PackageLoader} that uses the system class loader for the
    *         discovery of packages and the loading of their classes.
    */
   public static PackageLoader getSystemPackageLoader() {
@@ -66,10 +66,10 @@ public class PackageLoader {
   }
 
   /**
-   * Returns a {@code PackageLoader} that uses the context class loader for the
+   * Returns a {@link PackageLoader} that uses the context class loader for the
    * discovery of packages and the loading of their classes.
    *
-   * @return The {@code PackageLoader} that uses the context class loader for
+   * @return The {@link PackageLoader} that uses the context class loader for
    *         the discovery of packages and the loading of their classes.
    */
   public static PackageLoader getContextPackageLoader() {
@@ -77,12 +77,12 @@ public class PackageLoader {
   }
 
   /**
-   * Returns a {@code PackageLoader} that uses the specified {@link ClassLoader}
+   * Returns a {@link PackageLoader} that uses the specified {@link ClassLoader}
    * for the discovery of packages and the loading of their classes.
    *
    * @param classLoader The {@link ClassLoader} to be used for the discovery of
    *          packages and the loading of their classes.
-   * @return The {@code PackageLoader} that uses the specified
+   * @return The {@link PackageLoader} that uses the specified
    *         {@code classLoader} for the discovery of packages and the loading
    *         of their classes.
    */
@@ -112,7 +112,7 @@ public class PackageLoader {
    * sub-packages.
    * <p>
    * Packages are discovered by searching for path resources in the
-   * {@link PackageLoader#classLoader} of this {@code PackageLoader}. If the
+   * {@link PackageLoader#classLoader} of this {@link PackageLoader}. If the
    * package exists in multiple locations, such as jar files and/or directories,
    * each of the resource locations will be used to load all classes from each
    * resource.
@@ -121,7 +121,7 @@ public class PackageLoader {
    * @return Set of classes discovered, loaded, and initialized.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If {@code pkg} cannot be found in the
-   *           class loader of this {@code PackageLoader} instance.
+   *           class loader of this {@link PackageLoader} instance.
    * @throws NullPointerException If {@code pkg} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
@@ -134,7 +134,7 @@ public class PackageLoader {
    * sub-packages.
    * <p>
    * Packages are discovered by searching for path resources in the
-   * {@link PackageLoader#classLoader} of this {@code PackageLoader}. If the
+   * {@link PackageLoader#classLoader} of this {@link PackageLoader}. If the
    * package exists in multiple locations, such as jar files and/or directories,
    * each of the resource locations will be used to load all classes from each
    * resource.
@@ -144,7 +144,7 @@ public class PackageLoader {
    *          initialize, or {@code null} to initialize discovered all classes.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If {@code pkg} cannot be found in the
-   *           class loader of this {@code PackageLoader} instance.
+   *           class loader of this {@link PackageLoader} instance.
    * @throws NullPointerException If {@code pkg} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
@@ -157,7 +157,7 @@ public class PackageLoader {
    * sub-packages.
    * <p>
    * Packages are discovered by searching for path resources in the
-   * {@link PackageLoader#classLoader} of this {@code PackageLoader}. If the
+   * {@link PackageLoader#classLoader} of this {@link PackageLoader}. If the
    * package exists in multiple locations, such as jar files and/or directories,
    * each of the resource locations will be used to load all classes from each
    * resource.
@@ -168,7 +168,7 @@ public class PackageLoader {
    * @return Set of discovered classes, whether they were initialized or not.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If {@code pkg} cannot be found in the
-   *           class loader of this {@code PackageLoader} instance.
+   *           class loader of this {@link PackageLoader} instance.
    * @throws NullPointerException If {@code pkg} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
@@ -180,7 +180,7 @@ public class PackageLoader {
    * Load and initialize each class in the specified {@link Package}.
    * <p>
    * Packages are discovered by searching for path resources in the
-   * {@link PackageLoader#classLoader} of this {@code PackageLoader}. If the
+   * {@link PackageLoader#classLoader} of this {@link PackageLoader}. If the
    * package exists in multiple locations, such as jar files and/or directories,
    * each of the resource locations will be used to load all classes from each
    * resource.
@@ -195,7 +195,7 @@ public class PackageLoader {
    * @return Set of discovered classes, whether they were initialized or not.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If {@code pkg} cannot be found in the
-   *           class loader of this {@code PackageLoader} instance.
+   *           class loader of this {@link PackageLoader} instance.
    * @throws NullPointerException If {@code pkg} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
@@ -208,7 +208,7 @@ public class PackageLoader {
    * (including classes in sub-packages).
    * <p>
    * Packages are discovered by searching for path resources in the
-   * {@link PackageLoader#classLoader} of this {@code PackageLoader}. If the
+   * {@link PackageLoader#classLoader} of this {@link PackageLoader}. If the
    * package exists in multiple locations, such as jar files and/or directories,
    * each of the resource locations will be used to load all classes from each
    * resource.
@@ -217,7 +217,7 @@ public class PackageLoader {
    * @return Set of classes discovered, loaded, and initialized.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the package specified by {@code name}
-   *           cannot be found in the class loader of this {@code PackageLoader}
+   *           cannot be found in the class loader of this {@link PackageLoader}
    *           instance.
    * @throws NullPointerException If {@code name} is null.
    * @see Class#forName(String,boolean,ClassLoader)
@@ -231,7 +231,7 @@ public class PackageLoader {
    * (including classes in sub-packages).
    * <p>
    * Packages are discovered by searching for path resources in the
-   * {@link PackageLoader#classLoader} of this {@code PackageLoader}. If the
+   * {@link PackageLoader#classLoader} of this {@link PackageLoader}. If the
    * package exists in multiple locations, such as jar files and/or directories,
    * each of the resource locations will be used to load all classes from each
    * resource.
@@ -242,7 +242,7 @@ public class PackageLoader {
    * @return Set of classes discovered, loaded, and initialized.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the package specified by {@code name}
-   *           cannot be found in the class loader of this {@code PackageLoader}
+   *           cannot be found in the class loader of this {@link PackageLoader}
    *           instance.
    * @throws NullPointerException If {@code name} is null.
    * @see Class#forName(String,boolean,ClassLoader)
@@ -256,7 +256,7 @@ public class PackageLoader {
    * (including classes in sub-packages).
    * <p>
    * Packages are discovered by searching for path resources in the
-   * {@link PackageLoader#classLoader} of this {@code PackageLoader}. If the
+   * {@link PackageLoader#classLoader} of this {@link PackageLoader}. If the
    * package exists in multiple locations, such as jar files and/or directories,
    * each of the resource locations will be used to load all classes from each
    * resource.
@@ -266,7 +266,7 @@ public class PackageLoader {
    *          initialize, or {@code null} to initialize discovered all classes.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the package specified by {@code name}
-   *           cannot be found in the class loader of this {@code PackageLoader}
+   *           cannot be found in the class loader of this {@link PackageLoader}
    *           instance.
    * @throws NullPointerException If {@code name} is null.
    * @see Class#forName(String,boolean,ClassLoader)
@@ -279,7 +279,7 @@ public class PackageLoader {
    * Load and initialize each class in the package specified by {@code name}.
    * <p>
    * Packages are discovered by searching for path resources in the
-   * {@link PackageLoader#classLoader} of this {@code PackageLoader}. If the
+   * {@link PackageLoader#classLoader} of this {@link PackageLoader}. If the
    * package exists in multiple locations, such as jar files and/or directories,
    * each of the resource locations will be used to load all classes from each
    * resource.
@@ -293,7 +293,7 @@ public class PackageLoader {
    *          initialize, or {@code null} to initialize discovered all classes.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the package specified by {@code name}
-   *           cannot be found in the class loader of this {@code PackageLoader}
+   *           cannot be found in the class loader of this {@link PackageLoader}
    *           instance.
    * @throws NullPointerException If {@code name} is null.
    * @see Class#forName(String,boolean,ClassLoader)
@@ -306,7 +306,7 @@ public class PackageLoader {
    * Load and initialize each class in the package specified by {@code name}.
    * <p>
    * Packages are discovered by searching for path resources in the
-   * {@link PackageLoader#classLoader} of this {@code PackageLoader}. If the
+   * {@link PackageLoader#classLoader} of this {@link PackageLoader}. If the
    * package exists in multiple locations, such as jar files and/or directories,
    * each of the resource locations will be used to load all classes from each
    * resource.
@@ -321,7 +321,7 @@ public class PackageLoader {
    * @return Set of classes discovered, loaded, and initialized.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the package specified by {@code name}
-   *           cannot be found in the class loader of this {@code PackageLoader}
+   *           cannot be found in the class loader of this {@link PackageLoader}
    *           instance.
    * @throws NullPointerException If {@code name} is null.
    * @see Class#forName(String,boolean,ClassLoader)

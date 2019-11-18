@@ -34,10 +34,10 @@ public enum OperatingSystem {
   MAC(Sys.OS_NAME.indexOf("mac") != -1);
 
   /**
-   * Returns the {@code OperatingSystem} enum representing the host operating
+   * Returns the {@link OperatingSystem} enum representing the host operating
    * system of the current java process.
    *
-   * @return The {@code OperatingSystem} enum representing the host operating
+   * @return The {@link OperatingSystem} enum representing the host operating
    *         system of the current java process.
    */
   public static OperatingSystem get() {

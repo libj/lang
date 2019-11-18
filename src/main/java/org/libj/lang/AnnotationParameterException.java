@@ -26,10 +26,10 @@ public class AnnotationParameterException extends RuntimeException {
   private final Annotation annotation;
 
   /**
-   * Creates an {@code AnnotationParameterException} for the specified
+   * Creates an {@link AnnotationParameterException} for the specified
    * annotation.
    *
-   * @param annotation The {@code Annotation} that is the subject of this
+   * @param annotation The {@link Annotation} that is the subject of this
    *          exception.
    */
   public AnnotationParameterException(final Annotation annotation) {
@@ -38,10 +38,10 @@ public class AnnotationParameterException extends RuntimeException {
   }
 
   /**
-   * Creates an {@code AnnotationParameterException} for the specified
+   * Creates an {@link AnnotationParameterException} for the specified
    * annotation.
    *
-   * @param annotation The {@code Annotation} that is the subject of this
+   * @param annotation The {@link Annotation} that is the subject of this
    *          exception.
    * @param message The detail message.
    */
@@ -51,7 +51,9 @@ public class AnnotationParameterException extends RuntimeException {
   }
 
   /**
-   * @return The {@code Annotation} that is the subject of this exception.
+   * Returns the {@link Annotation} that is the subject of this exception.
+   *
+   * @return The {@link Annotation} that is the subject of this exception.
    */
   public Annotation annotation() {
     return this.annotation;

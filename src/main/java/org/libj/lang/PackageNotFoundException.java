@@ -25,14 +25,14 @@ public final class PackageNotFoundException extends ReflectiveOperationException
   private static final long serialVersionUID = 4963238462943629433L;
 
   /**
-   * Creates a {@code PackageNotFoundException} with no detail message.
+   * Creates a {@link PackageNotFoundException} with no detail message.
    */
   public PackageNotFoundException() {
     super();
   }
 
   /**
-   * Creates a {@code PackageNotFoundException} with the specified detail
+   * Creates a {@link PackageNotFoundException} with the specified detail
    * message.
    *
    * @param message The detail message.
@@ -42,7 +42,7 @@ public final class PackageNotFoundException extends ReflectiveOperationException
   }
 
   /**
-   * Constructs a {@code PackageNotFoundException} with the specified exception
+   * Constructs a {@link PackageNotFoundException} with the specified exception
    * that was the cause of this exception.
    *
    * @param cause The exception that was the cause of this exception.
@@ -52,7 +52,7 @@ public final class PackageNotFoundException extends ReflectiveOperationException
   }
 
   /**
-   * Constructs a {@code PackageNotFoundException} with the specified detail
+   * Constructs a {@link PackageNotFoundException} with the specified detail
    * message and exception that was the cause of this exception.
    *
    * @param message The detail message.
