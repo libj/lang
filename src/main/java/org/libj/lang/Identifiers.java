@@ -396,7 +396,7 @@ public final class Identifiers {
       return string;
 
     final char prefix = '_';
-    return transformNotReserved(prefix, '_', null, substitutes, toPacakgeCase0(string, prefix, '_', null, substitutes));
+    return transformNotReserved(prefix, '_', null, substitutes, toPackageCase0(string, prefix, '_', null, substitutes));
   }
 
   /**
@@ -430,10 +430,10 @@ public final class Identifiers {
       return string;
 
     final char prefix = '_';
-    return transformNotReserved(prefix, '_', null, null, toPacakgeCase0(string, prefix, '_', null, null));
+    return transformNotReserved(prefix, '_', null, null, toPackageCase0(string, prefix, '_', null, null));
   }
 
-  private static StringBuilder toPacakgeCase0(final String string, final char prefix, final char substitute, final Map<Character,String> substitutes, final Function<? super Character,String> function) {
+  private static StringBuilder toPackageCase0(final String string, final char prefix, final char substitute, final Map<Character,String> substitutes, final Function<? super Character,String> function) {
     return Strings.toLowerCase(toIdentifier0(string, prefix, substitute, substitutes, function));
   }
 

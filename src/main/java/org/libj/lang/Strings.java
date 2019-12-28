@@ -403,7 +403,7 @@ public final class Strings {
    * @throws NullPointerException If {@code builder} is null.
    * @see Character#toUpperCase(char)
    */
-  public static StringBuilder toUppereCase(final StringBuilder builder) {
+  public static StringBuilder toUpperCase(final StringBuilder builder) {
     for (int i = 0; i < builder.length(); ++i)
       builder.setCharAt(i, Character.toUpperCase(builder.charAt(i)));
 
@@ -944,14 +944,14 @@ public final class Strings {
    * @throws NullPointerException If the specified string is null.
    */
   public static int indexOfUnQuoted(final CharSequence string, final char ch, final int fromIndex) {
-    boolean esacped = false;
+    boolean escaped = false;
     boolean quoted = false;
     for (int i = Math.max(fromIndex, 0), len = string.length(); i < len; ++i) {
       final char c = string.charAt(i);
       if (c == '\\')
-        esacped = true;
-      else if (esacped)
-        esacped = false;
+        escaped = true;
+      else if (escaped)
+        escaped = false;
       else if (c == ch && !quoted)
         return i;
       else if (c == '"')
