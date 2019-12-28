@@ -27,10 +27,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -47,7 +46,7 @@ import org.slf4j.LoggerFactory;
  */
 public class PackageLoader {
   private static final Logger logger = LoggerFactory.getLogger(PackageLoader.class);
-  private static final Map<ClassLoader,PackageLoader> instances = new HashMap<>();
+  private static final ConcurrentHashMap<ClassLoader,PackageLoader> instances = new ConcurrentHashMap<>();
   private static final BiPredicate<Path,BasicFileAttributes> classPredicate = (t, u) -> u.isRegularFile() && t.toString().endsWith(".class");
 
   /**
@@ -87,7 +86,7 @@ public class PackageLoader {
     if (packageLoader != null)
       return packageLoader;
 
-    synchronized (instances) {
+    synchronized (classLoader) {
       packageLoader = instances.get(classLoader);
       if (packageLoader != null)
         return packageLoader;
@@ -99,7 +98,7 @@ public class PackageLoader {
 
   private final ClassLoader classLoader;
 
-  private PackageLoader(final ClassLoader classLoader) {
+  protected PackageLoader(final ClassLoader classLoader) {
     this.classLoader = classLoader;
   }
 
@@ -144,7 +143,7 @@ public class PackageLoader {
    * @throws NullPointerException If {@code pkg} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
-  public void loadPackage(final Package pkg, final Predicate<Class<?>> initialize) throws IOException, PackageNotFoundException {
+  public void loadPackage(final Package pkg, final Predicate<? super Class<?>> initialize) throws IOException, PackageNotFoundException {
     PackageLoader.loadPackage(pkg.getName(), true, false, initialize, classLoader);
   }
 
@@ -267,7 +266,7 @@ public class PackageLoader {
    * @throws NullPointerException If {@code name} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
-  public void loadPackage(final String name, final Predicate<Class<?>> initialize) throws IOException, PackageNotFoundException {
+  public void loadPackage(final String name, final Predicate<? super Class<?>> initialize) throws IOException, PackageNotFoundException {
     PackageLoader.loadPackage(name, true, false, initialize, classLoader);
   }
 
@@ -294,7 +293,7 @@ public class PackageLoader {
    * @throws NullPointerException If {@code name} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
-  public void loadPackage(final String name, final boolean includeSubPackages, final Predicate<Class<?>> initialize) throws IOException, PackageNotFoundException {
+  public void loadPackage(final String name, final boolean includeSubPackages, final Predicate<? super Class<?>> initialize) throws IOException, PackageNotFoundException {
     PackageLoader.loadPackage(name, includeSubPackages, false, initialize, classLoader);
   }
 
@@ -333,7 +332,7 @@ public class PackageLoader {
 
   private static final ClassLoader bootLoaderProxy = new URLClassLoader(new URL[0], null);
 
-  private static void loadPackage(final String packageName, final boolean includeSubPackages, final boolean initialize, final Predicate<Class<?>> filter, final ClassLoader classLoader) throws IOException, PackageNotFoundException {
+  private static void loadPackage(final String packageName, final boolean includeSubPackages, final boolean initialize, final Predicate<? super Class<?>> filter, final ClassLoader classLoader) throws IOException, PackageNotFoundException {
     final ClassLoader loader = classLoader != null ? classLoader : bootLoaderProxy;
     final String location = packageName.replace('.', '/');
     final Enumeration<URL> resources = loader.getResources(location);
@@ -351,7 +350,7 @@ public class PackageLoader {
         if (logger.isTraceEnabled())
           logger.trace("Problem loading package: " + (packageName.length() > 0 ? packageName : "<default>"), e);
       }
-      catch (final NoClassDefFoundError e) {
+      catch (final NoClassDefFoundError ignored) {
       }
     };
 
@@ -378,7 +377,7 @@ public class PackageLoader {
     while (resources.hasMoreElements());
   }
 
-  private static void loadDirectory(final File directory, final String packageName, final boolean includeSubPackages, final Consumer<String> action) throws IOException {
+  private static void loadDirectory(final File directory, final String packageName, final boolean includeSubPackages, final Consumer<? super String> action) throws IOException {
     final Path path = directory.toPath();
     final String packagePrefix = packageName.length() > 0 ? packageName + "." : "";
     final Consumer<Path> consumer = t -> {
@@ -393,28 +392,26 @@ public class PackageLoader {
       Files.list(path).forEach(consumer);
   }
 
-  private static void loadJar(final URL url, final String packageName, final boolean includeSubPackages, final Consumer<String> action) throws PackageNotFoundException {
-    final JarURLConnection jarURLConnection;
-    final JarFile jarFile;
+  private static void loadJar(final URL url, final String packageName, final boolean includeSubPackages, final Consumer<? super String> action) throws PackageNotFoundException {
     try {
-      jarURLConnection = (JarURLConnection)url.openConnection();
+      final JarURLConnection jarURLConnection = (JarURLConnection)url.openConnection();
       jarURLConnection.setUseCaches(false);
-      jarFile = jarURLConnection.getJarFile();
+      try (final JarFile jarFile = jarURLConnection.getJarFile()) {
+        final String packagePrefix = packageName.length() > 0 ? packageName + "." : "";
+        final String entryName = jarURLConnection.getEntryName();
+        final Enumeration<JarEntry> enumeration = jarFile.entries();
+        while (enumeration.hasMoreElements()) {
+          final String entry = enumeration.nextElement().getName();
+          if (entry.startsWith(entryName) && entry.endsWith(".class")) {
+            final String className = (entry.charAt(0) == '/' ? entry.substring(1, entry.length() - 6) : entry.substring(0, entry.length() - 6)).replace('/', '.');
+            if (className.startsWith(packagePrefix) && (includeSubPackages || className.indexOf('.', packagePrefix.length() + 1) < 0))
+              action.accept(className);
+          }
+        }
+      }
     }
     catch (final IOException e) {
       throw new PackageNotFoundException(packageName.length() > 0 ? packageName : "<default>", e);
-    }
-
-    final String packagePrefix = packageName.length() > 0 ? packageName + "." : "";
-    final String entryName = jarURLConnection.getEntryName();
-    final Enumeration<JarEntry> enumeration = jarFile.entries();
-    while (enumeration.hasMoreElements()) {
-      final String entry = enumeration.nextElement().getName();
-      if (entry.startsWith(entryName) && entry.endsWith(".class")) {
-        final String className = (entry.charAt(0) == '/' ? entry.substring(1, entry.length() - 6) : entry.substring(0, entry.length() - 6)).replace('/', '.');
-        if (className.startsWith(packagePrefix) && (includeSubPackages || className.indexOf('.', packagePrefix.length() + 1) < 0))
-          action.accept(className);
-      }
     }
   }
 }

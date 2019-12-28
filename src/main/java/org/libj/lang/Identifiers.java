@@ -80,7 +80,7 @@ public final class Identifiers {
             throw new IllegalArgumentException("Substitution \"" + substitute + "\" contains illegal character: " + substitute.charAt(i));
   }
 
-  private static boolean substitute(final StringBuilder builder, final boolean start, final char ch, final char substitute, final Map<Character,String> substitutes, final Function<Character,String> function) {
+  private static boolean substitute(final StringBuilder builder, final boolean start, final char ch, final char substitute, final Map<Character,String> substitutes, final Function<? super Character,String> function) {
     if (function != null) {
       final String replacement = function.apply(ch);
       if (replacement != null) {
@@ -316,7 +316,7 @@ public final class Identifiers {
     return transformNotReserved(prefix, '\0', null, null, toIdentifier0(string, prefix, '\0', null, null));
   }
 
-  private static StringBuilder toIdentifier0(final String string, final char prefix, final char substitute, final Map<Character,String> substitutes, final Function<Character,String> function) {
+  private static StringBuilder toIdentifier0(final String string, final char prefix, final char substitute, final Map<Character,String> substitutes, final Function<? super Character,String> function) {
     checkPrefix(prefix);
     checkSubstitutes(substitutes);
     final StringBuilder builder = new StringBuilder(string.length());
@@ -433,7 +433,7 @@ public final class Identifiers {
     return transformNotReserved(prefix, '_', null, null, toPacakgeCase0(string, prefix, '_', null, null));
   }
 
-  private static StringBuilder toPacakgeCase0(final String string, final char prefix, final char substitute, final Map<Character,String> substitutes, final Function<Character,String> function) {
+  private static StringBuilder toPacakgeCase0(final String string, final char prefix, final char substitute, final Map<Character,String> substitutes, final Function<? super Character,String> function) {
     return Strings.toLowerCase(toIdentifier0(string, prefix, substitute, substitutes, function));
   }
 
@@ -614,7 +614,7 @@ public final class Identifiers {
     return transformNotReserved(prefix, '\0', substitutes, null, builder);
   }
 
-  private static StringBuilder toCamelCase0(final String string, final char prefix, final char substitute, final Map<Character,String> substitutes, final Function<Character,String> function) {
+  private static StringBuilder toCamelCase0(final String string, final char prefix, final char substitute, final Map<Character,String> substitutes, final Function<? super Character,String> function) {
     checkPrefix(prefix);
     checkSubstitutes(substitutes);
     final StringBuilder builder = new StringBuilder(string.length());
@@ -867,7 +867,7 @@ public final class Identifiers {
    * @return The string transformed to a legal Java [c]amelCase identifier.
    * @throws NullPointerException If {@code string} is null.
    */
-  private static StringBuilder toInstanceCase0(final String string, final char prefix, final char substitute, final Map<Character,String> substitutes, final Function<Character,String> function) {
+  private static StringBuilder toInstanceCase0(final String string, final char prefix, final char substitute, final Map<Character,String> substitutes, final Function<? super Character,String> function) {
     final StringBuilder builder = toCamelCase0(string, prefix, substitute, substitutes, function);
     final int len = builder.length();
     if (len == 0)
@@ -979,7 +979,7 @@ public final class Identifiers {
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
-  public static String toClassCase(final String string, final char prefix, final Function<Character,String> substitutes) {
+  public static String toClassCase(final String string, final char prefix, final Function<? super Character,String> substitutes) {
     return string.length() == 0 ? string : toClassCase(toCamelCase0(string, prefix, '\0', null, substitutes));
   }
 
@@ -1059,7 +1059,7 @@ public final class Identifiers {
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
-  public static String toClassCase(final String string, final Function<Character,String> substitutes) {
+  public static String toClassCase(final String string, final Function<? super Character,String> substitutes) {
     return string.length() == 0 ? string : toClassCase(toCamelCase0(string, 'X', '\0', null, substitutes));
   }
 

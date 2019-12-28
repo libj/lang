@@ -16,8 +16,11 @@
 
 package org.libj.lang;
 
-class Sys {
+final class Sys {
   static final String OS_NAME = System.getProperty("os.name").toLowerCase();
+
+  private Sys() {
+  }
 }
 
 /**
@@ -25,13 +28,13 @@ class Sys {
  */
 public enum OperatingSystem {
   /** Enum representing the Windows operating system. */
-  WINDOWS(Sys.OS_NAME.indexOf("win") != -1),
+  WINDOWS(Sys.OS_NAME.contains("win")),
   /** Enum representing the UNIX operating system. */
-  UNIX(Sys.OS_NAME.indexOf("nix") != -1 || Sys.OS_NAME.indexOf("nux") != -1 || Sys.OS_NAME.indexOf("aix") != -1),
+  UNIX(Sys.OS_NAME.contains("nix") || Sys.OS_NAME.contains("nux") || Sys.OS_NAME.contains("aix")),
   /** Enum representing the Solaris operating system. */
-  SOLARIS(Sys.OS_NAME.indexOf("sunos") != -1),
+  SOLARIS(Sys.OS_NAME.contains("sunos")),
   /** Enum representing the Mac operating system. */
-  MAC(Sys.OS_NAME.indexOf("mac") != -1);
+  MAC(Sys.OS_NAME.contains("mac"));
 
   /**
    * Returns the {@link OperatingSystem} enum representing the host operating

@@ -56,6 +56,8 @@ public final class Strings {
    *          random values.
    * @param len The length of the string to construct.
    * @return A randomly constructed alphanumeric string of the specified length.
+   * @throws IllegalArgumentException If {@code len} is negative.
+   * @throws NullPointerException If {@code secureRandom} is null.
    */
   public static String getRandomAlphaNumeric(final SecureRandom secureRandom, final int len) {
     return getRandom(secureRandom, len, 0, alphaNumeric.length);
@@ -69,6 +71,7 @@ public final class Strings {
    *
    * @param len The length of the string to construct.
    * @return A randomly constructed alphanumeric string of the specified length.
+   * @throws IllegalArgumentException If {@code len} is negative.
    */
   public static String getRandomAlphaNumeric(final int len) {
     return getRandom(secureRandom, len, 0, alphaNumeric.length);
@@ -81,6 +84,8 @@ public final class Strings {
    *          random values.
    * @param len The length of the string to construct.
    * @return A randomly constructed alpha string of the specified length.
+   * @throws IllegalArgumentException If {@code len} is negative.
+   * @throws NullPointerException If {@code secureRandom} is null.
    */
   public static String getRandomAlpha(final SecureRandom secureRandom, final int len) {
     return getRandom(secureRandom, len, 0, alphaNumeric.length - 10);
@@ -94,6 +99,7 @@ public final class Strings {
    *
    * @param len The length of the string to construct.
    * @return A randomly constructed alpha string of the specified length.
+   * @throws IllegalArgumentException If {@code len} is negative.
    */
   public static String getRandomAlpha(final int len) {
     return getRandom(secureRandom, len, 0, alphaNumeric.length - 10);
@@ -106,6 +112,8 @@ public final class Strings {
    *          random values.
    * @param len The length of the string to construct.
    * @return A randomly constructed numeric string of the specified length.
+   * @throws IllegalArgumentException If {@code len} is negative.
+   * @throws NullPointerException If {@code secureRandom} is null.
    */
   public static String getRandomNumeric(final SecureRandom secureRandom, final int len) {
     return getRandom(secureRandom, len, alphaNumeric.length - 10, 10);
@@ -119,6 +127,7 @@ public final class Strings {
    *
    * @param len The length of the string to construct.
    * @return A randomly constructed numeric string of the specified length.
+   * @throws IllegalArgumentException If {@code len} is negative.
    */
   public static String getRandomNumeric(final int len) {
     return getRandom(secureRandom, len, alphaNumeric.length - 10, 10);
@@ -199,9 +208,19 @@ public final class Strings {
     Objects.requireNonNull(properties);
     Objects.requireNonNull(prefix);
     Objects.requireNonNull(suffix);
-    for (final Map.Entry<String,String> entry : properties.entrySet())
-      if (entry.getValue() != null)
-        entry.setValue(interpolateDeep(new StringBuilder(entry.getValue()), properties, prefix, suffix));
+    StringBuilder builder = null;
+    for (final Map.Entry<String,String> entry : properties.entrySet()) {
+      final String value = entry.getValue();
+      if (value != null) {
+        if (builder == null)
+          builder = new StringBuilder(value.length());
+        else
+          builder.setLength(0);
+
+        builder.append(value);
+        entry.setValue(interpolateDeep(builder, properties, prefix, suffix));
+      }
+    }
 
     return properties;
   }
@@ -250,17 +269,21 @@ public final class Strings {
    * @param builder The {@link StringBuilder}.
    * @param target The sequence of char values to be replaced
    * @param replacement The replacement sequence of char values
-   * @return The resulting string
+   * @return Whether the specified {@link StringBuilder} was changed as a result
+   *         of this operation.
    * @throws NullPointerException If {@code builder}, {@code target}, or
    *           {@code replacement} is null.
    * @see String#replace(CharSequence, CharSequence)
+   * @throws OutOfMemoryError If the specified parameters result in a
+   *           {@link StringBuilder} that grows beyond length of
+   *           {@link Integer#MAX_VALUE}.
    */
-  public static StringBuilder replace(final StringBuilder builder, final CharSequence target, final CharSequence replacement) {
+  public static boolean replace(final StringBuilder builder, final CharSequence target, final CharSequence replacement) {
     final String tgtStr = target.toString();
     final String replStr = replacement.toString();
     int j = builder.lastIndexOf(tgtStr);
     if (j < 0)
-      return builder;
+      return false;
 
     final int tgtLen = tgtStr.length();
     final int tgtLen1 = Math.max(tgtLen, 1);
@@ -274,23 +297,31 @@ public final class Strings {
       builder.replace(j, j + tgtLen1, replStr);
     }
     while ((j = builder.lastIndexOf(tgtStr, j - tgtLen1)) > -1);
-    return builder;
+    return true;
   }
 
   /**
    * Replaces each substring of the specified {@link StringBuilder} that matches
    * the given {@code target} sequence with the given {@code replacement}
-   * sequence.
+   * sequence. If a replacement operation results in a {@link StringBuilder}
+   * with substrings that match the given {@code target} sequence, each
+   * substring will be replaced as well.
    *
    * @param builder The {@link StringBuilder} in which all substrings are to be
    *          replaced.
    * @param target The sequence to be replaced.
    * @param replacement The sequence to be substituted for each match.
-   * @return The specified {@link StringBuilder} instance.
+   * @return Whether the specified {@link StringBuilder} was changed as a result
+   *         of this operation.
+   * @throws OutOfMemoryError If the specified parameters result in a
+   *           {@link StringBuilder} that grows beyond length of
+   *           {@link Integer#MAX_VALUE}, or if the specified parameters result
+   *           in a {@link StringBuilder} that grows perpetually.
    */
-  public static StringBuilder replaceAll(final StringBuilder builder, final CharSequence target, final CharSequence replacement) {
-    while (builder.length() != replace(builder, target, replacement).length());
-    return builder;
+  public static boolean replaceAll(final StringBuilder builder, final CharSequence target, final CharSequence replacement) {
+    int i = 0;
+    for (; replace(builder, target, replacement); ++i);
+    return i > 0;
   }
 
   /**
@@ -320,8 +351,7 @@ public final class Strings {
   }
 
   /**
-   * Tests if the specified {@link CharSequence} ends with the specified
-   * suffix.
+   * Tests if the specified {@link CharSequence} ends with the specified suffix.
    *
    * @param string The {@link CharSequence}.
    * @param suffix The suffix.
@@ -351,7 +381,8 @@ public final class Strings {
    * using case mapping information from the UnicodeData file.
    *
    * @param builder The {@link StringBuilder}.
-   * @return The specified {@link StringBuilder}, with its characters converted to lowercase.
+   * @return The specified {@link StringBuilder}, with its characters converted
+   *         to lowercase.
    * @throws NullPointerException If {@code builder} is null.
    * @see Character#toLowerCase(char)
    */
@@ -367,7 +398,8 @@ public final class Strings {
    * using case mapping information from the UnicodeData file.
    *
    * @param builder The {@link StringBuilder}.
-   * @return The specified {@link StringBuilder}, with its characters converted to uppercase.
+   * @return The specified {@link StringBuilder}, with its characters converted
+   *         to uppercase.
    * @throws NullPointerException If {@code builder} is null.
    * @see Character#toUpperCase(char)
    */
@@ -606,7 +638,7 @@ public final class Strings {
     if (negative)
       value = -value;
 
-    String hex = Long.toString(value & ((1l << 4 * digits) - 1), 16);
+    String hex = Long.toString(value & ((1L << 4 * digits) - 1), 16);
     if (hex.length() < digits)
       hex = padLeft(hex, digits, '0');
 
@@ -655,7 +687,7 @@ public final class Strings {
    * @return A base 26 representation of {@code n} in alphabetical digits.
    */
   public static String getAlpha(final int n) {
-    int scale;
+    final int scale;
     return n < '{' - 'a' ? String.valueOf((char)('a' + n)) : getAlpha((scale = n / ('{' - 'a')) - 1) + (char)('a' + n - scale * ('{' - 'a'));
   }
 
@@ -771,18 +803,45 @@ public final class Strings {
 
   /**
    * Returns a string consisting of a specific number of concatenated
+   * repetitions of an input character. For example,
+   * {@code Strings.repeat('a', 3)} returns the string {@code "aaa"}.
+   *
+   * @param ch The {@code char} to repeat.
+   * @param count A nonnegative number of times to repeat the specified
+   *          {@code char}.
+   * @return A string containing the specified {@code char} repeated
+   *         {@code count} times; an empty string if {@code count == 0}.
+   * @throws NullPointerException If the specified string is null.
+   * @throws IllegalArgumentException If {@code count < 0}.
+   * @throws ArrayIndexOutOfBoundsException If
+   *           {@code string.length() * count > Integer.MAX_VALUE}.
+   */
+  public static String repeat(final char ch, final int count) {
+    if (count < 0)
+      throw new IllegalArgumentException("count < 0");
+
+    if (count == 0)
+      return "";
+
+    final char[] chars = new char[count];
+    Arrays.fill(chars, ch);
+    return new String(chars);
+  }
+
+  /**
+   * Returns a string consisting of a specific number of concatenated
    * repetitions of an input string. For example,
    * {@code Strings.repeat("ha", 3)} returns the string {@code "hahaha"}.
    *
    * @param string Any non-null string.
-   * @param count A nonnegative number of times to repeat the string.
-   * @return A string containing {@code string} repeated {@code count} times; an
-   *         empty string if {@code count == 0}; the {@code string} if
-   *         {@code count == 1}
-   * @throws NullPointerException If {@code string == null}
-   * @throws IllegalArgumentException If {@code count < 0}
+   * @param count A nonnegative number of times to repeat the specified string.
+   * @return A string containing the specified {@code string} repeated
+   *         {@code count} times; an empty string if {@code count == 0}; the
+   *         {@code string} if {@code count == 1}.
+   * @throws NullPointerException If the specified string is null.
+   * @throws IllegalArgumentException If {@code count < 0}.
    * @throws ArrayIndexOutOfBoundsException If
-   *           {@code string.length() * count > Integer.MAX_VALUE}
+   *           {@code string.length() * count > Integer.MAX_VALUE}.
    */
   public static String repeat(final String string, final int count) {
     if (count < 0)
@@ -795,7 +854,7 @@ public final class Strings {
       return string;
 
     final int length = string.length();
-    final long longSize = (long)length * (long)count;
+    final long longSize = (long)length * count;
     final int size = (int)longSize;
     if (size != longSize)
       throw new ArrayIndexOutOfBoundsException("Required array size too large: " + longSize);
@@ -887,7 +946,7 @@ public final class Strings {
   public static int indexOfUnQuoted(final CharSequence string, final char ch, final int fromIndex) {
     boolean esacped = false;
     boolean quoted = false;
-    for (int i = fromIndex < 0 ? 0 : fromIndex, len = string.length(); i < len; ++i) {
+    for (int i = Math.max(fromIndex, 0), len = string.length(); i < len; ++i) {
       final char c = string.charAt(i);
       if (c == '\\')
         esacped = true;
@@ -942,11 +1001,11 @@ public final class Strings {
    *         section.
    * @throws NullPointerException If the specified string is null.
    */
-  public static int lastIndexOfUnQuoted(final CharSequence string, final char ch, int fromIndex) {
+  public static int lastIndexOfUnQuoted(final CharSequence string, final char ch, final int fromIndex) {
     boolean esacped = false;
     boolean quoted = false;
     char n = '\0';
-    for (int end = string.length() - 1, i = fromIndex > end ? end : fromIndex; i >= 0; --i) {
+    for (int end = string.length() - 1, i = Math.min(fromIndex, end); i >= 0; --i) {
       final char c = string.charAt(i);
       if (c == '\\')
         esacped = true;
@@ -1072,7 +1131,7 @@ public final class Strings {
   private static void appendElNoMatch(final StringBuilder builder, final StringBuilder var, final char close) {
     builder.append('$').append('{');
     if (var.length() > 0) {
-      builder.append(var.toString());
+      builder.append(var);
       var.setLength(0);
     }
 
@@ -1112,7 +1171,7 @@ public final class Strings {
       char ch = s.charAt(i);
       if (ch == '\\') {
         if (var.length() > 0) {
-          builder.append('$').append('{').append(var.toString());
+          builder.append('$').append('{').append(var);
           var.setLength(0);
         }
 
@@ -1432,6 +1491,19 @@ public final class Strings {
       hash = 31 * hash + str.charAt(i);
 
     return hash;
+  }
+
+  public static StringBuilder indent(final String str, final int spaces) {
+    final StringBuilder builder = new StringBuilder(str);
+    return indent(builder, spaces);
+  }
+
+  public static StringBuilder indent(final StringBuilder builder, final int spaces) {
+    final String replacement = "\n" + repeat(' ', spaces);
+    Strings.replace(builder, "\n\n", "\7\n");
+    Strings.replace(builder, "\n", replacement);
+    Strings.replace(builder, "\7", "\n");
+    return builder;
   }
 
   private Strings() {

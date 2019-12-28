@@ -121,15 +121,20 @@ public class StringsTest {
     assertEquals("prop2 plus prop3", properties.get("prop5"));
   }
 
+  private static String testReplace(final StringBuilder builder, final CharSequence target, final CharSequence replacement, final boolean expectReplace) {
+    assertEquals(expectReplace, Strings.replace(builder, target, replacement));
+    return builder.toString();
+  }
+
   @Test
   public void testReplace() throws Exception {
-    assertEquals("xde", Strings.replace(new StringBuilder("abcde"), "abc", "x").toString());
-    assertEquals("axde", Strings.replace(new StringBuilder("abcde"), "bc", "x").toString());
-    assertEquals("abxe", Strings.replace(new StringBuilder("abcde"), "cd", "x").toString());
-    assertEquals("abcx", Strings.replace(new StringBuilder("abcde"), "de", "x").toString());
-    assertEquals("xxxxx", Strings.replace(new StringBuilder("aaaaa"), "a", "x").toString());
-    assertEquals("xxx", Strings.replace(new StringBuilder("ababab"), "ab", "x").toString());
-    assertEquals("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", Strings.replace(new StringBuilder("ababab"), "ab", "xxxxxxxxxx").toString());
+    assertEquals("xde", testReplace(new StringBuilder("abcde"), "abc", "x", true));
+    assertEquals("axde", testReplace(new StringBuilder("abcde"), "bc", "x", true));
+    assertEquals("abxe", testReplace(new StringBuilder("abcde"), "cd", "x", true));
+    assertEquals("abcx", testReplace(new StringBuilder("abcde"), "de", "x", true));
+    assertEquals("xxxxx", testReplace(new StringBuilder("aaaaa"), "a", "x", true));
+    assertEquals("xxx", testReplace(new StringBuilder("ababab"), "ab", "x", true));
+    assertEquals("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", testReplace(new StringBuilder("ababab"), "ab", "xxxxxxxxxx", true));
   }
 
   @Test
@@ -254,7 +259,7 @@ public class StringsTest {
 
   @Test
   public void testHex() {
-    final long value = 0xabcdef1234567l;
+    final long value = 0xabcdef1234567L;
     assertEquals("7", Strings.hex(value, 1));
     assertEquals("67", Strings.hex(value, 2));
     assertEquals("1234567", Strings.hex(value, 7));

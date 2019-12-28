@@ -33,7 +33,6 @@ public class AnnotationParameterException extends RuntimeException {
    *          exception.
    */
   public AnnotationParameterException(final Annotation annotation) {
-    super();
     this.annotation = annotation;
   }
 
