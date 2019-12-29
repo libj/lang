@@ -1216,8 +1216,7 @@ public final class Strings {
           }
           else {
             appendElVar(variables, builder, var);
-            if (ch != '}')
-              builder.append(ch);
+            builder.append(ch);
           }
         }
         else {
@@ -1328,7 +1327,8 @@ public final class Strings {
           }
           else {
             appendEvVar(variables, builder, var);
-            if (!bracket || ch != '}')
+            if (!bracket
+            )
               builder.append(ch);
           }
         }
