@@ -371,7 +371,7 @@ public class PackageLoader {
         PackageLoader.loadJar(url, packageName, includeSubPackages, action);
       }
       else {
-        throw new UnsupportedOperationException("Unsupported protocol in URL: " + url.toExternalForm());
+        throw new UnsupportedOperationException("Unsupported protocol in URL: " + url);
       }
     }
     while (resources.hasMoreElements());
