@@ -336,9 +336,10 @@ public class PackageLoader {
           return true;
 
         try {
-          final Class<?> cls = Class.forName(path.substring(0, path.length() - 6).replace('/', '.'), initialize, loader);
+          final String className = path.substring(0, path.length() - 6).replace('/', '.');
+          final Class<?> cls = Class.forName(className, initialize, loader);
           if (predicate != null && predicate.test(cls))
-            Class.forName(path, true, loader);
+            Class.forName(className, true, loader);
         }
         catch (final ClassNotFoundException | VerifyError e) {
           if (logger.isTraceEnabled())
