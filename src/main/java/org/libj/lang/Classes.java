@@ -457,6 +457,7 @@ public final class Classes {
    * {@link Class#getConstructor(Class...)} by returning {@code null} when a
    * method is not found, instead of throwing {@link NoSuchMethodException}.
    *
+   * @param <T> The class in which the constructor is declared.
    * @param cls The class in which to find the public constructor.
    * @param parameterTypes The parameter array.
    * @return A Constructor object that reflects the specified public constructor
@@ -465,11 +466,12 @@ public final class Classes {
    *         found.
    * @throws NullPointerException If {@code cls} is null.
    */
-  public static Constructor<?> getConstructor(final Class<?> cls, final Class<?> ... parameterTypes) {
+  @SuppressWarnings("unchecked")
+  public static <T>Constructor<T> getConstructor(final Class<T> cls, final Class<?> ... parameterTypes) {
     final Constructor<?>[] constructors = cls.getConstructors();
     for (final Constructor<?> constructor : constructors)
       if (Arrays.equals(constructor.getParameterTypes(), parameterTypes))
-        return constructor;
+        return (Constructor<T>)constructor;
 
     return null;
   }
@@ -493,6 +495,7 @@ public final class Classes {
    * when a method is not found, instead of throwing
    * {@link NoSuchMethodException}.
    *
+   * @param <T> The class in which the constructor is declared.
    * @param cls The class in which to find the declared constructor.
    * @param parameterTypes The parameter array.
    * @return A Constructor object that reflects the specified declared
@@ -501,11 +504,12 @@ public final class Classes {
    *         constructor is not found.
    * @throws NullPointerException If {@code cls} is null.
    */
-  public static Constructor<?> getDeclaredConstructor(final Class<?> cls, final Class<?> ... parameterTypes) {
+  @SuppressWarnings("unchecked")
+  public static <T>Constructor<T> getDeclaredConstructor(final Class<T> cls, final Class<?> ... parameterTypes) {
     final Constructor<?>[] constructors = cls.getDeclaredConstructors();
     for (final Constructor<?> constructor : constructors)
       if (Arrays.equals(constructor.getParameterTypes(), parameterTypes))
-        return constructor;
+        return (Constructor<T>)constructor;
 
     return null;
   }
