@@ -707,8 +707,46 @@ public final class Classes {
   }
 
   /**
-   * Returns a Method object that reflects the specified declared method of the
-   * class or interface represented by {@code cls} (excluding inherited
+   * Returns a {@link Method} object that reflects the specified public method
+   * of the class or interface represented by {@code cls} (including inherited
+   * methods), or {@code null} if the method is not found.
+   * <p>
+   * The {@code name} parameter is a String that specifies the simple name of
+   * the desired method, and the {@code parameterTypes} parameter is an array of
+   * Class objects that identify the method's formal parameter types, in
+   * declared order. If more than one method with the same parameter types is
+   * declared in a class, and one of these methods has a return type that is
+   * more specific than any of the others, that method is returned; otherwise
+   * one of the methods is chosen arbitrarily. If the name is {@code "<init>"}
+   * or {@code "<clinit>"} this method returns {@code null}. If this Class
+   * object represents an array type, then this method does not find the clone()
+   * method.
+   * <p>
+   * This method differentiates itself from
+   * {@link Class#getDeclaredMethod(String,Class...)} by returning {@code null}
+   * when a method is not found, instead of throwing
+   * {@link NoSuchMethodException}.
+   *
+   * @param cls The class in which to find the declared method.
+   * @param name The simple name of the method.
+   * @param parameterTypes The parameter array.
+   * @return A {@link Method} object that reflects the specified declared method
+   *         of the class or interface represented by {@code cls} (excluding
+   *         inherited methods), or {@code null} if the method is not found.
+   * @throws NullPointerException If {@code cls} or {@code name} is null.
+   */
+  public static Method getMethod(final Class<?> cls, final String name, final Class<?> ... parameterTypes) {
+    final Method[] methods = cls.getMethods();
+    for (final Method method : methods)
+      if (name.equals(method.getName()) && Arrays.equals(method.getParameterTypes(), parameterTypes))
+        return method;
+
+    return null;
+  }
+
+  /**
+   * Returns a {@link Method} object that reflects the specified declared method
+   * of the class or interface represented by {@code cls} (excluding inherited
    * methods), or {@code null} if the method is not found.
    * <p>
    * Declared methods include public, protected, default (package) access, and
@@ -733,9 +771,9 @@ public final class Classes {
    * @param cls The class in which to find the declared method.
    * @param name The simple name of the method.
    * @param parameterTypes The parameter array.
-   * @return A Method object that reflects the specified declared method of the
-   *         class or interface represented by {@code cls} (excluding inherited
-   *         methods), or {@code null} if the method is not found.
+   * @return A {@link Method} object that reflects the specified declared method
+   *         of the class or interface represented by {@code cls} (excluding
+   *         inherited methods), or {@code null} if the method is not found.
    * @throws NullPointerException If {@code cls} or {@code name} is null.
    */
   public static Method getDeclaredMethod(final Class<?> cls, final String name, final Class<?> ... parameterTypes) {
@@ -748,8 +786,8 @@ public final class Classes {
   }
 
   /**
-   * Returns a Method object that reflects the specified declared method of the
-   * class or interface represented by {@code cls} (including inherited
+   * Returns a {@link Method} object that reflects the specified declared method
+   * of the class or interface represented by {@code cls} (including inherited
    * methods), or {@code null} if the method is not found.
    * <p>
    * Declared methods include public, protected, default (package) access, and
@@ -774,9 +812,9 @@ public final class Classes {
    * @param cls The class in which to find the declared method.
    * @param name The simple name of the method.
    * @param parameterTypes The parameter array.
-   * @return A Method object that reflects the specified declared method of the
-   *         class or interface represented by {@code cls} (including inherited
-   *         methods), or {@code null} if the method is not found.
+   * @return A {@link Method} object that reflects the specified declared method
+   *         of the class or interface represented by {@code cls} (including
+   *         inherited methods), or {@code null} if the method is not found.
    * @throws NullPointerException If {@code cls} or {@code name} is null.
    */
   public static Method getDeclaredMethodDeep(Class<?> cls, final String name, final Class<?> ... parameterTypes) {
@@ -788,8 +826,8 @@ public final class Classes {
   }
 
   /**
-   * Returns an array of Method objects declared in {@code cls} (including
-   * inherited methods).
+   * Returns an array of {@link Method} objects declared in {@code cls}
+   * (including inherited methods).
    * <p>
    * Declared methods include public, protected, default (package) access, and
    * private visibility.
@@ -802,8 +840,8 @@ public final class Classes {
    * methods are last.
    *
    * @param cls The class in which to find declared methods.
-   * @return An array of Method objects declared in {@code cls} (including
-   *         inherited methods).
+   * @return An array of {@link Method} objects declared in {@code cls}
+   *         (including inherited methods).
    * @throws NullPointerException If {@code cls} is null.
    */
   public static Method[] getDeclaredMethodsDeep(final Class<?> cls) {
@@ -811,9 +849,9 @@ public final class Classes {
   }
 
   /**
-   * Returns an array of Method objects declared in {@code cls} (including
-   * inherited methods), for which the provided {@link Predicate} returns
-   * {@code true}.
+   * Returns an array of {@link Method} objects declared in {@code cls}
+   * (including inherited methods), for which the provided {@link Predicate}
+   * returns {@code true}.
    * <p>
    * Declared methods include public, protected, default (package) access, and
    * private visibility.
@@ -828,8 +866,8 @@ public final class Classes {
    * @param cls The class in which to find declared methods.
    * @param predicate The {@link Predicate} used to decide whether the method
    *          should be included in the returned array.
-   * @return An array of Method objects declared in {@code cls} (including
-   *         inherited methods).
+   * @return An array of {@link Method} objects declared in {@code cls}
+   *         (including inherited methods).
    * @throws NullPointerException If {@code cls} or {@code predicate} is null.
    */
   public static Method[] getDeclaredMethodsDeep(final Class<?> cls, final Predicate<Method> predicate) {
@@ -837,8 +875,9 @@ public final class Classes {
   }
 
   /**
-   * Returns an array of Method objects declared in {@code cls} (excluding
-   * inherited methods) that have an annotation of {@code annotationType}.
+   * Returns an array of {@link Method} objects declared in {@code cls}
+   * (excluding inherited methods) that have an annotation of
+   * {@code annotationType}.
    * <p>
    * Declared methods include public, protected, default (package) access, and
    * private visibility.
@@ -854,8 +893,8 @@ public final class Classes {
    *
    * @param cls The class in which to find declared methods.
    * @param annotationType The type of the annotation to match.
-   * @return An array of Method objects declared in {@code cls} (excluding
-   *         inherited methods) that have an annotation of
+   * @return An array of {@link Method} objects declared in {@code cls}
+   *         (excluding inherited methods) that have an annotation of
    *         {@code annotationType}.
    * @throws NullPointerException If {@code cls} or {@code annotationType} is
    *           null.
@@ -865,8 +904,9 @@ public final class Classes {
   }
 
   /**
-   * Returns an array of Method objects declared in {@code cls} (including
-   * inherited methods) that have an annotation of {@code annotationType}.
+   * Returns an array of {@link Method} objects declared in {@code cls}
+   * (including inherited methods) that have an annotation of
+   * {@code annotationType}.
    * <p>
    * Declared methods include public, protected, default (package) access, and
    * private visibility.
@@ -880,8 +920,8 @@ public final class Classes {
    *
    * @param cls The class in which to find declared methods.
    * @param annotationType The type of the annotation to match.
-   * @return An array of Method objects declared in {@code cls} (including
-   *         inherited methods) that have an annotation of
+   * @return An array of {@link Method} objects declared in {@code cls}
+   *         (including inherited methods) that have an annotation of
    *         {@code annotationType}.
    * @throws NullPointerException If {@code cls} or {@code annotationType} is
    *           null.
