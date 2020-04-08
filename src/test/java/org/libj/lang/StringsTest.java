@@ -30,6 +30,21 @@ public class StringsTest {
   private static final String LOWER_CASE = "hello world";
 
   @Test
+  public void testLastIndexOf() {
+    assertEquals(2, Strings.lastIndexOf("abc", 'c'));
+    assertEquals(1, Strings.lastIndexOf("abc", 'b'));
+    assertEquals(0, Strings.lastIndexOf("abc", 'a'));
+    assertEquals(-1, Strings.lastIndexOf("abc", 'x'));
+  }
+
+  @Test
+  public void testLastIndexOfUnEscaped() {
+    assertEquals(1, Strings.lastIndexOfUnEscaped("aa\\a", 'a'));
+    assertEquals(4, Strings.lastIndexOfUnEscaped("aa\\\\a", 'a'));
+    assertEquals(1, Strings.lastIndexOfUnEscaped("aa\\\\\\a", 'a'));
+  }
+
+  @Test
   public void testGetRandomAlphaString() {
     try {
       Strings.getRandomAlpha(-1);
@@ -376,6 +391,29 @@ public class StringsTest {
   }
 
   @Test
+  public void testIndexOfUnEscaped() {
+    try {
+      Strings.indexOfUnEscaped(null, '\0');
+      fail("Expected a NullPointerException");
+    }
+    catch (final NullPointerException e) {
+    }
+
+    final String testString = "random a b c \\d d e f d \\d \\\\d \\\\\\d \\\\\\\\d";
+    assertEquals(3, Strings.indexOfUnEscaped(testString, 'd'));
+    assertEquals(16, Strings.indexOfUnEscaped(testString, 'd', 4));
+    assertEquals(22, Strings.indexOfUnEscaped(testString, 'd', 17));
+    assertEquals(29, Strings.indexOfUnEscaped(testString, 'd', 23));
+    assertEquals(40, Strings.indexOfUnEscaped(testString, 'd', 30));
+    assertEquals(-1, Strings.indexOfUnEscaped(testString, 'd', 41));
+
+    assertEquals(28, Strings.indexOfUnEscaped(testString, '\\'));
+    assertEquals(32, Strings.indexOfUnEscaped(testString, '\\', 29));
+    assertEquals(37, Strings.indexOfUnEscaped(testString, '\\', 33));
+    assertEquals(39, Strings.indexOfUnEscaped(testString, '\\', 38));
+  }
+
+  @Test
   public void testIndexOfUnQuoted() {
     try {
       Strings.indexOfUnQuoted(null, '\0');
@@ -385,14 +423,14 @@ public class StringsTest {
     }
 
     final String testString = "random 'x' \"quoted \\'x\\' \\\"t\\\" \\\\\"s\\\\\"\" te'\\''xts";
-    assertEquals(-1, Strings.indexOfUnQuoted(testString, '1'));
-    assertEquals(0, Strings.indexOfUnQuoted(testString, 'r'));
-    assertEquals(4, Strings.indexOfUnQuoted(testString, 'o'));
-    assertEquals(-1, Strings.indexOfUnQuoted(testString, 'o', 5));
-    assertEquals(-1, Strings.indexOfUnQuoted(testString, 'q'));
-    assertEquals(41, Strings.indexOfUnQuoted(testString, 'e'));
-    assertEquals(8, Strings.indexOfUnQuoted(testString, 'x'));
-    assertEquals(48, Strings.indexOfUnQuoted(testString, 's'));
+    assertEquals(testString, -1, Strings.indexOfUnQuoted(testString, '1'));
+    assertEquals(testString, 0, Strings.indexOfUnQuoted(testString, 'r'));
+    assertEquals(testString, 4, Strings.indexOfUnQuoted(testString, 'o'));
+    assertEquals(testString, -1, Strings.indexOfUnQuoted(testString, 'o', 5));
+    assertEquals(testString, -1, Strings.indexOfUnQuoted(testString, 'q'));
+    assertEquals(testString, 41, Strings.indexOfUnQuoted(testString, 'e'));
+    assertEquals(testString, 8, Strings.indexOfUnQuoted(testString, 'x'));
+    assertEquals(testString, 34, Strings.indexOfUnQuoted(testString, 's'));
 
     final String doubleQuote = "\"The \\\"meaning\\\" of life\"";
     assertEquals(doubleQuote.length() - 1, Strings.indexOfUnQuoted(doubleQuote, '"', 1));
@@ -624,46 +662,5 @@ public class StringsTest {
       if (!"$$: not supported".equals(e.getMessage()))
         throw e;
     }
-  }
-
-  @Test
-  public void testIsRegex() {
-    assertFalse(Strings.isRegex(null));
-    assertFalse(Strings.isRegex("abc"));
-    assertFalse(Strings.isRegex(""));
-
-    assertFalse(Strings.isRegex("\\\\s"));
-    assertTrue(Strings.isRegex("\\s"));
-
-    assertFalse(Strings.isRegex("?"));
-    assertFalse(Strings.isRegex("a\\?"));
-    assertTrue(Strings.isRegex("a?"));
-
-    assertFalse(Strings.isRegex("+"));
-    assertFalse(Strings.isRegex("a\\+"));
-    assertTrue(Strings.isRegex("a+"));
-
-    assertFalse(Strings.isRegex("*"));
-    assertFalse(Strings.isRegex("a\\*"));
-    assertTrue(Strings.isRegex("a*"));
-
-    assertFalse(Strings.isRegex("x\\{\\}"));
-    assertFalse(Strings.isRegex("x\\{1}"));
-    assertFalse(Strings.isRegex("x{1\\}"));
-    assertFalse(Strings.isRegex("x{}"));
-    assertFalse(Strings.isRegex("x{a}"));
-    assertTrue(Strings.isRegex("x{1}"));
-
-    assertFalse(Strings.isRegex("\\[\\]"));
-    assertFalse(Strings.isRegex("\\[a]"));
-    assertFalse(Strings.isRegex("[a\\]"));
-    assertFalse(Strings.isRegex("[]"));
-    assertTrue(Strings.isRegex("[a]"));
-
-    assertFalse(Strings.isRegex("\\."));
-    assertTrue(Strings.isRegex("\\\\."));
-
-    assertFalse(Strings.isRegex("\\*"));
-    assertTrue(Strings.isRegex("\\\\*"));
   }
 }

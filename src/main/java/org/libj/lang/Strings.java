@@ -24,8 +24,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 /**
  * Utility functions that provide common operations pertaining to {@link String}
@@ -328,7 +326,7 @@ public final class Strings {
    * Tests if the specified {@link CharSequence} starts with the specified
    * prefix.
    *
-   * @param string The {@link CharSequence}.
+   * @param str The {@link CharSequence}.
    * @param prefix The prefix.
    * @return {@code true} if the {@code prefix} character sequence is a prefix
    *         of {@code builder}; {@code false} otherwise. Note also that
@@ -336,15 +334,15 @@ public final class Strings {
    *         or is equal to {@code builder}.
    * @throws NullPointerException If {@code builder} or {@code prefix} is null.
    */
-  public static boolean startsWith(final CharSequence string, final CharSequence prefix) {
+  public static boolean startsWith(final CharSequence str, final CharSequence prefix) {
     if (prefix.length() == 0)
       return true;
 
-    if (string.length() < prefix.length())
+    if (str.length() < prefix.length())
       return false;
 
     for (int i = 0; i < prefix.length(); ++i)
-      if (string.charAt(i) != prefix.charAt(i))
+      if (str.charAt(i) != prefix.charAt(i))
         return false;
 
     return true;
@@ -353,7 +351,7 @@ public final class Strings {
   /**
    * Tests if the specified {@link CharSequence} ends with the specified suffix.
    *
-   * @param string The {@link CharSequence}.
+   * @param str The {@link CharSequence}.
    * @param suffix The suffix.
    * @return {@code true} if the {@code suffix} character sequence is a suffix
    *         of {@code builder}; {@code false} otherwise. Note also that
@@ -361,16 +359,16 @@ public final class Strings {
    *         or is equal to {@code builder}.
    * @throws NullPointerException If {@code builder} or {@code suffix} is null.
    */
-  public static boolean endsWith(final CharSequence string, final CharSequence suffix) {
+  public static boolean endsWith(final CharSequence str, final CharSequence suffix) {
     if (suffix.length() == 0)
       return true;
 
-    if (string.length() < suffix.length())
+    if (str.length() < suffix.length())
       return false;
 
-    final int offset = string.length() - suffix.length();
+    final int offset = str.length() - suffix.length();
     for (int i = suffix.length() - 1; i >= 0; --i)
-      if (string.charAt(offset + i) != suffix.charAt(i))
+      if (str.charAt(offset + i) != suffix.charAt(i))
         return false;
 
     return true;
@@ -512,24 +510,24 @@ public final class Strings {
 
   /**
    * Returns a left-padded representation of the specified length for the
-   * provided string. If {@code length > string.length()}, preceding characters
-   * are filled with spaces ({@code ' '}). If {@code length == string.length()},
+   * provided string. If {@code length > str.length()}, preceding characters
+   * are filled with spaces ({@code ' '}). If {@code length == str.length()},
    * the provided string instance is returned. If
-   * {@code length < string.length()}, this method throws
+   * {@code length < str.length()}, this method throws
    * {@link IllegalArgumentException}.
    * <p>
-   * This method is equivalent to calling {@code padLeft(string, length, ' ')}.
+   * This method is equivalent to calling {@code padLeft(str, length, ' ')}.
    *
-   * @param string The string to pad.
+   * @param str The string to pad.
    * @param length The length of the returned, padded string.
    * @return A left-padded representation of the specified length for the
    *         provided string.
    * @throws IllegalArgumentException If {@code length} is less than
-   *           {@code string.length()}.
-   * @throws NullPointerException If {@code string} is null.
+   *           {@code str.length()}.
+   * @throws NullPointerException If {@code str} is null.
    */
-  public static String padLeft(final String string, final int length) {
-    return pad(string, length, false, ' ');
+  public static String padLeft(final String str, final int length) {
+    return pad(str, length, false, ' ');
   }
 
   /**
@@ -540,17 +538,17 @@ public final class Strings {
    * returned. If {@code length < string.length()}, this method throws
    * {@link IllegalArgumentException}.
    *
-   * @param string The string to pad.
+   * @param str The string to pad.
    * @param length The length of the returned, padded string.
    * @param pad The padding character.
    * @return A left-padded representation of the specified length for the
    *         provided string.
    * @throws IllegalArgumentException If {@code length} is less than
-   *           {@code string.length()}.
-   * @throws NullPointerException If {@code string} is null.
+   *           {@code str.length()}.
+   * @throws NullPointerException If {@code str} is null.
    */
-  public static String padLeft(final String string, final int length, final char pad) {
-    return pad(string, length, false, pad);
+  public static String padLeft(final String str, final int length, final char pad) {
+    return pad(str, length, false, pad);
   }
 
   /**
@@ -562,16 +560,16 @@ public final class Strings {
    * <p>
    * This method is equivalent to calling {@code padRight(string, length, ' ')}.
    *
-   * @param string The string to pad.
+   * @param str The string to pad.
    * @param length The length of the returned, padded string.
    * @return A right-padded representation of the specified length for the
    *         provided string.
    * @throws IllegalArgumentException If {@code length} is less than
-   *           {@code string.length()}.
-   * @throws NullPointerException If {@code string} is null.
+   *           {@code str.length()}.
+   * @throws NullPointerException If {@code str} is null.
    */
-  public static String padRight(final String string, final int length) {
-    return pad(string, length, true, ' ');
+  public static String padRight(final String str, final int length) {
+    return pad(str, length, true, ' ');
   }
 
   /**
@@ -582,23 +580,23 @@ public final class Strings {
    * returned. If {@code length < string.length()}, this method throws
    * {@link IllegalArgumentException}.
    *
-   * @param string The string to pad.
+   * @param str The string to pad.
    * @param length The length of the returned, padded string.
    * @param pad The padding character.
    * @return A right-padded representation of the specified length for the
    *         provided string.
    * @throws IllegalArgumentException If {@code length} is less than
-   *           {@code string.length()}.
-   * @throws NullPointerException If {@code string} is null.
+   *           {@code str.length()}.
+   * @throws NullPointerException If {@code str} is null.
    */
-  public static String padRight(final String string, final int length, final char pad) {
-    return pad(string, length, true, pad);
+  public static String padRight(final String str, final int length, final char pad) {
+    return pad(str, length, true, pad);
   }
 
-  private static String pad(final String string, final int length, final boolean right, final char pad) {
-    final int len = string.length();
+  private static String pad(final String str, final int length, final boolean right, final char pad) {
+    final int len = str.length();
     if (length == len)
-      return string;
+      return str;
 
     if (length < len)
       throw new IllegalArgumentException("length (" + length + ") must be greater or equal to string length (" + len + ")");
@@ -607,13 +605,13 @@ public final class Strings {
     if (right) {
       Arrays.fill(chars, len, length, pad);
       for (int i = 0; i < len; ++i)
-        chars[i] = string.charAt(i);
+        chars[i] = str.charAt(i);
     }
     else {
       final int offset = length - len;
       Arrays.fill(chars, 0, offset, pad);
       for (int i = 0; i < len; ++i)
-        chars[i + offset] = string.charAt(i);
+        chars[i + offset] = str.charAt(i);
     }
 
     return new String(chars);
@@ -661,15 +659,15 @@ public final class Strings {
    * Returns the string of UTF-8 literal hexadecimal encodings of characters of
    * the specified {@link CharSequence}.
    *
-   * @param string The {@link CharSequence} to encode.
+   * @param str The {@link CharSequence} to encode.
    * @return The string of UTF-8 literal hexadecimal encodings of characters of
    *         the specified {@link CharSequence}.
    */
-  public static String toUTF8Literal(final CharSequence string) {
-    final int len = string.length();
+  public static String toUTF8Literal(final CharSequence str) {
+    final int len = str.length();
     final StringBuilder builder = new StringBuilder(len * 4);
     for (int i = 0; i < len; ++i)
-      builder.append(toUTF8Literal(string.charAt(i)));
+      builder.append(toUTF8Literal(str.charAt(i)));
 
     return builder.toString();
   }
@@ -752,12 +750,12 @@ public final class Strings {
    * Returns a representation of the specified string that is able to be
    * contained in a {@link String} literal in Java.
    *
-   * @param string The string to transform.
+   * @param str The string to transform.
    * @return A representation of the specified string that is able to be
    *         contained in a {@link String} literal in Java.
    */
-  public static String escapeForJava(final String string) {
-    return string == null ? null : string.replace("\\", "\\\\").replace("\"", "\\\"");
+  public static String escapeForJava(final String str) {
+    return str == null ? null : str.replace("\\", "\\\\").replace("\"", "\\\"");
   }
 
   public static String printColumns(final String ... columns) {
@@ -814,7 +812,7 @@ public final class Strings {
    * @throws NullPointerException If the specified string is null.
    * @throws IllegalArgumentException If {@code count < 0}.
    * @throws ArrayIndexOutOfBoundsException If
-   *           {@code string.length() * count > Integer.MAX_VALUE}.
+   *           {@code str.length() * count > Integer.MAX_VALUE}.
    */
   public static String repeat(final char ch, final int count) {
     if (count < 0)
@@ -833,34 +831,34 @@ public final class Strings {
    * repetitions of an input string. For example,
    * {@code Strings.repeat("ha", 3)} returns the string {@code "hahaha"}.
    *
-   * @param string Any non-null string.
+   * @param str Any non-null string.
    * @param count A nonnegative number of times to repeat the specified string.
-   * @return A string containing the specified {@code string} repeated
+   * @return A string containing the specified {@code str} repeated
    *         {@code count} times; an empty string if {@code count == 0}; the
-   *         {@code string} if {@code count == 1}.
+   *         {@code str} if {@code count == 1}.
    * @throws NullPointerException If the specified string is null.
    * @throws IllegalArgumentException If {@code count < 0}.
    * @throws ArrayIndexOutOfBoundsException If
-   *           {@code string.length() * count > Integer.MAX_VALUE}.
+   *           {@code str.length() * count > Integer.MAX_VALUE}.
    */
-  public static String repeat(final String string, final int count) {
+  public static String repeat(final String str, final int count) {
     if (count < 0)
       throw new IllegalArgumentException("count < 0");
 
-    if (count == 0 || string.length() == 0)
+    if (count == 0 || str.length() == 0)
       return "";
 
     if (count == 1)
-      return string;
+      return str;
 
-    final int length = string.length();
+    final int length = str.length();
     final long longSize = (long)length * count;
     final int size = (int)longSize;
     if (size != longSize)
       throw new ArrayIndexOutOfBoundsException("Required array size too large: " + longSize);
 
     final char[] chars = new char[size];
-    string.getChars(0, length, chars, 0);
+    str.getChars(0, length, chars, 0);
     int n = length;
     for (; n < size - n; n <<= 1)
       System.arraycopy(chars, 0, chars, n, n);
@@ -878,19 +876,19 @@ public final class Strings {
    * checked {@link UnsupportedEncodingException} if the named charset is not
    * supported.
    *
-   * @param string The string to encode.
+   * @param str The string to encode.
    * @param charsetName The name of a supported
    *          {@linkplain java.nio.charset.Charset charset}.
    * @return The resultant byte array.
    * @throws UnsupportedOperationException If the named charset is not
    *           supported.
-   * @throws NullPointerException If {@code string} or {@code charsetName} is
+   * @throws NullPointerException If {@code str} or {@code charsetName} is
    *           null.
    * @see String#getBytes(String)
    */
-  public static byte[] getBytes(final String string, final String charsetName) {
+  public static byte[] getBytes(final String str, final String charsetName) {
     try {
-      return string.getBytes(charsetName);
+      return str.getBytes(charsetName);
     }
     catch (final UnsupportedEncodingException e) {
       throw new UnsupportedOperationException(e);
@@ -901,25 +899,184 @@ public final class Strings {
    * Returns the specified string with any leading and trailing characters
    * matching the provided {@code char} removed.
    *
-   * @param string The string to be trimmed.
+   * @param str The string to be trimmed.
    * @param ch The {@code char} to remove from the front and back of the
    *          specified string.
    * @return The specified string with any leading and trailing characters
    *         matching the provided {@code char} removed.
    */
-  public static String trim(final String string, final char ch) {
-    if (string == null)
+  public static String trim(final String str, final char ch) {
+    if (str == null)
       return null;
 
     int i = -1;
-    final int len = string.length();
-    while (++i < len && string.charAt(i) == ch);
+    final int len = str.length();
+    while (++i < len && str.charAt(i) == ch);
     if (i == len)
       return "";
 
     int j = len;
-    while (j > i && string.charAt(--j) == ch);
-    return i == 0 && j == len - 1 ? string : string.substring(i, j + 1);
+    while (j > i && str.charAt(--j) == ch);
+    return i == 0 && j == len - 1 ? str : str.substring(i, j + 1);
+  }
+
+  /**
+   * Returns the index within the provided {@link CharSequence} of the last
+   * occurrence of the specified character. The {@code CharSequence} is searched
+   * backwards starting at the last character. If no such character occurs in
+   * this string, then {@code -1} is returned.
+   *
+   * @param str The {@link CharSequence}.
+   * @param ch A character (Unicode code point).
+   * @return The index of the last occurrence of the character in the provided
+   *         {@link CharSequence}, or {@code -1} if the character does not
+   *         occur.
+   */
+  public static int lastIndexOf(final CharSequence str, final char ch) {
+    return lastIndexOf0(str, ch, str.length() - 1);
+  }
+
+  /**
+   * Returns the index within the provided {@link CharSequence} of the last
+   * occurrence of the specified character, searching backward starting at the
+   * specified index. If no such character occurs in this string at or before
+   * position {@code fromIndex}, then {@code -1} is returned.
+   * <p>
+   * All indices are specified in {@code char} values (Unicode code units).
+   *
+   * @param str The {@link CharSequence}.
+   * @param ch A character (Unicode code point).
+   * @param fromIndex The index to start the search from. There is no
+   *          restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the provided {@link CharSequence},
+   *          it has the same effect as if it were equal to one less than the
+   *          length of this string: this entire string may be searched. If it
+   *          is negative, it has the same effect as if it were -1: -1 is
+   *          returned.
+   * @return The index of the last occurrence of the character in the character
+   *         sequence represented by this object that is less than or equal to
+   *         {@code fromIndex}, or {@code -1} if the character does not occur
+   *         before that point.
+   * @throws NullPointerException If the provided {@link CharSequence} is null.
+   */
+  public static int lastIndexOf(final CharSequence str, final char ch, final int fromIndex) {
+    return lastIndexOf0(str, ch, fromIndex);
+  }
+
+  private static int lastIndexOf0(final CharSequence str, final char ch, final int fromIndex) {
+    for (int i = Math.min(fromIndex, str.length() - 1); i >= 0; --i)
+      if (str.charAt(i) == ch)
+        return i;
+
+    return -1;
+  }
+
+  /**
+   * Returns the index within the specified {@link CharSequence} of the first
+   * occurrence of the provided character that is not escaped, starting the
+   * search at the specified index.
+   *
+   * @param str The {@link CharSequence}.
+   * @param ch The character to find.
+   * @param fromIndex The index to start the search from. There is no
+   *          restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the string, it has the same effect
+   *          as if it were equal to one less than the length of the string: the
+   *          entire string may be searched. If it is negative, it has the same
+   *          effect as if it were {@code -1}: {@code -1} is returned.
+   * @return The index within the specified {@link CharSequence} of the first
+   *         occurrence of the provided character that is not escaped, starting
+   *         the search at the specified index, or {@code -1} if the unescaped
+   *         character is not found.
+   * @throws NullPointerException If the specified {@link CharSequence} is null.
+   */
+  public static int indexOfUnEscaped(final CharSequence str, final char ch, final int fromIndex) {
+    boolean escaped = false;
+    for (int i = Math.max(fromIndex, 0), len = str.length(); i < len; ++i) {
+      final char c = str.charAt(i);
+      if (escaped) {
+        if (c == '\\' && ch == '\\')
+          return i;
+
+        escaped = false;
+      }
+      else if (c == '\\')
+        escaped = true;
+      else if (c == ch)
+        return i;
+    }
+
+    return -1;
+  }
+
+  /**
+   * Returns the index within the specified string of the first occurrence of
+   * the provided character that is not escaped, starting the search at the
+   * specified index.
+   *
+   * @param str The string.
+   * @param ch The character to find.
+   * @return The index within the specified string of the first occurrence of
+   *         the provided character that is not escaped, starting the search at
+   *         the specified index, or {@code -1} if the unescaped character is
+   *         not found.
+   * @throws NullPointerException If the specified string is null.
+   */
+  public static int indexOfUnEscaped(final CharSequence str, final char ch) {
+    return indexOfUnEscaped(str, ch, 0);
+  }
+
+  /**
+   * Returns the index within the specified string of the last occurrence of the
+   * provided character that is not escaped.
+   *
+   * @param str The string.
+   * @param ch The character to find.
+   * @return The index within the specified string of the last occurrence of the
+   *         provided character that is not escaped, or {@code -1} if the
+   *         unescaped character is not found.
+   * @throws NullPointerException If the specified string is null.
+   */
+  public static int lastIndexOfUnEscaped(final CharSequence str, final char ch) {
+    return lastIndexOfUnEscaped(str, ch, str.length() - 1);
+  }
+
+  /**
+   * Returns the index within the specified {@link CharSequence} of the last
+   * occurrence of the provided character that is not escaped, searching
+   * backward starting at the specified index.
+   *
+   * @param str The {@link CharSequence}.
+   * @param ch The character to find.
+   * @param fromIndex The index to start the search from. There is no
+   *          restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the string, it has the same effect
+   *          as if it were equal to one less than the length of the string: the
+   *          entire string may be searched. If it is negative, it has the same
+   *          effect as if it were {@code -1}: {@code -1} is returned.
+   * @return The index within the specified {@link CharSequence} of the last
+   *         occurrence of the provided character that is not escaped, searching
+   *         backward starting at the specified index, or {@code -1} if the
+   *         unescaped character is not found.
+   * @throws NullPointerException If the specified {@link CharSequence} is null.
+   */
+  public static int lastIndexOfUnEscaped(final CharSequence str, final char ch, int fromIndex) {
+    do {
+      final int i = lastIndexOf(str, ch, fromIndex);
+      int count = 0;
+      for (int j = i - 1; j >= 0; --j)
+        if (str.charAt(j) == '\\')
+          ++count;
+        else
+          break;
+
+      if (count % 2 == 0)
+        return i;
+
+      fromIndex = i - 1;
+    }
+    while (fromIndex > 0);
+    return -1;
   }
 
   /**
@@ -929,7 +1086,7 @@ public final class Strings {
    * starts with a double-quote character ({@code '"'}) and ends with a
    * double-quote character or the end of the string.
    *
-   * @param string The string.
+   * @param str The string.
    * @param ch The character to find.
    * @param fromIndex The index to start the search from. There is no
    *          restriction on the value of {@code fromIndex}. If it is greater
@@ -943,15 +1100,15 @@ public final class Strings {
    *         section.
    * @throws NullPointerException If the specified string is null.
    */
-  public static int indexOfUnQuoted(final CharSequence string, final char ch, final int fromIndex) {
+  public static int indexOfUnQuoted(final CharSequence str, final char ch, final int fromIndex) {
     boolean escaped = false;
     boolean quoted = false;
-    for (int i = Math.max(fromIndex, 0), len = string.length(); i < len; ++i) {
-      final char c = string.charAt(i);
-      if (c == '\\')
-        escaped = true;
-      else if (escaped)
+    for (int i = Math.max(fromIndex, 0), len = str.length(); i < len; ++i) {
+      final char c = str.charAt(i);
+      if (escaped)
         escaped = false;
+      else if (c == '\\')
+        escaped = true;
       else if (c == ch && !quoted)
         return i;
       else if (c == '"')
@@ -968,7 +1125,7 @@ public final class Strings {
    * ({@code '"'}) and ends with a double-quote character or the end of the
    * string.
    *
-   * @param string The string.
+   * @param str The string.
    * @param ch The character to find.
    * @return The index within the specified string of the first occurrence of
    *         the provided character that is not within a quoted section of the
@@ -976,8 +1133,8 @@ public final class Strings {
    *         section.
    * @throws NullPointerException If the specified string is null.
    */
-  public static int indexOfUnQuoted(final CharSequence string, final char ch) {
-    return indexOfUnQuoted(string, ch, 0);
+  public static int indexOfUnQuoted(final CharSequence str, final char ch) {
+    return indexOfUnQuoted(str, ch, 0);
   }
 
   /**
@@ -987,7 +1144,7 @@ public final class Strings {
    * string ends with a double-quote character ({@code '"'}) and starts with a
    * double-quote character or the start of the string.
    *
-   * @param string The string.
+   * @param str The string.
    * @param ch The character to find.
    * @param fromIndex The index to start the search from. There is no
    *          restriction on the value of {@code fromIndex}. If it is greater
@@ -1001,12 +1158,12 @@ public final class Strings {
    *         section.
    * @throws NullPointerException If the specified string is null.
    */
-  public static int lastIndexOfUnQuoted(final CharSequence string, final char ch, final int fromIndex) {
+  public static int lastIndexOfUnQuoted(final CharSequence str, final char ch, final int fromIndex) {
     boolean esacped = false;
     boolean quoted = false;
     char n = '\0';
-    for (int end = string.length() - 1, i = Math.min(fromIndex, end); i >= 0; --i) {
-      final char c = string.charAt(i);
+    for (int end = str.length() - 1, i = Math.min(fromIndex, end); i >= 0; --i) {
+      final char c = str.charAt(i);
       if (c == '\\')
         esacped = true;
       else if (esacped)
@@ -1028,7 +1185,7 @@ public final class Strings {
    * quoted section of a string ends with a double-quote character ({@code '"'})
    * and starts with a double-quote character or the start of the string.
    *
-   * @param string The string.
+   * @param str The string.
    * @param ch The character to find.
    * @return The index within the specified string of the first occurrence of
    *         the provided character that is not within a quoted section of the
@@ -1036,8 +1193,8 @@ public final class Strings {
    *         section.
    * @throws NullPointerException If the specified string is null.
    */
-  public static int lastIndexOfUnQuoted(final CharSequence string, final char ch) {
-    return lastIndexOfUnQuoted(string, ch, string.length());
+  public static int lastIndexOfUnQuoted(final CharSequence str, final char ch) {
+    return lastIndexOfUnQuoted(str, ch, str.length());
   }
 
   /**
@@ -1050,24 +1207,24 @@ public final class Strings {
    * {@link IllegalArgumentException}.</li>
    * <li>If {@code maxLength == 3}, this method returns {@code "..."}.</li>
    * <li>If {@code maxLength >= string.length()}, this method returns
-   * {@code string}.</li>
+   * {@code str}.</li>
    * <li>If {@code maxLength < string.length()}, this method returns:
-   * <blockquote>{@code string.substring(0, maxLength - 3) + "..."}
+   * <blockquote>{@code str.substring(0, maxLength - 3) + "..."}
    * </blockquote></li>
    * </ul>
    *
-   * @param string The string to truncate.
+   * @param str The string to truncate.
    * @param maxLength The max length of the resulting string (must be
    *          {@code >= 3}).
    * @return The truncated string.
    * @throws IllegalArgumentException If the provided length is less than 3.
    * @throws NullPointerException If the specified string is null.
    */
-  public static String truncate(final String string, final int maxLength) {
+  public static String truncate(final String str, final int maxLength) {
     if (maxLength < 3)
       throw new IllegalArgumentException("length must be >= 3: " + maxLength);
 
-    return maxLength == 3 ? "..." : string.length() > maxLength ? string.substring(0, maxLength - 3).concat("...") : string;
+    return maxLength == 3 ? "..." : str.length() > maxLength ? str.substring(0, maxLength - 3).concat("...") : str;
   }
 
   /**
@@ -1091,30 +1248,30 @@ public final class Strings {
    * <tr><td>FooBar</td><td>fooBar</td></tr>
    * </table>
    * </blockquote>
-   * @param string The string.
+   * @param str The string.
    * @return The specified string with its first character's capitalization
    *         flipped, as per the described rules.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws NullPointerException If {@code str} is null.
    */
-  public static String flipFirstCap(final String string) {
-    if (string.length() == 0)
-      return string;
+  public static String flipFirstCap(final String str) {
+    if (str.length() == 0)
+      return str;
 
     boolean hasLower = false;
     boolean hasUpper = false;
-    for (int i = 1; i < string.length(); ++i) {
-      hasLower = hasLower || Character.isLowerCase(string.charAt(i));
-      hasUpper = hasUpper || Character.isUpperCase(string.charAt(i));
+    for (int i = 1; i < str.length(); ++i) {
+      hasLower = hasLower || Character.isLowerCase(str.charAt(i));
+      hasUpper = hasUpper || Character.isUpperCase(str.charAt(i));
       if (hasLower && hasUpper)
         break;
     }
 
     // If the string is ALLUPPER or aLLUPPER then don't modify it
     if (hasUpper && !hasLower)
-      return string;
+      return str;
 
-    final char ch = string.charAt(0);
-    return (Character.isLowerCase(ch) ? Character.toUpperCase(ch) : Character.toLowerCase(ch)) + string.substring(1);
+    final char ch = str.charAt(0);
+    return (Character.isLowerCase(ch) ? Character.toUpperCase(ch) : Character.toLowerCase(ch)) + str.substring(1);
   }
 
   private static void appendElVar(final Map<String,String> variables, final StringBuilder builder, final StringBuilder var) {
@@ -1358,72 +1515,21 @@ public final class Strings {
   /**
    * Tests if the specified string is fully comprised of whitespace characters.
    *
-   * @param string The {@link String} to test.
+   * @param str The {@link String} to test.
    * @return {@code true} if the specified string is fully comprised of
    *         whitespace characters. This method returns {@code true} for empty
    *         strings and {@code false} for null.
    */
-  public static boolean isWhitespace(final CharSequence string) {
-    if (string == null)
+  public static boolean isWhitespace(final CharSequence str) {
+    if (str == null)
       return false;
 
-    final int len = string.length();
+    final int len = str.length();
     for (int i = 0; i < len; ++i)
-      if (!Character.isWhitespace(string.charAt(i)))
+      if (!Character.isWhitespace(str.charAt(i)))
         return false;
 
     return true;
-  }
-
-  /**
-   * Tests if the specified string represents a regular expression that <u>can
-   * match more than 1 string (i.e. "abc" is technically a regular expression,
-   * however it can only match a single string: "abc")</u>.
-   *
-   * @param string The {@link String} to test.
-   * @return {@code true} if the specified string represents a regular
-   *         expression that <u>can match more than 1 string</u>. This method
-   *         returns {@code false} for a null input.
-   */
-  public static boolean isRegex(final String string) {
-    if (string == null)
-      return false;
-
-    try {
-      Pattern.compile(string);
-    }
-    catch (final PatternSyntaxException e) {
-      return false;
-    }
-
-    final int len = string.length();
-    boolean escaped = false;
-    boolean hasOpenBracket = false;
-    boolean hasOpenBrace = false;
-    boolean hasOpenParentheses = false;
-    for (int i = 0; i < len; ++i) {
-      final char ch = string.charAt(i);
-      if (i == 0 && ch == '^' || i == len - 1 && !escaped && ch == '$')
-        return true;
-
-      if (escaped) {
-        if (ch == 'd' || ch == 'D' || ch == 's' || ch == 'S' || ch == 'w' || ch == 'W' || ch == 'b' || ch == 'B' || ch == 'A' || ch == 'G' || ch == 'Z' || ch == 'z' || ch == 'Q' || ch == 'E')
-          return true;
-      }
-      else if (!hasOpenBracket && ch == '[')
-        hasOpenBracket = true;
-      else if (!hasOpenBrace && ch == '{')
-        hasOpenBrace = true;
-      else if (!hasOpenParentheses && ch == '(')
-        hasOpenParentheses = true;
-      else if (ch == '.' || (i > 0 && (ch == '?' || ch == '*' || ch == '+' || (hasOpenBracket && ch == ']') || (hasOpenBrace && ch == '}') || (hasOpenParentheses && ch == ')') || ch == '|'))) {
-        return true;
-      }
-
-      escaped ^= ch == '\\';
-    }
-
-    return false;
   }
 
   /**
@@ -1485,7 +1591,16 @@ public final class Strings {
     return token;
   }
 
-  public static long hash(final String str) {
+  /**
+   * Returns a {@code long}-valued hash code for the specified
+   * {@link CharSequence}.
+   *
+   * @param str The {@link CharSequence}.
+   * @return The hash code value for the specified {@link CharSequence}.
+   * @throws NullPointerException If the specified {@link CharSequence} is null.
+   * @see String#hashCode()
+   */
+  public static long hash(final CharSequence str) {
     long hash = 0;
     for (int i = 0, len = str.length(); i < len; ++i)
       hash = 31 * hash + str.charAt(i);
@@ -1493,17 +1608,41 @@ public final class Strings {
     return hash;
   }
 
+  /**
+   * Indents the specified string with the provided number of spaces. This
+   * method prepends the specified number of space characters {@code ' '} before
+   * each new-line character {@code '\n'}.
+   *
+   * @param str The {@link String}.
+   * @param spaces The number of spaces to indent.
+   * @return A {@link StringBuilder} instance with the indented string.
+   * @throws IllegalArgumentException If the number of spaces is negative.
+   * @throws NullPointerException If the specified string is null.
+   */
   public static StringBuilder indent(final String str, final int spaces) {
-    final StringBuilder builder = new StringBuilder(str);
-    return indent(builder, spaces);
+    return indent(new StringBuilder(str), spaces);
   }
 
-  public static StringBuilder indent(final StringBuilder builder, final int spaces) {
+  /**
+   * Indents the specified {@link StringBuilder} with the provided number of
+   * spaces. This method prepends the specified number of space characters
+   * {@code ' '} before each new-line character {@code '\n'}.
+   *
+   * @param str The {@link StringBuilder}.
+   * @param spaces The number of spaces to indent.
+   * @return The specified {@link StringBuilder} instance, indented.
+   * @throws IllegalArgumentException If the number of spaces is negative.
+   * @throws NullPointerException If the specified string is null.
+   */
+  public static StringBuilder indent(final StringBuilder str, final int spaces) {
+    if (spaces == 0)
+      return str;
+
     final String replacement = "\n" + repeat(' ', spaces);
-    Strings.replace(builder, "\n\n", "\7\n");
-    Strings.replace(builder, "\n", replacement);
-    Strings.replace(builder, "\7", "\n");
-    return builder;
+    Strings.replace(str, "\n\n", "\7\n");
+    Strings.replace(str, "\n", replacement);
+    Strings.replace(str, "\7", "\n");
+    return str;
   }
 
   private Strings() {
