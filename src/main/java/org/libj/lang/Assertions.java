@@ -49,11 +49,14 @@ public final class Assertions {
    *
    * @param index The index to check.
    * @param length The size.
+   * @return The given index.
    * @throws ArrayIndexOutOfBoundsException If the given index is out of range.
    */
-  public static void assertRangeArray(final int index, final int length) {
+  public static int assertRangeArray(final int index, final int length) {
     if (index < 0 || length <= index)
       throw new ArrayIndexOutOfBoundsException("Index: " + index + ", Length: " + length);
+
+    return index;
   }
 
   /**
@@ -62,11 +65,14 @@ public final class Assertions {
    *
    * @param index The index to check.
    * @param length The size.
+   * @return The given index.
    * @throws IndexOutOfBoundsException If the given index is out of range.
    */
-  public static void assertRange(final int index, final int length) {
+  public static int assertRange(final int index, final int length) {
     if (index < 0 || length <= index)
       throw new IndexOutOfBoundsException("Index: " + index + ", Length: " + length);
+
+    return index;
   }
 
   /**
@@ -99,11 +105,14 @@ public final class Assertions {
    * @param index The index to check.
    * @param size The size.
    * @param forAdd Whether the range check is for an add operation or not.
+   * @return The given index.
    * @throws IndexOutOfBoundsException If the given index is out of range.
    */
-  public static void assertRange(final int index, final int size, final boolean forAdd) {
+  public static int assertRange(final int index, final int size, final boolean forAdd) {
     if (index < 0 || (forAdd ? size < index : size <= index))
       throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+
+    return index;
   }
 
   /**
