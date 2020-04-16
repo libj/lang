@@ -375,6 +375,54 @@ public final class Strings {
   }
 
   /**
+   * Converts the characters in the specified {@link StringBuilder} to "proper
+   * case" using case mapping information from the UnicodeData file. "Proper
+   * case" is defined as:
+   * <p>
+   * <blockquote><i>The capitalization of every first letter of every
+   * word.</i></blockquote>
+   *
+   * @param builder The {@link StringBuilder}.
+   * @return The specified {@link StringBuilder}, with its characters converted
+   *         to "proper case".
+   * @throws NullPointerException If {@code builder} is null.
+   * @see Character#toLowerCase(char)
+   */
+  public static StringBuilder toProperCase(final StringBuilder builder) {
+    boolean nextUpper = true;
+    for (int i = 0, len = builder.length(); i < len; ++i) {
+      final char ch = builder.charAt(i);
+      if (Character.isWhitespace(ch)) {
+        nextUpper = true;
+      }
+      else {
+        builder.setCharAt(i, nextUpper ? Character.toUpperCase(ch) : Character.toLowerCase(ch));
+        nextUpper = false;
+      }
+    }
+
+    return builder;
+  }
+
+  /**
+   * Converts the characters in the specified {@link String} to "proper case"
+   * using case mapping information from the UnicodeData file. "Proper case" is
+   * defined as:
+   * <p>
+   * <blockquote><i>The capitalization of every first letter of every
+   * word.</i></blockquote>
+   *
+   * @param str The {@link String}.
+   * @return The specified {@link String}, with its characters converted
+   *         to lowercase.
+   * @throws NullPointerException If {@code str} is null.
+   * @see Character#toLowerCase(char)
+   */
+  public static StringBuilder toProperCase(final String str) {
+    return toProperCase(new StringBuilder(str));
+  }
+
+  /**
    * Converts the characters in the specified {@link StringBuilder} to lowercase
    * using case mapping information from the UnicodeData file.
    *

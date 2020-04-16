@@ -218,6 +218,28 @@ public class StringsTest {
   }
 
   @Test
+  public void testToProperCase() {
+    try {
+      Strings.toProperCase((String)null);
+      fail("Expected NullPointerException");
+    }
+    catch (final NullPointerException e) {
+    }
+
+    try {
+      Strings.toProperCase((StringBuilder)null);
+      fail("Expected NullPointerException");
+    }
+    catch (final NullPointerException e) {
+    }
+
+    assertEquals("", Strings.toProperCase("").toString());
+    assertEquals(" ", Strings.toProperCase(" ").toString());
+    assertEquals("Hello World", Strings.toProperCase("hello world").toString());
+    assertEquals(" Hello World ", Strings.toProperCase(" hello world ").toString());
+  }
+
+  @Test
   public void testPad() {
     try {
       Strings.padLeft(null, 0);
