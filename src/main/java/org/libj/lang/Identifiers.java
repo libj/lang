@@ -19,6 +19,7 @@ package org.libj.lang;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 
 /**
  * Utility functions for checking or creating valid Java Identifiers.
@@ -28,39 +29,39 @@ import java.util.function.Function;
  *      3.8 Identifiers</a>
  */
 public final class Identifiers {
-  private static final String unqualifiedJavaIdentifierPattern = "[a-zA-Z_$][a-zA-Z\\d_$]*";
-  private static final String qualifiedJavaIdentifierPattern = "((" + unqualifiedJavaIdentifierPattern + ")\\.)*" + unqualifiedJavaIdentifierPattern;
+  private static final Pattern unqualifiedJavaIdentifierPattern = Pattern.compile("[a-zA-Z_$][a-zA-Z\\d_$]*");
+  private static final Pattern qualifiedJavaIdentifierPattern = Pattern.compile("((" + unqualifiedJavaIdentifierPattern + ")\\.)*" + unqualifiedJavaIdentifierPattern.pattern());
 
   /**
-   * Tests whether the argument {@code className} is a valid identifier as
+   * Tests whether the argument {@code identifier} is a valid identifier as
    * defined in the Java Language Specification.
    *
-   * @param className The class name.
+   * @param identifier The identifier.
    * @param qualified Test versus rules of qualified or unqualified identifiers.
-   * @return Whether the argument {@code className} is a valid identifier.
-   * @throws NullPointerException If {@code className} is null.
+   * @return Whether the argument {@code identifier} is a valid identifier.
+   * @throws NullPointerException If {@code identifier} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.8">JLS
    *      3.8 Identifiers</a>
    */
-  public static boolean isValid(final String className, final boolean qualified) {
-    return className.matches(qualified ? qualifiedJavaIdentifierPattern : unqualifiedJavaIdentifierPattern);
+  public static boolean isValid(final String identifier, final boolean qualified) {
+    return (qualified ? qualifiedJavaIdentifierPattern : unqualifiedJavaIdentifierPattern).matcher(identifier).matches();
   }
 
   /**
-   * Tests whether the argument {@code className} is a valid identifier as
+   * Tests whether the argument {@code identifier} is a valid identifier as
    * defined in the Java Language Specification. Calling this method is the
-   * equivalent of {@code isValid(className, true)}.
+   * equivalent of {@code isValid(identifier, true)}.
    *
-   * @param className The class name.
-   * @return Whether the argument {@code className} is a valid identifier.
-   * @throws NullPointerException If {@code className} is null.
+   * @param identifier The class name.
+   * @return Whether the argument {@code identifier} is a valid identifier.
+   * @throws NullPointerException If {@code identifier} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.8">JLS
    *      3.8 Identifiers</a>
    */
-  public static boolean isValid(final String className) {
-    return isValid(className, true);
+  public static boolean isValid(final String identifier) {
+    return isValid(identifier, true);
   }
 
   // NOTE: These arrays are sorted
