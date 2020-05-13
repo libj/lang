@@ -18,16 +18,20 @@ package org.libj.lang;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
 import java.lang.reflect.Field;
 import java.lang.reflect.GenericSignatureFormatError;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.MalformedParameterizedTypeException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Map;
@@ -36,6 +40,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Utility providing implementations of methods missing from the API of
@@ -443,15 +448,15 @@ public final class Classes {
   }
 
   /**
-   * Returns a Constructor object that reflects the specified public constructor
-   * of the class or interface represented by {@code cls} (including inherited
-   * constructors), or {@code null} if the constructor is not found.
+   * Returns a {@link Constructor} object that reflects the specified public
+   * constructor signature of the class represented by {@code cls} (including
+   * inherited constructors), or {@code null} if the constructor is not found.
    * <p>
-   * The {@code parameterTypes} parameter is an array of Class objects that
-   * identify the constructor's formal parameter types, in declared order. If
-   * {@code cls} represents an inner class declared in a non-static context, the
-   * formal parameter types include the explicit enclosing instance as the first
-   * parameter.
+   * The {@code parameterTypes} parameter is an array of {@link Class} objects
+   * that identify the constructor's formal parameter types, in declared order.
+   * If {@code cls} represents an inner class declared in a non-static context,
+   * the formal parameter types include the explicit enclosing instance as the
+   * first parameter.
    * <p>
    * This method differentiates itself from
    * {@link Class#getConstructor(Class...)} by returning {@code null} when a
@@ -460,35 +465,71 @@ public final class Classes {
    * @param <T> The class in which the constructor is declared.
    * @param cls The class in which to find the public constructor.
    * @param parameterTypes The parameter array.
-   * @return A Constructor object that reflects the specified public constructor
-   *         of the class or interface represented by {@code cls} (including
-   *         inherited constructors), or {@code null} if the constructor is not
-   *         found.
+   * @return A {@link Constructor} object that reflects the specified public
+   *         constructor signature of the class represented by {@code cls}
+   *         (including inherited constructors), or {@code null} if the
+   *         constructor is not found.
    * @throws NullPointerException If {@code cls} is null.
    */
   @SuppressWarnings("unchecked")
   public static <T>Constructor<T> getConstructor(final Class<T> cls, final Class<?> ... parameterTypes) {
     final Constructor<?>[] constructors = cls.getConstructors();
     for (final Constructor<?> constructor : constructors)
-      if (Arrays.equals(constructor.getParameterTypes(), parameterTypes))
+      if (parameterTypes == null || parameterTypes.length == 0 ? constructor.getParameterCount() == 0 : parameterTypes.length == constructor.getParameterCount() && Arrays.equals(constructor.getParameterTypes(), parameterTypes))
         return (Constructor<T>)constructor;
 
     return null;
   }
 
   /**
-   * Returns a Constructor object that reflects the specified declared
-   * constructor of the class or interface represented by {@code cls} (excluding
+   * Returns a {@link Constructor} object that reflects the specified public
+   * constructor signature of the class represented by {@code cls} (including
+   * inherited constructors), or {@code null} if the constructor is not found.
+   * <p>
+   * The {@code parameterTypes} parameter is an array of {@link Class} objects
+   * that identify the constructor's compatible parameter types, in declared
+   * order.
+   * <p>
+   * A parameter type {@code p} is compatible with a {@link Class} that is the
+   * same or is the superclass of {@code p}.
+   * <p>
+   * If {@code cls} represents an inner class declared in a non-static context,
+   * the formal parameter types include the explicit enclosing instance as the
+   * first parameter.
+   *
+   * @param <T> The class in which the constructor is declared.
+   * @param cls The class in which to find the public constructor.
+   * @param parameterTypes The parameter array.
+   * @return A {@link Constructor} object that reflects the specified public
+   *         constructor signature of the class represented by {@code cls}
+   *         (including inherited constructors), or {@code null} if the
+   *         constructor is not found.
+   * @throws NullPointerException If {@code cls} or {@code parameterTypes} is
+   *           null.
+   */
+  @SuppressWarnings("unchecked")
+  public static <T>Constructor<T> getCompatibleConstructor(final Class<T> cls, final Class<?> ... parameterTypes) {
+    final Constructor<?>[] constructors = cls.getConstructors();
+    for (final Constructor<?> constructor : constructors)
+      if (isCompatible(constructor.getParameterTypes(), parameterTypes))
+        return (Constructor<T>)constructor;
+
+    return null;
+  }
+
+  /**
+   * Returns a {@link Constructor} object that reflects the specified declared
+   * constructor signature of the class represented by {@code cls} (excluding
    * inherited constructors), or {@code null} if the constructor is not found.
    * <p>
    * Declared constructors include public, protected, default (package) access,
    * and private visibility.
    * <p>
-   * The {@code parameterTypes} parameter is an array of Class objects that
-   * identify the constructor's formal parameter types, in declared order. If
-   * {@code cls} represents an inner class declared in a non-static context, the
-   * formal parameter types include the explicit enclosing instance as the first
-   * parameter.
+   * The {@code parameterTypes} parameter is an array of {@link Class} objects
+   * that identify the constructor's formal parameter types, in declared order.
+   * If {@code cls} represents an inner class declared in a non-static context,
+   * the formal parameter types include the explicit enclosing instance as the
+   * first parameter.
    * <p>
    * This method differentiates itself from
    * {@link Class#getDeclaredConstructor(Class...)} by returning {@code null}
@@ -498,8 +539,8 @@ public final class Classes {
    * @param <T> The class in which the constructor is declared.
    * @param cls The class in which to find the declared constructor.
    * @param parameterTypes The parameter array.
-   * @return A Constructor object that reflects the specified declared
-   *         constructor of the class or interface represented by {@code cls}
+   * @return A {@link Constructor} object that reflects the specified declared
+   *         constructor signature of the class represented by {@code cls}
    *         (excluding inherited constructors), or {@code null} if the
    *         constructor is not found.
    * @throws NullPointerException If {@code cls} is null.
@@ -508,7 +549,7 @@ public final class Classes {
   public static <T>Constructor<T> getDeclaredConstructor(final Class<T> cls, final Class<?> ... parameterTypes) {
     final Constructor<?>[] constructors = cls.getDeclaredConstructors();
     for (final Constructor<?> constructor : constructors)
-      if (Arrays.equals(constructor.getParameterTypes(), parameterTypes))
+      if (parameterTypes == null || parameterTypes.length == 0 ? constructor.getParameterCount() == 0 : parameterTypes.length == constructor.getParameterCount() && Arrays.equals(constructor.getParameterTypes(), parameterTypes))
         return (Constructor<T>)constructor;
 
     return null;
@@ -712,19 +753,19 @@ public final class Classes {
 
   /**
    * Returns a {@link Method} object that reflects the specified public method
-   * of the class or interface represented by {@code cls} (including inherited
-   * methods), or {@code null} if the method is not found.
+   * signature of the class or interface represented by {@code cls} (including
+   * inherited methods), or {@code null} if the method is not found.
    * <p>
-   * The {@code name} parameter is a String that specifies the simple name of
-   * the desired method, and the {@code parameterTypes} parameter is an array of
-   * Class objects that identify the method's formal parameter types, in
-   * declared order. If more than one method with the same parameter types is
-   * declared in a class, and one of these methods has a return type that is
-   * more specific than any of the others, that method is returned; otherwise
-   * one of the methods is chosen arbitrarily. If the name is {@code "<init>"}
-   * or {@code "<clinit>"} this method returns {@code null}. If this Class
-   * object represents an array type, then this method does not find the clone()
-   * method.
+   * The {@code name} parameter is a {@code String} that specifies the simple
+   * name of the desired method, and the {@code parameterTypes} parameter is an
+   * array of {@link Class} objects that identify the method's formal parameter
+   * types, in declared order. If more than one method with the same parameter
+   * types is declared in a class, and one of these methods has a return type
+   * that is more specific than any of the others, that method is returned;
+   * otherwise one of the methods is chosen arbitrarily. If the name is
+   * {@code "<init>"} or {@code "<clinit>"} this method returns {@code null}. If
+   * this Class object represents an array type, then this method does not find
+   * the {@code clone()} method.
    * <p>
    * This method differentiates itself from
    * {@link Class#getDeclaredMethod(String,Class...)} by returning {@code null}
@@ -742,7 +783,64 @@ public final class Classes {
   public static Method getMethod(final Class<?> cls, final String name, final Class<?> ... parameterTypes) {
     final Method[] methods = cls.getMethods();
     for (final Method method : methods)
-      if (name.equals(method.getName()) && Arrays.equals(method.getParameterTypes(), parameterTypes))
+      if (name.equals(method.getName()) && (parameterTypes == null || parameterTypes.length == 0 ? method.getParameterCount() == 0 : parameterTypes.length == method.getParameterCount() && Arrays.equals(method.getParameterTypes(), parameterTypes)))
+        return method;
+
+    return null;
+  }
+
+  private static boolean isCompatible(final Class<?>[] parameterTypes, final Class<?>[] args) {
+    if (parameterTypes.length != args.length)
+      return false;
+
+    for (int i = 0, len = parameterTypes.length; i < len; ++i)
+      if (args[i] != null && !isAssignable(parameterTypes[i], args[i]))
+        return false;
+
+    return true;
+  }
+
+  private static boolean isAssignable(final Class<?> target, final Class<?> cls) {
+    if (target.isPrimitive())
+      return (cls.isPrimitive() ? target : toWrapper(target)) == cls;
+
+    return target.isAssignableFrom(cls.isPrimitive() ? toWrapper(cls) : cls);
+  }
+
+  /**
+   * Returns a {@link Method} object that reflects the specified public method
+   * signature of the class or interface represented by {@code cls} (including
+   * inherited methods), or {@code null} if the method is not found.
+   * <p>
+   * The {@code name} parameter is a {@code String} that specifies the simple
+   * name of the desired method, and the {@code parameterTypes} parameter is an
+   * array of {@link Class} objects that identify the method's compatible
+   * parameter types, in declared order.
+   * <p>
+   * A parameter type {@code p} is compatible with a {@link Class} that is the
+   * same or is the superclass of {@code p}.
+   * <p>
+   * If more than one method with the same parameter types is declared in a
+   * class, and one of these methods has a return type that is more specific
+   * than any of the others, that method is returned; otherwise one of the
+   * methods is chosen arbitrarily. If the name is {@code "<init>"} or
+   * {@code "<clinit>"} this method returns {@code null}. If this Class object
+   * represents an array type, then this method does not find the
+   * {@code clone()} method.
+   *
+   * @param cls The class in which to find the declared method.
+   * @param name The simple name of the method.
+   * @param parameterTypes The parameter array.
+   * @return A {@link Method} object that reflects the specified declared method
+   *         of the class or interface represented by {@code cls} (excluding
+   *         inherited methods), or {@code null} if the method is not found.
+   * @throws NullPointerException If {@code cls}, {@code name} or
+   *           {@code parameterTypes} is null.
+   */
+  public static Method getCompatibleMethod(final Class<?> cls, final String name, final Class<?> ... parameterTypes) {
+    final Method[] methods = cls.getMethods();
+    for (final Method method : methods)
+      if (name.equals(method.getName()) && isCompatible(method.getParameterTypes(), parameterTypes))
         return method;
 
     return null;
@@ -756,16 +854,16 @@ public final class Classes {
    * Declared methods include public, protected, default (package) access, and
    * private visibility.
    * <p>
-   * The {@code name} parameter is a String that specifies the simple name of
-   * the desired method, and the {@code parameterTypes} parameter is an array of
-   * Class objects that identify the method's formal parameter types, in
-   * declared order. If more than one method with the same parameter types is
-   * declared in a class, and one of these methods has a return type that is
-   * more specific than any of the others, that method is returned; otherwise
-   * one of the methods is chosen arbitrarily. If the name is {@code "<init>"}
-   * or {@code "<clinit>"} this method returns {@code null}. If this Class
-   * object represents an array type, then this method does not find the clone()
-   * method.
+   * The {@code name} parameter is a {@code String} that specifies the simple
+   * name of the desired method, and the {@code parameterTypes} parameter is an
+   * array of {@link Class} objects that identify the method's formal parameter
+   * types, in declared order. If more than one method with the same parameter
+   * types is declared in a class, and one of these methods has a return type
+   * that is more specific than any of the others, that method is returned;
+   * otherwise one of the methods is chosen arbitrarily. If the name is
+   * {@code "<init>"} or {@code "<clinit>"} this method returns {@code null}. If
+   * this Class object represents an array type, then this method does not find
+   * the {@code clone()} method.
    * <p>
    * This method differentiates itself from
    * {@link Class#getDeclaredMethod(String,Class...)} by returning {@code null}
@@ -783,7 +881,7 @@ public final class Classes {
   public static Method getDeclaredMethod(final Class<?> cls, final String name, final Class<?> ... parameterTypes) {
     final Method[] methods = cls.getDeclaredMethods();
     for (final Method method : methods)
-      if (name.equals(method.getName()) && Arrays.equals(method.getParameterTypes(), parameterTypes))
+      if (name.equals(method.getName()) && (parameterTypes == null || parameterTypes.length == 0 ? method.getParameterCount() == 0 : Arrays.equals(method.getParameterTypes(), parameterTypes)))
         return method;
 
     return null;
@@ -797,16 +895,16 @@ public final class Classes {
    * Declared methods include public, protected, default (package) access, and
    * private visibility.
    * <p>
-   * The {@code name} parameter is a String that specifies the simple name of
-   * the desired method, and the {@code parameterTypes} parameter is an array of
-   * Class objects that identify the method's formal parameter types, in
-   * declared order. If more than one method with the same parameter types is
-   * declared in a class, and one of these methods has a return type that is
-   * more specific than any of the others, that method is returned; otherwise
-   * one of the methods is chosen arbitrarily. If the name is {@code "<init>"}
-   * or {@code "<clinit>"} this method returns {@code null}. If this Class
-   * object represents an array type, then this method does not find the clone()
-   * method.
+   * The {@code name} parameter is a {@code String} that specifies the simple
+   * name of the desired method, and the {@code parameterTypes} parameter is an
+   * array of {@link Class} objects that identify the method's formal parameter
+   * types, in declared order. If more than one method with the same parameter
+   * types is declared in a class, and one of these methods has a return type
+   * that is more specific than any of the others, that method is returned;
+   * otherwise one of the methods is chosen arbitrarily. If the name is
+   * {@code "<init>"} or {@code "<clinit>"} this method returns {@code null}. If
+   * this Class object represents an array type, then this method does not find
+   * the {@code clone()} method.
    * <p>
    * This method differentiates itself from
    * {@link Class#getDeclaredMethod(String,Class...)} by returning {@code null}
@@ -935,8 +1033,9 @@ public final class Classes {
   }
 
   /**
-   * Returns an array of Class objects declared in {@code cls} (excluding
-   * inherited classes) that have an annotation of {@code annotationType}.
+   * Returns an array of {@link Class} objects declared in {@code cls}
+   * (excluding inherited classes) that have an annotation of
+   * {@code annotationType}.
    * <p>
    * Declared classes include public, protected, default (package) access, and
    * private visibility.
@@ -952,8 +1051,8 @@ public final class Classes {
    *
    * @param cls The class in which to find declared methods.
    * @param annotationType The type of the annotation to match.
-   * @return An array of Class objects declared in {@code cls} (excluding
-   *         inherited classes) that have an annotation of
+   * @return An array of {@link Class} objects declared in {@code cls}
+   *         (excluding inherited classes) that have an annotation of
    *         {@code annotationType}.
    * @throws NullPointerException If {@code cls} or {@code annotationType} is
    *           null.
@@ -964,8 +1063,9 @@ public final class Classes {
   }
 
   /**
-   * Returns an array of Class objects declared in {@code cls} (including
-   * inherited classes) that have an annotation of {@code annotationType}.
+   * Returns an array of {@link Class} objects declared in {@code cls}
+   * (including inherited classes) that have an annotation of
+   * {@code annotationType}.
    * <p>
    * Declared classes include public, protected, default (package) access, and
    * private visibility.
@@ -979,8 +1079,8 @@ public final class Classes {
    *
    * @param cls The class in which to find declared methods.
    * @param annotationType The type of the annotation to match.
-   * @return An array of Class objects declared in {@code cls} (including
-   *         inherited classes) that have an annotation of
+   * @return An array of {@link Class} objects declared in {@code cls}
+   *         (including inherited classes) that have an annotation of
    *         {@code annotationType}.
    * @throws NullPointerException If {@code cls} or {@code annotationType} is
    *           null.
@@ -1045,12 +1145,12 @@ public final class Classes {
    * @return The greatest common superclass of the specified array of classes.
    * @throws IllegalArgumentException If the number of arguments in the
    *           {@code classes} parameter is 0.
-   * @throws NullPointerException If {@code classes}, or a member of
+   * @throws NullPointerException If {@code classes} or a member of
    *           {@code classes} is null.
    */
   public static Class<?> getGreatestCommonSuperclass(final Class<?> ... classes) {
     if (classes.length == 0)
-      throw new IllegalArgumentException("Argument length must be greater than 0");
+      throw new IllegalArgumentException("Number of arguments must be greater than 0");
 
     if (classes.length == 1)
       return classes[0];
@@ -1078,7 +1178,7 @@ public final class Classes {
   @SafeVarargs
   public static <T>Class<?> getGreatestCommonSuperclass(final T ... objects) {
     if (objects.length == 0)
-      throw new IllegalArgumentException("Argument length must be greater than 0");
+      throw new IllegalArgumentException("Number of arguments must be greater than 0");
 
     return getGreatestCommonSuperclass0(objects);
   }
@@ -1153,6 +1253,122 @@ public final class Classes {
       executionStack[i - 3] = context[i];
 
     return executionStack;
+  }
+
+  /**
+   * Returns the boxed {@link Class} for the specified {@code primitiveType}
+   * class. If the specified class does not represent a primitive type, the same
+   * class is returned.
+   *
+   * @param primitiveType The {@link Class} representing a primitive type.
+   * @return The boxed {@link Class} for the specified {@code primitiveType}
+   *         class. If the specified class does not represent a primitive type,
+   *         the same class is returned.
+   */
+  public static Class<?> toWrapper(final Class<?> primitiveType) {
+    if (!primitiveType.isPrimitive())
+      return primitiveType;
+
+    if (primitiveType == int.class)
+      return Integer.class;
+
+    if (primitiveType == long.class)
+      return Long.class;
+
+    if (primitiveType == boolean.class)
+      return Boolean.class;
+
+    if (primitiveType == byte.class)
+      return Byte.class;
+
+    if (primitiveType == char.class)
+      return Character.class;
+
+    if (primitiveType == float.class)
+      return Float.class;
+
+    if (primitiveType == double.class)
+      return Double.class;
+
+    if (primitiveType == short.class)
+      return Short.class;
+
+    if (primitiveType == void.class)
+      return Void.class;
+
+    throw new UnsupportedOperationException("Unsupported class type: " + primitiveType.getName());
+  }
+
+  private static final IdentityHashMap<Class<?>,Executable> classToExecutable = new IdentityHashMap<>();
+
+  /**
+   * Creates an instance of the specified class with the provided parameters.
+   * <p>
+   * The specified type must define either {@code fromString(String)} if the
+   * provided parameter object is a {@link String}, {@code valueOf(...)}, or
+   * {@code <init>(...)}.
+   *
+   * @param <T> The type parameter for the instance that is to be created.
+   * @param type The class of the instance that is to be created.
+   * @param parameters The parameters.
+   * @return An instance of the specified class with the value of the provided
+   *         string
+   * @throws IllegalArgumentException If the specified string is empty, or if an
+   *           instance of the specific class type does not define
+   *           {@code <init>(T)}, {@code fromString(String)} if the provided
+   *           object is a {@link String}, or {@code valueOf(T)}. .
+   * @throws IllegalAccessException If this Constructor object is enforcing Java
+   *           language access control and the underlying constructor is
+   *           inaccessible.
+   * @throws InstantiationException If the class that declares the underlying
+   *           constructor represents an abstract class.
+   * @throws InvocationTargetException If the underlying constructor throws an
+   *           exception.
+   * @throws NullPointerException If the specified {@code type} or
+   *           {@code parameters} is null.
+   */
+  @SuppressWarnings("unchecked")
+  public static <T>T newInstance(Class<T> type, final Object ... parameters) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+    if (type.isPrimitive())
+      type = (Class<T>)toWrapper(type);
+
+    final Executable executable = classToExecutable.get(type);
+    if (executable != null)
+      return (T)(executable instanceof Constructor ? ((Constructor<?>)executable).newInstance(parameters) : ((Method)executable).invoke(null, parameters));
+
+    final Class<?>[] parameterTypes = new Class[parameters.length];
+    for (int i = 0, len = parameters.length; i < len; ++i)
+      parameterTypes[i] = parameters[i] == null ? null : parameters[i].getClass();
+
+    if (parameterTypes.length == 1 && parameterTypes[0] == String.class) {
+      final Method fromString = Classes.getMethod(type, "fromString", parameterTypes);
+      if (fromString != null && Modifier.isStatic(fromString.getModifiers())) {
+        classToExecutable.put(type, fromString);
+        return (T)fromString.invoke(null, parameters);
+      }
+    }
+
+    final Method valueOf = Classes.getCompatibleMethod(type, "valueOf", parameterTypes);
+    if (valueOf != null && Modifier.isStatic(valueOf.getModifiers())) {
+      classToExecutable.put(type, valueOf);
+      return (T)valueOf.invoke(null, parameters);
+    }
+
+    final Constructor<?> constructor = Classes.getCompatibleConstructor(type, parameterTypes);
+    if (constructor != null) {
+      classToExecutable.put(type, constructor);
+      return (T)constructor.newInstance(parameters);
+    }
+
+    final String types = Arrays.stream(parameterTypes).map(p -> p.getName()).collect(Collectors.joining(","));
+    final StringBuilder message = new StringBuilder();
+    message.append(type.getName() + " does not define <init>(" + types + ")");
+    if (parameterTypes.length == 1 && parameterTypes[0] == String.class)
+      message.append(", valueOf(" + types + "), or fromString(" + types + ")");
+    else
+      message.append(" or valueOf(" + types + ")");
+
+    throw new IllegalArgumentException(message.toString());
   }
 
   private Classes() {
