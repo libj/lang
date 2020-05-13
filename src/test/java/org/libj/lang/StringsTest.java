@@ -278,6 +278,9 @@ public class StringsTest {
     assertEquals("A ", Strings.padRight("A", 2));
     assertEquals("A  ", Strings.padRight("A", 3));
     assertEquals("Axxx", Strings.padRight("A", 4, 'x'));
+
+    assertEquals("  A\n  A\n  A", Strings.padLeftAll("A\nA\nA", 3));
+    assertEquals("A  \nA  \nA  ", Strings.padRightAll("A\nA\nA", 3));
   }
 
   @Test
@@ -684,5 +687,41 @@ public class StringsTest {
       if (!"$$: not supported".equals(e.getMessage()))
         throw e;
     }
+  }
+
+  private static StringBuilder s(final String str) {
+    return str == null ? null : new StringBuilder(str);
+  }
+
+  @Test
+  public void testRegionMatches() {
+    assertTrue(Strings.regionMatches(s("abc"), false, 0, s("abc"), 0, 3));
+    assertTrue(Strings.regionMatches(s("abc"), true, 0, s("ABC"), 0, 3));
+
+    assertTrue(Strings.regionMatches(s("abc"), false, 1, s("bc"), 0, 2));
+    assertTrue(Strings.regionMatches(s("abc"), true, 1, s("BC"), 0, 2));
+
+    assertFalse(Strings.regionMatches(s("abc"), false, 0, s("bc"), 0, 2));
+    assertFalse(Strings.regionMatches(s("abc"), true, 0, s("BC"), 0, 2));
+  }
+
+  @Test
+  public void testContainsIgnoreCase() {
+    try {
+      Strings.containsIgnoreCase(null, "");
+      fail("Expected NullPointerException");
+    }
+    catch (final NullPointerException e) {
+    }
+
+    try {
+      Strings.containsIgnoreCase("", null);
+      fail("Expected NullPointerException");
+    }
+    catch (final NullPointerException e) {
+    }
+
+    assertTrue(Strings.containsIgnoreCase("", ""));
+    assertTrue(Strings.containsIgnoreCase("hElLo", "hello"));
   }
 }

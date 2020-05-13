@@ -277,24 +277,23 @@ public final class Strings {
    *           {@link Integer#MAX_VALUE}.
    */
   public static boolean replace(final StringBuilder builder, final CharSequence target, final CharSequence replacement) {
-    final String tgtStr = target.toString();
-    final String replStr = replacement.toString();
-    int j = builder.lastIndexOf(tgtStr);
+    final String targetString = target.toString();
+    final String replaceString = replacement.toString();
+    int j = builder.lastIndexOf(targetString);
     if (j < 0)
       return false;
 
-    final int tgtLen = tgtStr.length();
-    final int tgtLen1 = Math.max(tgtLen, 1);
-    final int thisLen = builder.length();
+    final int targetLen = targetString.length();
+    final int targetLen1 = Math.max(targetLen, 1);
 
-    final int newLenHint = thisLen - tgtLen + replStr.length();
-    if (newLenHint < 0)
+    final int newLengthHint = builder.length() - targetLen + replaceString.length();
+    if (newLengthHint < 0)
       throw new OutOfMemoryError();
 
     do {
-      builder.replace(j, j + tgtLen1, replStr);
+      builder.replace(j, j + targetLen1, replaceString);
     }
-    while ((j = builder.lastIndexOf(tgtStr, j - tgtLen1)) > -1);
+    while ((j = builder.lastIndexOf(targetString, j - targetLen1)) > -1);
     return true;
   }
 
@@ -575,7 +574,77 @@ public final class Strings {
    * @throws NullPointerException If {@code str} is null.
    */
   public static String padLeft(final String str, final int length) {
-    return pad(str, length, false, ' ');
+    return pad(str, length, false, ' ', false);
+  }
+
+  /**
+   * Returns a left-padded representation of the specified length for the
+   * provided string (with all newlines within the string padded as well). If
+   * {@code length > str.length()}, preceding characters are filled with spaces
+   * ({@code ' '}). If {@code length == str.length()}, the provided string
+   * instance is returned. If {@code length < str.length()}, this method throws
+   * {@link IllegalArgumentException}.
+   * <p>
+   * This method is equivalent to calling {@code padLeft(str, length, ' ')}.
+   *
+   * @param str The string to pad.
+   * @param length The length of the returned, padded string.
+   * @return A left-padded representation of the specified length for the
+   *         provided string.
+   * @throws IllegalArgumentException If {@code length} is less than
+   *           {@code str.length()}.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static String padLeftAll(final String str, final int length) {
+    return padAll(str, length, false, ' ', false);
+  }
+
+  /**
+   * Returns a left-padded representation of the specified length for the
+   * provided string. If {@code length > str.length()}, preceding characters
+   * are filled with spaces ({@code ' '}). If {@code length == str.length()},
+   * the provided string instance is returned. If
+   * {@code length < str.length()}, this method throws
+   * {@link IllegalArgumentException}.
+   * <p>
+   * This method is equivalent to calling {@code padLeft(str, length, ' ')}.
+   *
+   * @param str The string to pad.
+   * @param length The length of the returned, padded string.
+   * @param truncate Whether the string should be truncated if it is longer than
+   *          the provided {@code length}.
+   * @return A left-padded representation of the specified length for the
+   *         provided string.
+   * @throws IllegalArgumentException If {@code truncate == false} and
+   *           {@code length} is less than {@code str.length()}.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static String padLeft(final String str, final int length, final boolean truncate) {
+    return pad(str, length, false, ' ', truncate);
+  }
+
+  /**
+   * Returns a left-padded representation of the specified length for the
+   * provided string (with all newlines within the string padded as well). If
+   * {@code length > str.length()}, preceding characters are filled with spaces
+   * ({@code ' '}). If {@code length == str.length()}, the provided string
+   * instance is returned. If {@code length < str.length()}, this method throws
+   * {@link IllegalArgumentException}.
+   * <p>
+   * This method is equivalent to calling {@code padLeft(str, length, ' ')}.
+   *
+   * @param str The string to pad.
+   * @param length The length of the returned, padded string.
+   * @param truncate Whether the string should be truncated if it is longer than
+   *          the provided {@code length}.
+   * @return A left-padded representation of the specified length for the
+   *         provided string.
+   * @throws IllegalArgumentException If {@code truncate == false} and
+   *           {@code length} is less than {@code str.length()}.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static String padLeftAll(final String str, final int length, final boolean truncate) {
+    return padAll(str, length, false, ' ', truncate);
   }
 
   /**
@@ -596,7 +665,74 @@ public final class Strings {
    * @throws NullPointerException If {@code str} is null.
    */
   public static String padLeft(final String str, final int length, final char pad) {
-    return pad(str, length, false, pad);
+    return pad(str, length, false, pad, false);
+  }
+
+  /**
+   * Returns a left-padded representation of the specified length for the
+   * provided string (with all newlines within the string padded as well). If
+   * {@code length > string.length()}, preceding characters are filled with the
+   * specified {@code pad} char. If {@code length == string.length()}, the
+   * provided string instance is returned. If {@code length < string.length()},
+   * this method throws {@link IllegalArgumentException}.
+   *
+   * @param str The string to pad.
+   * @param length The length of the returned, padded string.
+   * @param pad The padding character.
+   * @return A left-padded representation of the specified length for the
+   *         provided string.
+   * @throws IllegalArgumentException If {@code length} is less than
+   *           {@code str.length()}.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static String padLeftAll(final String str, final int length, final char pad) {
+    return padAll(str, length, false, pad, false);
+  }
+
+  /**
+   * Returns a left-padded representation of the specified length for the
+   * provided string. If {@code length > string.length()}, preceding characters
+   * are filled with the specified {@code pad} char. If
+   * {@code length == string.length()}, the provided string instance is
+   * returned. If {@code length < string.length()}, this method throws
+   * {@link IllegalArgumentException}.
+   *
+   * @param str The string to pad.
+   * @param length The length of the returned, padded string.
+   * @param pad The padding character.
+   * @param truncate Whether the string should be truncated if it is longer than
+   *          the provided {@code length}.
+   * @return A left-padded representation of the specified length for the
+   *         provided string.
+   * @throws IllegalArgumentException If {@code truncate == false} and
+   *           {@code length} is less than {@code str.length()}.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static String padLeft(final String str, final int length, final char pad, final boolean truncate) {
+    return pad(str, length, false, pad, truncate);
+  }
+
+  /**
+   * Returns a left-padded representation of the specified length for the
+   * provided string (with all newlines within the string padded as well). If
+   * {@code length > string.length()}, preceding characters are filled with the
+   * specified {@code pad} char. If {@code length == string.length()}, the
+   * provided string instance is returned. If {@code length < string.length()},
+   * this method throws {@link IllegalArgumentException}.
+   *
+   * @param str The string to pad.
+   * @param length The length of the returned, padded string.
+   * @param pad The padding character.
+   * @param truncate Whether the string should be truncated if it is longer than
+   *          the provided {@code length}.
+   * @return A left-padded representation of the specified length for the
+   *         provided string.
+   * @throws IllegalArgumentException If {@code truncate == false} and
+   *           {@code length} is less than {@code str.length()}.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static String padLeftAll(final String str, final int length, final char pad, final boolean truncate) {
+    return padAll(str, length, false, pad, truncate);
   }
 
   /**
@@ -617,7 +753,76 @@ public final class Strings {
    * @throws NullPointerException If {@code str} is null.
    */
   public static String padRight(final String str, final int length) {
-    return pad(str, length, true, ' ');
+    return pad(str, length, true, ' ', false);
+  }
+
+  /**
+   * Returns a right-padded representation of the specified length for the
+   * provided string (with all newlines within the string padded as well). If
+   * {@code length > string.length()}, ending characters are filled with spaces
+   * ({@code ' '}). If {@code length == string.length()}, the provided string
+   * instance is returned. If {@code length < string.length()}, this method
+   * throws {@link IllegalArgumentException}.
+   * <p>
+   * This method is equivalent to calling {@code padRight(string, length, ' ')}.
+   *
+   * @param str The string to pad.
+   * @param length The length of the returned, padded string.
+   * @return A right-padded representation of the specified length for the
+   *         provided string.
+   * @throws IllegalArgumentException If {@code length} is less than
+   *           {@code str.length()}.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static String padRightAll(final String str, final int length) {
+    return padAll(str, length, true, ' ', false);
+  }
+
+  /**
+   * Returns a right-padded representation of the specified length for the
+   * provided string. If {@code length > string.length()}, ending characters are
+   * filled with spaces ({@code ' '}). If {@code length == string.length()}, the
+   * provided string instance is returned. If {@code length < string.length()},
+   * this method throws {@link IllegalArgumentException}.
+   * <p>
+   * This method is equivalent to calling {@code padRight(string, length, ' ')}.
+   *
+   * @param str The string to pad.
+   * @param length The length of the returned, padded string.
+   * @param truncate Whether the string should be truncated if it is longer than
+   *          the provided {@code length}.
+   * @return A right-padded representation of the specified length for the
+   *         provided string.
+   * @throws IllegalArgumentException If {@code truncate == false} and
+   *           {@code length} is less than {@code str.length()}.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static String padRight(final String str, final int length, final boolean truncate) {
+    return pad(str, length, true, ' ', truncate);
+  }
+
+  /**
+   * Returns a right-padded representation of the specified length for the
+   * provided string (with all newlines within the string padded as well). If
+   * {@code length > string.length()}, ending characters are filled with spaces
+   * ({@code ' '}). If {@code length == string.length()}, the provided string
+   * instance is returned. If {@code length < string.length()}, this method
+   * throws {@link IllegalArgumentException}.
+   * <p>
+   * This method is equivalent to calling {@code padRight(string, length, ' ')}.
+   *
+   * @param str The string to pad.
+   * @param length The length of the returned, padded string.
+   * @param truncate Whether the string should be truncated if it is longer than
+   *          the provided {@code length}.
+   * @return A right-padded representation of the specified length for the
+   *         provided string.
+   * @throws IllegalArgumentException If {@code truncate == false} and
+   *           {@code length} is less than {@code str.length()}.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static String padRightAll(final String str, final int length, final boolean truncate) {
+    return padAll(str, length, true, ' ', truncate);
   }
 
   /**
@@ -638,16 +843,100 @@ public final class Strings {
    * @throws NullPointerException If {@code str} is null.
    */
   public static String padRight(final String str, final int length, final char pad) {
-    return pad(str, length, true, pad);
+    return pad(str, length, true, pad, false);
   }
 
-  private static String pad(final String str, final int length, final boolean right, final char pad) {
+  /**
+   * Returns a right-padded representation of the specified length for the
+   * provided string (with all newlines within the string padded as well). If
+   * {@code length > string.length()}, ending characters are filled with the
+   * specified {@code pad} char. If {@code length == string.length()}, the
+   * provided string instance is returned. If {@code length < string.length()},
+   * this method throws {@link IllegalArgumentException}.
+   *
+   * @param str The string to pad.
+   * @param length The length of the returned, padded string.
+   * @param pad The padding character.
+   * @return A right-padded representation of the specified length for the
+   *         provided string.
+   * @throws IllegalArgumentException If {@code length} is less than
+   *           {@code str.length()}.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static String padRightAll(final String str, final int length, final char pad) {
+    return padAll(str, length, true, pad, false);
+  }
+
+  /**
+   * Returns a right-padded representation of the specified length for the
+   * provided string. If {@code length > string.length()}, ending characters are
+   * filled with the specified {@code pad} char. If
+   * {@code length == string.length()}, the provided string instance is
+   * returned. If {@code length < string.length()}, this method throws
+   * {@link IllegalArgumentException}.
+   *
+   * @param str The string to pad.
+   * @param length The length of the returned, padded string.
+   * @param pad The padding character.
+   * @param truncate Whether the string should be truncated if it is longer than
+   *          the provided {@code length}.
+   * @return A right-padded representation of the specified length for the
+   *         provided string.
+   * @throws IllegalArgumentException If {@code truncate == false} and
+   *           {@code length} is less than {@code str.length()}.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static String padRight(final String str, final int length, final char pad, final boolean truncate) {
+    return pad(str, length, true, pad, truncate);
+  }
+
+  /**
+   * Returns a right-padded representation of the specified length for the
+   * provided string (with all newlines within the string padded as well). If
+   * {@code length > string.length()}, ending characters are filled with the
+   * specified {@code pad} char. If {@code length == string.length()}, the
+   * provided string instance is returned. If {@code length < string.length()},
+   * this method throws {@link IllegalArgumentException}.
+   *
+   * @param str The string to pad.
+   * @param length The length of the returned, padded string.
+   * @param pad The padding character.
+   * @param truncate Whether the string should be truncated if it is longer than
+   *          the provided {@code length}.
+   * @return A right-padded representation of the specified length for the
+   *         provided string.
+   * @throws IllegalArgumentException If {@code truncate == false} and
+   *           {@code length} is less than {@code str.length()}.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static String padRightAll(final String str, final int length, final char pad, final boolean truncate) {
+    return padAll(str, length, true, pad, truncate);
+  }
+
+  private static String padAll(final String str, final int length, final boolean right, final char pad, final boolean truncate) {
+    final StringBuilder builder = new StringBuilder();
+    final String[] lines = str.split("[\n\r]");
+    for (int i = 0; i < lines.length; ++i) {
+      if (i > 0)
+        builder.append('\n');
+
+      builder.append(pad(lines[i], length, right, pad, truncate));
+    }
+
+    return builder.toString();
+  }
+
+  private static String pad(final String str, final int length, final boolean right, final char pad, final boolean truncate) {
     final int len = str.length();
     if (length == len)
       return str;
 
-    if (length < len)
+    if (length < len) {
+      if (truncate)
+        return str.substring(0, length);
+
       throw new IllegalArgumentException("length (" + length + ") must be greater or equal to string length (" + len + ")");
+    }
 
     final char[] chars = new char[length];
     if (right) {
@@ -1691,6 +1980,117 @@ public final class Strings {
     Strings.replace(str, "\n", replacement);
     Strings.replace(str, "\7", "\n");
     return str;
+  }
+
+  /**
+   * Tests if two {@link CharSequence} regions are equal.
+   *
+   * @param str The {@code CharSequence} to be processed.
+   * @param ignoreCase If {@code true}, ignore case when comparing characters.
+   * @param strOffset The starting offset of the subregion in {@code str}.
+   * @param substr The {@code CharSequence} to be searched.
+   * @param substrOffset The starting offset of the subregion in {@code substr}.
+   * @param len The number of characters to compare.
+   * @return {@code true} if the specified subregion of {@code str} matches the
+   *         specified subregion of {@code substr}; {@code false} otherwise.
+   *         Whether the matching is exact or case insensitive depends on the
+   *         {@code ignoreCase} argument.
+   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   */
+  public static boolean regionMatches(final CharSequence str, final boolean ignoreCase, final int strOffset, final CharSequence substr, final int substrOffset, int len) {
+    if (str instanceof String && substr instanceof String)
+      return ((String)str).regionMatches(ignoreCase, strOffset, (String)substr, substrOffset, len);
+
+    if (substrOffset < 0 || strOffset < 0 || strOffset > (long)str.length() - len || substrOffset > (long)substr.length() - len)
+      return false;
+
+    for (int i1 = strOffset, i2 = substrOffset; len-- > 0; ++i1, ++i2) {
+      final char c1 = str.charAt(i1);
+      final char c2 = substr.charAt(i2);
+
+      if (c1 == c2)
+        continue;
+
+      if (!ignoreCase)
+        return false;
+
+      if (Character.toUpperCase(c1) != Character.toUpperCase(c2) && Character.toLowerCase(c1) != Character.toLowerCase(c2))
+        return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * Returns the index within the specified {@link CharSequence str} of the
+   * first occurrence of the specified {@link CharSequence substr}.
+   * <p>
+   * The returned index is the smallest value {@code k} for which:
+   *
+   * <pre>
+   * {@code this.startsWith(str, k)}
+   * </pre>
+   *
+   * If no such value of {@code k} exists, then {@code -1} is returned.
+   *
+   * @param str The {@link CharSequence} in which to search.
+   * @param substr The {@link CharSequence} to search for.
+   * @return The index of the first occurrence of the specified substring, or
+   *         {@code -1} if there is no such occurrence.
+   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   */
+  public static int indexOfIgnoreCase(final CharSequence str, final CharSequence substr) {
+    return indexOfIgnoreCase(str, substr, 0);
+  }
+
+  /**
+   * Returns the index within the specified {@link CharSequence str} of the
+   * first occurrence of the specified {@link CharSequence substr}.
+   * <p>
+   * The returned index is the smallest value {@code k} for which:
+   *
+   * <pre>
+   * {@code this.startsWith(str, k)}
+   * </pre>
+   *
+   * If no such value of {@code k} exists, then {@code -1} is returned.
+   *
+   * @param str The {@link CharSequence} in which to search.
+   * @param substr The {@link CharSequence} to search for.
+   * @param fromIndex The index from which to start the search.
+   * @return The index of the first occurrence of the specified substring, or
+   *         {@code -1} if there is no such occurrence.
+   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   */
+  public static int indexOfIgnoreCase(final CharSequence str, final CharSequence substr, int fromIndex) {
+    if (fromIndex < 0)
+      fromIndex = 0;
+
+    final int len = str.length() - substr.length() + 1;
+    if (fromIndex > len)
+      return -1;
+
+    if (substr.length() == 0)
+      return fromIndex;
+
+    for (int i = fromIndex; i < len; ++i)
+      if (regionMatches(str, true, i, substr, 0, substr.length()))
+        return i;
+
+    return -1;
+  }
+
+  /**
+   * Returns {@code true} if and only if the specified {@link CharSequence str}
+   * contains the specified {@link CharSequence substr}.
+   *
+   * @param str The {@link CharSequence} in which to search.
+   * @param substr The {@link CharSequence} to search for.
+   * @return true If this string contains {@code substr}, false otherwise.
+   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   */
+  public static boolean containsIgnoreCase(final CharSequence str, final CharSequence substr) {
+    return indexOfIgnoreCase(str, substr) > -1;
   }
 
   private Strings() {
