@@ -1,6 +1,8 @@
 # Changes by Version
 
-## [v0.7.5](https://github.com/libj/lang/compare/7e6fffdf58f8a1d6c6dbc7dbce366e1d2c8b56a8..HEAD) (2020-05-23)
+## [v0.8.0-SNAPSHOT](https://github.com/libj/lang/compare/9ef34c960414e289ffe41251662b5c76ea53e192..HEAD)
+
+## [v0.7.5](https://github.com/libj/lang/compare/7e6fffdf58f8a1d6c6dbc7dbce366e1d2c8b56a8..9ef34c960414e289ffe41251662b5c76ea53e192) (2020-05-23)
 * Migrate `Assertions`, `Classes`, `Identifiers`, `Repeat`, `Resources` from `org.libj.util`.
 * Add `WrapperProxy`.
 * Improve javadocs.
