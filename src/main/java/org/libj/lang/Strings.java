@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Utility functions that provide common operations pertaining to {@link String}
@@ -1146,7 +1147,6 @@ public final class Strings {
    *          {@code char}.
    * @return A string containing the specified {@code char} repeated
    *         {@code count} times; an empty string if {@code count == 0}.
-   * @throws NullPointerException If the specified string is null.
    * @throws IllegalArgumentException If {@code count < 0}.
    * @throws ArrayIndexOutOfBoundsException If
    *           {@code str.length() * count > Integer.MAX_VALUE}.
@@ -1173,7 +1173,7 @@ public final class Strings {
    * @return A string containing the specified {@code str} repeated
    *         {@code count} times; an empty string if {@code count == 0}; the
    *         {@code str} if {@code count == 1}.
-   * @throws NullPointerException If the specified string is null.
+   * @throws NullPointerException If {@code str} is null.
    * @throws IllegalArgumentException If {@code count < 0}.
    * @throws ArrayIndexOutOfBoundsException If
    *           {@code str.length() * count > Integer.MAX_VALUE}.
@@ -1294,7 +1294,7 @@ public final class Strings {
    *         sequence represented by this object that is less than or equal to
    *         {@code fromIndex}, or {@code -1} if the character does not occur
    *         before that point.
-   * @throws NullPointerException If the provided {@link CharSequence} is null.
+   * @throws NullPointerException If {@code str} is null.
    */
   public static int lastIndexOf(final CharSequence str, final char ch, final int fromIndex) {
     return lastIndexOf0(str, ch, fromIndex);
@@ -1303,6 +1303,59 @@ public final class Strings {
   private static int lastIndexOf0(final CharSequence str, final char ch, final int fromIndex) {
     for (int i = Math.min(fromIndex, str.length() - 1); i >= 0; --i)
       if (str.charAt(i) == ch)
+        return i;
+
+    return -1;
+  }
+
+  /**
+   * Returns the index within the provided {@link CharSequence} of the last
+   * occurrence of the specified substring. The {@code CharSequence} is searched
+   * backwards starting at the last character. If no such substring occurs in
+   * this string, then {@code -1} is returned.
+   *
+   * @param str The {@link CharSequence}.
+   * @param substr A substring.
+   * @return The index of the last occurrence of the substring in the provided
+   *         {@link CharSequence}, or {@code -1} if the substring does not
+   *         occur.
+   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   */
+  public static int lastIndexOf(final CharSequence str, final CharSequence substr) {
+    return lastIndexOf0(str, substr, str.length() - 1);
+  }
+
+  /**
+   * Returns the index within the provided {@link CharSequence} of the last
+   * occurrence of the specified substring, searching backward starting at the
+   * specified index. If no such substring occurs in this string at or before
+   * position {@code fromIndex}, then {@code -1} is returned.
+   * <p>
+   * All indices are specified in {@code char} values (Unicode code units).
+   *
+   * @param str The {@link CharSequence}.
+   * @param substr A substring.
+   * @param fromIndex The index to start the search from. There is no
+   *          restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the provided {@link CharSequence},
+   *          it has the same effect as if it were equal to one less than the
+   *          length of this string: this entire string may be searched. If it
+   *          is negative, it has the same effect as if it were -1: -1 is
+   *          returned.
+   * @return The index of the last occurrence of the substring in the
+   *         {@link CharSequence} represented by this object that is less than
+   *         or equal to {@code fromIndex}, or {@code -1} if the substring does
+   *         not occur before that point.
+   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   */
+  public static int lastIndexOf(final CharSequence str, final CharSequence substr, final int fromIndex) {
+    return lastIndexOf0(str, substr, fromIndex);
+  }
+
+  private static int lastIndexOf0(final CharSequence str, final CharSequence substr, final int fromIndex) {
+    final int substrLen = substr.length();
+    for (int i = Math.min(fromIndex, str.length() - 1); i >= 0; --i)
+      if (regionMatches(str, false, i, substr, 0, substrLen))
         return i;
 
     return -1;
@@ -1357,25 +1410,67 @@ public final class Strings {
    *         the provided character that is not escaped, starting the search at
    *         the specified index, or {@code -1} if the unescaped character is
    *         not found.
-   * @throws NullPointerException If the specified string is null.
+   * @throws NullPointerException If {@code str} is null.
    */
   public static int indexOfUnEscaped(final CharSequence str, final char ch) {
     return indexOfUnEscaped(str, ch, 0);
   }
 
   /**
-   * Returns the index within the specified string of the last occurrence of the
-   * provided character that is not escaped.
+   * Returns the index within the specified {@link CharSequence} of the first
+   * occurrence of the provided substring that is not escaped, starting the
+   * search at the specified index.
+   *
+   * @param str The {@link CharSequence}.
+   * @param substr The substring to find.
+   * @param fromIndex The index to start the search from. There is no
+   *          restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the string, it has the same effect
+   *          as if it were equal to one less than the length of the string: the
+   *          entire string may be searched. If it is negative, it has the same
+   *          effect as if it were {@code -1}: {@code -1} is returned.
+   * @return The index within the specified {@link CharSequence} of the first
+   *         occurrence of the provided substring that is not escaped, starting
+   *         the search at the specified index, or {@code -1} if the unescaped
+   *         substring is not found.
+   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   */
+  public static int indexOfUnEscaped(final CharSequence str, final CharSequence substr, final int fromIndex) {
+    final int substrLen = substr.length();
+    boolean escaped = false;
+    final boolean substrIsBackslash = substr.length() == 1 && substr.charAt(0) == '\\';
+    for (int i = Math.max(fromIndex, 0), len = str.length(); i < len; ++i) {
+      final char c = str.charAt(i);
+      if (escaped) {
+        if (c == '\\' && substrIsBackslash)
+          return i;
+
+        escaped = false;
+      }
+      else if (c == '\\')
+        escaped = true;
+      else if (regionMatches(str, false, i, substr, 0, substrLen))
+        return i;
+    }
+
+    return -1;
+  }
+
+  /**
+   * Returns the index within the specified string of the first occurrence of
+   * the provided substring that is not escaped, starting the search at the
+   * specified index.
    *
    * @param str The string.
-   * @param ch The character to find.
-   * @return The index within the specified string of the last occurrence of the
-   *         provided character that is not escaped, or {@code -1} if the
-   *         unescaped character is not found.
-   * @throws NullPointerException If the specified string is null.
+   * @param substr The substring to find.
+   * @return The index within the specified string of the first occurrence of
+   *         the provided substring that is not escaped, starting the search at
+   *         the specified index, or {@code -1} if the unescaped substring is
+   *         not found.
+   * @throws NullPointerException If {@code str} or {@code substr} is null.
    */
-  public static int lastIndexOfUnEscaped(final CharSequence str, final char ch) {
-    return lastIndexOfUnEscaped(str, ch, str.length() - 1);
+  public static int indexOfUnEscaped(final CharSequence str, final CharSequence substr) {
+    return indexOfUnEscaped(str, substr, 0);
   }
 
   /**
@@ -1417,6 +1512,74 @@ public final class Strings {
   }
 
   /**
+   * Returns the index within the specified string of the last occurrence of the
+   * provided character that is not escaped.
+   *
+   * @param str The string.
+   * @param ch The character to find.
+   * @return The index within the specified string of the last occurrence of the
+   *         provided character that is not escaped, or {@code -1} if the
+   *         unescaped character is not found.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static int lastIndexOfUnEscaped(final CharSequence str, final char ch) {
+    return lastIndexOfUnEscaped(str, ch, str.length() - 1);
+  }
+
+  /**
+   * Returns the index within the specified {@link CharSequence} of the last
+   * occurrence of the provided substring that is not escaped, searching
+   * backward starting at the specified index.
+   *
+   * @param str The {@link CharSequence}.
+   * @param substr The substring to find.
+   * @param fromIndex The index to start the search from. There is no
+   *          restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the string, it has the same effect
+   *          as if it were equal to one less than the length of the string: the
+   *          entire string may be searched. If it is negative, it has the same
+   *          effect as if it were {@code -1}: {@code -1} is returned.
+   * @return The index within the specified {@link CharSequence} of the last
+   *         occurrence of the provided substring that is not escaped, searching
+   *         backward starting at the specified index, or {@code -1} if the
+   *         unescaped substring is not found.
+   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   */
+  public static int lastIndexOfUnEscaped(final CharSequence str, final CharSequence substr, int fromIndex) {
+    do {
+      final int i = lastIndexOf(str, substr, fromIndex);
+      int count = 0;
+      for (int j = i - 1; j >= 0; --j)
+        if (str.charAt(j) == '\\')
+          ++count;
+        else
+          break;
+
+      if (count % 2 == 0)
+        return i;
+
+      fromIndex = i - 1;
+    }
+    while (fromIndex > 0);
+    return -1;
+  }
+
+  /**
+   * Returns the index within the specified string of the last occurrence of the
+   * provided substring that is not escaped.
+   *
+   * @param str The string.
+   * @param substr The substring to find.
+   * @return The index within the specified string of the last occurrence of the
+   *         provided substring that is not escaped, or {@code -1} if the
+   *         unescaped character is not found.
+   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   */
+  public static int lastIndexOfUnEscaped(final CharSequence str, final CharSequence substr) {
+    return lastIndexOfUnEscaped(str, substr, str.length() - 1);
+  }
+
+  /**
    * Returns the index within the specified string of the first occurrence of
    * the provided character that is not within a quoted section of the string,
    * starting the search at the specified index. A quoted section of a string
@@ -1435,7 +1598,7 @@ public final class Strings {
    *         the provided character that is not within a quoted section of the
    *         string, or {@code -1} if the character is not found in an unquoted
    *         section.
-   * @throws NullPointerException If the specified string is null.
+   * @throws NullPointerException If {@code str} is null.
    */
   public static int indexOfUnQuoted(final CharSequence str, final char ch, final int fromIndex) {
     boolean escaped = false;
@@ -1468,10 +1631,69 @@ public final class Strings {
    *         the provided character that is not within a quoted section of the
    *         string, or {@code -1} if the character is not found in an unquoted
    *         section.
-   * @throws NullPointerException If the specified string is null.
+   * @throws NullPointerException If {@code str} is null.
    */
   public static int indexOfUnQuoted(final CharSequence str, final char ch) {
     return indexOfUnQuoted(str, ch, 0);
+  }
+
+  /**
+   * Returns the index within the specified string of the first occurrence of
+   * the provided substring that is not within a quoted section of the string,
+   * starting the search at the specified index. A quoted section of a string
+   * starts with a double-quote character ({@code '"'}) and ends with a
+   * double-quote character or the end of the string.
+   *
+   * @param str The string.
+   * @param substr The substring to find.
+   * @param fromIndex The index to start the search from. There is no
+   *          restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the string, it has the same effect
+   *          as if it were equal to one less than the length of the string: the
+   *          entire string may be searched. If it is negative, it has the same
+   *          effect as if it were {@code -1}: {@code -1} is returned.
+   * @return The index within the specified string of the first occurrence of
+   *         the provided substring that is not within a quoted section of the
+   *         string, or {@code -1} if the substring is not found in an unquoted
+   *         section.
+   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   */
+  public static int indexOfUnQuoted(final CharSequence str, final CharSequence substr, final int fromIndex) {
+    final int substrLen = substr.length();
+    boolean escaped = false;
+    boolean quoted = false;
+    for (int i = Math.max(fromIndex, 0), len = str.length(); i < len; ++i) {
+      final char c = str.charAt(i);
+      if (escaped)
+        escaped = false;
+      else if (c == '\\')
+        escaped = true;
+      else if (!quoted && regionMatches(str, false, i, substr, 0, substrLen))
+        return i;
+      else if (c == '"')
+        quoted = !quoted;
+    }
+
+    return -1;
+  }
+
+  /**
+   * Returns the index within the specified string of the first occurrence of
+   * the provided substring that is not within a quoted section of the string. A
+   * quoted section of a string starts with a double-quote character
+   * ({@code '"'}) and ends with a double-quote character or the end of the
+   * string.
+   *
+   * @param str The string.
+   * @param substr The substring to find.
+   * @return The index within the specified string of the first occurrence of
+   *         the provided substring that is not within a quoted section of the
+   *         string, or {@code -1} if the substring is not found in an unquoted
+   *         section.
+   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   */
+  public static int indexOfUnQuoted(final CharSequence str, final CharSequence substr) {
+    return indexOfUnQuoted(str, substr, 0);
   }
 
   /**
@@ -1493,7 +1715,7 @@ public final class Strings {
    *         the provided character that is not within a quoted section of the
    *         string, or {@code -1} if the character is not found in an unquoted
    *         section.
-   * @throws NullPointerException If the specified string is null.
+   * @throws NullPointerException If {@code str} is null.
    */
   public static int lastIndexOfUnQuoted(final CharSequence str, final char ch, final int fromIndex) {
     boolean esacped = false;
@@ -1528,10 +1750,202 @@ public final class Strings {
    *         the provided character that is not within a quoted section of the
    *         string, or {@code -1} if the character is not found in an unquoted
    *         section.
-   * @throws NullPointerException If the specified string is null.
+   * @throws NullPointerException If {@code str} is null.
    */
   public static int lastIndexOfUnQuoted(final CharSequence str, final char ch) {
     return lastIndexOfUnQuoted(str, ch, str.length());
+  }
+
+  /**
+   * Returns the index within the specified string of the last occurrence of the
+   * provided substring that is not within a quoted section of the string,
+   * searching backward starting at the specified index. A quoted section of a
+   * string ends with a double-quote character ({@code '"'}) and starts with a
+   * double-quote character or the start of the string.
+   *
+   * @param str The string.
+   * @param substr The substring to find.
+   * @param fromIndex The index to start the search from. There is no
+   *          restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the string, it has the same effect
+   *          as if it were equal to one less than the length of the string: the
+   *          entire string may be searched. If it is negative, it has the same
+   *          effect as if it were {@code -1}: {@code -1} is returned.
+   * @return The index within the specified string of the first occurrence of
+   *         the provided substring that is not within a quoted section of the
+   *         string, or {@code -1} if the substring is not found in an unquoted
+   *         section.
+   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   */
+  public static int lastIndexOfUnQuoted(final CharSequence str, final CharSequence substr, final int fromIndex) {
+    final int substrLen = substr.length();
+    boolean esacped = false;
+    boolean quoted = false;
+    char n = '\0';
+    for (int end = str.length() - 1, i = Math.min(fromIndex, end); i >= 0; --i) {
+      final char c = str.charAt(i);
+      if (c == '\\')
+        esacped = true;
+      else if (esacped)
+        esacped = false;
+      else if (!quoted && regionMatches(str, false, i, substr, 0, substrLen))
+        return i + 1;
+      else if (n == '"')
+        quoted = !quoted;
+
+      n = c;
+    }
+
+    return substrLen == 1 && substr.charAt(0) == n ? 0 : -1;
+  }
+
+  /**
+   * Returns the index within the specified string of the last occurrence of the
+   * provided substring that is not within a quoted section of the string. A
+   * quoted section of a string ends with a double-quote character ({@code '"'})
+   * and starts with a double-quote character or the start of the string.
+   *
+   * @param str The string.
+   * @param substr The substring to find.
+   * @return The index within the specified string of the first occurrence of
+   *         the provided substring that is not within a quoted section of the
+   *         string, or {@code -1} if the substring is not found in an unquoted
+   *         section.
+   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   */
+  public static int lastIndexOfUnQuoted(final CharSequence str, final CharSequence substr) {
+    return lastIndexOfUnQuoted(str, substr, str.length());
+  }
+
+  /**
+   * Returns the index within the specified string of the first occurrence of
+   * the provided character that is not within an enclosed section of the
+   * string, starting the search at the specified index. An enclosed section of
+   * a string starts with the provided {@code open} character and ends with the
+   * provided {@code close} character or the end of the string.
+   *
+   * @param str The string.
+   * @param ch The character to find.
+   * @param open The {@code char} indicating the start of an enclosure.
+   * @param close The {@code char} indicating the end of an enclosure.
+   * @param fromIndex The index to start the search from. There is no
+   *          restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the string, it has the same effect
+   *          as if it were equal to one less than the length of the string: the
+   *          entire string may be searched. If it is negative, it has the same
+   *          effect as if it were {@code -1}: {@code -1} is returned.
+   * @return The index within the specified string of the first occurrence of
+   *         the provided character that is not within an enclosed section of
+   *         the string, or {@code -1} if the character is not found in an
+   *         unenclosed section.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static int indexOfUnEnclosed(final CharSequence str, final char ch, final char open, final char close, final int fromIndex) {
+    boolean escaped = false;
+    boolean enclosed = false;
+    for (int i = Math.max(fromIndex, 0), len = str.length(); i < len; ++i) {
+      final char c = str.charAt(i);
+      if (escaped)
+        escaped = false;
+      else if (c == '\\')
+        escaped = true;
+      else if (enclosed)
+        enclosed = c != close;
+      else if (c == ch)
+        return i;
+      else
+        enclosed = c == open;
+    }
+
+    return -1;
+  }
+
+  /**
+   * Returns the index within the specified string of the first occurrence of
+   * the provided character that is not within an enclosed section of the
+   * string. An enclosed section of a string starts with the provided
+   * {@code open} character and ends with the provided {@code close} character
+   * or the end of the string.
+   *
+   * @param str The string.
+   * @param ch The character to find.
+   * @param open The {@code char} indicating the start of an enclosure.
+   * @param close The {@code char} indicating the end of an enclosure.
+   * @return The index within the specified string of the first occurrence of
+   *         the provided character that is not within an enclosed section of
+   *         the string, or {@code -1} if the character is not found in an
+   *         unenclosed section.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static int indexOfUnEnclosed(final CharSequence str, final char ch, final char open, final char close) {
+    return indexOfUnEnclosed(str, ch, open, close, 0);
+  }
+
+  /**
+   * Returns the index within the specified string of the first occurrence of
+   * the provided substring that is not within an enclosed section of the
+   * string, starting the search at the specified index. An enclosed section of
+   * a string starts with the provided {@code open} character and ends with the
+   * provided {@code close} character or the end of the string.
+   *
+   * @param str The string.
+   * @param substr The substring to find.
+   * @param open The {@code char} indicating the start of an enclosure.
+   * @param close The {@code char} indicating the end of an enclosure.
+   * @param fromIndex The index to start the search from. There is no
+   *          restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the string, it has the same effect
+   *          as if it were equal to one less than the length of the string: the
+   *          entire string may be searched. If it is negative, it has the same
+   *          effect as if it were {@code -1}: {@code -1} is returned.
+   * @return The index within the specified string of the first occurrence of
+   *         the provided substring that is not within an enclosed section of
+   *         the string, or {@code -1} if the substring is not found in an
+   *         unenclosed section.
+   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   */
+  public static int indexOfUnEnclosed(final CharSequence str, final CharSequence substr, final char open, final char close, final int fromIndex) {
+    boolean escaped = false;
+    boolean enclosed = false;
+    final int substrLen = substr.length();
+    for (int i = Math.max(fromIndex, 0), len = str.length(); i < len; ++i) {
+      if (i == 120)
+        System.console();
+      final char c = str.charAt(i);
+      if (escaped)
+        escaped = false;
+      else if (c == '\\')
+        escaped = true;
+      else if (enclosed)
+        enclosed = c != close;
+      else if (regionMatches(str, false, i, substr, 0, substrLen))
+        return i;
+      else
+        enclosed = c == open;
+    }
+
+    return -1;
+  }
+
+  /**
+   * Returns the index within the specified string of the first occurrence of
+   * the provided substring that is not within an enclosed section of the
+   * string. An enclosed section of a string starts with the provided
+   * {@code open} character and ends with the provided {@code close} character
+   * or the end of the string.
+   *
+   * @param str The string.
+   * @param substr The substring to find.
+   * @param open The {@code char} indicating the start of an enclosure.
+   * @param close The {@code char} indicating the end of an enclosure.
+   * @return The index within the specified string of the first occurrence of
+   *         the provided substring that is not within an enclosed section of
+   *         the string, or {@code -1} if the substring is not found in an
+   *         unenclosed section.
+   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   */
+  public static int indexOfUnEnclosed(final CharSequence str, final CharSequence substr, final char open, final char close) {
+    return indexOfUnEnclosed(str, substr, open, close, 0);
   }
 
   /**
@@ -1555,7 +1969,7 @@ public final class Strings {
    *          {@code >= 3}).
    * @return The truncated string.
    * @throws IllegalArgumentException If the provided length is less than 3.
-   * @throws NullPointerException If the specified string is null.
+   * @throws NullPointerException If {@code str} is null.
    */
   public static String truncate(final String str, final int maxLength) {
     if (maxLength < 3)
@@ -1954,7 +2368,7 @@ public final class Strings {
    * @param spaces The number of spaces to indent.
    * @return A {@link StringBuilder} instance with the indented string.
    * @throws IllegalArgumentException If the number of spaces is negative.
-   * @throws NullPointerException If the specified string is null.
+   * @throws NullPointerException If {@code str} is null.
    */
   public static StringBuilder indent(final String str, final int spaces) {
     return indent(new StringBuilder(str), spaces);
@@ -1969,7 +2383,7 @@ public final class Strings {
    * @param spaces The number of spaces to indent.
    * @return The specified {@link StringBuilder} instance, indented.
    * @throws IllegalArgumentException If the number of spaces is negative.
-   * @throws NullPointerException If the specified string is null.
+   * @throws NullPointerException If {@code str} is null.
    */
   public static StringBuilder indent(final StringBuilder str, final int spaces) {
     if (spaces == 0)
@@ -2091,6 +2505,37 @@ public final class Strings {
    */
   public static boolean containsIgnoreCase(final CharSequence str, final CharSequence substr) {
     return indexOfIgnoreCase(str, substr) > -1;
+  }
+
+  /**
+   * Returns a {@link UUID} representation of the specified string, or
+   * {@code null} if the string cannot be converted to a {@link UUID}.
+   *
+   * @param str The string to convert to a {@link UUID}.
+   * @return A {@link UUID} representation of the specified string, or
+   *         {@code null} if the string cannot be converted to a {@link UUID}.
+   */
+  public static UUID toUuidOrNull(final String str) {
+    if (str == null)
+      return null;
+
+    if (str.length() != 36)
+      return null;
+
+    for (int i = 0, ch; i < 36; ++i) {
+      ch = str.charAt(i);
+      if (i == 8 || i == 13 || i == 18 || i == 23) {
+        if (ch != '-')
+          return null;
+
+        continue;
+      }
+
+      if (!('0' <= ch && ch <= '9' || 'a' <= ch && ch <= 'f' || 'A' <= ch && ch <= 'F'))
+        return null;
+    }
+
+    return UUID.fromString(str);
   }
 
   private Strings() {
