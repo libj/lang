@@ -42,6 +42,8 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import sun.reflect.generics.reflectiveObjects.WildcardTypeImpl;
+
 /**
  * Utility providing implementations of methods missing from the API of
  * {@link Class}.
@@ -301,17 +303,35 @@ public final class Classes {
   }
 
   /**
-   * Returns the array of generic type classes for the specified field. If the
+   * Returns the array of generic parameter classes for the return type of the
+   * specified method. If the field is not a parameterized type, this method
+   * will return an empty array.
+   *
+   * @param method The {@link Method}
+   * @return The array of generic parameter classes for the specified method.
+   * @throws NullPointerException If {@code method} is null.
+   */
+  public static Class<?>[] getGenericParameters(final Method method) {
+    return getGenericParameters(method.getGenericReturnType());
+  }
+
+  private static final Class<?>[] emptyClasses = new Class[0];
+
+  /**
+   * Returns the array of generic parameter classes for the specified field. If the
    * field is not a parameterized type, this method will return an empty array.
    *
    * @param field The {@link Field}
-   * @return The array of generic type classes for the specified field.
+   * @return The array of generic parameter classes for the specified field.
    * @throws NullPointerException If {@code field} is null.
    */
-  public static Class<?>[] getGenericClasses(final Field field) {
-    final Type genericType = field.getGenericType();
+  public static Class<?>[] getGenericParameters(final Field field) {
+    return getGenericParameters(field.getGenericType());
+  }
+
+  private static Class<?>[] getGenericParameters(final Type genericType) {
     if (!(genericType instanceof ParameterizedType))
-      return new Class[0];
+      return emptyClasses;
 
     final Type[] types = ((ParameterizedType)genericType).getActualTypeArguments();
     final Class<?>[] classes = new Class[types.length];
@@ -320,6 +340,8 @@ public final class Classes {
         classes[i] = (Class<?>)types[i];
       else if (types[i] instanceof ParameterizedType)
         classes[i] = (Class<?>)((ParameterizedType)types[i]).getRawType();
+      else if (types[i] instanceof WildcardTypeImpl)
+        classes[i] = (Class<?>)((WildcardTypeImpl)types[i]).getUpperBounds()[0];
     }
 
     return classes;
