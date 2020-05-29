@@ -86,7 +86,7 @@ public final class Identifiers {
       final String replacement = function.apply(ch);
       if (replacement != null) {
         for (int i = 0; i < replacement.length(); ++i)
-          if (start && i == 0 ? !Character.isJavaIdentifierStart(replacement.charAt(i)) : !Character.isJavaIdentifierPart(replacement.charAt(i)))
+          if (start && builder.length() == 0 && i == 0 ? !Character.isJavaIdentifierStart(replacement.charAt(i)) : !Character.isJavaIdentifierPart(replacement.charAt(i)))
             throw new IllegalArgumentException("Substitution \"" + replacement + "\" contains illegal " + (start ? "start " : "") + "character: '" + replacement.charAt(i) + "'");
 
         builder.append(replacement);
@@ -324,11 +324,11 @@ public final class Identifiers {
     if (string.length() == 0)
       return builder;
 
-    final char[] chars = string.toCharArray();
+    int len = string.length();
     int i = 0;
     char ch = '\0';
-    for (; i < chars.length; ++i) {
-      ch = chars[i];
+    for (; i < len; ++i) {
+      ch = string.charAt(i);
       if (Character.isJavaIdentifierStart(ch)) {
         builder.append(ch);
         break;
@@ -351,8 +351,8 @@ public final class Identifiers {
         throw new IllegalArgumentException("Unspecified prefix or substitution for illegal start character: " + ch);
     }
 
-    for (++i; i < chars.length; ++i) {
-      ch = chars[i];
+    for (++i; i < len; ++i) {
+      ch = string.charAt(i);
       if (Character.isJavaIdentifierPart(ch)) {
         builder.append(ch);
         continue;
@@ -623,19 +623,19 @@ public final class Identifiers {
       return builder;
 
     int startUpper = -1;
-    final char[] chars = string.toCharArray();
     boolean capNext = false;
-    for (int i = 0; i < chars.length; ++i) {
-      if (i == 0 && !Character.isJavaIdentifierStart(chars[i])) {
+    for (int i = 0, len = string.length(); i < len; ++i) {
+      char ch = string.charAt(i);
+      if (builder.length() == 0 && !Character.isJavaIdentifierStart(ch)) {
         if (prefix != '\0')
           builder.append(prefix);
-        else if (substitute(builder, i == 0, chars[i], substitute, substitutes, function))
+        else if (substitute(builder, i == 0, ch, substitute, substitutes, function))
           ++i;
         else
-          throw new IllegalArgumentException("Unspecified prefix or substitution for illegal start character: " + chars[i]);
+          throw new IllegalArgumentException("Unspecified prefix or substitution for illegal start character: " + ch);
       }
 
-      final char ch = chars[i];
+      ch = string.charAt(i);
       if (startUpper == -1 && Character.isUpperCase(ch))
         startUpper = i;
       else if (startUpper != -1 && Character.isLowerCase(ch))

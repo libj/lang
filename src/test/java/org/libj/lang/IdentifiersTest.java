@@ -37,7 +37,7 @@ public class IdentifiersTest {
     }
 
     if (identifier != null && identifier.length() > 0)
-      assertTrue(Identifiers.isValid(identifier));
+      assertTrue(expected + " != " + identifier, Identifiers.isValid(identifier));
 
     assertEquals(expected, identifier);
   }
@@ -179,6 +179,8 @@ public class IdentifiersTest {
     test("_2FOoBAr", function, "2FOo_bAr");
     test("_abstract", function, "abstract");
     test("_do", function, "do");
+    test("_2e2a", function, "2e_2a");
+    test("_2e2a", function, "_2e_2a");
   }
 
   @Test
