@@ -16,6 +16,9 @@
 
 package org.libj.lang;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
@@ -28,8 +31,11 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.LinkedHashSet;
@@ -816,17 +822,103 @@ public final class Classes {
       return false;
 
     for (int i = 0, len = parameterTypes.length; i < len; ++i)
-      if (args[i] != null && !isAssignable(parameterTypes[i], args[i]))
+      if (args[i] != null && !isAssignableFrom(parameterTypes[i], args[i], true))
         return false;
 
     return true;
   }
 
-  private static boolean isAssignable(final Class<?> target, final Class<?> cls) {
-    if (target.isPrimitive())
-      return (cls.isPrimitive() ? target : toWrapper(target)) == cls;
+  /**
+   * Determines if the specified {@code Object obj} is assignment-compatible
+   * with the class or interface represented by {@code target}.
+   * <p>
+   * This method differentiates itself from {@link Class#isInstance(Object)} by
+   * supporting primitive types.
+   *
+   * @param target The target class.
+   * @param obj The object to check.
+   * @return Whether the specified {@code Object obj} is assignment-compatible
+   *         with the class or interface represented by {@code target}, or
+   *         {@code null} if {@code obj} is null.
+   * @throws NullPointerException If {@code target}.
+   */
+  public static boolean isInstance(final Class<?> target, final Object obj) {
+    return obj != null && isAssignableFrom(target, obj.getClass(), true);
+  }
 
-    return target.isAssignableFrom(cls.isPrimitive() ? toWrapper(cls) : cls);
+  /**
+   * Determines if the class or interface represented by {@code target} is
+   * either the same as, or is a superclass or superinterface of, the class or
+   * interface represented by the specified {@code cls} parameter.
+   * <p>
+   * This method differentiates itself from
+   * {@link Class#isAssignableFrom(Class)} by wrapping primitive types. This
+   * method is also able to properly ascertain whether the {@code cls} class is
+   * assignment compatible with the {@code target} class, in case the two
+   * classes represent arrays.
+   * <p>
+   * Calling this method is the equivalent of:
+   *
+   * <pre>
+   * {@code isAssignableFrom(target,cls,true)}
+   * </pre>
+   *
+   * @param target The target class.
+   * @param cls The argument class.
+   * @return Whether the class or interface represented by {@code target} is
+   *         either the same as, or is a superclass or superinterface of, the
+   *         class or interface represented by the specified {@code cls}
+   *         parameter.
+   * @throws NullPointerException If {@code target} or {@code cls} is null.
+   */
+  public static boolean isAssignableFrom(final Class<?> target, final Class<?> cls) {
+    return isAssignableFrom(target, cls, true);
+  }
+
+  /**
+   * Determines if the class or interface represented by {@code target} is
+   * either the same as, or is a superclass or superinterface of, the class or
+   * interface represented by the specified {@code cls} parameter.
+   * <p>
+   * This method differentiates itself from
+   * {@link Class#isAssignableFrom(Class)} by conditionally wrapping primitive
+   * types, if {@code canWrap == true}. This method is also able to properly
+   * ascertain whether the {@code cls} class is assignment compatible with the
+   * {@code target} class, in case the two classes represent arrays.
+   *
+   * @param target The target class.
+   * @param cls The argument class.
+   * @param canWrap If {@code true}, this method will check compatibility of the
+   *          wrapped form of a primitive type.
+   * @return Whether the class or interface represented by {@code target} is
+   *         either the same as, or is a superclass or superinterface of, the
+   *         class or interface represented by the specified {@code cls}
+   *         parameter.
+   * @throws NullPointerException If {@code target} or {@code cls} is null.
+   */
+  public static boolean isAssignableFrom(Class<?> target, Class<?> cls, final boolean canWrap) {
+    if (target.isArray()) {
+      if (!cls.isArray())
+        return false;
+
+      return isAssignableFrom(target.getComponentType(), cls.getComponentType(), false);
+    }
+    else if (cls.isArray()) {
+      return false;
+    }
+
+    if (target.isPrimitive() && cls.isPrimitive())
+      return target == cls;
+
+    if (canWrap) {
+      if (target.isPrimitive())
+        target = toWrapper(target);
+
+      if (cls.isPrimitive())
+        cls = toWrapper(cls);
+    }
+
+    return target.isAssignableFrom(cls);
   }
 
   /**

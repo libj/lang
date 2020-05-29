@@ -24,6 +24,7 @@ import java.io.FileInputStream;
 import java.io.FilterInputStream;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.AbstractCollection;
 import java.util.AbstractList;
 import java.util.AbstractSequentialList;
@@ -392,5 +393,15 @@ public class ClassesTest {
   public void testGetDeclaredMethodDeep() {
     assertNull(Classes.getDeclaredMethod(Foo.class, "b"));
     assertNotNull(Classes.getDeclaredMethodDeep(Foo.class, "b"));
+  }
+
+  @Test
+  public void testIsAssignableFrom() {
+    assertTrue(Classes.isAssignableFrom(byte.class, Byte.class));
+    assertTrue(Classes.isAssignableFrom(long.class, Long.class));
+    assertTrue(Classes.isAssignableFrom(Number.class, long.class));
+    assertTrue(Classes.isAssignableFrom(Object.class, long.class));
+    assertFalse(Classes.isAssignableFrom(Object[].class, long[].class));
+    assertFalse(Classes.isAssignableFrom(byte.class, Long.class));
   }
 }
