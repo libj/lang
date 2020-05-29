@@ -16,9 +16,6 @@
 
 package org.libj.lang;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
@@ -31,11 +28,8 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.LinkedHashSet;
@@ -1483,6 +1477,71 @@ public final class Classes {
       message.append(" or valueOf(" + types + ")");
 
     throw new IllegalArgumentException(message.toString());
+  }
+
+  /**
+   * Returns the {@link Class} object associated with the class or interface
+   * with the given string name.
+   * <p>
+   * Invoking this method is equivalent to:
+   *
+   * <pre>
+   *  {@code Classes.forNameOrNull(className, true, currentLoader)}
+   * </pre>
+   *
+   * where {@code currentLoader} denotes the defining class loader of the
+   * current class.
+   *
+   * @param className the fully qualified name of the desired class.
+   * @return The {@link Class} object for the class with the specified name, or
+   *         {@code null} if the class cannot be located.
+   * @exception LinkageError If the linkage fails.
+   * @exception ExceptionInInitializerError If the initialization provoked by
+   *              this method fails.
+   * @see java.lang.Class#forName(String)
+   */
+  public static Class<?> forNameOrNull(final String className) {
+    try {
+      return Class.forName(className);
+    }
+    catch (final ClassNotFoundException e) {
+      return null;
+    }
+  }
+
+  /**
+   * Returns the {@link Class} object associated with the class or interface
+   * with the given string name, using the given class loader. Given the fully
+   * qualified name for a class or interface (in the same format returned by
+   * {@code getName}) this method attempts to locate, load, and link the class
+   * or interface. The specified class loader is used to load the class or
+   * interface. If the parameter {@code loader} is null, the class is loaded
+   * through the bootstrap class loader. The class is initialized only if the
+   * {@code initialize} parameter is {@code true} and if it has not been
+   * initialized earlier.
+   *
+   * @param name Fully qualified name of the desired class.
+   * @param initialize If {@code true} the class will be initialized.
+   * @param loader Class loader from which the class must be loaded.
+   * @return The {@link Class} object representing the desired class, or
+   *         {@code null} if the class cannot be located by the specified class
+   *         loader.
+   * @exception LinkageError If the linkage fails.
+   * @exception ExceptionInInitializerError If the initialization provoked by
+   *              this method fails.
+   * @exception SecurityException If a security manager is present, and the
+   *              {@code loader} is {@code null}, and the caller's class loader
+   *              is not {@code null}, and the caller does not have the
+   *              {@link RuntimePermission}{@code ("getClassLoader")}.
+   * @see java.lang.Class#forName(String,boolean,ClassLoader)
+   */
+  public static Class<?> forNameOrNull(final String name, final boolean initialize, final ClassLoader loader) {
+    try {
+      return Class.forName(name, initialize, loader);
+    }
+    catch (final ClassNotFoundException e) {
+      return null;
+    }
   }
 
   private Classes() {
