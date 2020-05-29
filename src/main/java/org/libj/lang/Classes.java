@@ -16,6 +16,9 @@
 
 package org.libj.lang;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
@@ -28,8 +31,11 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.LinkedHashSet;
@@ -1542,6 +1548,233 @@ public final class Classes {
     catch (final ClassNotFoundException e) {
       return null;
     }
+  }
+
+  private static final Comparator<Class<?>> subclassComparator = new Comparator<Class<?>>() {
+    /**
+     * Returns {@code 0} if {@code o2 == o1}, {@code -1} if {@code o2} is a
+     * subclass of {@code o1}, otherwise {@code 1}.
+     *
+     * @param o1 A {@link Class}.
+     * @param o2 A {@link Class}.
+     * @return {@code 0} if {@code o2 == o1}, {@code -1} if {@code o2} is a
+     *         subclass of {@code o1}, otherwise {@code 1}.
+     */
+    @Override
+    public int compare(final Class<?> o1, Class<?> o2) {
+      if (o1 == o2)
+        return 0;
+
+      while ((o2 = o2.getSuperclass()) != null)
+        if (o1 == o2)
+          return -1;
+
+      return 1;
+    }
+  };
+
+  private static class MethodOffset implements Comparable<MethodOffset> {
+    private final Method method;
+    private final int offset;
+
+    private MethodOffset(final Method method, final int offset) {
+      this.method = method;
+      this.offset = offset;
+    }
+
+    @Override
+    public int compareTo(final MethodOffset o) {
+      final int c = subclassComparator.compare(o.method.getDeclaringClass(), method.getDeclaringClass());
+      return c != 0 ? c : offset - o.offset;
+    }
+  }
+
+  private static final Comparator<Method> methodNameComparator = new Comparator<Method>() {
+    @Override
+    public int compare(final Method o1, final Method o2) {
+      return o2.getName().length() - o1.getName().length();
+    }
+  };
+
+  private static byte[] getBlocks(final InputStream in, final int length) throws IOException {
+    byte[] block = new byte[16 * 1024];
+    final int n = in.read(block);
+    if (n <= 0)
+      return new byte[length];
+
+//    if (n < block.length)
+//      block = Arrays.copyOf(block, n);
+
+    final byte[] blocks = getBlocks(in, length + block.length);
+    System.arraycopy(block, 0, blocks, length, block.length);
+    return blocks;
+  }
+
+  private static final String lineNumberTableLabel = "LineNumberTable";
+  private static final int lineNumberTableOffset = lineNumberTableLabel.length() + 3;
+
+  private static final StringBuilder NULL_DATA = new StringBuilder();
+  private static final IdentityHashMap<Class<?>,StringBuilder> classToByteBlocks = new IdentityHashMap<>();
+
+  private static StringBuilder getMethodData(final Class<?> cls) {
+    StringBuilder data = classToByteBlocks.get(cls);
+    if (data != null)
+      return data == NULL_DATA ? null : data;
+
+    final Method[] methods = cls.getDeclaredMethods();
+    final ClassLoader classLoader = cls.getClassLoader() != null ? cls.getClassLoader() : BootProxyClassLoader.INSTANCE;
+    try (final InputStream in = classLoader.getResourceAsStream(cls.getName().replace('.', '/').concat(".class"))) {
+      if (in != null) {
+        Arrays.sort(methods, methodNameComparator);
+        data = new StringBuilder(new String(getBlocks(in, 0), StandardCharsets.UTF_8));
+
+        final int lineNumberTable = data.indexOf(lineNumberTableLabel);
+        if (lineNumberTable != -1)
+          data.delete(0, lineNumberTable + lineNumberTableOffset);
+
+        final int sourceFile = data.lastIndexOf("SourceFile");
+        if (sourceFile != -1)
+          data.setLength(sourceFile);
+      }
+      else {
+        data = NULL_DATA;
+      }
+    }
+    catch (final IOException e) {
+      throw new UncheckedIOException(e);
+    }
+
+    classToByteBlocks.put(cls, data);
+    return data;
+  }
+
+  public static boolean sortDeclarativeOrder(final Method[] methods) {
+    // FIXME: This implementation is brittle. Need to reimplement it by reading the bytecode byte by byte,
+    // FIXME: and creating a manifest that identifies the order of all methods (native, overwritten, overloaded, etc).
+    final MethodOffset[] methodOffset = new MethodOffset[methods.length];
+    final HashMap<String,Integer> counts = new HashMap<>();
+    for (int i = 0; i < methods.length; ++i) {
+      final Method method = methods[i];
+      final String name = method.getName();
+      final Integer count = counts.get(name);
+      counts.put(name, count != null ? count + 1 : 1);
+    }
+
+    for (int i = 0, pos = -1; i < methods.length; ++i, pos = -1) {
+      final Method method = methods[i];
+      final Class<?> cls = method.getDeclaringClass();
+      final StringBuilder data = getMethodData(cls);
+      if (data == null)
+        return false;
+
+      final String name = method.getName();
+      final int nameLen = name.length();
+      final String methodSig = "(" + getInternalName(method.getParameterTypes()) + ")";
+      final int methodSigLen = methodSig.length();
+      final String returnSig = getInternalName(method.getReturnType());
+      final int returnSigLen = returnSig.length();
+      final boolean isOverloaded = counts.get(name) > 1;
+      for (boolean match = false; !match && (pos = data.indexOf(name, pos)) != -1;) {
+        final char ch = data.charAt(pos += nameLen);
+        if (ch > 7)
+          continue;
+
+        if (!isOverloaded)
+          break;
+
+        final int s = data.indexOf(methodSig, pos);
+        if (s == -1) // This can happen in case of StackMapTable
+          break;
+
+        pos = s + methodSigLen;
+        match = Strings.regionMatches(data, false, pos, returnSig, 0, returnSigLen);
+        pos += returnSigLen;
+      }
+
+      if (pos == -1)
+        return false;
+
+      methodOffset[i] = new MethodOffset(method, pos);
+    }
+
+    Arrays.sort(methodOffset);
+    for (int i = 0; i < methodOffset.length; ++i)
+      methods[i] = methodOffset[i].method;
+
+    return true;
+  }
+
+  /**
+   * Returns the internal name representation of the provided class name. The
+   * internal name of a class is its fully qualified name (as returned by
+   * {@link Class#getName()}, where {@code '.'} are replaced by {@code '/'}).
+   * This method should only be used for an object or array type.
+   *
+   * @param className The class name for which to return the internal name.
+   * @return The internal name representation of the provided class name.
+   */
+  public static String getInternalName(final String className) {
+    return className.replace('.', '/');
+  }
+
+  private static final Class<?>[] primitiveClasses = {boolean.class, byte.class, char.class, double.class, float.class, int.class, long.class, short.class, void.class};
+  private static final String[] primitiveInternalNames = {"Z", "B", "C", "D", "F", "I", "J", "S", "V"};
+
+  /**
+   * Returns a string containing the internal names of the given classes,
+   * appended sans delimiter.
+   *
+   * @param classes The classes for which to return a string containing the
+   *          internal names.
+   * @return A string containing the internal names of the given classes,
+   *         appended sans delimiter.
+   * @throws NullPointerException If {@code classes} or any member of
+   *           {@code classes} is null.
+   * @see #getInternalName(Class)
+   */
+  public static String getInternalName(final Class<?> ... classes) {
+    final StringBuilder builder = new StringBuilder();
+    for (final Class<?> cls : classes)
+      builder.append(getInternalName(cls));
+
+    return builder.toString();
+  }
+
+  /**
+   * Returns the internal name of the given class.
+   * <p>
+   * The internal name of a primitive type is represented by one character:
+   *
+   * <pre>
+   * {@code B} = {@code byte}
+   * {@code C} = {@code char}
+   * {@code D} = {@code double}
+   * {@code F} = {@code float}
+   * {@code I} = {@code int}
+   * {@code J} = {@code long}
+   * {@code S} = {@code short}
+   * {@code Z} = {@code boolean}
+   * </pre>
+   *
+   * The internal name of a class or interface is represented by its fully
+   * qualified name, with an 'L' prefix and a ';' suffix. The dots {@code '.'}
+   * in the fully qualified class name are replaced by {@code '/'} (for inner
+   * classes, the {@code '.'} separating the outer class name from the inner
+   * class name is replaced by a {@code '$'}).
+   *
+   * @param cls The class for which to return the internal name.
+   * @return The internal name of the given class.
+   * @throws NullPointerException If {@code cls} is null.
+   */
+  public static String getInternalName(final Class<?> cls) {
+    if (cls.isArray())
+      return "[" + getInternalName(cls.getComponentType());
+
+    for (int i = 0; i < primitiveClasses.length; ++i)
+      if (primitiveClasses[i] == cls)
+        return primitiveInternalNames[i];
+
+    return "L" + cls.getName().replace('.', '/') + ";";
   }
 
   private Classes() {

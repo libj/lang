@@ -404,4 +404,12 @@ public class ClassesTest {
     assertFalse(Classes.isAssignableFrom(Object[].class, long[].class));
     assertFalse(Classes.isAssignableFrom(byte.class, Long.class));
   }
+
+  @Test
+  public void testSortDeclarativeOrder() {
+    final Method[] methods = BootProxyClassLoader.class.getMethods();
+//    System.err.println(Arrays.toString(methods));
+    logger.warn("Classes.sortDeclarativeOrder: " + Classes.sortDeclarativeOrder(methods));
+//    System.err.println(Arrays.toString(methods));
+  }
 }
