@@ -4,6 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/libj/lang/badge.svg?1)](https://coveralls.io/github/libj/lang)
 [![Javadocs](https://www.javadoc.io/badge/org.libj/lang.svg?1)](https://www.javadoc.io/doc/org.libj/lang)
 [![Released Version](https://img.shields.io/maven-central/v/org.libj/lang.svg?1)](https://mvnrepository.com/artifact/org.libj/lang)
+![Snapshot Version](https://img.shields.io/nexus/s/org.libj/lang?label=maven-snapshot&server=https%3A%2F%2Foss.sonatype.org)
 
 ## Introduction
 
