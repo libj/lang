@@ -19,7 +19,6 @@ package org.libj.lang;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
@@ -98,6 +97,27 @@ public final class ObjectUtil {
     }
   }
 
+  /**
+   * Returns {@code true} if the arguments are equal to each other and
+   * {@code false} otherwise. Consequently, if both arguments are {@code null},
+   * {@code true} is returned and if exactly one argument is {@code null},
+   * {@code false} is returned. Otherwise, equality is determined by using the
+   * {@link Object#equals equals} method of the first argument.
+   * <p>
+   * This method differentiates itself from
+   * {@link Objects#equals(Object,Object)} by recursively invoking this same
+   * method when evaluating equality of arrays and {@link Iterable}s. This
+   * effectively merges the functionality of
+   * {@link Objects#equals(Object,Object)} and
+   * {@link Arrays#equals(Object[],Object[])} into one method.
+   *
+   * @param o1 An object to be equated to {@code o2}.
+   * @param o2 An object to be equated to {@code o1}.
+   * @return {@code true} if the arguments are equal to each other and
+   *         {@code false} otherwise.
+   * @see Objects#equals(Object,Object)
+   * @see Arrays#equals(Object[],Object[])
+   */
   public static boolean equals(final Object o1, final Object o2) {
     if (o1 == o2)
       return true;
@@ -171,6 +191,22 @@ public final class ObjectUtil {
     return true;
   }
 
+  /**
+   * Returns the hash code of a non-{@code null} argument and 0 for a
+   * {@code null} argument.
+   * <p>
+   * This method differentiates itself from {@link Objects#hashCode(Object)} by
+   * recursively invoking this same method when computing the hash code of
+   * arrays and {@link Iterable}s. This effectively merges the functionality of
+   * {@link Objects#hashCode(Object)} and {@link Arrays#hashCode(Object[])} into
+   * one method.
+   *
+   * @param obj An object
+   * @return The hash code of a non-{@code null} argument and 0 for a
+   *         {@code null} argument.
+   * @see Objects#hashCode(Object)
+   * @see Arrays#hashCode(Object[])
+   */
   public static int hashCode(final Object obj) {
     if (obj == null)
       return 0;
@@ -225,6 +261,22 @@ public final class ObjectUtil {
     return result;
   }
 
+  /**
+   * Returns the result of calling {@code toString} for a non-{@code
+   * null} argument and {@code "null"} for a {@code null} argument.
+   * <p>
+   * This method differentiates itself from {@link Objects#toString(Object)} by
+   * detecting array arguments and invoking the relevant
+   * {@link Arrays#toString(Object[])} method. This effectively merges the
+   * functionality of {@link Objects#toString(Object)} and
+   * {@link Arrays#toString(Object[])} into one method.
+   *
+   * @param obj An object.
+   * @return The result of calling {@code toString} for a non-{@code
+   * null} argument and {@code "null"} for a {@code null} argument.
+   * @see Objects#toString(Object)
+   * @see Arrays#toString(Object[])
+   */
   public static String toString(final Object obj) {
     if (obj == null)
       return "null";
