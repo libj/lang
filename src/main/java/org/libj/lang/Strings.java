@@ -1378,7 +1378,7 @@ public final class Strings {
    *         occurrence of the provided character that is not escaped, starting
    *         the search at the specified index, or {@code -1} if the unescaped
    *         character is not found.
-   * @throws NullPointerException If the specified {@link CharSequence} is null.
+   * @throws NullPointerException If {@code str} is null.
    */
   public static int indexOfUnEscaped(final CharSequence str, final char ch, final int fromIndex) {
     boolean escaped = false;
@@ -1490,7 +1490,7 @@ public final class Strings {
    *         occurrence of the provided character that is not escaped, searching
    *         backward starting at the specified index, or {@code -1} if the
    *         unescaped character is not found.
-   * @throws NullPointerException If the specified {@link CharSequence} is null.
+   * @throws NullPointerException If {@code str} is null.
    */
   public static int lastIndexOfUnEscaped(final CharSequence str, final char ch, int fromIndex) {
     do {
@@ -2287,20 +2287,20 @@ public final class Strings {
    * Determines whether all characters in the specified {@link CharSequence} are
    * in the general category type of {@link Character#LOWERCASE_LETTER}.
    *
-   * @param builder The {@link CharSequence}.
+   * @param str The {@link CharSequence}.
    * @return {@code true} if all characters in the specified
    *         {@link CharSequence} are lower-case characters; otherwise
    *         {@code false}.
    * @throws IllegalArgumentException If the specified {@link CharSequence} is
    *           empty.
-   * @throws NullPointerException If the specified {@link CharSequence} is null.
+   * @throws NullPointerException If {@code str} is null.
    */
-  public static boolean isLowerCase(final CharSequence builder) {
-    if (builder.length() == 0)
+  public static boolean isLowerCase(final CharSequence str) {
+    if (str.length() == 0)
       throw new IllegalArgumentException("Empty string");
 
-    for (int i = 0, len = builder.length(); i < len; ++i)
-      if (!Character.isLowerCase(builder.charAt(i)))
+    for (int i = 0, len = str.length(); i < len; ++i)
+      if (!Character.isLowerCase(str.charAt(i)))
         return false;
 
     return true;
@@ -2310,20 +2310,20 @@ public final class Strings {
    * Determines whether all characters in the specified {@link CharSequence} are
    * in the general category type of {@link Character#UPPERCASE_LETTER}.
    *
-   * @param builder The {@link CharSequence}.
+   * @param str The {@link CharSequence}.
    * @return {@code true} if all characters in the specified
    *         {@link CharSequence} are upper-case characters; otherwise
    *         {@code false}.
    * @throws IllegalArgumentException If the specified {@link CharSequence} is
    *           empty.
-   * @throws NullPointerException If the specified {@link CharSequence} is null.
+   * @throws NullPointerException If {@code str} is null.
    */
-  public static boolean isUpperCase(final CharSequence builder) {
-    if (builder.length() == 0)
+  public static boolean isUpperCase(final CharSequence str) {
+    if (str.length() == 0)
       throw new IllegalArgumentException("Empty string");
 
-    for (int i = 0, len = builder.length(); i < len; ++i)
-      if (!Character.isUpperCase(builder.charAt(i)))
+    for (int i = 0, len = str.length(); i < len; ++i)
+      if (!Character.isUpperCase(str.charAt(i)))
         return false;
 
     return true;
@@ -2344,14 +2344,18 @@ public final class Strings {
 
   /**
    * Returns a {@code long}-valued hash code for the specified
-   * {@link CharSequence}.
+   * {@link CharSequence}, using the same algorithm as in
+   * {@link String#hashCode()}.
    *
    * @param str The {@link CharSequence}.
-   * @return The hash code value for the specified {@link CharSequence}.
-   * @throws NullPointerException If the specified {@link CharSequence} is null.
+   * @return The {@code long}-valued hash code value for the specified
+   *         {@link CharSequence}.
    * @see String#hashCode()
    */
   public static long hash(final CharSequence str) {
+    if (str == null)
+      return 0;
+
     long hash = 0;
     for (int i = 0, len = str.length(); i < len; ++i)
       hash = 31 * hash + str.charAt(i);
