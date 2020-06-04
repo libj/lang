@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Utility functions that provide common operations pertaining to {@link String}
@@ -2540,6 +2541,24 @@ public final class Strings {
     }
 
     return UUID.fromString(str);
+  }
+
+  private static final ConcurrentHashMap<String,String> interns = new ConcurrentHashMap<>();
+
+  /**
+   * Returns a canonical representation for the string object.
+   * <p>
+   * This method differentiates itself from {@link String#intern()} by
+   * maintaining a {@link ConcurrentHashMap} of strings that outperforms the
+   * native {@link String#intern()} implementation for large maps.
+   *
+   * @param str The string to intern.
+   * @return A string that has the same contents as this string, but is
+   *         guaranteed to be from a pool of unique strings.
+   */
+  public static String intern(final String str) {
+    final String intern = interns.putIfAbsent(str, str);
+    return intern != null ? intern : str;
   }
 
   private Strings() {

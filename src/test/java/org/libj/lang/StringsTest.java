@@ -724,4 +724,17 @@ public class StringsTest {
     assertTrue(Strings.containsIgnoreCase("", ""));
     assertTrue(Strings.containsIgnoreCase("hElLo", "hello"));
   }
+
+  @Test
+  public void testIntern() {
+    final String a = "hello world 1";
+    final String b = "hello world 2";
+    assertEquals(a, Strings.intern(a));
+    assertEquals(b, Strings.intern(b));
+
+    for (int i = 0; i < 100; ++i) {
+      assertEquals(a, Strings.intern(new String("hello world 1")));
+      assertEquals(b, Strings.intern(new String("hello world 2")));
+    }
+  }
 }
