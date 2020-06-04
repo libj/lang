@@ -2897,6 +2897,177 @@ public final class Numbers {
     return false;
   }
 
+  /**
+   * Returns the count of the number of digits in the specified {@code byte}
+   * value.
+   *
+   * @param n The {@code byte} value whose number of digits is to be
+   *          returned.
+   * @return The count of the number of digits in the specified {@code byte}
+   *         value.
+   */
+  public static byte digits(final byte n) {
+    final int val = Math.abs(n);
+    return (byte)(val < 10 ? 1 : val < 100 ? 2 : 3);
+  }
+
+  /**
+   * Returns the count of the number of digits in the specified {@code short}
+   * value.
+   *
+   * @param n The {@code short} value whose number of digits is to be returned.
+   * @return The count of the number of digits in the specified {@code short}
+   *         value.
+   */
+  public static byte digits(final short n) {
+    final int val = Math.abs(n);
+    if (val < 10000) {
+      if (val < 100) {
+        if (val < 10)
+          return 1;
+
+        return 2;
+      }
+
+      if (val < 1000)
+        return 3;
+
+      return 4;
+    }
+
+    return 5;
+  }
+
+  /**
+   * Returns the count of the number of digits in the specified {@code int}
+   * value.
+   *
+   * @param number The {@code int} value whose number of digits is to be
+   *          returned.
+   * @return The count of the number of digits in the specified {@code int}
+   *         value.
+   */
+  public static byte digits(int number) {
+    number = Math.abs(number);
+    if (number < 1000000000) {
+      if (number < 10000) {
+        if (number < 100) {
+          if (number < 10) {
+            // Special case for Integer.MIN_VALUE, because Math.abs() keeps it negative
+            if (number < 0)
+              return 10;
+
+            return 1;
+          }
+
+          return 2;
+        }
+
+        if (number < 1000)
+          return 3;
+
+        return 4;
+      }
+
+      if (number < 10000000) {
+        if (number < 100000)
+          return 5;
+
+        if (number < 1000000)
+          return 6;
+
+        return 7;
+      }
+
+      if (number < 100000000)
+        return 8;
+
+      return 9;
+    }
+
+    return 10;
+  }
+
+  /**
+   * Returns the count of the number of digits in the specified {@code long}
+   * value.
+   *
+   * @param number The {@code long} value whose number of digits is to be
+   *          returned.
+   * @return The count of the number of digits in the specified {@code long}
+   *         value.
+   */
+  public static byte digits(long number) {
+    number = Math.abs(number);
+    if (number < 1000000000) {
+      if (number < 10000) {
+        if (number < 100) {
+          if (number < 10) {
+            // Special case for Long.MIN_VALUE, because Math.abs() keeps it negative
+            if (number < 0)
+              return 19;
+
+            return 1;
+          }
+
+          return 2;
+        }
+
+        if (number < 1000)
+          return 3;
+
+        return 4;
+      }
+
+      if (number < 10000000) {
+        if (number < 100000)
+          return 5;
+
+        if (number < 1000000)
+          return 6;
+
+        return 7;
+      }
+
+      if (number < 100000000)
+        return 8;
+
+      return 9;
+    }
+
+    if (number < 1000000000000000L) {
+      if (number < 1000000000000L) {
+        if (number < 10000000000L)
+          return 10;
+
+        if (number < 100000000000L)
+          return 11;
+
+        return 12;
+      }
+
+      if (number < 10000000000000L)
+        return 13;
+
+      if (number < 100000000000000L)
+        return 14;
+
+      return 15;
+    }
+
+    if (number < 100000000000000000L) {
+      if (number < 10000000000000000L)
+        return 16;
+
+      return 17;
+    }
+
+    if (number < 1000000000000000000L)
+      return 18;
+
+    return 19;
+  }
+
   private Numbers() {
   }
 }

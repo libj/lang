@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 
 public class NumbersTest {
   private static final Logger logger = LoggerFactory.getLogger(NumbersTest.class);
+  private static final Random random = new Random();
   private static final float epsilon = 0.00000001f;
 
   public static class CompoundTest {
@@ -494,5 +495,65 @@ public class NumbersTest {
   public void testIsDigit() {
     for (int r = Character.MIN_RADIX; r <= Character.MAX_RADIX; ++r)
       testIsDigit(r);
+  }
+
+  private static void testDigitsByte(final byte n) {
+    final String str = String.valueOf(n);
+    assertEquals(str, n < 0 ? str.length() - 1 : str.length(), Numbers.digits(n));
+  }
+
+  @Test
+  public void testDigitsByte() {
+    testDigitsByte(Byte.MIN_VALUE);
+    testDigitsByte(Byte.MAX_VALUE);
+    for (int i = 0; i < 1000000; ++i) {
+      final byte n = (byte)random.nextInt();
+      testDigitsByte(n);
+    }
+  }
+
+  private static void testDigitsShort(final short n) {
+    final String str = String.valueOf(n);
+    assertEquals(str, n < 0 ? str.length() - 1 : str.length(), Numbers.digits(n));
+  }
+
+  @Test
+  public void testDigitsShort() {
+    testDigitsShort(Short.MIN_VALUE);
+    testDigitsShort(Short.MAX_VALUE);
+    for (int i = 0; i < 1000000; ++i) {
+      final short n = (short)random.nextInt();
+      testDigitsShort(n);
+    }
+  }
+
+  private static void testDigitsInt(final int n) {
+    final String str = String.valueOf(n);
+    assertEquals(str, n < 0 ? str.length() - 1 : str.length(), Numbers.digits(n));
+  }
+
+  @Test
+  public void testDigitsInt() {
+    testDigitsInt(Integer.MIN_VALUE);
+    testDigitsInt(Integer.MAX_VALUE);
+    for (int i = 0; i < 1000000; ++i) {
+      final int n = random.nextInt();
+      testDigitsInt(n);
+    }
+  }
+
+  private static void testDigitsLong(final long n) {
+    final String str = String.valueOf(n);
+    assertEquals(str, n < 0 ? str.length() - 1 : str.length(), Numbers.digits(n));
+  }
+
+  @Test
+  public void testDigitsLong() {
+    testDigitsLong(Long.MIN_VALUE);
+    testDigitsLong(Long.MAX_VALUE);
+    for (int i = 0; i < 1000000; ++i) {
+      final long n = random.nextLong();
+      testDigitsLong(n);
+    }
   }
 }
