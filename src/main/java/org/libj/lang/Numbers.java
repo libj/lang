@@ -2417,15 +2417,6 @@ public final class Numbers {
     return i == len || number.lastIndexOf('.', i + 1) < 0 ? number : number.substring(0, i);
   }
 
-  public static double log2(BigInteger value) {
-    final int blex = value.bitLength() - 1022; // any value in 60..1023 is ok
-    if (blex > 0)
-      value = value.shiftRight(blex);
-
-    final double result = StrictMath.log(value.doubleValue());
-    return blex > 0 ? result + blex * LOG_2 : result;
-  }
-
   /**
    * Determines if the difference of the specified {@link Number} values is less
    * than the provided epsilon.
