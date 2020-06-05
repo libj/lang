@@ -317,14 +317,46 @@ public class NumbersTest {
     assertEquals(19, Numbers.precision(new BigDecimal("-4389429384.493848239")));
   }
 
+  private static final byte countTrailingZeroes(final String str) {
+    byte count = 0;
+    for (final int len = str.length(); count < len && str.charAt(len - 1 - count) == '0'; ++count);
+    return count;
+  }
+
   @Test
-  public void testTrailingZeroes() {
-    assertEquals(3, Numbers.trailingZeroes(349000));
-    assertEquals(1, Numbers.trailingZeroes(3490L));
-    assertEquals(1, Numbers.trailingZeroes(10));
-    assertEquals(0, Numbers.trailingZeroes(1));
-    assertEquals(1, Numbers.trailingZeroes(-10));
-    assertEquals(4, Numbers.trailingZeroes(-14320000L));
+  public void testTrailingZeroesByte() {
+    for (int i = 0; i < 100000; ++i) {
+      final byte n = i == 0 ? 0 : (byte)random.nextInt();
+      final String str = String.valueOf(n);
+      assertEquals(str, countTrailingZeroes(str), Numbers.trailingZeroes(n));
+    }
+  }
+
+  @Test
+  public void testTrailingZeroesShort() {
+    for (int i = 0; i < 100000; ++i) {
+      final short n = i == 0 ? 0 : (short)random.nextInt();
+      final String str = String.valueOf(n);
+      assertEquals(str, countTrailingZeroes(str), Numbers.trailingZeroes(n));
+    }
+  }
+
+  @Test
+  public void testTrailingZeroesInt() {
+    for (int i = 0; i < 100000; ++i) {
+      final int n = i == 0 ? 0 : random.nextInt();
+      final String str = String.valueOf(n);
+      assertEquals(str, countTrailingZeroes(str), Numbers.trailingZeroes(n));
+    }
+  }
+
+  @Test
+  public void testTrailingZeroesLong() {
+    for (int i = 0; i < 100000; ++i) {
+      final long n = i == 0 ? 0 : random.nextLong();
+      final String str = String.valueOf(n);
+      assertEquals(str, countTrailingZeroes(str), Numbers.trailingZeroes(n));
+    }
   }
 
   @Test

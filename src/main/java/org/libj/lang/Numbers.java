@@ -2631,38 +2631,6 @@ public final class Numbers {
   }
 
   /**
-   * Returns the number of trailing zeroes in the specified number.
-   *
-   * @param number The number.
-   * @return The number of trailing zeroes in the specified number.
-   */
-  public static int trailingZeroes(int number) {
-    int zeros = 0;
-    while (number % 10 == 0 && number != 0) {
-      ++zeros;
-      number /= 10;
-    }
-
-    return zeros;
-  }
-
-  /**
-   * Returns the number of trailing zeroes in the specified number.
-   *
-   * @param number The number.
-   * @return The number of trailing zeroes in the specified number.
-   */
-  public static int trailingZeroes(long number) {
-    int zeroes = 0;
-    while (number % 10 == 0 && number != 0) {
-      ++zeroes;
-      number /= 10;
-    }
-
-    return zeroes;
-  }
-
-  /**
    * Returns the number of decimal places represented in the specified
    * {@link BigInteger}.
    *
@@ -2933,19 +2901,19 @@ public final class Numbers {
    * Returns the count of the number of digits in the specified {@code int}
    * value.
    *
-   * @param number The {@code int} value whose number of digits is to be
+   * @param n The {@code int} value whose number of digits is to be
    *          returned.
    * @return The count of the number of digits in the specified {@code int}
    *         value.
    */
-  public static byte digits(int number) {
-    number = Math.abs(number);
-    if (number < 1000000000) {
-      if (number < 10000) {
-        if (number < 100) {
-          if (number < 10) {
+  public static byte digits(int n) {
+    n = Math.abs(n);
+    if (n < 1000000000) {
+      if (n < 10000) {
+        if (n < 100) {
+          if (n < 10) {
             // Special case for Integer.MIN_VALUE, because Math.abs() keeps it negative
-            if (number < 0)
+            if (n < 0)
               return 10;
 
             return 1;
@@ -2954,23 +2922,23 @@ public final class Numbers {
           return 2;
         }
 
-        if (number < 1000)
+        if (n < 1000)
           return 3;
 
         return 4;
       }
 
-      if (number < 10000000) {
-        if (number < 100000)
+      if (n < 10000000) {
+        if (n < 100000)
           return 5;
 
-        if (number < 1000000)
+        if (n < 1000000)
           return 6;
 
         return 7;
       }
 
-      if (number < 100000000)
+      if (n < 100000000)
         return 8;
 
       return 9;
@@ -2983,19 +2951,19 @@ public final class Numbers {
    * Returns the count of the number of digits in the specified {@code long}
    * value.
    *
-   * @param number The {@code long} value whose number of digits is to be
+   * @param n The {@code long} value whose number of digits is to be
    *          returned.
    * @return The count of the number of digits in the specified {@code long}
    *         value.
    */
-  public static byte digits(long number) {
-    number = Math.abs(number);
-    if (number < 1000000000) {
-      if (number < 10000) {
-        if (number < 100) {
-          if (number < 10) {
+  public static byte digits(long n) {
+    n = Math.abs(n);
+    if (n < 1000000000) {
+      if (n < 10000) {
+        if (n < 100) {
+          if (n < 10) {
             // Special case for Long.MIN_VALUE, because Math.abs() keeps it negative
-            if (number < 0)
+            if (n < 0)
               return 19;
 
             return 1;
@@ -3004,59 +2972,218 @@ public final class Numbers {
           return 2;
         }
 
-        if (number < 1000)
+        if (n < 1000)
           return 3;
 
         return 4;
       }
 
-      if (number < 10000000) {
-        if (number < 100000)
+      if (n < 10000000) {
+        if (n < 100000)
           return 5;
 
-        if (number < 1000000)
+        if (n < 1000000)
           return 6;
 
         return 7;
       }
 
-      if (number < 100000000)
+      if (n < 100000000)
         return 8;
 
       return 9;
     }
 
-    if (number < 1000000000000000L) {
-      if (number < 1000000000000L) {
-        if (number < 10000000000L)
+    if (n < 1000000000000000L) {
+      if (n < 1000000000000L) {
+        if (n < 10000000000L)
           return 10;
 
-        if (number < 100000000000L)
+        if (n < 100000000000L)
           return 11;
 
         return 12;
       }
 
-      if (number < 10000000000000L)
+      if (n < 10000000000000L)
         return 13;
 
-      if (number < 100000000000000L)
+      if (n < 100000000000000L)
         return 14;
 
       return 15;
     }
 
-    if (number < 100000000000000000L) {
-      if (number < 10000000000000000L)
+    if (n < 100000000000000000L) {
+      if (n < 10000000000000000L)
         return 16;
 
       return 17;
     }
 
-    if (number < 1000000000000000000L)
+    if (n < 1000000000000000000L)
       return 18;
 
     return 19;
+  }
+
+  /**
+   * Returns the count of trailing zeroes in the specified {@code byte} value.
+   *
+   * @param n The {@code byte} value whose number of trailing zeroes is to
+   *          be returned.
+   * @return The count of trailing zeroes in the specified {@code byte} value.
+   */
+  public static byte trailingZeroes(final byte n) {
+    return (byte)(n == 0 ? 1 : n % 10 != 0 ? 0 : n % 100 != 0 ? 1 : 2);
+  }
+
+  /**
+   * Returns the count of trailing zeroes in the specified {@code short} value.
+   *
+   * @param n The {@code short} value whose number of trailing zeroes is to
+   *          be returned.
+   * @return The count of trailing zeroes in the specified {@code short} value.
+   */
+  public static byte trailingZeroes(final short n) {
+    if (n == 0)
+      return 1;
+
+    if (n % 10000 != 0) {
+      if (n % 100 != 0) {
+        if (n % 10 != 0)
+          return 0;
+
+        return 1;
+      }
+
+      if (n % 1000 != 0)
+        return 2;
+
+      return 3;
+    }
+
+    return 4;
+  }
+
+  /**
+   * Returns the count of trailing zeroes in the specified {@code int} value.
+   *
+   * @param n The {@code int} value whose number of trailing zeroes is to
+   *          be returned.
+   * @return The count of trailing zeroes in the specified {@code int} value.
+   */
+  public static byte trailingZeroes(final int n) {
+    if (n == 0)
+      return 1;
+
+    if (n % 1000000000 != 0) {
+      if (n % 10000 != 0) {
+        if (n % 100 != 0) {
+          if (n % 10 != 0)
+            return 0;
+
+          return 1;
+        }
+
+        if (n % 1000 != 0)
+          return 2;
+
+        return 3;
+      }
+
+      if (n % 10000000 != 0) {
+        if (n % 100000 != 0)
+          return 4;
+
+        if (n % 1000000 != 0)
+          return 5;
+
+        return 6;
+      }
+
+      if (n % 100000000 != 0)
+        return 7;
+
+      return 8;
+    }
+
+    return 9;
+  }
+
+  /**
+   * Returns the count of trailing zeroes in the specified {@code long} value.
+   *
+   * @param n The {@code long} value whose number of trailing zeroes is to
+   *          be returned.
+   * @return The count of trailing zeroes in the specified {@code long} value.
+   */
+  public static byte trailingZeroes(final long n) {
+    if (n == 0)
+      return 1;
+
+    if (n % 1000000000 != 0) {
+      if (n % 10000 != 0) {
+        if (n % 100 != 0) {
+          if (n % 10 != 0)
+            return 0;
+
+          return 1;
+        }
+
+        if (n % 1000 != 0)
+          return 2;
+
+        return 3;
+      }
+
+      if (n % 10000000 != 0) {
+        if (n % 100000 != 0)
+          return 4;
+
+        if (n % 1000000 != 0)
+          return 5;
+
+        return 6;
+      }
+
+      if (n % 100000000 != 0)
+        return 7;
+
+      return 8;
+    }
+
+    if (n % 1000000000000000L != 0) {
+      if (n % 1000000000000L != 0) {
+        if (n % 10000000000L != 0)
+          return 9;
+
+        if (n % 100000000000L != 0)
+          return 10;
+
+        return 11;
+      }
+
+      if (n % 10000000000000L != 0)
+        return 12;
+
+      if (n % 100000000000000L != 0)
+        return 13;
+
+      return 14;
+    }
+
+    if (n % 100000000000000000L != 0) {
+      if (n % 10000000000000000L != 0)
+        return 15;
+
+      return 16;
+    }
+
+    if (n % 1000000000000000000L != 0)
+      return 17;
+
+    return 18;
   }
 
   private Numbers() {
