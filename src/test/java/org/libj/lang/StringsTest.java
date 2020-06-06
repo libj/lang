@@ -729,12 +729,12 @@ public class StringsTest {
   public void testIntern() {
     final String a = "hello world 1";
     final String b = "hello world 2";
-    assertEquals(a, Strings.intern(a));
-    assertEquals(b, Strings.intern(b));
+    assertSame(a, Strings.intern(a));
+    assertSame(b, Strings.intern(b));
 
     for (int i = 0; i < 100; ++i) {
-      assertEquals(a, Strings.intern(new String("hello world 1")));
-      assertEquals(b, Strings.intern(new String("hello world 2")));
+      assertSame(a, Strings.intern(new String("hello world 1")));
+      assertSame(b, Strings.intern(new String("hello world 2")));
     }
   }
 }
