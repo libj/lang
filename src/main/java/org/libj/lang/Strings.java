@@ -2553,7 +2553,7 @@ public final class Strings {
    * native {@link String#intern()} implementation for large maps.
    *
    * @param str The string to intern.
-   * @return A string that has the same contents as this string, but is
+   * @return A string that has the same contents as the specified string, but is
    *         guaranteed to be from a pool of unique strings.
    */
   public static String intern(final String str) {
