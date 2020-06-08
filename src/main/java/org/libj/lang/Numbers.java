@@ -3028,6 +3028,36 @@ public final class Numbers {
   }
 
   /**
+   * Returns the count of the number of digits in the specified {@link BigInteger}
+   * value.
+   *
+   * @param n The {@link BigInteger} value whose number of digits is to be
+   *          returned.
+   * @return The count of the number of digits in the specified {@link BigInteger}
+   *         value.
+   */
+  public static int digits(final BigInteger n) {
+    if (n.signum() == 0)
+      return 1;
+
+    final int len = n.toString().length();
+    return n.signum() < 0 ? len - 1 : len;
+  }
+
+  /**
+   * Returns the count of the number of digits in the specified
+   * {@link BigDecimal} value.
+   *
+   * @param n The {@link BigDecimal} value whose number of digits is to be
+   *          returned.
+   * @return The count of the number of digits in the specified {link
+   *         BigDecimal} value.
+   */
+  public static int digits(final BigDecimal n) {
+    return n.signum() == 0 ? 1 : n.precision();
+  }
+
+  /**
    * Returns the count of trailing zeroes in the specified {@code byte} value.
    *
    * @param n The {@code byte} value whose number of trailing zeroes is to

@@ -544,4 +544,54 @@ public class NumbersTest {
       testDigitsLong(n);
     }
   }
+
+  private static void testDigitsBigInteger(final BigInteger n) {
+    final String str = String.valueOf(n);
+    assertEquals(str, n.signum() < 0 ? str.length() - 1 : str.length(), Numbers.digits(n));
+  }
+
+  @Test
+  public void testDigitsBigInteger() {
+    for (int i = 0; i < 1000000; ++i) {
+      final BigInteger n = BigInteger.valueOf(random.nextLong());
+      testDigitsBigInteger(n);
+    }
+  }
+
+  private static void testDigitsBigDecimal(final BigDecimal n) {
+    final String str = String.valueOf(n.stripTrailingZeros());
+    int e = str.indexOf('e');
+    if (e < 0)
+      e = str.indexOf('E');
+
+    if (e < 0)
+      e = str.length();
+
+    int len = n.signum() < 0 ? e - 1 : e;
+    if (n.scale() > 0)
+      --len;
+
+    for (int i = n.signum() < 0 ? 1 : 0; len >= 0; ++i) {
+      final char ch = str.charAt(i);
+      if (ch == '0') {
+        --len;
+        continue;
+      }
+
+      if (ch == '.')
+        continue;
+
+      break;
+    }
+
+    assertEquals(str, len, Numbers.digits(n));
+  }
+
+  @Test
+  public void testDigitsBigDecimal() {
+    for (int i = 0; i < 1000000; ++i) {
+      final BigDecimal n = BigDecimal.valueOf(random.nextDouble());
+      testDigitsBigDecimal(n);
+    }
+  }
 }
