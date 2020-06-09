@@ -2589,62 +2589,6 @@ public final class Numbers {
   }
 
   /**
-   * Returns the precision necessary to represent the specified number.
-   *
-   * @param number The number.
-   * @return The precision necessary to represent the specified number.
-   */
-  public static byte precision(final int number) {
-    return (byte)(number == 0 ? 1 : StrictMath.log10(number != Integer.MIN_VALUE ? Math.abs(number) : Math.abs((long)number)) + 1);
-  }
-
-  /**
-   * Returns the precision necessary to represent the specified number.
-   *
-   * @param number The number.
-   * @return The precision necessary to represent the specified number.
-   */
-  public static byte precision(final long number) {
-    return number != Long.MIN_VALUE ? (byte)(StrictMath.log10(Math.abs(number)) + 1) : (byte)precision(BigInteger.valueOf(number));
-  }
-
-  /**
-   * Returns the precision necessary to represent the specified number.
-   *
-   * @param number The number.
-   * @return The precision necessary to represent the specified number.
-   * @throws NullPointerException If {@code number} is null.
-   */
-  public static int precision(final BigInteger number) {
-    return number.abs().toString().length();
-  }
-
-  /**
-   * Returns the precision necessary to represent the specified number.
-   *
-   * @param number The number.
-   * @return The precision necessary to represent the specified number.
-   * @throws NullPointerException If {@code number} is null.
-   */
-  public static int precision(final BigDecimal number) {
-    return number.precision();
-  }
-
-  /**
-   * Returns the number of decimal places represented in the specified
-   * {@link BigInteger}.
-   *
-   * @param n The {@link BigInteger} from which to determine the number of
-   *          decimal places.
-   * @return The number of decimal places represented in the specified
-   *         {@link BigInteger}.
-   * @throws NullPointerException If {@code n} is null.
-   */
-  public static int numberOfDecimalPlaces(final BigDecimal n) {
-    return Math.max(0, n.stripTrailingZeros().scale());
-  }
-
-  /**
    * Returns the {@link BigDecimal} representation of the specified
    * {@link Number}.
    *
@@ -2857,28 +2801,27 @@ public final class Numbers {
   }
 
   /**
-   * Returns the count of the number of digits in the specified {@code byte}
+   * Returns the precision (the number of digits) of the specified {@code byte}
    * value.
    *
-   * @param n The {@code byte} value whose number of digits is to be
-   *          returned.
+   * @param n The {@code byte} value whose number of digits is to be returned.
    * @return The count of the number of digits in the specified {@code byte}
    *         value.
    */
-  public static byte digits(final byte n) {
+  public static byte precision(final byte n) {
     final int val = Math.abs(n);
     return (byte)(val < 10 ? 1 : val < 100 ? 2 : 3);
   }
 
   /**
-   * Returns the count of the number of digits in the specified {@code short}
+   * Returns the precision (the number of digits) of the specified {@code short}
    * value.
    *
    * @param n The {@code short} value whose number of digits is to be returned.
    * @return The count of the number of digits in the specified {@code short}
    *         value.
    */
-  public static byte digits(final short n) {
+  public static byte precision(final short n) {
     final int val = Math.abs(n);
     if (val < 10000) {
       if (val < 100) {
@@ -2898,15 +2841,14 @@ public final class Numbers {
   }
 
   /**
-   * Returns the count of the number of digits in the specified {@code int}
+   * Returns the precision (the number of digits) of the specified {@code int}
    * value.
    *
-   * @param n The {@code int} value whose number of digits is to be
-   *          returned.
+   * @param n The {@code int} value whose number of digits is to be returned.
    * @return The count of the number of digits in the specified {@code int}
    *         value.
    */
-  public static byte digits(int n) {
+  public static byte precision(int n) {
     n = Math.abs(n);
     if (n < 1000000000) {
       if (n < 10000) {
@@ -2948,15 +2890,14 @@ public final class Numbers {
   }
 
   /**
-   * Returns the count of the number of digits in the specified {@code long}
+   * Returns the precision (the number of digits) of the specified {@code long}
    * value.
    *
-   * @param n The {@code long} value whose number of digits is to be
-   *          returned.
+   * @param n The {@code long} value whose number of digits is to be returned.
    * @return The count of the number of digits in the specified {@code long}
    *         value.
    */
-  public static byte digits(long n) {
+  public static byte precision(long n) {
     n = Math.abs(n);
     if (n < 1000000000) {
       if (n < 10000) {
@@ -3028,15 +2969,15 @@ public final class Numbers {
   }
 
   /**
-   * Returns the count of the number of digits in the specified {@link BigInteger}
-   * value.
+   * Returns the precision (the number of digits) of the specified
+   * {@link BigInteger} value.
    *
    * @param n The {@link BigInteger} value whose number of digits is to be
    *          returned.
-   * @return The count of the number of digits in the specified {@link BigInteger}
-   *         value.
+   * @return The count of the number of digits in the specified
+   *         {@link BigInteger} value.
    */
-  public static int digits(final BigInteger n) {
+  public static int precision(final BigInteger n) {
     if (n.signum() == 0)
       return 1;
 
@@ -3045,7 +2986,7 @@ public final class Numbers {
   }
 
   /**
-   * Returns the count of the number of digits in the specified
+   * Returns the precision (the number of digits) of the specified
    * {@link BigDecimal} value.
    *
    * @param n The {@link BigDecimal} value whose number of digits is to be
@@ -3053,7 +2994,7 @@ public final class Numbers {
    * @return The count of the number of digits in the specified {link
    *         BigDecimal} value.
    */
-  public static int digits(final BigDecimal n) {
+  public static int precision(final BigDecimal n) {
     return n.signum() == 0 ? 1 : n.precision();
   }
 

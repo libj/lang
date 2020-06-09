@@ -25,11 +25,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class NumbersTest {
-  private static final Logger logger = LoggerFactory.getLogger(NumbersTest.class);
   private static final Random random = new Random();
   private static final float epsilon = 0.00000001f;
 
@@ -487,7 +484,7 @@ public class NumbersTest {
 
   private static void testDigitsByte(final byte n) {
     final String str = String.valueOf(n);
-    assertEquals(str, n < 0 ? str.length() - 1 : str.length(), Numbers.digits(n));
+    assertEquals(str, n < 0 ? str.length() - 1 : str.length(), Numbers.precision(n));
   }
 
   @Test
@@ -502,7 +499,7 @@ public class NumbersTest {
 
   private static void testDigitsShort(final short n) {
     final String str = String.valueOf(n);
-    assertEquals(str, n < 0 ? str.length() - 1 : str.length(), Numbers.digits(n));
+    assertEquals(str, n < 0 ? str.length() - 1 : str.length(), Numbers.precision(n));
   }
 
   @Test
@@ -517,7 +514,7 @@ public class NumbersTest {
 
   private static void testDigitsInt(final int n) {
     final String str = String.valueOf(n);
-    assertEquals(str, n < 0 ? str.length() - 1 : str.length(), Numbers.digits(n));
+    assertEquals(str, n < 0 ? str.length() - 1 : str.length(), Numbers.precision(n));
   }
 
   @Test
@@ -532,7 +529,7 @@ public class NumbersTest {
 
   private static void testDigitsLong(final long n) {
     final String str = String.valueOf(n);
-    assertEquals(str, n < 0 ? str.length() - 1 : str.length(), Numbers.digits(n));
+    assertEquals(str, n < 0 ? str.length() - 1 : str.length(), Numbers.precision(n));
   }
 
   @Test
@@ -547,7 +544,7 @@ public class NumbersTest {
 
   private static void testDigitsBigInteger(final BigInteger n) {
     final String str = String.valueOf(n);
-    assertEquals(str, n.signum() < 0 ? str.length() - 1 : str.length(), Numbers.digits(n));
+    assertEquals(str, n.signum() < 0 ? str.length() - 1 : str.length(), Numbers.precision(n));
   }
 
   @Test
@@ -584,7 +581,7 @@ public class NumbersTest {
       break;
     }
 
-    assertEquals(str, len, Numbers.digits(n));
+    assertEquals(str, len, Numbers.precision(n));
   }
 
   @Test
