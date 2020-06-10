@@ -312,12 +312,9 @@ public class PackageLoader {
    */
   public Set<Class<?>> loadPackage(final String name, final boolean includeSubPackages, final boolean initialize) throws IOException, PackageNotFoundException {
     final Set<Class<?>> classes = new HashSet<>();
-    PackageLoader.loadPackage(name, includeSubPackages, initialize, new Predicate<Class<?>>() {
-      @Override
-      public boolean test(final Class<?> t) {
-        classes.add(t);
-        return true;
-      }
+    PackageLoader.loadPackage(name, includeSubPackages, initialize, t -> {
+      classes.add(t);
+      return true;
     }, classLoader);
     return classes;
   }

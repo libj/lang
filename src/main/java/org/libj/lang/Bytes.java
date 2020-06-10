@@ -20,6 +20,9 @@ package org.libj.lang;
  * Functions implementing common operations on {@code byte[]} references.
  */
 public final class Bytes {
+  /** The {@code double} constant log(2) */
+  private static final double LOG_2 = 0.6931471805599453;
+
   /**
    * Returns the index of the first occurrence of the specified byte
    * {@code sequence} in {@code bytes}.
@@ -732,7 +735,7 @@ public final class Bytes {
    * @return The number of bits necessary to store a value.
    */
   public static byte getSize(final int value) {
-    return (byte)(1 + StrictMath.log(value) / StrictMath.log(2));
+    return (byte)(1 + StrictMath.log(value) / LOG_2);
   }
 
   /**
@@ -742,7 +745,7 @@ public final class Bytes {
    * @return The number of bits necessary to store a value.
    */
   public static byte getSize(final long value) {
-    return (byte)(1 + StrictMath.log(value) / StrictMath.log(2));
+    return (byte)(1 + StrictMath.log(value) / LOG_2);
   }
 
   private Bytes() {
