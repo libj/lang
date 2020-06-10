@@ -321,7 +321,7 @@ public final class Classes {
     return getGenericParameters(method.getGenericReturnType());
   }
 
-  private static final Class<?>[] emptyClasses = new Class[0];
+  private static final Class<?>[] emptyClasses = {};
 
   /**
    * Returns the array of generic parameter classes for the specified field. If the
