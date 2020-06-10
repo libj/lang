@@ -2190,6 +2190,46 @@ public final class Numbers {
   }
 
   /**
+   * Returns the specified {@link Number} cast to the provided {@link Class
+   * Class&lt;T&gt;}.
+   *
+   * @param <T> The type parameter of the cast class.
+   * @param n The {@link Number} to be cast.
+   * @param as The {@link Class} to which the specified {@link Number} is to be
+   *          cast.
+   * @return The specified {@link Number} cast to the provided {@link Class
+   *         Class&lt;T&gt;}.
+   */
+  @SuppressWarnings("unchecked")
+  public static <T extends Number>T cast(final Number n, final Class<T> as) {
+    if (float.class == as || Float.class == as)
+      return (T)Float.valueOf(n.floatValue());
+
+    if (double.class == as || Double.class == as)
+      return (T)Double.valueOf(n.doubleValue());
+
+    if (byte.class == as || Byte.class == as)
+      return (T)Byte.valueOf(n.byteValue());
+
+    if (short.class == as || Short.class == as)
+      return (T)Short.valueOf(n.shortValue());
+
+    if (int.class == as || Integer.class == as)
+      return (T)Integer.valueOf(n.intValue());
+
+    if (long.class == as || Long.class == as)
+      return (T)Long.valueOf(n.longValue());
+
+    if (BigInteger.class.isAssignableFrom(as))
+      return (T)new BigInteger(n.toString());
+
+    if (BigDecimal.class.isAssignableFrom(as))
+      return (T)new BigDecimal(n.toString());
+
+    throw new UnsupportedOperationException("Unsupported type: " + as.getName());
+  }
+
+  /**
    * Tests whether the specified string represents a number, or a number with a
    * fraction of two numbers (i.e. {@code 23 3/4}).
    * <p>

@@ -591,4 +591,17 @@ public class NumbersTest {
       testDigitsBigDecimal(n);
     }
   }
+
+  @Test
+  public void testCast() {
+    for (int i = 0; i < 1000000; ++i) {
+      final long n = random.nextLong();
+      assertEquals(Byte.valueOf((byte)(n % 0xFF - 0xFF >> 1)), Numbers.cast((byte)(n % 0xFF - 0xFF >> 1), Byte.class));
+      assertEquals(Short.valueOf((short)(n % 0xFFFF - 0xFFFF >> 1)), Numbers.cast((short)(n % 0xFFFF - 0xFFFF >> 1), Short.class));
+      assertEquals(Integer.valueOf((int)(n % 0xFFFFFFFF - 0xFFFFFFFF >> 1)), Numbers.cast((int)(n % 0xFFFFFFFF - 0xFFFFFFFF >> 1), Integer.class));
+      assertEquals(Long.valueOf(n), Numbers.cast(n, Long.class));
+      assertEquals(BigInteger.valueOf(n), Numbers.cast(n, BigInteger.class));
+      assertEquals(BigDecimal.valueOf(n), Numbers.cast(n, BigDecimal.class));
+    }
+  }
 }
