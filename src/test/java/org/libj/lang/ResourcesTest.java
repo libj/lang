@@ -80,7 +80,7 @@ public class ResourcesTest {
       counter.getAndIncrement();
       return true;
     });
-    assertEquals(28, counter.get());
+    assertEquals(30, counter.get());
   }
 
   @Test
@@ -91,6 +91,6 @@ public class ResourcesTest {
       counter.getAndIncrement();
       return true;
     });
-    assertEquals(288, counter.get());
+    assertEquals(352, counter.get());
   }
 }
