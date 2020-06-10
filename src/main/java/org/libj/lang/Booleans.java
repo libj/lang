@@ -47,6 +47,10 @@ public final class Booleans {
     return b ? 1 : 0;
   }
 
+  public static double toDouble(final boolean b) {
+    return b ? 1 : 0;
+  }
+
   public static Integer toInteger(final Boolean b) {
     return b == null ? null : b ? 1 : 0;
   }
