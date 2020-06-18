@@ -19,8 +19,10 @@ package org.libj.lang;
 import static org.junit.Assert.*;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
@@ -498,13 +500,6 @@ public class StringsTest {
     catch (final IllegalArgumentException e) {
     }
 
-    try {
-      Strings.truncate(null, 4);
-      fail("Expected NullPointerException");
-    }
-    catch (final NullPointerException e) {
-    }
-
     assertEquals("", Strings.truncate("", 4));
     assertEquals("a", Strings.truncate("a", 4));
     assertEquals("aa", Strings.truncate("aa", 4));
@@ -723,6 +718,67 @@ public class StringsTest {
 
     assertTrue(Strings.containsIgnoreCase("", ""));
     assertTrue(Strings.containsIgnoreCase("hElLo", "hello"));
+  }
+
+  @Test
+  public void testPrintTable() {
+    final String[] rows = new String[8];
+    final String[][] columns = new String[8][];
+    final List<Object> data = new ArrayList<>();
+    columns[0] = new String[] {"Latitude", "Miles", "Feet", "Meters"};
+    rows[0] = columns[0][0] + "\n" + columns[0][1] + "\n" + columns[0][2] + "\n" + columns[0][3];
+    for (int r = 0; r < 3; ++r) {
+      for (int i = 1, j = -1; i < columns.length; ++i, j = -1) {
+        if ((r + 1) * Math.random() < 0.125)
+          continue;
+
+        final String[] column = columns[i] = new String[(1 + r) + (int)(Math.random() * (3 - r))];
+        final int lat = i - 1;
+        final int meters = (int)(1000 * (111.133d - 0.559d * Math.cos(2 * lat)));
+        data.add(rows[i] = column[++j] = Math.random() < 0.125 ? null : Strings.truncate(String.valueOf(lat), 18, false));
+
+        if (++j < column.length) {
+          data.add(column[j] = (r + 1) * Math.random() < 0.125 ? null : Strings.truncate(String.valueOf(meters * 0.00062137119224), 12, false));
+          rows[i] += "\n" + column[j];
+        }
+
+        if (++j < column.length) {
+          data.add(column[j] = (r + 1) * Math.random() < 0.125 ? null : Strings.truncate(String.valueOf(meters * 3.2808), 12, false));
+          rows[i] += "\n" + column[j];
+        }
+
+        if (++j < column.length) {
+          data.add(column[j] = (r + 1) * Math.random() < 0.125 ? null : Strings.truncate(String.valueOf(meters), 12, false));
+          rows[i] += "\n" + column[j];
+        }
+      }
+
+      final Object[] array = data.toArray();
+      System.out.println(Strings.printTable(array, columns[0]));
+      System.out.println();
+      System.out.println(Strings.printTable(false, false, array, columns[0]));
+      System.out.println();
+      System.out.println(Strings.printTable(true, true, array, columns[0]));
+      System.out.println();
+      System.out.println(Strings.printTable(true, false, array, columns[0]));
+      System.out.println();
+
+      System.out.println(Strings.printTable(rows));
+      System.out.println();
+      System.out.println(Strings.printTable(false, false, rows));
+      System.out.println();
+      System.out.println(Strings.printTable(true, true, rows));
+      System.out.println();
+      System.out.println(Strings.printTable(true, false, rows));
+
+      System.out.println(Strings.printTable(columns));
+      System.out.println();
+      System.out.println(Strings.printTable(false, false, columns));
+      System.out.println();
+      System.out.println(Strings.printTable(true, true, columns));
+      System.out.println();
+      System.out.println(Strings.printTable(true, false, columns));
+    }
   }
 
   @Test

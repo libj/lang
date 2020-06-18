@@ -1097,42 +1097,294 @@ public final class Strings {
     return str == null ? null : str.replace("\\", "\\\\").replace("\"", "\\\"");
   }
 
-  public static String printColumns(final String ... columns) {
-    // Split input strings into columns and rows
-    final String[][] strings = new String[columns.length][];
-    int maxLines = 0;
-    for (int i = 0; i < columns.length; ++i) {
-      strings[i] = columns[i] == null ? null : columns[i].split("\n");
-      if (strings[i] != null && strings[i].length > maxLines)
-        maxLines = strings[i].length;
+  /**
+   * Returns a string with a table layout of the specified array of data
+   * organized into columns with the provided {@code headings}.
+   * <p>
+   * This is the equivalent of calling:
+   *
+   * <pre>
+   * {@code printTable(false, true, data, headings)}
+   * </pre>
+   *
+   * @param data The array of data.
+   * @param headings The headings of the columns.
+   * @return A string with a table layout of the specified data array organized
+   *         into columns with the provided {@code headings}.
+   * @throws NullPointerException If {@code data} or {@code headings} is null.
+   */
+  public static String printTable(final Object[] data, final String ... headings) {
+    return printTable(false, true, data, headings);
+  }
+
+  /**
+   * Returns a string with a table layout of the specified array of data
+   * organized into columns with the provided {@code headings}.
+   * <p>
+   * This is the equivalent of calling:
+   *
+   * <pre>
+   * {@code printTable(false, true, data, headings)}
+   * </pre>
+   *
+   * @param data The array of data.
+   * @param headings The headings of the columns.
+   * @return A string with a table layout of the specified data array organized
+   *         into columns with the provided {@code headings}.
+   * @throws NullPointerException If {@code data} or {@code headings} is null.
+   */
+  public static String printTable(final String[] data, final String ... headings) {
+    return printTable(false, true, data, headings);
+  }
+
+  /**
+   * Returns a string with a table layout of the specified array of data
+   * organized into columns with the provided {@code headings}.
+   *
+   * @param borders Whether to draw borders.
+   * @param alignLeft If {@code true}, the strings in table cells will be
+   *          aligned to the left; if {@code false}, then to the right.
+   * @param data The array of data.
+   * @param headings The headings of the columns.
+   * @return A string with a table layout of the specified data array organized
+   *         into columns with the provided {@code headings}.
+   * @throws NullPointerException If {@code data} or {@code headings} is null.
+   */
+  public static String printTable(final boolean borders, final boolean alignLeft, final Object[] data, final String ... headings) {
+    if (data.getClass().getComponentType() == String.class)
+      return printTable(borders, alignLeft, (String[])data, headings);
+
+    final String[] strings = new String[data.length];
+    for (int i = 0; i < data.length; ++i)
+      strings[i] = String.valueOf(data[i]);
+
+    return printTable(borders, alignLeft, strings, headings);
+  }
+
+  /**
+   * Returns a string with a table layout of the specified array of data
+   * organized into columns with the provided {@code headings}.
+   *
+   * @param borders Whether to draw borders.
+   * @param alignLeft If {@code true}, the strings in table cells will be
+   *          aligned to the left; if {@code false}, then to the right.
+   * @param data The array of data.
+   * @param headings The headings of the columns.
+   * @return A string with a table layout of the specified data array organized
+   *         into columns with the provided {@code headings}.
+   * @throws NullPointerException If {@code data} or {@code headings} is null.
+   */
+  public static String printTable(final boolean borders, final boolean alignLeft, final String[] data, final String ... headings) {
+    final int rows = 1 + data.length / headings.length;
+    final int remainder = data.length % headings.length;
+
+    final String[][] columns = new String[headings.length][];
+    for (int j = 0; j < headings.length; ++j) {
+      final String[] column = columns[j] = new String[rows + (remainder == 0 ? 0 : 1)];
+      column[0] = headings[j];
+      for (int k = 1; k < column.length; ++k) {
+        final int l = j + (k - 1) * (headings.length);
+        if (l < data.length)
+          column[k] = data[l];
+      }
     }
 
+    return printTable(borders, alignLeft, columns);
+  }
+
+  /**
+   * Returns a string with a table layout of the provided array of columns of
+   * new-line-delimited rows, without borders, aligned to the left.
+   * <p>
+   * This is the equivalent of calling:
+   *
+   * <pre>
+   * {@code printTable(false, true, columns)}
+   * </pre>
+   *
+   * @param columns The 2 dimensional array of columns to print.
+   * @return A string with a column layout of the provided 2 dimensional array.
+   * @throws NullPointerException If {@code columns} is null.
+   */
+  public static String printTable(final String ... columns) {
+    return printTable(false, true, columns);
+  }
+
+  /**
+   * Returns a string with a table layout of the provided array of columns of
+   * new-line-delimited rows, without borders, aligned to the left.
+   * <p>
+   * This is the equivalent of calling:
+   *
+   * <pre>
+   * {@code printTable(false, true, columns)}
+   * </pre>
+   *
+   * @param borders Whether to draw borders.
+   * @param alignLeft If {@code true}, the strings in table cells will be
+   *          aligned to the left; if {@code false}, then to the right.
+   * @param columns The 2 dimensional array of columns to print.
+   * @return A string with a column layout of the provided 2 dimensional array.
+   * @throws NullPointerException If {@code columns} is null.
+   */
+  public static String printTable(final boolean borders, final boolean alignLeft, final String ... columns) {
+    // Split input strings into columns and rows
+    final String[][] strings = new String[columns.length][];
+    for (int i = 0; i < columns.length; ++i)
+      strings[i] = columns[i] == null ? null : columns[i].split("\n");
+
+    return printTable(borders, true, (Object[][])strings);
+  }
+
+  /**
+   * Returns a string with a table layout of the provided 2 dimensional array of
+   * columns, without borders, aligned to the left.
+   * <p>
+   * This is the equivalent of calling:
+   *
+   * <pre>
+   * {@code printTable(false, true, columns)}
+   * </pre>
+   *
+   * @param columns The 2 dimensional array of columns to print.
+   * @return A string with a column layout of the provided 2 dimensional array.
+   * @throws NullPointerException If {@code columns} is null.
+   */
+  public static String printTable(final String[] ... columns) {
+    return printTable(false, true, columns);
+  }
+
+  /**
+   * Returns a string with a table layout of the provided 2 dimensional array of
+   * columns, without borders, aligned to the left.
+   * <p>
+   * This is the equivalent of calling:
+   *
+   * <pre>
+   * {@code printTable(false, true, columns)}
+   * </pre>
+   *
+   * @param columns The 2 dimensional array of columns to print.
+   * @return A string with a column layout of the provided 2 dimensional array.
+   * @throws NullPointerException If {@code columns} is null.
+   */
+  public static String printTable(final Object[] ... columns) {
+    return printTable(false, true, columns);
+  }
+
+  /**
+   * Returns a string with a table layout of the provided 2 dimensional array of
+   * columns.
+   *
+   * @param borders Whether to draw borders.
+   * @param alignLeft If {@code true}, the strings in table cells will be
+   *          aligned to the left; if {@code false}, then to the right.
+   * @param columns The 2 dimensional array of columns to print.
+   * @return A string with a column layout of the provided 2 dimensional array.
+   * @throws NullPointerException If {@code columns} is null.
+   */
+  public static String printTable(final boolean borders, final boolean alignLeft, final Object[] ... columns) {
+    if (columns.getClass().getComponentType() == String[].class)
+      return printTable(borders, alignLeft, (String[][])columns);
+
+    final String[][] strings = new String[columns.length][];
+    for (int i = 0; i < strings.length; ++i) {
+      final Object[] column = columns[i];
+      if (column != null) {
+        final String[] string = strings[i] = new String[column.length];
+        for (int j = 0; j < column.length; ++j)
+          string[j] = String.valueOf(column[j]);
+      }
+    }
+
+    return printTable(borders, alignLeft, strings);
+  }
+
+  /**
+   * Returns a string with a table layout of the provided 2 dimensional array of
+   * columns.
+   *
+   * @param borders Whether to draw borders.
+   * @param alignLeft If {@code true}, the strings in table cells will be
+   *          aligned to the left; if {@code false}, then to the right.
+   * @param columns The 2 dimensional array of columns to print.
+   * @return A string with a column layout of the provided 2 dimensional array.
+   * @throws NullPointerException If {@code columns} is null.
+   */
+  public static String printTable(final boolean borders, final boolean alignLeft, final String[] ... columns) {
+    int maxLines = 0;
     // Store an array of column widths
     final int[] widths = new int[columns.length];
     // calculate column widths
     for (int i = 0, maxWidth = 0; i < columns.length; ++i) {
-      if (strings[i] != null) {
-        for (int j = 0; j < strings[i].length; ++j)
-          if (strings[i][j].length() > maxWidth)
-            maxWidth = strings[i][j].length();
-      }
-      else if (maxWidth < 4) {
-        maxWidth = 4;
+      final String[] column = columns[i];
+      if (column != null) {
+        if (column.length > maxLines)
+          maxLines = column.length;
+
+        for (int j = 0; j < column.length; ++j)
+          if (columns[i][j] != null && columns[i][j].length() > maxWidth)
+            maxWidth = columns[i][j].length();
       }
 
-      widths[i] = maxWidth + 1;
+      maxWidth = Math.max(4, maxWidth);
+      widths[i] = maxWidth;
     }
 
     // Print the lines
     final StringBuilder builder = new StringBuilder();
+    if (borders) {
+      builder.append('╔');
+      for (int i = 0; i < columns.length; ++i) {
+        if (i > 0)
+          builder.append('╦');
+
+        builder.append(Strings.repeat("═", widths[i] + 2));
+      }
+
+      builder.append("╗\n");
+    }
+
     for (int j = 0; j < maxLines; ++j) {
       if (j > 0)
         builder.append('\n');
 
-      for (int i = 0; i < strings.length; ++i) {
-        final String line = strings[i] == null ? "null" : j < strings[i].length ? strings[i][j] : "";
-        builder.append(String.format("%-" + widths[i] + "s", line));
+      if (borders) {
+        if (j == 1) {
+          builder.append('╠');
+          for (int i = 0; i < columns.length; ++i) {
+            if (i > 0)
+              builder.append('╬');
+
+            builder.append(Strings.repeat("═", widths[i] + 2));
+          }
+
+          builder.append("╣\n");
+        }
+
+        builder.append("║ ");
       }
+
+      for (int i = 0; i < columns.length; ++i) {
+        final String line = columns[i] == null || j >= columns[i].length || columns[i][j] == null ? "null" : j < columns[i].length ? columns[i][j] : "";
+        builder.append(Strings.pad(line, widths[i], alignLeft, ' ', false));
+        if (borders)
+          builder.append(" ║");
+
+        builder.append(' ');
+      }
+    }
+
+    if (borders) {
+      builder.append("\n╚");
+      for (int i = 0; i < columns.length; ++i) {
+        if (i > 0)
+          builder.append('╩');
+
+        builder.append(Strings.repeat("═", widths[i] + 2));
+      }
+
+      builder.append('╝');
     }
 
     return builder.length() == 0 ? "null" : builder.toString();
@@ -1154,7 +1406,7 @@ public final class Strings {
    */
   public static String repeat(final char ch, final int count) {
     if (count < 0)
-      throw new IllegalArgumentException("count < 0");
+      throw new IllegalArgumentException("count (" + count + ") must be greater than or equal to 0");
 
     if (count == 0)
       return "";
@@ -1181,7 +1433,7 @@ public final class Strings {
    */
   public static String repeat(final String str, final int count) {
     if (count < 0)
-      throw new IllegalArgumentException("count < 0");
+      throw new IllegalArgumentException("count (" + count + ") must be greater than or equal to 0");
 
     if (count == 0 || str.length() == 0)
       return "";
@@ -1970,11 +2222,45 @@ public final class Strings {
    *          {@code >= 3}).
    * @return The truncated string.
    * @throws IllegalArgumentException If the provided length is less than 3.
-   * @throws NullPointerException If {@code str} is null.
    */
   public static String truncate(final String str, final int maxLength) {
+    return truncate(str, maxLength, true);
+  }
+
+  /**
+   * Truncates the specified string to the provided maximum length,
+   * conditionally adding ellipses ({@code "..."}) if the string is longer than
+   * maximum length and {@code withEllipsis == true}.
+   * <p>
+   * Special conditions if {@code withEllipsis == true}:
+   * <ul>
+   * <li>If {@code maxLength < 3}, this method throws an
+   * {@link IllegalArgumentException}.</li>
+   * <li>If {@code maxLength == 3}, this method returns {@code "..."}.</li>
+   * <li>If {@code maxLength >= string.length()}, this method returns
+   * {@code str}.</li>
+   * <li>If {@code maxLength < string.length()}, this method returns:
+   * <blockquote>{@code str.substring(0, maxLength - 3) + "..."}
+   * </blockquote></li>
+   * </ul>
+   *
+   * @param str The string to truncate.
+   * @param maxLength The max length of the resulting string (must be
+   *          {@code >= 3}).
+   * @param withEllipsis Whether ellipses should be added in case the specified
+   *          string is truncated.
+   * @return The truncated string.
+   * @throws IllegalArgumentException If {@code withEllipsis == true} and the provided length is less than 3.
+   */
+  public static String truncate(String str, final int maxLength, final boolean withEllipsis) {
+    if (str == null)
+      str = "null";
+
+    if (!withEllipsis)
+      return str.length() <= maxLength ? str : str.substring(0, maxLength);
+
     if (maxLength < 3)
-      throw new IllegalArgumentException("length must be >= 3: " + maxLength);
+      throw new IllegalArgumentException("length (" + maxLength + ") must be >= 3 for ellipses (\"...\")");
 
     return maxLength == 3 ? "..." : str.length() > maxLength ? str.substring(0, maxLength - 3).concat("...") : str;
   }
