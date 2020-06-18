@@ -24,12 +24,12 @@ public final class Bytes {
   private static final double LOG_2 = 0.6931471805599453;
 
   /**
-   * Returns the index of the first occurrence of the specified byte
-   * {@code sequence} in {@code bytes}.
+   * Returns the index of the first occurrence of the specified
+   * {@code byte[] sequence} in {@code bytes}.
    *
    * @param bytes The {@code byte} array in which to search.
    * @param sequence The {@code byte} array sequence for which to search.
-   * @return The index of the first occurrence of the specified byte
+   * @return The index of the first occurrence of the specified
    *         {@code sequence} in {@code bytes}.
    */
   public static int indexOf(final byte[] bytes, final byte ... sequence) {
@@ -38,14 +38,14 @@ public final class Bytes {
 
   /**
    * Returns the index of the first occurrence (starting the search from the
-   * {@code offset} index) of the specified byte {@code sequence} in
+   * {@code offset} index) of the specified {@code byte sequence} in
    * {@code bytes}.
    *
    * @param bytes The {@code byte} array in which to search.
    * @param offset The index to start the search from.
    * @param sequence The {@code byte} array sequence for which to search.
-   * @return The index of the first occurrence of the specified byte
-   *         {@code sequence} in {@code bytes}.
+   * @return The index of the first occurrence of the specified
+   *         {@code byte sequence} in {@code bytes}.
    * @throws ArrayIndexOutOfBoundsException If {@code offset} is out of range.
    * @throws NullPointerException If {@code bytes} or {@code sequence} is null.
    */
@@ -72,6 +72,7 @@ public final class Bytes {
    * @param bytes The {@code byte} array in which to perform the replacement.
    * @param target The {@code byte} to search for.
    * @param replacement The {@code byte} to replace with.
+   * @throws NullPointerException If {@code bytes} is null.
    */
   public static void replaceAll(final byte[] bytes, final byte target, final byte replacement) {
     for (int index = 0; (index = Bytes.indexOf(bytes, index + 1, target)) > -1; bytes[index] = replacement);
@@ -85,6 +86,7 @@ public final class Bytes {
    * @param replacement The {@code byte} array to replace with.
    * @throws IllegalArgumentException If the length of {@code target} does not
    *           equal the length of {@code replacement}.
+   * @throws NullPointerException If {@code bytes} is null.
    */
   public static void replaceAll(final byte[] bytes, final byte[] target, final byte[] replacement) {
     if (target.length != replacement.length)
@@ -102,19 +104,20 @@ public final class Bytes {
   }
 
   /**
-   * Create a byte array representation of a short value with big- or little-
-   * endian encoding.
+   * Create a {@code byte} array representation of a {@code short} value with
+   * big- or little- endian encoding.
    * <p>
-   * A Java short is 2 bytes in size. If the byte array is shorter than 2 bytes
-   * minus the offset, the missing bytes are skipped. For each missing byte, the
-   * byte sequence is shifted such that the least significant bytes are skipped
-   * first.
+   * A Java {@code short} is 2 bytes in size. If the {@code byte} array is
+   * shorter than 2 bytes minus the offset, the missing bytes are skipped. For
+   * each missing byte, the byte sequence is shifted such that the least
+   * significant bytes are skipped first.
    *
    * @param value The {@code short} value.
    * @param bytes The destination {@code byte[]} array.
    * @param offset The byte offset into the destination array.
    * @param isBigEndian If {@code true}, bytes will be written in big-endian
    *          encoding. If {@code false}, in little-endian.
+   * @throws NullPointerException If {@code bytes} is null.
    */
   public static void toBytes(final short value, final byte[] bytes, int offset, final boolean isBigEndian) {
     if (isBigEndian) {
@@ -132,10 +135,10 @@ public final class Bytes {
   }
 
   /**
-   * Create a byte array representation of a char value with big- or little-
+   * Create a {@code byte} array representation of a char value with big- or little-
    * endian encoding.
    * <p>
-   * A Java char is 2 bytes in size. If the byte array is shorter than 2 bytes
+   * A Java char is 2 bytes in size. If the {@code byte} array is shorter than 2 bytes
    * minus the offset, the missing bytes are skipped. For each missing byte, the
    * byte sequence is shifted such that the least significant bytes are skipped
    * first.
@@ -145,6 +148,7 @@ public final class Bytes {
    * @param offset The byte offset into the destination array.
    * @param isBigEndian If {@code true}, bytes will be written in big-endian
    *          encoding. If {@code false}, in little-endian.
+   * @throws NullPointerException If {@code bytes} is null.
    */
   public static void toBytes(final char c, final byte[] bytes, int offset, final boolean isBigEndian) {
     if (isBigEndian) {
@@ -162,19 +166,20 @@ public final class Bytes {
   }
 
   /**
-   * Create a byte array representation of a int value with big- or little-
-   * endian encoding.
+   * Create a {@code byte} array representation of an {@code int} value with big- or
+   * little- endian encoding.
    * <p>
-   * A Java int is 4 bytes in size. If the byte array is shorter than 4 bytes
-   * minus the offset, the missing bytes are skipped. For each missing byte, the
-   * byte sequence is shifted such that the least significant bytes are skipped
-   * first.
+   * A Java {@code int} is 4 bytes in size. If the {@code byte} array is shorter than 4
+   * bytes minus the offset, the missing bytes are skipped. For each missing
+   * byte, the byte sequence is shifted such that the least significant bytes
+   * are skipped first.
    *
-   * @param i The int value.
+   * @param i The {@code int} value.
    * @param bytes The destination {@code byte[]} array.
    * @param offset The byte offset into the destination array.
    * @param isBigEndian If {@code true}, bytes will be written in big-endian
    *          encoding. If {@code false}, in little-endian.
+   * @throws NullPointerException If {@code bytes} is null.
    */
   public static void toBytes(final int i, final byte[] bytes, int offset, final boolean isBigEndian) {
     if (isBigEndian) {
@@ -211,19 +216,20 @@ public final class Bytes {
   }
 
   /**
-   * Create a byte array representation of a long value with big- or little-
-   * endian encoding.
+   * Create a {@code byte} array representation of a {@code long} value with
+   * big- or little- endian encoding.
    * <p>
-   * A Java long is 8 bytes in size. If the byte array is shorter than 8 bytes
-   * minus the offset, the missing bytes are skipped. For each missing byte, the
-   * byte sequence is shifted such that the least significant bytes are skipped
-   * first.
+   * A Java {@code long} is 8 bytes in size. If the {@code byte} array is
+   * shorter than 8 bytes minus the offset, the missing bytes are skipped. For
+   * each missing byte, the byte sequence is shifted such that the least
+   * significant bytes are skipped first.
    *
-   * @param l The long value.
+   * @param l The {@code long} value.
    * @param bytes The destination {@code byte[]} array.
    * @param offset The byte offset into the destination array.
    * @param isBigEndian If {@code true}, bytes will be written in big-endian
    *          encoding. If {@code false}, in little-endian.
+   * @throws NullPointerException If {@code bytes} is null.
    */
   public static void toBytes(final long l, final byte[] bytes, int offset, final boolean isBigEndian) {
     if (isBigEndian) {
@@ -292,36 +298,39 @@ public final class Bytes {
   }
 
   /**
-   * Create a signed short representation of a source byte array with big- or
-   * little-endian encoding.
+   * Create a signed {@code short} representation of a source {@code byte} array
+   * with big- or little-endian encoding.
    * <p>
-   * A Java short is 2 bytes in size. If the byte array is shorter than 2 bytes
-   * minus the offset, the missing bytes are considered as the equivalent of
-   * 0x0.
+   * A Java {@code short} is 2 bytes in size. If the {@code byte} array is
+   * shorter than 2 bytes minus the offset, the missing bytes are considered as
+   * the equivalent of 0x0.
    *
-   * @param src The source byte array.
+   * @param src The source {@code byte} array.
    * @param offset The byte offset into the source byte array.
    * @param isBigEndian Is value in big-endian encoding.
-   * @return A signed short representation of a byte array.
+   * @return A signed {@code short} representation of a {@code byte} array.
+   * @throws NullPointerException If {@code src} is null.
    */
   public static short toShort(final byte[] src, final int offset, final boolean isBigEndian) {
     return (short)toShort(src, offset, isBigEndian, true);
   }
 
   /**
-   * Create a signed short or an unsigned int representation of a source byte
-   * array with big- or little-endian encoding.
+   * Create a signed {@code short} or an unsigned {@code int} representation of
+   * a source {@code byte} array with big- or little-endian encoding.
    * <p>
-   * A Java short is 2 bytes in size. If the byte array is shorter than 2 bytes
-   * minus the offset, the missing bytes are considered as the equivalent of
-   * 0x0.
+   * A Java {@code short} is 2 bytes in size. If the {@code byte} array is
+   * shorter than 2 bytes minus the offset, the missing bytes are considered as
+   * the equivalent of 0x0.
    *
-   * @param src The source byte array.
-   * @param offset The byte offset into the source byte array.
+   * @param src The source {@code byte} array.
+   * @param offset The byte offset into the source {@code byte} array.
    * @param isBigEndian Is value in big-endian encoding.
-   * @param signed If {@code true}, return signed short value. If {@code false},
-   *          return unsigned int value.
-   * @return A signed short or an unsigned int representation of a byte array.
+   * @param signed If {@code true}, return signed {@code short} value. If
+   *          {@code false}, return unsigned {@code int} value.
+   * @return A signed {@code short} or an unsigned {@code int} representation of
+   *         a byte array.
+   * @throws NullPointerException If {@code src} is null.
    */
   public static int toShort(final byte[] src, int offset, final boolean isBigEndian, final boolean signed) {
     int value = 0;
@@ -349,36 +358,39 @@ public final class Bytes {
   }
 
   /**
-   * Create a signed int representation of a source byte array with big- or
-   * little-endian encoding.
+   * Create a signed {@code int} representation of a source {@code byte} array
+   * with big- or little-endian encoding.
    * <p>
-   * A Java int is 4 bytes in size. If the byte array is shorter than 4 bytes
-   * minus the offset, the missing bytes are considered as the equivalent of
-   * 0x0.
+   * A Java {@code int} is 4 bytes in size. If the {@code byte} array is shorter
+   * than 4 bytes minus the offset, the missing bytes are considered as the
+   * equivalent of {@code 0x0}.
    *
-   * @param src The source byte array.
-   * @param offset The byte offset into the source byte array.
+   * @param src The source {@code byte} array.
+   * @param offset The byte offset into the source {@code byte} array.
    * @param isBigEndian Is value in big-endian encoding.
-   * @return A signed int representation of a byte array.
+   * @return A signed {@code int} representation of a {@code byte} array.
+   * @throws NullPointerException If {@code src} is null.
    */
   public static int toInt(final byte[] src, final int offset, final boolean isBigEndian) {
     return (int)toInt(src, offset, isBigEndian, true);
   }
 
   /**
-   * Create a signed int or an unsigned long representation of a source byte
-   * array with big- or little-endian encoding.
+   * Create a signed {@code int} or an unsigned {@code long} representation of a
+   * source {@code byte} array with big- or little-endian encoding.
    * <p>
-   * A Java int is 4 bytes in size. If the byte array is shorter than 4 bytes
-   * minus the offset, the missing bytes are considered as the equivalent of
-   * 0x0.
+   * A Java {@code int} is 4 bytes in size. If the {@code byte} array is shorter
+   * than 4 bytes minus the offset, the missing bytes are considered as the
+   * equivalent of {@code 0x0}.
    *
-   * @param src The source byte array.
-   * @param offset The byte offset into the source byte array.
+   * @param src The source {@code byte} array.
+   * @param offset The byte offset into the source {@code byte} array.
    * @param isBigEndian Is value in big-endian encoding.
-   * @param signed If {@code true}, return signed int value. If {@code false},
-   *          return unsigned long value.
-   * @return A signed int or an unsigned long representation of a byte array.
+   * @param signed If {@code true}, return signed {@code int} value. If
+   *          {@code false}, return unsigned {@code long} value.
+   * @return A signed {@code int} or an unsigned {@code long} representation of
+   *         a {@code byte} array.
+   * @throws NullPointerException If {@code src} is null.
    */
   public static long toInt(final byte[] src, int offset, final boolean isBigEndian, final boolean signed) {
     long value = 0;
@@ -418,17 +430,18 @@ public final class Bytes {
   }
 
   /**
-   * Create a signed long representation of a source byte array with big- or
-   * little-endian encoding.
+   * Create a signed {@code long} representation of a source {@code byte} array
+   * with big- or little-endian encoding.
    * <p>
-   * A Java long is 8 bytes in size. If the byte array is shorter than 8 bytes
-   * minus the offset, the missing bytes are considered as the equivalent of
-   * 0x0.
+   * A Java {@code long} is 8 bytes in size. If the {@code byte} array is
+   * shorter than 8 bytes minus the offset, the missing bytes are considered as
+   * the equivalent of {@code 0x0}.
    *
-   * @param src The source byte array.
-   * @param offset The byte offset into the source byte array.
+   * @param src The source {@code byte} array.
+   * @param offset The byte offset into the source {@code byte} array.
    * @param isBigEndian Is value in big-endian encoding.
-   * @return A signed long representation of a byte array.
+   * @return A signed long representation of a {@code byte} array.
+   * @throws NullPointerException If {@code src} is null.
    */
   // FIXME: Support unsigned
   public static long toLong(final byte[] src, int offset, final boolean isBigEndian) {
@@ -526,6 +539,7 @@ public final class Bytes {
    * @param bytes The {@code byte} array.
    * @return A {@code short} array representing the base-8 values of the
    *         specified {@code byte} array.
+   * @throws NullPointerException If {@code bytes} is null.
    */
   public static short[] toOctal(final byte ... bytes) {
     final short[] octal = new short[bytes.length];
@@ -536,10 +550,11 @@ public final class Bytes {
   }
 
   /**
-   * Write a number of bits from a source byte to a destination byte array at an
-   * offset. The bits are counted from right to left (least significant to most
-   * significant, as per big-endian encoding). The offset is counted left to
-   * right (most significant to least significant, as per big-endian encoding).
+   * Write a number of bits from a source {@code byte} to a destination
+   * {@code byte} array at an offset. The bits are counted from right to left
+   * (least significant to most significant, as per big-endian encoding). The
+   * offset is counted left to right (most significant to least significant, as
+   * per big-endian encoding).
    * <p>
    * Examples:
    * <p>
@@ -549,12 +564,13 @@ public final class Bytes {
    * If {@code src=0b00011101}, writing {@code bits=5} at {@code offset=7} will
    * result in: {@code [0b00000001, 0b11010000]}
    *
-   * @param dest The destination byte array.
-   * @param offset The bit offset into the destination byte array where to begin
-   *          writing.
-   * @param src The source byte to write.
-   * @param bits The number of bits of the byte to write (0 to 8).
+   * @param dest The destination {@code byte} array.
+   * @param offset The bit offset into the destination {@code byte} array where
+   *          to begin writing.
+   * @param src The source {@code byte} to write.
+   * @param bits The number of bits of the {@code byte} to write (0 to 8).
    * @return The new offset adjusted by the written bits.
+   * @throws NullPointerException If {@code dest} is null.
    */
   public static int writeBitsB(final byte[] dest, final int offset, byte src, final byte bits) {
     final int i = offset / 8;
@@ -573,12 +589,13 @@ public final class Bytes {
   }
 
   /**
-   * Write a number of bits from a source byte array to a destination byte array
-   * at an offset. The bits are counted from right to left (least significant to
-   * most significant, as per big-endian encoding). The offset is counted left
-   * to right (most significant to least significant, as per big-endian
-   * encoding). If {@code bits > 8}, the starting bit to be read is the least
-   * significant bit in the {@code bits % 8} position in the source array.
+   * Write a number of bits from a source {@code byte} array to a destination
+   * {@code byte} array at an offset. The bits are counted from right to left
+   * (least significant to most significant, as per big-endian encoding). The
+   * offset is counted left to right (most significant to least significant, as
+   * per big-endian encoding). If {@code bits > 8}, the starting bit to be read
+   * is the least significant bit in the {@code bits % 8} position in the source
+   * array.
    * <p>
    * Examples:
    * <p>
@@ -588,13 +605,14 @@ public final class Bytes {
    * If {@code src=[0b01011011, 0b01101101]}, writing {@code bits=13} at
    * {@code offset=3} will result in: {@code [0b00000011, (byte)0b01101101]}
    *
-   * @param dest The destination byte array.
-   * @param offset The bit offset into the destination byte array where to begin
-   *          writing.
-   * @param src The source byte array to write.
+   * @param dest The destination {@code byte} array.
+   * @param offset The bit offset into the destination {@code byte} array where
+   *          to begin writing.
+   * @param src The source {@code byte} array to write.
    * @param bits The number of bits to write from the source array (0 to 8 *
    *          src.length).
    * @return The new offset adjusted by the written bits.
+   * @throws NullPointerException If {@code dest} or {@code src} is null.
    */
   public static int writeBitsB(final byte[] dest, int offset, final byte[] src, long bits) {
     final byte remainder = (byte)(1 + (bits - 1) % 8);
@@ -607,11 +625,11 @@ public final class Bytes {
   }
 
   /**
-   * Write a number of bits from a source byte to a destination byte array at an
-   * offset. The bits are counted from right to left (least significant to most
-   * significant, as per little-endian encoding). The offset is counted left to
-   * right (least significant to most significant, as per little-endian
-   * encoding).
+   * Write a number of bits from a source {@code byte} to a destination
+   * {@code byte} array at an offset. The bits are counted from right to left
+   * (least significant to most significant, as per little-endian encoding). The
+   * offset is counted left to right (least significant to most significant, as
+   * per little-endian encoding).
    * <p>
    * Examples:
    * <p>
@@ -621,12 +639,13 @@ public final class Bytes {
    * If {@code src=0b11101000}, writing {@code bits=5} at {@code offset=7} will
    * result in: {@code [0b00000001, 0b11010000]}
    *
-   * @param dest The destination byte array.
-   * @param offset The bit offset into the destination byte array where to begin
-   *          writing.
-   * @param src The source byte to write.
-   * @param bits The number of bits of the byte to write (0 to 8).
+   * @param dest The destination {@code byte} array.
+   * @param offset The bit offset into the destination {@code byte} array where
+   *          to begin writing.
+   * @param src The source {@code byte} to write.
+   * @param bits The number of bits of the {@code byte} to write (0 to 8).
    * @return The new offset adjusted by the written bits.
+   * @throws NullPointerException If {@code dest} is null.
    */
   public static int writeBitsL(final byte[] dest, final int offset, byte src, final byte bits) {
     final int i = offset / 8;
@@ -646,11 +665,11 @@ public final class Bytes {
   }
 
   /**
-   * Write a number of bits from a source byte array to a destination byte array
-   * at an offset. The bits are counted from left to right (least significant to
-   * most significant, as per little-endian encoding). The offset is counted
-   * left to right (least significant to most significant, as per little-endian
-   * encoding).
+   * Write a number of bits from a source {@code byte} array to a destination
+   * {@code byte} array at an offset. The bits are counted from left to right
+   * (least significant to most significant, as per little-endian encoding). The
+   * offset is counted left to right (least significant to most significant, as
+   * per little-endian encoding).
    * <p>
    * Examples:
    * <p>
@@ -660,13 +679,14 @@ public final class Bytes {
    * If {@code src=[0b01011011, 0b01101101]}, writing {@code bits=13} at
    * {@code offset=3} will result in: {@code [0b00001011, (byte)0b01101101]}
    *
-   * @param dest The destination byte array.
-   * @param offset The bit offset into the destination byte array where to begin
-   *          writing.
-   * @param src The source byte array to write.
+   * @param dest The destination {@code byte} array.
+   * @param offset The bit offset into the destination {@code byte} array where
+   *          to begin writing.
+   * @param src The source {@code byte} array to write.
    * @param bits The number of bits to write from the source array (0 to 8 *
    *          src.length).
    * @return The new offset adjusted by the written bits.
+   * @throws NullPointerException If {@code dest} or {@code src} is null.
    */
   public static int writeBitsL(final byte[] dest, int offset, final byte[] src, int bits) {
     int i = 0;
@@ -677,19 +697,20 @@ public final class Bytes {
   }
 
   /**
-   * Returns the byte representation from reading a number of bits (0 to 8) from
-   * a source byte array at an offset, read in the direction of most significant
+   * Returns the {@code byte} representation from reading a number of bits (0 to 8) from
+   * a source {@code byte} array at an offset, read in the direction of most significant
    * bit to least significant bit. This method returns the value of the read
    * byte as shifted to fill the least significant bits first, allowing the
    * front of the byte to encode a value as if the bits were in the tail of the
    * byte. Java uses big-endian encoding, placing the most significant bits at
    * the front of the byte.
    *
-   * @param src The source byte array.
+   * @param src The source {@code byte} array.
    * @param offset The offset in bits.
    * @param bits The number of bits to read (0 to 8).
-   * @return The byte representation of the read bits from the source byte array
+   * @return The {@code byte} representation of the read bits from the source {@code byte} array
    *         at the offset.
+   * @throws NullPointerException If {@code src} is null.
    */
   public static byte readBitsFromByte(final byte[] src, final int offset, byte bits) {
     final int i = offset / 8;
@@ -700,19 +721,20 @@ public final class Bytes {
   }
 
   /**
-   * Returns the byte array representation from reading a number of bits from a
-   * source byte array at an offset, read in the direction of most significant
-   * bit to least significant bit. This method returns the value of the read
-   * byte as shifted to fill the least significant bits first, allowing the
-   * front of the byte to encode a value as if the bits were in the tail of the
-   * byte. Java uses big-endian encoding, placing the most significant bits at
-   * the front of the byte.
+   * Returns the {@code byte} array representation from reading a number of bits
+   * from a source {@code byte} array at an offset, read in the direction of
+   * most significant bit to least significant bit. This method returns the
+   * value of the read byte as shifted to fill the least significant bits first,
+   * allowing the front of the byte to encode a value as if the bits were in the
+   * tail of the byte. Java uses big-endian encoding, placing the most
+   * significant bits at the front of the byte.
    *
-   * @param src The source byte array.
+   * @param src The source {@code byte} array.
    * @param offset The offset in bits.
    * @param bits The number of bits to read.
-   * @return The byte array representation of the read bits from the source byte
-   *         array at the offset.
+   * @return The {@code byte} array representation of the read bits from the
+   *         source {@code byte} array at the offset.
+   * @throws NullPointerException If {@code src} is null.
    */
   public static byte[] readBitsFromBytes(final byte[] src, int offset, final long bits) {
     if (bits <= 8)

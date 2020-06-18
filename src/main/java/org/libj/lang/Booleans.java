@@ -39,18 +39,59 @@ public final class Booleans {
     return s == null ? null : Boolean.parseBoolean(s);
   }
 
+  /**
+   * Returns {@link Boolean#FALSE} if {@code i == 0}, otherwise
+   * {@link Boolean#TRUE}. If {@code i == null}, this method returns
+   * {@code null}.
+   *
+   * @param i The {@link Integer}.
+   * @return {@link Boolean#FALSE} if {@code i == 0}, otherwise
+   *         {@link Boolean#TRUE}.
+   */
   public static Boolean parseBoolean(final Integer i) {
     return i == null ? null : i == 0 ? Boolean.FALSE : Boolean.TRUE;
   }
 
+  /**
+   * Returns {@link Boolean#FALSE} if {@code i == 0}, otherwise
+   * {@link Boolean#TRUE}.
+   *
+   * @param i The {@code int}.
+   * @return {@link Boolean#FALSE} if {@code i == 0}, otherwise
+   *         {@link Boolean#TRUE}.
+   */
+  public static boolean parseBoolean(final int i) {
+    return i == 0 ? Boolean.FALSE : Boolean.TRUE;
+  }
+
+  /**
+   * Returns {@code 0} if {@code b == false}, otherwise {@code 1}.
+   *
+   * @param b The {@code boolean}.
+   * @return {@code 0} if {@code b == false}, otherwise {@code 1}.
+   */
   public static int toInt(final boolean b) {
     return b ? 1 : 0;
   }
 
+  /**
+   * Returns {@code 0} if {@code b == false}, otherwise {@code 1}.
+   *
+   * @param b The {@code boolean}.
+   * @return {@code 0} if {@code b == false}, otherwise {@code 1}.
+   */
   public static double toDouble(final boolean b) {
     return b ? 1 : 0;
   }
 
+  /**
+   * Returns {@code 0} if {@code b == false}, {@code 1} if {@code b == true},
+   * and {@code null} if {@code b == null}.
+   *
+   * @param b The {@code boolean}.
+   * @return {@code 0} if {@code b == false}, {@code 1} if {@code b == true},
+   *         and {@code null} if {@code b == null}.
+   */
   public static Integer toInteger(final Boolean b) {
     return b == null ? null : b ? 1 : 0;
   }

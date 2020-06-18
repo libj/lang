@@ -683,6 +683,7 @@ public final class Buffers {
    * @param buf The byte values.
    * @return A string representing the big-endian binary representation of the
    *         specified byte values.
+   * @throws NullPointerException If {@code buf} is null.
    */
   public static String toString(final byte ... buf) {
     final byte[] bytes = new byte[buf.length * Byte.SIZE];
@@ -699,6 +700,7 @@ public final class Buffers {
    * @param buf The char values.
    * @return A string representing the big-endian binary representation of the
    *         specified char values.
+   * @throws NullPointerException If {@code buf} is null.
    */
   public static String toString(final char ... buf) {
     final byte[] bytes = new byte[buf.length * Character.SIZE];
@@ -715,6 +717,7 @@ public final class Buffers {
    * @param buf The short values.
    * @return A string representing the big-endian binary representation of the
    *         specified short values.
+   * @throws NullPointerException If {@code buf} is null.
    */
   public static String toString(final short ... buf) {
     final byte[] bytes = new byte[buf.length * Short.SIZE];
@@ -731,6 +734,7 @@ public final class Buffers {
    * @param buf The int values.
    * @return A string representing the big-endian binary representation of the
    *         specified int values.
+   * @throws NullPointerException If {@code buf} is null.
    */
   public static String toString(final int ... buf) {
     final byte[] bytes = new byte[buf.length * Integer.SIZE];
@@ -747,6 +751,7 @@ public final class Buffers {
    * @param buf The long values.
    * @return A string representing the big-endian binary representation of the
    *         specified long values.
+   * @throws NullPointerException If {@code buf} is null.
    */
   public static String toString(final long ... buf) {
     final byte[] bytes = new byte[buf.length * Long.SIZE];

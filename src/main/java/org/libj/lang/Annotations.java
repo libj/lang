@@ -133,7 +133,8 @@ public final class Annotations {
 
   /**
    * Returns a {@link #toString()} representation of {@code annotation}, with
-   * its property names sorted by {@code comparator}.
+   * its property names sorted by {@code comparator}. If {@code comparator} is
+   * null, sorting will be done according to the natural ordering of the keys.
    *
    * @param annotation The {@link Annotation}.
    * @param comparator The {@link Comparator}.

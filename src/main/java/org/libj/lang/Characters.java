@@ -137,6 +137,7 @@ public final class Characters {
    * @return A newly allocated character array whose length is the length of the
    *         provided string and whose contents are initialized to contain the
    *         character sequence represented by the provided string.
+   * @throws NullPointerException If {@code str} is null.
    */
   public static char[] valueOf(final String str) {
     return str.toCharArray();
