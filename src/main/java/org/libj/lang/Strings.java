@@ -928,26 +928,58 @@ public final class Strings {
     return builder.toString();
   }
 
-  private static String pad(final String str, final int length, final boolean right, final char pad, final boolean truncate) {
+  public static int lengthPrintable(final CharSequence str) {
+    return countPrintable(str, -1, false);
+  }
+
+  public static int indexPrintable(final CharSequence str, final int index) {
+    return countPrintable(str, index, true);
+  }
+
+  private static int countPrintable(final CharSequence str, final int index, final boolean indexOrLength) {
     final int len = str.length();
-    if (length == len)
-      return str;
+    int start = 0;
+    char ch, last = '\0';
+    boolean esc = false;
+    int i = 0;
+    for (; i < len; ++i, last = ch) {
+      ch = str.charAt(i);
+      if (esc) {
+        esc = ch != 'm';
+        continue;
+      }
 
-    if (length < len) {
-      if (truncate)
-        return str.substring(0, length);
+      if ((esc = (ch == '[' && last == '\033')) || !Characters.isPrintable(ch))
+        continue;
 
-      throw new IllegalArgumentException("length (" + length + ") must be greater or equal to string length (" + len + ")");
+      if (++start == index)
+        break;
     }
 
-    final char[] chars = new char[length];
+    return indexOrLength ? i : start;
+  }
+
+  private static String pad(final String str, final int length, final boolean right, final char pad, final boolean truncate) {
+    final int lenPrint = lengthPrintable(str);
+    if (length == lenPrint)
+      return str;
+
+    if (length < lenPrint) {
+      if (truncate)
+        return str.substring(0, indexPrintable(str, length));
+
+      throw new IllegalArgumentException("length (" + length + ") must be greater or equal to string length (" + lenPrint + ")");
+    }
+
+    final int len = str.length();
+    final char[] chars = new char[length + len - lenPrint];
     if (right) {
-      Arrays.fill(chars, len, length, pad);
+      Arrays.fill(chars, len, chars.length, pad);
       for (int i = 0; i < len; ++i)
         chars[i] = str.charAt(i);
     }
     else {
-      final int offset = length - len;
+      final int offset = chars.length - len;
       Arrays.fill(chars, 0, offset, pad);
       for (int i = 0; i < len; ++i)
         chars[i + offset] = str.charAt(i);
@@ -1114,7 +1146,30 @@ public final class Strings {
    * @throws NullPointerException If {@code data} or {@code headings} is null.
    */
   public static String printTable(final Object[] data, final String ... headings) {
-    return printTable(false, true, data, headings);
+    return printTable(false, true, 1, false, data, headings);
+  }
+
+  /**
+   * Returns a string with a table layout of the specified array of data
+   * organized into columns with the provided {@code headings}.
+   * <p>
+   * This is the equivalent of calling:
+   *
+   * <pre>
+   * {@code printTable(false, true, data, headings)}
+   * </pre>
+   *
+   * @param data The array of data.
+   * @param cells The number of consecutive column elements per cell (except for
+   *          the first and single heading column element).
+   * @param firstColumnOneCell Whether the first column is to have 1 cell.
+   * @param headings The headings of the columns.
+   * @return A string with a table layout of the specified data array organized
+   *         into columns with the provided {@code headings}.
+   * @throws NullPointerException If {@code data} or {@code headings} is null.
+   */
+  public static String printTable(final Object[] data, final int cells, final boolean firstColumnOneCell, final String ... headings) {
+    return printTable(false, true, cells, firstColumnOneCell, data, headings);
   }
 
   /**
@@ -1134,7 +1189,30 @@ public final class Strings {
    * @throws NullPointerException If {@code data} or {@code headings} is null.
    */
   public static String printTable(final String[] data, final String ... headings) {
-    return printTable(false, true, data, headings);
+    return printTable(false, true, 1, false, data, headings);
+  }
+
+  /**
+   * Returns a string with a table layout of the specified array of data
+   * organized into columns with the provided {@code headings}.
+   * <p>
+   * This is the equivalent of calling:
+   *
+   * <pre>
+   * {@code printTable(false, true, data, headings)}
+   * </pre>
+   *
+   * @param data The array of data.
+   * @param cells The number of consecutive column elements per cell (except for
+   *          the first and single heading column element).
+   * @param firstColumnOneCell Whether the first column is to have 1 cell.
+   * @param headings The headings of the columns.
+   * @return A string with a table layout of the specified data array organized
+   *         into columns with the provided {@code headings}.
+   * @throws NullPointerException If {@code data} or {@code headings} is null.
+   */
+  public static String printTable(final String[] data, final int cells, final boolean firstColumnOneCell, final String ... headings) {
+    return printTable(false, true, cells, firstColumnOneCell, data, headings);
   }
 
   /**
@@ -1151,14 +1229,35 @@ public final class Strings {
    * @throws NullPointerException If {@code data} or {@code headings} is null.
    */
   public static String printTable(final boolean borders, final boolean alignLeft, final Object[] data, final String ... headings) {
+    return printTable(borders, alignLeft, 1, false, data, headings);
+  }
+
+  /**
+   * Returns a string with a table layout of the specified array of data
+   * organized into columns with the provided {@code headings}.
+   *
+   * @param borders Whether to draw borders.
+   * @param alignLeft If {@code true}, the strings in table cells will be
+   *          aligned to the left; if {@code false}, then to the right.
+   * @param cells The number of consecutive column elements per cell (except for
+   *          the first and single heading column element).
+   * @param firstColumnOneCell Whether the first column is to have 1 cell.
+   * @param data The array of data.
+   * @param headings The headings of the columns.
+   * @return A string with a table layout of the specified data array organized
+   *         into columns with the provided {@code headings}.
+   * @throws NullPointerException If {@code data} or {@code headings} is null.
+   */
+  public static String printTable(final boolean borders, final boolean alignLeft, final int cells, final boolean firstColumnOneCell, final Object[] data, final String ... headings) {
     if (data.getClass().getComponentType() == String.class)
-      return printTable(borders, alignLeft, (String[])data, headings);
+      return printTable(borders, alignLeft, cells, firstColumnOneCell, (String[])data, headings);
 
     final String[] strings = new String[data.length];
     for (int i = 0; i < data.length; ++i)
-      strings[i] = String.valueOf(data[i]);
+      if (data[i] != null)
+        strings[i] = String.valueOf(data[i]);
 
-    return printTable(borders, alignLeft, strings, headings);
+    return printTable(borders, alignLeft, cells, firstColumnOneCell, strings, headings);
   }
 
   /**
@@ -1175,21 +1274,43 @@ public final class Strings {
    * @throws NullPointerException If {@code data} or {@code headings} is null.
    */
   public static String printTable(final boolean borders, final boolean alignLeft, final String[] data, final String ... headings) {
-    final int rows = 1 + data.length / headings.length;
-    final int remainder = data.length % headings.length;
+    return printTable(borders, alignLeft, 1, false, data, headings);
+  }
+
+  /**
+   * Returns a string with a table layout of the specified array of data
+   * organized into columns with the provided {@code headings}.
+   *
+   * @param borders Whether to draw borders.
+   * @param alignLeft If {@code true}, the strings in table cells will be
+   *          aligned to the left; if {@code false}, then to the right.
+   * @param cells The number of consecutive column elements per cell (except for
+   *          the first and single heading column element).
+   * @param firstColumnOneCell Whether the first column is to have 1 cell.
+   * @param data The array of data.
+   * @param headings The headings of the columns.
+   * @return A string with a table layout of the specified data array organized
+   *         into columns with the provided {@code headings}.
+   * @throws NullPointerException If {@code data} or {@code headings} is null.
+   */
+  public static String printTable(final boolean borders, final boolean alignLeft, final int cells, final boolean firstColumnOneCell, final String[] data, final String ... headings) {
+    final int rows = data.length / headings.length;
+    final int remainder = data.length % headings.length == 0 ? 0 : 1;
 
     final String[][] columns = new String[headings.length][];
-    for (int j = 0; j < headings.length; ++j) {
-      final String[] column = columns[j] = new String[rows + (remainder == 0 ? 0 : 1)];
-      column[0] = headings[j];
-      for (int k = 1; k < column.length; ++k) {
-        final int l = j + (k - 1) * (headings.length);
-        if (l < data.length)
-          column[k] = data[l];
+    for (int i = 0; i < headings.length; ++i) {
+      final String[] column = columns[i] = new String[1 + (rows + remainder) * cells];
+      column[0] = headings[i];
+      for (int j = 1; j < column.length; j += cells) {
+        for (int k = 0; k < cells; ++k) {
+          final int l = i * headings.length * cells + (j - 1) + k;
+          if (l < data.length)
+            column[j + k] = data[l];
+        }
       }
     }
 
-    return printTable(borders, alignLeft, columns);
+    return printTable(borders, alignLeft, cells, firstColumnOneCell, columns);
   }
 
   /**
@@ -1207,7 +1328,28 @@ public final class Strings {
    * @throws NullPointerException If {@code columns} is null.
    */
   public static String printTable(final String ... columns) {
-    return printTable(false, true, columns);
+    return printTable(false, true, 1, false, columns);
+  }
+
+  /**
+   * Returns a string with a table layout of the provided array of columns of
+   * new-line-delimited rows, without borders, aligned to the left.
+   * <p>
+   * This is the equivalent of calling:
+   *
+   * <pre>
+   * {@code printTable(false, true, columns)}
+   * </pre>
+   *
+   * @param cells The number of consecutive column elements per cell (except for
+   *          the first and single heading column element).
+   * @param firstColumnOneCell Whether the first column is to have 1 cell.
+   * @param columns The 2 dimensional array of columns to print.
+   * @return A string with a column layout of the provided 2 dimensional array.
+   * @throws NullPointerException If {@code columns} is null.
+   */
+  public static String printTable(final int cells, final boolean firstColumnOneCell, final String ... columns) {
+    return printTable(false, true, cells, firstColumnOneCell, columns);
   }
 
   /**
@@ -1228,12 +1370,36 @@ public final class Strings {
    * @throws NullPointerException If {@code columns} is null.
    */
   public static String printTable(final boolean borders, final boolean alignLeft, final String ... columns) {
+    return printTable(borders, alignLeft, 1, false, columns);
+  }
+
+  /**
+   * Returns a string with a table layout of the provided array of columns of
+   * new-line-delimited rows, without borders, aligned to the left.
+   * <p>
+   * This is the equivalent of calling:
+   *
+   * <pre>
+   * {@code printTable(false, true, columns)}
+   * </pre>
+   *
+   * @param borders Whether to draw borders.
+   * @param alignLeft If {@code true}, the strings in table cells will be
+   *          aligned to the left; if {@code false}, then to the right.
+   * @param cells The number of consecutive column elements per cell (except for
+   *          the first and single heading column element).
+   * @param firstColumnOneCell Whether the first column is to have 1 cell.
+   * @param columns The 2 dimensional array of columns to print.
+   * @return A string with a column layout of the provided 2 dimensional array.
+   * @throws NullPointerException If {@code columns} is null.
+   */
+  public static String printTable(final boolean borders, final boolean alignLeft, final int cells, final boolean firstColumnOneCell, final String ... columns) {
     // Split input strings into columns and rows
     final String[][] strings = new String[columns.length][];
     for (int i = 0; i < columns.length; ++i)
       strings[i] = columns[i] == null ? null : columns[i].split("\n");
 
-    return printTable(borders, true, (Object[][])strings);
+    return printTable(borders, true, cells, firstColumnOneCell, (Object[][])strings);
   }
 
   /**
@@ -1251,7 +1417,28 @@ public final class Strings {
    * @throws NullPointerException If {@code columns} is null.
    */
   public static String printTable(final String[] ... columns) {
-    return printTable(false, true, columns);
+    return printTable(false, true, 1, false, columns);
+  }
+
+  /**
+   * Returns a string with a table layout of the provided 2 dimensional array of
+   * columns, without borders, aligned to the left.
+   * <p>
+   * This is the equivalent of calling:
+   *
+   * <pre>
+   * {@code printTable(false, true, columns)}
+   * </pre>
+   *
+   * @param columns The 2 dimensional array of columns to print.
+   * @param cells The number of consecutive column elements per cell (except for
+   *          the first and single heading column element).
+   * @param firstColumnOneCell Whether the first column is to have 1 cell.
+   * @return A string with a column layout of the provided 2 dimensional array.
+   * @throws NullPointerException If {@code columns} is null.
+   */
+  public static String printTable(final int cells, final boolean firstColumnOneCell, final String[] ... columns) {
+    return printTable(false, true, cells, firstColumnOneCell, columns);
   }
 
   /**
@@ -1269,7 +1456,28 @@ public final class Strings {
    * @throws NullPointerException If {@code columns} is null.
    */
   public static String printTable(final Object[] ... columns) {
-    return printTable(false, true, columns);
+    return printTable(false, true, 1, false, columns);
+  }
+
+  /**
+   * Returns a string with a table layout of the provided 2 dimensional array of
+   * columns, without borders, aligned to the left.
+   * <p>
+   * This is the equivalent of calling:
+   *
+   * <pre>
+   * {@code printTable(false, true, columns)}
+   * </pre>
+   *
+   * @param cells The number of consecutive column elements per cell (except for
+   *          the first and single heading column element).
+   * @param firstColumnOneCell Whether the first column is to have 1 cell.
+   * @param columns The 2 dimensional array of columns to print.
+   * @return A string with a column layout of the provided 2 dimensional array.
+   * @throws NullPointerException If {@code columns} is null.
+   */
+  public static String printTable(final int cells, final boolean firstColumnOneCell, final Object[] ... columns) {
+    return printTable(false, true, cells, firstColumnOneCell, columns);
   }
 
   /**
@@ -1284,6 +1492,24 @@ public final class Strings {
    * @throws NullPointerException If {@code columns} is null.
    */
   public static String printTable(final boolean borders, final boolean alignLeft, final Object[] ... columns) {
+    return printTable(borders, alignLeft, 1, false, columns);
+  }
+
+  /**
+   * Returns a string with a table layout of the provided 2 dimensional array of
+   * columns.
+   *
+   * @param borders Whether to draw borders.
+   * @param alignLeft If {@code true}, the strings in table cells will be
+   *          aligned to the left; if {@code false}, then to the right.
+   * @param cells The number of consecutive column elements per cell (except for
+   *          the first and single heading column element).
+   * @param firstColumnOneCell Whether the first column is to have 1 cell.
+   * @param columns The 2 dimensional array of columns to print.
+   * @return A string with a column layout of the provided 2 dimensional array.
+   * @throws NullPointerException If {@code columns} is null.
+   */
+  public static String printTable(final boolean borders, final boolean alignLeft, final int cells, final boolean firstColumnOneCell, final Object[] ... columns) {
     if (columns.getClass().getComponentType() == String[].class)
       return printTable(borders, alignLeft, (String[][])columns);
 
@@ -1293,11 +1519,12 @@ public final class Strings {
       if (column != null) {
         final String[] string = strings[i] = new String[column.length];
         for (int j = 0; j < column.length; ++j)
-          string[j] = String.valueOf(column[j]);
+          if (column[j] != null)
+            string[j] = String.valueOf(column[j]);
       }
     }
 
-    return printTable(borders, alignLeft, strings);
+    return printTable(borders, alignLeft, cells, firstColumnOneCell, strings);
   }
 
   /**
@@ -1312,62 +1539,156 @@ public final class Strings {
    * @throws NullPointerException If {@code columns} is null.
    */
   public static String printTable(final boolean borders, final boolean alignLeft, final String[] ... columns) {
-    int maxLines = 0;
-    // Store an array of column widths
-    final int[] widths = new int[columns.length];
-    // calculate column widths
-    for (int i = 0, maxWidth = 0; i < columns.length; ++i) {
-      final String[] column = columns[i];
-      if (column != null) {
-        if (column.length > maxLines)
-          maxLines = column.length;
+    return printTable(borders, alignLeft, 1, false, columns);
+  }
 
-        for (int j = 0; j < column.length; ++j)
-          if (columns[i][j] != null && columns[i][j].length() > maxWidth)
-            maxWidth = columns[i][j].length();
+  /**
+   * Returns a string with a table layout of the provided 2 dimensional array of
+   * columns.
+   *
+   * @param borders Whether to draw borders.
+   * @param alignLeft If {@code true}, the strings in table cells will be
+   *          aligned to the left; if {@code false}, then to the right.
+   * @param cells The number of consecutive column elements per cell (except for
+   *          the first and single heading column element).
+   * @param firstColumnOneCell Whether the first column is to have 1 cell.
+   * @param columns The 2 dimensional array of columns to print.
+   * @return A string with a column layout of the provided 2 dimensional array.
+   * @throws NullPointerException If {@code columns} is null.
+   */
+  public static String printTable(final boolean borders, final boolean alignLeft, final int cells, boolean firstColumnOneCell, final String[] ... columns) {
+    // Moot if cells == 1 and firstColumnOneCell == true
+    if (cells == 1)
+      firstColumnOneCell = false;
+
+    final String cellPadding = borders ? " │ " : " ";
+    int maxRows = 0;
+    // Calculate the cell widths for each column
+    final int[] widths = new int[columns.length * cells - (firstColumnOneCell ? 1 : 0)];
+    for (int i = 0; i < columns.length; ++i) {
+      final int w = i * cells - (i > 0 && firstColumnOneCell ? 1 : 0);
+      final String[] rows = columns[i];
+      if (rows != null && rows.length > 0) {
+        maxRows = Math.max(maxRows, rows.length);
+        // First row is the heading, which has only 1 cell
+        final int headingWidth = rows[0] == null ? 0 : Strings.lengthPrintable(rows[0]);
+        for (int j = 0; j < cells; ++j) {
+          final int width = widths[w + j];
+          int cellWidth = headingWidth;
+          if (i == 0 && firstColumnOneCell)
+            ++j;
+          else
+            cellWidth /= cells;
+
+          widths[w + j] = Math.max(width, cellWidth);
+        }
+
+        // Following rows have `cells` number of cells
+        final int inc = i == 0 && firstColumnOneCell ? 1 : cells;
+        for (int k = 1; k < rows.length; k += inc) {
+          for (int j = 0; j < inc; ++j) {
+            final int width = widths[w + j];
+            final int r = j + k;
+            widths[w + j] = Math.max(width, r >= rows.length || rows[r] == null ? 0 : Strings.lengthPrintable(rows[r]));
+          }
+        }
       }
-
-      maxWidth = Math.max(4, maxWidth);
-      widths[i] = maxWidth;
     }
 
-    // Print the lines
+    // Print the rows
     final StringBuilder builder = new StringBuilder();
+
+    // Print the top border
     if (borders) {
       builder.append('╔');
       for (int i = 0; i < columns.length; ++i) {
+        final int w = i * cells - (i > 0 && firstColumnOneCell ? 1 : 0);
         if (i > 0)
           builder.append('╦');
 
-        builder.append(Strings.repeat("═", widths[i] + 2));
-      }
-
-      builder.append("╗\n");
-    }
-
-    for (int j = 0; j < maxLines; ++j) {
-      if (j > 0)
-        builder.append('\n');
-
-      if (borders) {
-        if (j == 1) {
-          builder.append('╠');
-          for (int i = 0; i < columns.length; ++i) {
-            if (i > 0)
-              builder.append('╬');
-
-            builder.append(Strings.repeat("═", widths[i] + 2));
-          }
-
-          builder.append("╣\n");
+        // Calculate the full column width across the # of `cells`
+        int fullWidth = -cellPadding.length();
+        for (int j = 0; j < cells; ++j) {
+          final int width = widths[w + j];
+          fullWidth += width + cellPadding.length();
+          if (i == 0 && firstColumnOneCell)
+            break;
         }
 
-        builder.append("║ ");
+        builder.append(Strings.repeat("═", fullWidth + 2));
       }
 
+      builder.append("╗\n║ ");
+    }
+
+    // Print the heading row
+    String[] rows;
+    for (int i = 0; i < columns.length; ++i) {
+      final int w = i * cells - (i > 0 && firstColumnOneCell ? 1 : 0);
+      rows = columns[i];
+      final String row = rows == null || rows[0] == null ? "" : rows[0];
+      // Calculate the full column width across the # of `cells`
+      int fullWidth = -cellPadding.length();
+      for (int j = 0; j < cells; ++j) {
+        final int width = widths[w + j];
+        fullWidth += width + cellPadding.length();
+        if (i == 0 && firstColumnOneCell)
+          break;
+      }
+
+      builder.append(Strings.pad(row, fullWidth, alignLeft, ' ', false));
+      if (borders)
+        builder.append(" ║");
+
+      builder.append(' ');
+    }
+
+    // Print the middle border
+    if (borders) {
+      builder.append("\n╠");
       for (int i = 0; i < columns.length; ++i) {
-        final String line = columns[i] == null || j >= columns[i].length || columns[i][j] == null ? "null" : j < columns[i].length ? columns[i][j] : "";
-        builder.append(Strings.pad(line, widths[i], alignLeft, ' ', false));
+        final int w = i * cells - (i > 0 && firstColumnOneCell ? 1 : 0);
+        if (i > 0)
+          builder.append('╬');
+
+        builder.append('═');
+        for (int j = 0; j < cells; ++j) {
+          if (j > 0)
+            builder.append("═╤═");
+
+          final int width = widths[w + j];
+          builder.append(Strings.repeat("═", width));
+          if (i == 0 && firstColumnOneCell)
+            break;
+        }
+
+        builder.append('═');
+      }
+
+      builder.append("╣");
+    }
+
+    // Print the data rows
+    for (int k = 1; k < maxRows; k += cells) {
+      builder.append('\n');
+      if (borders)
+        builder.append("║ ");
+
+      for (int i = 0; i < columns.length; ++i) {
+        final int w = i * cells - (i > 0 && firstColumnOneCell ? 1 : 0);
+        final int r = k > 1 && i == 0 && firstColumnOneCell ? (k + 1) / 2 : k;
+        rows = columns[i];
+        for (int j = 0; j < cells; ++j) {
+          if (j > 0)
+            builder.append(cellPadding);
+
+          final String cell = rows == null || r + j >= rows.length || rows[r + j] == null ? "" : rows[r + j];
+          final int width = widths[w + j];
+          builder.append(Strings.pad(cell, width, alignLeft, ' ', false));
+          if (i == 0 && firstColumnOneCell)
+            break;
+        }
+
         if (borders)
           builder.append(" ║");
 
@@ -1375,13 +1696,26 @@ public final class Strings {
       }
     }
 
+    // Print the bottom border
     if (borders) {
       builder.append("\n╚");
       for (int i = 0; i < columns.length; ++i) {
+        final int w = i * cells - (i > 0 && firstColumnOneCell ? 1 : 0);
         if (i > 0)
           builder.append('╩');
 
-        builder.append(Strings.repeat("═", widths[i] + 2));
+        builder.append('═');
+        for (int j = 0; j < cells; ++j) {
+          if (j > 0)
+            builder.append("═╧═");
+
+          final int width = widths[w + j];
+          builder.append(Strings.repeat("═", width));
+          if (i == 0 && firstColumnOneCell)
+            break;
+        }
+
+        builder.append('═');
       }
 
       builder.append('╝');
