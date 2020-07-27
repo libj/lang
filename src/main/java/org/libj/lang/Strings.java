@@ -558,16 +558,17 @@ public final class Strings {
   }
 
   /**
-   * Returns a left-padded representation of the specified length for the
+   * Returns a padded representation of the specified length for the
    * provided string. If {@code length > str.length()}, preceding characters
    * are filled with spaces ({@code ' '}). If {@code length == str.length()},
    * the provided string instance is returned. If
    * {@code length < str.length()}, this method throws
    * {@link IllegalArgumentException}.
    * <p>
-   * This method is equivalent to calling {@code padLeft(str, length, ' ')}.
+   * This method is equivalent to calling {@code pad(str, align, length, ' ')}.
    *
    * @param str The string to pad.
+   * @param align Alignment to be used for string.
    * @param length The length of the returned, padded string.
    * @return A left-padded representation of the specified length for the
    *         provided string.
@@ -575,8 +576,8 @@ public final class Strings {
    *           {@code str.length()}.
    * @throws NullPointerException If {@code str} is null.
    */
-  public static String padLeft(final String str, final int length) {
-    return pad(str, length, false, ' ', false);
+  public static String pad(final String str, final Align align, final int length) {
+    return pad(str, length, align, ' ', false);
   }
 
   /**
@@ -590,6 +591,7 @@ public final class Strings {
    * This method is equivalent to calling {@code padLeft(str, length, ' ')}.
    *
    * @param str The string to pad.
+   * @param align Alignment to be used for string.
    * @param length The length of the returned, padded string.
    * @return A left-padded representation of the specified length for the
    *         provided string.
@@ -597,8 +599,8 @@ public final class Strings {
    *           {@code str.length()}.
    * @throws NullPointerException If {@code str} is null.
    */
-  public static String padLeftAll(final String str, final int length) {
-    return padAll(str, length, false, ' ', false);
+  public static String padAll(final String str, final Align align, final int length) {
+    return padAll(str, length, align, ' ', false);
   }
 
   /**
@@ -612,6 +614,7 @@ public final class Strings {
    * This method is equivalent to calling {@code padLeft(str, length, ' ')}.
    *
    * @param str The string to pad.
+   * @param align Alignment to be used for string.
    * @param length The length of the returned, padded string.
    * @param truncate Whether the string should be truncated if it is longer than
    *          the provided {@code length}.
@@ -621,8 +624,8 @@ public final class Strings {
    *           {@code length} is less than {@code str.length()}.
    * @throws NullPointerException If {@code str} is null.
    */
-  public static String padLeft(final String str, final int length, final boolean truncate) {
-    return pad(str, length, false, ' ', truncate);
+  public static String pad(final String str, final Align align, final int length, final boolean truncate) {
+    return pad(str, length, align, ' ', truncate);
   }
 
   /**
@@ -636,6 +639,7 @@ public final class Strings {
    * This method is equivalent to calling {@code padLeft(str, length, ' ')}.
    *
    * @param str The string to pad.
+   * @param align Alignment to be used for string.
    * @param length The length of the returned, padded string.
    * @param truncate Whether the string should be truncated if it is longer than
    *          the provided {@code length}.
@@ -645,8 +649,8 @@ public final class Strings {
    *           {@code length} is less than {@code str.length()}.
    * @throws NullPointerException If {@code str} is null.
    */
-  public static String padLeftAll(final String str, final int length, final boolean truncate) {
-    return padAll(str, length, false, ' ', truncate);
+  public static String padAll(final String str, final Align align, final int length, final boolean truncate) {
+    return padAll(str, length, align, ' ', truncate);
   }
 
   /**
@@ -658,6 +662,7 @@ public final class Strings {
    * {@link IllegalArgumentException}.
    *
    * @param str The string to pad.
+   * @param align Alignment to be used for string.
    * @param length The length of the returned, padded string.
    * @param pad The padding character.
    * @return A left-padded representation of the specified length for the
@@ -666,8 +671,8 @@ public final class Strings {
    *           {@code str.length()}.
    * @throws NullPointerException If {@code str} is null.
    */
-  public static String padLeft(final String str, final int length, final char pad) {
-    return pad(str, length, false, pad, false);
+  public static String pad(final String str, final Align align, final int length, final char pad) {
+    return pad(str, length, align, pad, false);
   }
 
   /**
@@ -679,6 +684,7 @@ public final class Strings {
    * this method throws {@link IllegalArgumentException}.
    *
    * @param str The string to pad.
+   * @param align Alignment to be used for string.
    * @param length The length of the returned, padded string.
    * @param pad The padding character.
    * @return A left-padded representation of the specified length for the
@@ -687,8 +693,8 @@ public final class Strings {
    *           {@code str.length()}.
    * @throws NullPointerException If {@code str} is null.
    */
-  public static String padLeftAll(final String str, final int length, final char pad) {
-    return padAll(str, length, false, pad, false);
+  public static String padAll(final String str, final Align align, final int length, final char pad) {
+    return padAll(str, length, align, pad, false);
   }
 
   /**
@@ -700,6 +706,7 @@ public final class Strings {
    * {@link IllegalArgumentException}.
    *
    * @param str The string to pad.
+   * @param align Alignment to be used for string.
    * @param length The length of the returned, padded string.
    * @param pad The padding character.
    * @param truncate Whether the string should be truncated if it is longer than
@@ -710,8 +717,8 @@ public final class Strings {
    *           {@code length} is less than {@code str.length()}.
    * @throws NullPointerException If {@code str} is null.
    */
-  public static String padLeft(final String str, final int length, final char pad, final boolean truncate) {
-    return pad(str, length, false, pad, truncate);
+  public static String pad(final String str, final Align align, final int length, final char pad, final boolean truncate) {
+    return pad(str, length, align, pad, truncate);
   }
 
   /**
@@ -723,6 +730,7 @@ public final class Strings {
    * this method throws {@link IllegalArgumentException}.
    *
    * @param str The string to pad.
+   * @param align Alignment to be used for string.
    * @param length The length of the returned, padded string.
    * @param pad The padding character.
    * @param truncate Whether the string should be truncated if it is longer than
@@ -733,196 +741,18 @@ public final class Strings {
    *           {@code length} is less than {@code str.length()}.
    * @throws NullPointerException If {@code str} is null.
    */
-  public static String padLeftAll(final String str, final int length, final char pad, final boolean truncate) {
-    return padAll(str, length, false, pad, truncate);
+  public static String padAll(final String str, final Align align, final int length, final char pad, final boolean truncate) {
+    return padAll(str, length, align, pad, truncate);
   }
 
-  /**
-   * Returns a right-padded representation of the specified length for the
-   * provided string. If {@code length > string.length()}, ending characters are
-   * filled with spaces ({@code ' '}). If {@code length == string.length()}, the
-   * provided string instance is returned. If {@code length < string.length()},
-   * this method throws {@link IllegalArgumentException}.
-   * <p>
-   * This method is equivalent to calling {@code padRight(string, length, ' ')}.
-   *
-   * @param str The string to pad.
-   * @param length The length of the returned, padded string.
-   * @return A right-padded representation of the specified length for the
-   *         provided string.
-   * @throws IllegalArgumentException If {@code length} is less than
-   *           {@code str.length()}.
-   * @throws NullPointerException If {@code str} is null.
-   */
-  public static String padRight(final String str, final int length) {
-    return pad(str, length, true, ' ', false);
-  }
-
-  /**
-   * Returns a right-padded representation of the specified length for the
-   * provided string (with all newlines within the string padded as well). If
-   * {@code length > string.length()}, ending characters are filled with spaces
-   * ({@code ' '}). If {@code length == string.length()}, the provided string
-   * instance is returned. If {@code length < string.length()}, this method
-   * throws {@link IllegalArgumentException}.
-   * <p>
-   * This method is equivalent to calling {@code padRight(string, length, ' ')}.
-   *
-   * @param str The string to pad.
-   * @param length The length of the returned, padded string.
-   * @return A right-padded representation of the specified length for the
-   *         provided string.
-   * @throws IllegalArgumentException If {@code length} is less than
-   *           {@code str.length()}.
-   * @throws NullPointerException If {@code str} is null.
-   */
-  public static String padRightAll(final String str, final int length) {
-    return padAll(str, length, true, ' ', false);
-  }
-
-  /**
-   * Returns a right-padded representation of the specified length for the
-   * provided string. If {@code length > string.length()}, ending characters are
-   * filled with spaces ({@code ' '}). If {@code length == string.length()}, the
-   * provided string instance is returned. If {@code length < string.length()},
-   * this method throws {@link IllegalArgumentException}.
-   * <p>
-   * This method is equivalent to calling {@code padRight(string, length, ' ')}.
-   *
-   * @param str The string to pad.
-   * @param length The length of the returned, padded string.
-   * @param truncate Whether the string should be truncated if it is longer than
-   *          the provided {@code length}.
-   * @return A right-padded representation of the specified length for the
-   *         provided string.
-   * @throws IllegalArgumentException If {@code truncate == false} and
-   *           {@code length} is less than {@code str.length()}.
-   * @throws NullPointerException If {@code str} is null.
-   */
-  public static String padRight(final String str, final int length, final boolean truncate) {
-    return pad(str, length, true, ' ', truncate);
-  }
-
-  /**
-   * Returns a right-padded representation of the specified length for the
-   * provided string (with all newlines within the string padded as well). If
-   * {@code length > string.length()}, ending characters are filled with spaces
-   * ({@code ' '}). If {@code length == string.length()}, the provided string
-   * instance is returned. If {@code length < string.length()}, this method
-   * throws {@link IllegalArgumentException}.
-   * <p>
-   * This method is equivalent to calling {@code padRight(string, length, ' ')}.
-   *
-   * @param str The string to pad.
-   * @param length The length of the returned, padded string.
-   * @param truncate Whether the string should be truncated if it is longer than
-   *          the provided {@code length}.
-   * @return A right-padded representation of the specified length for the
-   *         provided string.
-   * @throws IllegalArgumentException If {@code truncate == false} and
-   *           {@code length} is less than {@code str.length()}.
-   * @throws NullPointerException If {@code str} is null.
-   */
-  public static String padRightAll(final String str, final int length, final boolean truncate) {
-    return padAll(str, length, true, ' ', truncate);
-  }
-
-  /**
-   * Returns a right-padded representation of the specified length for the
-   * provided string. If {@code length > string.length()}, ending characters are
-   * filled with the specified {@code pad} char. If
-   * {@code length == string.length()}, the provided string instance is
-   * returned. If {@code length < string.length()}, this method throws
-   * {@link IllegalArgumentException}.
-   *
-   * @param str The string to pad.
-   * @param length The length of the returned, padded string.
-   * @param pad The padding character.
-   * @return A right-padded representation of the specified length for the
-   *         provided string.
-   * @throws IllegalArgumentException If {@code length} is less than
-   *           {@code str.length()}.
-   * @throws NullPointerException If {@code str} is null.
-   */
-  public static String padRight(final String str, final int length, final char pad) {
-    return pad(str, length, true, pad, false);
-  }
-
-  /**
-   * Returns a right-padded representation of the specified length for the
-   * provided string (with all newlines within the string padded as well). If
-   * {@code length > string.length()}, ending characters are filled with the
-   * specified {@code pad} char. If {@code length == string.length()}, the
-   * provided string instance is returned. If {@code length < string.length()},
-   * this method throws {@link IllegalArgumentException}.
-   *
-   * @param str The string to pad.
-   * @param length The length of the returned, padded string.
-   * @param pad The padding character.
-   * @return A right-padded representation of the specified length for the
-   *         provided string.
-   * @throws IllegalArgumentException If {@code length} is less than
-   *           {@code str.length()}.
-   * @throws NullPointerException If {@code str} is null.
-   */
-  public static String padRightAll(final String str, final int length, final char pad) {
-    return padAll(str, length, true, pad, false);
-  }
-
-  /**
-   * Returns a right-padded representation of the specified length for the
-   * provided string. If {@code length > string.length()}, ending characters are
-   * filled with the specified {@code pad} char. If
-   * {@code length == string.length()}, the provided string instance is
-   * returned. If {@code length < string.length()}, this method throws
-   * {@link IllegalArgumentException}.
-   *
-   * @param str The string to pad.
-   * @param length The length of the returned, padded string.
-   * @param pad The padding character.
-   * @param truncate Whether the string should be truncated if it is longer than
-   *          the provided {@code length}.
-   * @return A right-padded representation of the specified length for the
-   *         provided string.
-   * @throws IllegalArgumentException If {@code truncate == false} and
-   *           {@code length} is less than {@code str.length()}.
-   * @throws NullPointerException If {@code str} is null.
-   */
-  public static String padRight(final String str, final int length, final char pad, final boolean truncate) {
-    return pad(str, length, true, pad, truncate);
-  }
-
-  /**
-   * Returns a right-padded representation of the specified length for the
-   * provided string (with all newlines within the string padded as well). If
-   * {@code length > string.length()}, ending characters are filled with the
-   * specified {@code pad} char. If {@code length == string.length()}, the
-   * provided string instance is returned. If {@code length < string.length()},
-   * this method throws {@link IllegalArgumentException}.
-   *
-   * @param str The string to pad.
-   * @param length The length of the returned, padded string.
-   * @param pad The padding character.
-   * @param truncate Whether the string should be truncated if it is longer than
-   *          the provided {@code length}.
-   * @return A right-padded representation of the specified length for the
-   *         provided string.
-   * @throws IllegalArgumentException If {@code truncate == false} and
-   *           {@code length} is less than {@code str.length()}.
-   * @throws NullPointerException If {@code str} is null.
-   */
-  public static String padRightAll(final String str, final int length, final char pad, final boolean truncate) {
-    return padAll(str, length, true, pad, truncate);
-  }
-
-  private static String padAll(final String str, final int length, final boolean right, final char pad, final boolean truncate) {
+  private static String padAll(final String str, final int length, final Align align, final char pad, final boolean truncate) {
     final StringBuilder builder = new StringBuilder();
     final String[] lines = str.split("[\n\r]");
     for (int i = 0; i < lines.length; ++i) {
       if (i > 0)
         builder.append('\n');
 
-      builder.append(pad(lines[i], length, right, pad, truncate));
+      builder.append(pad(lines[i], length, align, pad, truncate));
     }
 
     return builder.toString();
@@ -959,7 +789,43 @@ public final class Strings {
     return indexOrLength ? i : start;
   }
 
-  private static String pad(final String str, final int length, final boolean right, final char pad, final boolean truncate) {
+  public enum Align {
+    LEFT {
+      @Override
+      void pad(final char[] chars, final CharSequence seq, final int len, final char pad) {
+        Arrays.fill(chars, len, chars.length, pad);
+        for (int i = 0; i < len; ++i)
+          chars[i] = seq.charAt(i);
+      }
+    },
+    CENTER {
+      @Override
+      void pad(final char[] chars, final CharSequence seq, final int len, final char pad) {
+        final int offset = (chars.length - len) / 2;
+        Arrays.fill(chars, 0, offset, pad);
+        int i = 0;
+        for (; i < len; ++i)
+          chars[i + offset] = seq.charAt(i);
+
+        i += offset;
+        for (; i < chars.length; ++i)
+          chars[i] = pad;
+      }
+    },
+    RIGHT {
+      @Override
+      void pad(final char[] chars, final CharSequence seq, final int len, final char pad) {
+        final int offset = chars.length - len;
+        Arrays.fill(chars, 0, offset, pad);
+        for (int i = 0; i < len; ++i)
+          chars[i + offset] = seq.charAt(i);
+      }
+    };
+
+    abstract void pad(char[] chars, CharSequence seq, int len, char pad);
+  }
+
+  private static String pad(final String str, final int length, final Align align, final char pad, final boolean truncate) {
     final int lenPrint = lengthPrintable(str);
     if (length == lenPrint)
       return str;
@@ -968,23 +834,12 @@ public final class Strings {
       if (truncate)
         return str.substring(0, indexPrintable(str, length));
 
-      throw new IllegalArgumentException("length (" + length + ") must be greater or equal to string length (" + lenPrint + ")");
+      throw new IllegalArgumentException("length (" + length + ") must be greater or equal to printable string length (" + lenPrint + ")");
     }
 
     final int len = str.length();
     final char[] chars = new char[length + len - lenPrint];
-    if (right) {
-      Arrays.fill(chars, len, chars.length, pad);
-      for (int i = 0; i < len; ++i)
-        chars[i] = str.charAt(i);
-    }
-    else {
-      final int offset = chars.length - len;
-      Arrays.fill(chars, 0, offset, pad);
-      for (int i = 0; i < len; ++i)
-        chars[i + offset] = str.charAt(i);
-    }
-
+    align.pad(chars, str, len, pad);
     return new String(chars);
   }
 
@@ -1009,7 +864,7 @@ public final class Strings {
 
     String hex = Long.toString(value & ((1L << 4 * digits) - 1), 16);
     if (hex.length() < digits)
-      hex = padLeft(hex, digits, '0');
+      hex = pad(hex, Align.LEFT, digits, '0');
 
     return negative ? "-" + hex : hex;
   }
@@ -1146,7 +1001,7 @@ public final class Strings {
    * @throws NullPointerException If {@code data} or {@code headings} is null.
    */
   public static String printTable(final Object[] data, final String ... headings) {
-    return printTable(false, true, 1, false, data, headings);
+    return printTable(false, Align.LEFT, 1, false, data, headings);
   }
 
   /**
@@ -1169,7 +1024,7 @@ public final class Strings {
    * @throws NullPointerException If {@code data} or {@code headings} is null.
    */
   public static String printTable(final Object[] data, final int cells, final boolean firstColumnOneCell, final String ... headings) {
-    return printTable(false, true, cells, firstColumnOneCell, data, headings);
+    return printTable(false, Align.LEFT, cells, firstColumnOneCell, data, headings);
   }
 
   /**
@@ -1189,7 +1044,7 @@ public final class Strings {
    * @throws NullPointerException If {@code data} or {@code headings} is null.
    */
   public static String printTable(final String[] data, final String ... headings) {
-    return printTable(false, true, 1, false, data, headings);
+    return printTable(false, Align.LEFT, 1, false, data, headings);
   }
 
   /**
@@ -1212,7 +1067,7 @@ public final class Strings {
    * @throws NullPointerException If {@code data} or {@code headings} is null.
    */
   public static String printTable(final String[] data, final int cells, final boolean firstColumnOneCell, final String ... headings) {
-    return printTable(false, true, cells, firstColumnOneCell, data, headings);
+    return printTable(false, Align.LEFT, cells, firstColumnOneCell, data, headings);
   }
 
   /**
@@ -1220,16 +1075,15 @@ public final class Strings {
    * organized into columns with the provided {@code headings}.
    *
    * @param borders Whether to draw borders.
-   * @param alignLeft If {@code true}, the strings in table cells will be
-   *          aligned to the left; if {@code false}, then to the right.
+   * @param align Text alignment to be used for data cells.
    * @param data The array of data.
    * @param headings The headings of the columns.
    * @return A string with a table layout of the specified data array organized
    *         into columns with the provided {@code headings}.
    * @throws NullPointerException If {@code data} or {@code headings} is null.
    */
-  public static String printTable(final boolean borders, final boolean alignLeft, final Object[] data, final String ... headings) {
-    return printTable(borders, alignLeft, 1, false, data, headings);
+  public static String printTable(final boolean borders, final Align align, final Object[] data, final String ... headings) {
+    return printTable(borders, align, 1, false, data, headings);
   }
 
   /**
@@ -1237,8 +1091,7 @@ public final class Strings {
    * organized into columns with the provided {@code headings}.
    *
    * @param borders Whether to draw borders.
-   * @param alignLeft If {@code true}, the strings in table cells will be
-   *          aligned to the left; if {@code false}, then to the right.
+   * @param align Text alignment to be used for data cells.
    * @param cells The number of consecutive column elements per cell (except for
    *          the first and single heading column element).
    * @param firstColumnOneCell Whether the first column is to have 1 cell.
@@ -1248,16 +1101,16 @@ public final class Strings {
    *         into columns with the provided {@code headings}.
    * @throws NullPointerException If {@code data} or {@code headings} is null.
    */
-  public static String printTable(final boolean borders, final boolean alignLeft, final int cells, final boolean firstColumnOneCell, final Object[] data, final String ... headings) {
+  public static String printTable(final boolean borders, final Align align, final int cells, final boolean firstColumnOneCell, final Object[] data, final String ... headings) {
     if (data.getClass().getComponentType() == String.class)
-      return printTable(borders, alignLeft, cells, firstColumnOneCell, (String[])data, headings);
+      return printTable(borders, align, cells, firstColumnOneCell, (String[])data, headings);
 
     final String[] strings = new String[data.length];
     for (int i = 0; i < data.length; ++i)
       if (data[i] != null)
         strings[i] = String.valueOf(data[i]);
 
-    return printTable(borders, alignLeft, cells, firstColumnOneCell, strings, headings);
+    return printTable(borders, align, cells, firstColumnOneCell, strings, headings);
   }
 
   /**
@@ -1265,16 +1118,15 @@ public final class Strings {
    * organized into columns with the provided {@code headings}.
    *
    * @param borders Whether to draw borders.
-   * @param alignLeft If {@code true}, the strings in table cells will be
-   *          aligned to the left; if {@code false}, then to the right.
+   * @param align Text alignment to be used for data cells.
    * @param data The array of data.
    * @param headings The headings of the columns.
    * @return A string with a table layout of the specified data array organized
    *         into columns with the provided {@code headings}.
    * @throws NullPointerException If {@code data} or {@code headings} is null.
    */
-  public static String printTable(final boolean borders, final boolean alignLeft, final String[] data, final String ... headings) {
-    return printTable(borders, alignLeft, 1, false, data, headings);
+  public static String printTable(final boolean borders, final Align align, final String[] data, final String ... headings) {
+    return printTable(borders, align, 1, false, data, headings);
   }
 
   /**
@@ -1282,8 +1134,7 @@ public final class Strings {
    * organized into columns with the provided {@code headings}.
    *
    * @param borders Whether to draw borders.
-   * @param alignLeft If {@code true}, the strings in table cells will be
-   *          aligned to the left; if {@code false}, then to the right.
+   * @param align Text alignment to be used for data cells.
    * @param cells The number of consecutive column elements per cell (except for
    *          the first and single heading column element).
    * @param firstColumnOneCell Whether the first column is to have 1 cell.
@@ -1293,7 +1144,7 @@ public final class Strings {
    *         into columns with the provided {@code headings}.
    * @throws NullPointerException If {@code data} or {@code headings} is null.
    */
-  public static String printTable(final boolean borders, final boolean alignLeft, final int cells, final boolean firstColumnOneCell, final String[] data, final String ... headings) {
+  public static String printTable(final boolean borders, final Align align, final int cells, final boolean firstColumnOneCell, final String[] data, final String ... headings) {
     final int rows = data.length / headings.length;
     final int remainder = data.length % headings.length == 0 ? 0 : 1;
 
@@ -1310,7 +1161,7 @@ public final class Strings {
       }
     }
 
-    return printTable(borders, alignLeft, cells, firstColumnOneCell, columns);
+    return printTable(borders, align, cells, firstColumnOneCell, columns);
   }
 
   /**
@@ -1328,7 +1179,7 @@ public final class Strings {
    * @throws NullPointerException If {@code columns} is null.
    */
   public static String printTable(final String ... columns) {
-    return printTable(false, true, 1, false, columns);
+    return printTable(false, Align.LEFT, 1, false, columns);
   }
 
   /**
@@ -1349,7 +1200,7 @@ public final class Strings {
    * @throws NullPointerException If {@code columns} is null.
    */
   public static String printTable(final int cells, final boolean firstColumnOneCell, final String ... columns) {
-    return printTable(false, true, cells, firstColumnOneCell, columns);
+    return printTable(false, Align.LEFT, cells, firstColumnOneCell, columns);
   }
 
   /**
@@ -1363,14 +1214,13 @@ public final class Strings {
    * </pre>
    *
    * @param borders Whether to draw borders.
-   * @param alignLeft If {@code true}, the strings in table cells will be
-   *          aligned to the left; if {@code false}, then to the right.
+   * @param align Text alignment to be used for data cells.
    * @param columns The 2 dimensional array of columns to print.
    * @return A string with a column layout of the provided 2 dimensional array.
    * @throws NullPointerException If {@code columns} is null.
    */
-  public static String printTable(final boolean borders, final boolean alignLeft, final String ... columns) {
-    return printTable(borders, alignLeft, 1, false, columns);
+  public static String printTable(final boolean borders, final Align align, final String ... columns) {
+    return printTable(borders, align, 1, false, columns);
   }
 
   /**
@@ -1384,8 +1234,7 @@ public final class Strings {
    * </pre>
    *
    * @param borders Whether to draw borders.
-   * @param alignLeft If {@code true}, the strings in table cells will be
-   *          aligned to the left; if {@code false}, then to the right.
+   * @param align Text alignment to be used for data cells.
    * @param cells The number of consecutive column elements per cell (except for
    *          the first and single heading column element).
    * @param firstColumnOneCell Whether the first column is to have 1 cell.
@@ -1393,13 +1242,13 @@ public final class Strings {
    * @return A string with a column layout of the provided 2 dimensional array.
    * @throws NullPointerException If {@code columns} is null.
    */
-  public static String printTable(final boolean borders, final boolean alignLeft, final int cells, final boolean firstColumnOneCell, final String ... columns) {
+  public static String printTable(final boolean borders, final Align align, final int cells, final boolean firstColumnOneCell, final String ... columns) {
     // Split input strings into columns and rows
     final String[][] strings = new String[columns.length][];
     for (int i = 0; i < columns.length; ++i)
       strings[i] = columns[i] == null ? null : columns[i].split("\n");
 
-    return printTable(borders, true, cells, firstColumnOneCell, (Object[][])strings);
+    return printTable(borders, Align.LEFT, cells, firstColumnOneCell, (Object[][])strings);
   }
 
   /**
@@ -1417,7 +1266,7 @@ public final class Strings {
    * @throws NullPointerException If {@code columns} is null.
    */
   public static String printTable(final String[] ... columns) {
-    return printTable(false, true, 1, false, columns);
+    return printTable(false, Align.LEFT, 1, false, columns);
   }
 
   /**
@@ -1438,7 +1287,7 @@ public final class Strings {
    * @throws NullPointerException If {@code columns} is null.
    */
   public static String printTable(final int cells, final boolean firstColumnOneCell, final String[] ... columns) {
-    return printTable(false, true, cells, firstColumnOneCell, columns);
+    return printTable(false, Align.LEFT, cells, firstColumnOneCell, columns);
   }
 
   /**
@@ -1456,7 +1305,7 @@ public final class Strings {
    * @throws NullPointerException If {@code columns} is null.
    */
   public static String printTable(final Object[] ... columns) {
-    return printTable(false, true, 1, false, columns);
+    return printTable(false, Align.LEFT, 1, false, columns);
   }
 
   /**
@@ -1477,7 +1326,7 @@ public final class Strings {
    * @throws NullPointerException If {@code columns} is null.
    */
   public static String printTable(final int cells, final boolean firstColumnOneCell, final Object[] ... columns) {
-    return printTable(false, true, cells, firstColumnOneCell, columns);
+    return printTable(false, Align.LEFT, cells, firstColumnOneCell, columns);
   }
 
   /**
@@ -1485,14 +1334,13 @@ public final class Strings {
    * columns.
    *
    * @param borders Whether to draw borders.
-   * @param alignLeft If {@code true}, the strings in table cells will be
-   *          aligned to the left; if {@code false}, then to the right.
+   * @param align Text alignment to be used for data cells.
    * @param columns The 2 dimensional array of columns to print.
    * @return A string with a column layout of the provided 2 dimensional array.
    * @throws NullPointerException If {@code columns} is null.
    */
-  public static String printTable(final boolean borders, final boolean alignLeft, final Object[] ... columns) {
-    return printTable(borders, alignLeft, 1, false, columns);
+  public static String printTable(final boolean borders, final Align align, final Object[] ... columns) {
+    return printTable(borders, align, 1, false, columns);
   }
 
   /**
@@ -1500,8 +1348,7 @@ public final class Strings {
    * columns.
    *
    * @param borders Whether to draw borders.
-   * @param alignLeft If {@code true}, the strings in table cells will be
-   *          aligned to the left; if {@code false}, then to the right.
+   * @param align Text alignment to be used for data cells.
    * @param cells The number of consecutive column elements per cell (except for
    *          the first and single heading column element).
    * @param firstColumnOneCell Whether the first column is to have 1 cell.
@@ -1509,9 +1356,9 @@ public final class Strings {
    * @return A string with a column layout of the provided 2 dimensional array.
    * @throws NullPointerException If {@code columns} is null.
    */
-  public static String printTable(final boolean borders, final boolean alignLeft, final int cells, final boolean firstColumnOneCell, final Object[] ... columns) {
+  public static String printTable(final boolean borders, final Align align, final int cells, final boolean firstColumnOneCell, final Object[] ... columns) {
     if (columns.getClass().getComponentType() == String[].class)
-      return printTable(borders, alignLeft, (String[][])columns);
+      return printTable(borders, align, (String[][])columns);
 
     final String[][] strings = new String[columns.length][];
     for (int i = 0; i < strings.length; ++i) {
@@ -1524,7 +1371,7 @@ public final class Strings {
       }
     }
 
-    return printTable(borders, alignLeft, cells, firstColumnOneCell, strings);
+    return printTable(borders, align, cells, firstColumnOneCell, strings);
   }
 
   /**
@@ -1532,14 +1379,13 @@ public final class Strings {
    * columns.
    *
    * @param borders Whether to draw borders.
-   * @param alignLeft If {@code true}, the strings in table cells will be
-   *          aligned to the left; if {@code false}, then to the right.
+   * @param align Text alignment to be used for data cells.
    * @param columns The 2 dimensional array of columns to print.
    * @return A string with a column layout of the provided 2 dimensional array.
    * @throws NullPointerException If {@code columns} is null.
    */
-  public static String printTable(final boolean borders, final boolean alignLeft, final String[] ... columns) {
-    return printTable(borders, alignLeft, 1, false, columns);
+  public static String printTable(final boolean borders, final Align align, final String[] ... columns) {
+    return printTable(borders, align, 1, false, columns);
   }
 
   /**
@@ -1547,8 +1393,7 @@ public final class Strings {
    * columns.
    *
    * @param borders Whether to draw borders.
-   * @param alignLeft If {@code true}, the strings in table cells will be
-   *          aligned to the left; if {@code false}, then to the right.
+   * @param align Text alignment to be used for data cells.
    * @param cells The number of consecutive column elements per cell (except for
    *          the first and single heading column element).
    * @param firstColumnOneCell Whether the first column is to have 1 cell.
@@ -1556,12 +1401,13 @@ public final class Strings {
    * @return A string with a column layout of the provided 2 dimensional array.
    * @throws NullPointerException If {@code columns} is null.
    */
-  public static String printTable(final boolean borders, final boolean alignLeft, final int cells, boolean firstColumnOneCell, final String[] ... columns) {
+  public static String printTable(final boolean borders, final Align align, final int cells, boolean firstColumnOneCell, final String[] ... columns) {
     // Moot if cells == 1 and firstColumnOneCell == true
     if (cells == 1)
       firstColumnOneCell = false;
 
     final String cellPadding = borders ? " │ " : " ";
+    final int cellPaddingLength = cellPadding.length();
     int maxRows = 0;
     // Calculate the cell widths for each column
     final int[] widths = new int[columns.length * cells - (firstColumnOneCell ? 1 : 0)];
@@ -1578,7 +1424,7 @@ public final class Strings {
           if (i == 0 && firstColumnOneCell)
             ++j;
           else
-            cellWidth /= cells;
+            cellWidth = (int)Math.ceil((cellWidth - (cellPaddingLength * (cells - 1d))) / cells);
 
           widths[w + j] = Math.max(width, cellWidth);
         }
@@ -1607,10 +1453,10 @@ public final class Strings {
           builder.append('╦');
 
         // Calculate the full column width across the # of `cells`
-        int fullWidth = -cellPadding.length();
+        int fullWidth = -cellPaddingLength;
         for (int j = 0; j < cells; ++j) {
           final int width = widths[w + j];
-          fullWidth += width + cellPadding.length();
+          fullWidth += width + cellPaddingLength;
           if (i == 0 && firstColumnOneCell)
             break;
         }
@@ -1628,15 +1474,15 @@ public final class Strings {
       rows = columns[i];
       final String row = rows == null || rows[0] == null ? "" : rows[0];
       // Calculate the full column width across the # of `cells`
-      int fullWidth = -cellPadding.length();
+      int fullWidth = -cellPaddingLength;
       for (int j = 0; j < cells; ++j) {
         final int width = widths[w + j];
-        fullWidth += width + cellPadding.length();
+        fullWidth += width + cellPaddingLength;
         if (i == 0 && firstColumnOneCell)
           break;
       }
 
-      builder.append(Strings.pad(row, fullWidth, alignLeft, ' ', false));
+      builder.append(Strings.pad(row, fullWidth, Align.CENTER, ' ', false));
       if (borders)
         builder.append(" ║");
 
@@ -1684,7 +1530,7 @@ public final class Strings {
 
           final String cell = rows == null || r + j >= rows.length || rows[r + j] == null ? "" : rows[r + j];
           final int width = widths[w + j];
-          builder.append(Strings.pad(cell, width, alignLeft, ' ', false));
+          builder.append(Strings.pad(cell, width, align, ' ', false));
           if (i == 0 && firstColumnOneCell)
             break;
         }

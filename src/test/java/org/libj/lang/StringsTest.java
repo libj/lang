@@ -17,6 +17,7 @@
 package org.libj.lang;
 
 import static org.junit.Assert.*;
+import static org.libj.lang.Strings.Align.*;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -243,45 +244,45 @@ public class StringsTest {
   @Test
   public void testPad() {
     try {
-      Strings.padLeft(null, 0);
+      Strings.pad(null, LEFT, 0);
       fail("Expected NullPointerException");
     }
     catch (final NullPointerException e) {
     }
 
     try {
-      Strings.padRight(null, 0);
+      Strings.pad(null, RIGHT, 0);
       fail("Expected NullPointerException");
     }
     catch (final NullPointerException e) {
     }
 
     try {
-      Strings.padLeft(" ", 0);
+      Strings.pad(" ", LEFT, 0);
       fail("Expected IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {
     }
 
     try {
-      Strings.padRight(" ", 0);
+      Strings.pad(" ", RIGHT, 0);
       fail("Expected IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {
     }
 
-    assertEquals(" ", Strings.padLeft(" ", 1));
-    assertEquals(" A", Strings.padLeft("A", 2));
-    assertEquals("  A", Strings.padLeft("A", 3));
-    assertEquals("xxxA", Strings.padLeft("A", 4, 'x'));
+    assertEquals(" ", Strings.pad(" ", LEFT, 1));
+    assertEquals(" A", Strings.pad("A", LEFT, 2));
+    assertEquals("  A", Strings.pad("A", LEFT, 3));
+    assertEquals("xxxA", Strings.pad("A", LEFT, 4, 'x'));
 
-    assertEquals(" ", Strings.padRight(" ", 1));
-    assertEquals("A ", Strings.padRight("A", 2));
-    assertEquals("A  ", Strings.padRight("A", 3));
-    assertEquals("Axxx", Strings.padRight("A", 4, 'x'));
+    assertEquals(" ", Strings.pad(" ", RIGHT, 1));
+    assertEquals("A ", Strings.pad("A", RIGHT, 2));
+    assertEquals("A  ", Strings.pad("A", RIGHT, 3));
+    assertEquals("Axxx", Strings.pad("A", RIGHT, 4, 'x'));
 
-    assertEquals("  A\n  A\n  A", Strings.padLeftAll("A\nA\nA", 3));
-    assertEquals("A  \nA  \nA  ", Strings.padRightAll("A\nA\nA", 3));
+    assertEquals("  A\n  A\n  A", Strings.padAll("A\nA\nA", LEFT, 3));
+    assertEquals("A  \nA  \nA  ", Strings.padAll("A\nA\nA", RIGHT, 3));
   }
 
   @Test
@@ -783,28 +784,28 @@ public class StringsTest {
         final int cells = i + 1;
         System.out.println(Strings.printTable(array, column[0]));
         System.out.println();
-        System.out.println(Strings.printTable(false, false, cells, false, array, column[0]));
+        System.out.println(Strings.printTable(false, LEFT, cells, false, array, column[0]));
         System.out.println();
-        System.out.println(Strings.printTable(true, true, cells, false, array, column[0]));
+        System.out.println(Strings.printTable(true, RIGHT, cells, false, array, column[0]));
         System.out.println();
-        System.out.println(Strings.printTable(true, false, cells, false, array, column[0]));
+        System.out.println(Strings.printTable(true, LEFT, cells, false, array, column[0]));
         System.out.println();
 
         System.out.println(Strings.printTable(column));
         System.out.println();
-        System.out.println(Strings.printTable(false, false, cells, false, column));
+        System.out.println(Strings.printTable(false, LEFT, cells, false, column));
         System.out.println();
-        System.out.println(Strings.printTable(true, true, cells, false, column));
+        System.out.println(Strings.printTable(true, RIGHT, cells, false, column));
         System.out.println();
-        System.out.println(Strings.printTable(true, false, cells, false, column));
+        System.out.println(Strings.printTable(true, LEFT, cells, false, column));
 
         System.out.println(Strings.printTable(row));
         System.out.println();
-        System.out.println(Strings.printTable(false, false, cells, false, row));
+        System.out.println(Strings.printTable(false, LEFT, cells, false, row));
         System.out.println();
-        System.out.println(Strings.printTable(true, true, cells, false, row));
+        System.out.println(Strings.printTable(true, RIGHT, cells, false, row));
         System.out.println();
-        System.out.println(Strings.printTable(true, false, cells, false, row));
+        System.out.println(Strings.printTable(true, LEFT, cells, false, row));
       }
     }
   }
@@ -816,7 +817,7 @@ public class StringsTest {
     columns[1] = new String[] {"One", "324", "32", "43982", "4398", "380", "38"};
     columns[2] = new String[] {"Two", "1894", "189", "15", "1", "290", "29"};
     columns[3] = new String[] {"Three", "204", "20", "31", "3", "321", "32"};
-    System.out.println(Strings.printTable(true, true, 2, false, columns));
+    System.out.println(Strings.printTable(true, LEFT, 2, false, columns));
   }
 
   @Test
@@ -826,7 +827,7 @@ public class StringsTest {
     columns[1] = new String[] {"One", "324", "32", "43982", "4398", "380", "38"};
     columns[2] = new String[] {"Two", "1894", "189", "15", "1", "290", "29"};
     columns[3] = new String[] {"Three", "204", "20", "31", "3", "321", "32"};
-    System.out.println(Strings.printTable(true, true, 2, true, columns));
+    System.out.println(Strings.printTable(true, LEFT, 2, true, columns));
   }
 
   @Test
