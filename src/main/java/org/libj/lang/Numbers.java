@@ -2848,9 +2848,9 @@ public final class Numbers {
    * @return The count of the number of digits in the specified {@code byte}
    *         value.
    */
-  public static byte precision(final byte n) {
-    final int val = Math.abs(n);
-    return (byte)(val < 10 ? 1 : val < 100 ? 2 : 3);
+  public static byte precision(byte n) {
+    n = (byte)Math.abs(n);
+    return (byte)(n < 10 ? 1 : n < 100 ? 2 : 3);
   }
 
   /**
@@ -2861,17 +2861,17 @@ public final class Numbers {
    * @return The count of the number of digits in the specified {@code short}
    *         value.
    */
-  public static byte precision(final short n) {
-    final int val = Math.abs(n);
-    if (val < 10000) {
-      if (val < 100) {
-        if (val < 10)
+  public static byte precision(short n) {
+    n = (short)Math.abs(n);
+    if (n < 10000) {
+      if (n < 100) {
+        if (n < 10)
           return 1;
 
         return 2;
       }
 
-      if (val < 1000)
+      if (n < 1000)
         return 3;
 
       return 4;
@@ -3021,8 +3021,13 @@ public final class Numbers {
     if (n.signum() == 0)
       return 1;
 
-    final int len = n.toString().length();
-    return n.signum() < 0 ? len - 1 : len;
+    /*
+     * Same idea as the long version, but we need a better approximation of
+     * log10(2). Using 646456993/2^31 is accurate up to max possible reported
+     * bitLength.
+     */
+    final int r = (int)((((long)n.bitLength() + 1) * 646456993) >>> 31);
+    return n.abs().compareTo(BigInteger.TEN.pow(r)) < 0 ? r : r + 1;
   }
 
   /**
@@ -3195,6 +3200,28 @@ public final class Numbers {
       return 17;
 
     return 18;
+  }
+
+  /**
+   * Returns the signum of the provided {@code int}.
+   *
+   * @param a The {@code int} whose signum to return.
+   * @return {@code -1}, {@code 0}, or {@code 1} as the value of the provided
+   *         {@code int} is negative, zero or positive.
+   */
+  public static int signum(final int a) {
+    return a < 0 ? -1 : a > 0 ? 1 : 0;
+  }
+
+  /**
+   * Returns the signum of the provided {@code long}.
+   *
+   * @param a The {@code long} whose signum to return.
+   * @return {@code -1}, {@code 0}, or {@code 1} as the value of the provided
+   *         {@code long} is negative, zero or positive.
+   */
+  public static int signum(final long a) {
+    return a < 0 ? -1 : a > 0 ? 1 : 0;
   }
 
   private Numbers() {

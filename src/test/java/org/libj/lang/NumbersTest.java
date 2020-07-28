@@ -604,4 +604,20 @@ public class NumbersTest {
       assertEquals(BigDecimal.valueOf(n), Numbers.cast(n, BigDecimal.class));
     }
   }
+
+  @Test
+  public void testSignumInt() {
+    for (int i = 9, j; i < 1000000; ++i) {
+      j = random.nextInt();
+      assertEquals(j < 0 ? -1 : j == 0 ? 0 : 1, Numbers.signum(j));
+    }
+  }
+
+  @Test
+  public void testSignumLong() {
+    for (long i = 9, j; i < 1000000; ++i) {
+      j = random.nextLong();
+      assertEquals(j < 0 ? -1 : j == 0 ? 0 : 1, Numbers.signum(j));
+    }
+  }
 }
