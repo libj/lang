@@ -855,7 +855,7 @@ public final class Strings {
 
     String hex = Long.toString(value & ((1L << 4 * digits) - 1), 16);
     if (hex.length() < digits)
-      hex = pad(hex, Align.LEFT, digits, '0');
+      hex = pad(hex, Align.RIGHT, digits, '0');
 
     return negative ? "-" + hex : hex;
   }

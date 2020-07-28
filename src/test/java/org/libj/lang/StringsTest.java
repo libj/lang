@@ -270,18 +270,18 @@ public class StringsTest {
     catch (final IllegalArgumentException e) {
     }
 
-    assertEquals(" ", Strings.pad(" ", LEFT, 1));
-    assertEquals(" A", Strings.pad("A", LEFT, 2));
-    assertEquals("  A", Strings.pad("A", LEFT, 3));
-    assertEquals("xxxA", Strings.pad("A", LEFT, 4, 'x'));
-
     assertEquals(" ", Strings.pad(" ", RIGHT, 1));
-    assertEquals("A ", Strings.pad("A", RIGHT, 2));
-    assertEquals("A  ", Strings.pad("A", RIGHT, 3));
-    assertEquals("Axxx", Strings.pad("A", RIGHT, 4, 'x'));
+    assertEquals(" A", Strings.pad("A", RIGHT, 2));
+    assertEquals("  A", Strings.pad("A", RIGHT, 3));
+    assertEquals("xxxA", Strings.pad("A", RIGHT, 4, 'x'));
 
-    assertEquals("  A\n  A\n  A", Strings.padAll("A\nA\nA", LEFT, 3));
-    assertEquals("A  \nA  \nA  ", Strings.padAll("A\nA\nA", RIGHT, 3));
+    assertEquals(" ", Strings.pad(" ", LEFT, 1));
+    assertEquals("A ", Strings.pad("A", LEFT, 2));
+    assertEquals("A  ", Strings.pad("A", LEFT, 3));
+    assertEquals("Axxx", Strings.pad("A", LEFT, 4, 'x'));
+
+    assertEquals("  A\n  A\n  A", Strings.padAll("A\nA\nA", RIGHT, 3));
+    assertEquals("A  \nA  \nA  ", Strings.padAll("A\nA\nA", LEFT, 3));
   }
 
   @Test
