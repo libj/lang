@@ -482,80 +482,80 @@ public class NumbersTest {
       testIsDigit(r);
   }
 
-  private static void testDigitsByte(final byte n) {
+  private static void testPrecisionByte(final byte n) {
     final String str = String.valueOf(n);
     assertEquals(str, n < 0 ? str.length() - 1 : str.length(), Numbers.precision(n));
   }
 
   @Test
-  public void testDigitsByte() {
-    testDigitsByte(Byte.MIN_VALUE);
-    testDigitsByte(Byte.MAX_VALUE);
+  public void testPrecisionByte() {
+    testPrecisionByte(Byte.MIN_VALUE);
+    testPrecisionByte(Byte.MAX_VALUE);
     for (int i = 0; i < 1000000; ++i) {
       final byte n = (byte)random.nextInt();
-      testDigitsByte(n);
+      testPrecisionByte(n);
     }
   }
 
-  private static void testDigitsShort(final short n) {
+  private static void testPrecisionShort(final short n) {
     final String str = String.valueOf(n);
     assertEquals(str, n < 0 ? str.length() - 1 : str.length(), Numbers.precision(n));
   }
 
   @Test
-  public void testDigitsShort() {
-    testDigitsShort(Short.MIN_VALUE);
-    testDigitsShort(Short.MAX_VALUE);
+  public void testPrecisionShort() {
+    testPrecisionShort(Short.MIN_VALUE);
+    testPrecisionShort(Short.MAX_VALUE);
     for (int i = 0; i < 1000000; ++i) {
       final short n = (short)random.nextInt();
-      testDigitsShort(n);
+      testPrecisionShort(n);
     }
   }
 
-  private static void testDigitsInt(final int n) {
+  private static void testPrecisionInt(final int n) {
     final String str = String.valueOf(n);
     assertEquals(str, n < 0 ? str.length() - 1 : str.length(), Numbers.precision(n));
   }
 
   @Test
-  public void testDigitsInt() {
-    testDigitsInt(Integer.MIN_VALUE);
-    testDigitsInt(Integer.MAX_VALUE);
+  public void testPrecisionInt() {
+    testPrecisionInt(Integer.MIN_VALUE);
+    testPrecisionInt(Integer.MAX_VALUE);
     for (int i = 0; i < 1000000; ++i) {
       final int n = random.nextInt();
-      testDigitsInt(n);
+      testPrecisionInt(n);
     }
   }
 
-  private static void testDigitsLong(final long n) {
+  private static void testPrecisionLong(final long n) {
     final String str = String.valueOf(n);
     assertEquals(str, n < 0 ? str.length() - 1 : str.length(), Numbers.precision(n));
   }
 
   @Test
-  public void testDigitsLong() {
-    testDigitsLong(Long.MIN_VALUE);
-    testDigitsLong(Long.MAX_VALUE);
+  public void testPrecisionLong() {
+    testPrecisionLong(Long.MIN_VALUE);
+    testPrecisionLong(Long.MAX_VALUE);
     for (int i = 0; i < 1000000; ++i) {
       final long n = random.nextLong();
-      testDigitsLong(n);
+      testPrecisionLong(n);
     }
   }
 
-  private static void testDigitsBigInteger(final BigInteger n) {
+  private static void testPrecisionBigInteger(final BigInteger n) {
     final String str = String.valueOf(n);
     assertEquals(str, n.signum() < 0 ? str.length() - 1 : str.length(), Numbers.precision(n));
   }
 
   @Test
-  public void testDigitsBigInteger() {
+  public void testPrecisionBigInteger() {
     for (int i = 0; i < 1000000; ++i) {
       final BigInteger n = BigInteger.valueOf(random.nextLong());
-      testDigitsBigInteger(n);
+      testPrecisionBigInteger(n);
     }
   }
 
-  private static void testDigitsBigDecimal(final BigDecimal n) {
+  private static void testPrecisionBigDecimal(final BigDecimal n) {
     final String str = String.valueOf(n.stripTrailingZeros());
     int e = str.indexOf('e');
     if (e < 0)
@@ -585,10 +585,10 @@ public class NumbersTest {
   }
 
   @Test
-  public void testDigitsBigDecimal() {
+  public void testPrecisionBigDecimal() {
     for (int i = 0; i < 1000000; ++i) {
       final BigDecimal n = BigDecimal.valueOf(random.nextDouble());
-      testDigitsBigDecimal(n);
+      testPrecisionBigDecimal(n);
     }
   }
 

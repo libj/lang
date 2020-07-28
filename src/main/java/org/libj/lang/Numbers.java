@@ -2849,8 +2849,8 @@ public final class Numbers {
    *         value.
    */
   public static byte precision(byte n) {
-    n = (byte)Math.abs(n);
-    return (byte)(n < 10 ? 1 : n < 100 ? 2 : 3);
+    final int i = Math.abs(n);
+    return (byte)(i < 10 ? 1 : i < 100 ? 2 : 3);
   }
 
   /**
@@ -2862,16 +2862,16 @@ public final class Numbers {
    *         value.
    */
   public static byte precision(short n) {
-    n = (short)Math.abs(n);
-    if (n < 10000) {
-      if (n < 100) {
-        if (n < 10)
+    final int i = Math.abs(n);
+    if (i < 10000) {
+      if (i < 100) {
+        if (i < 10)
           return 1;
 
         return 2;
       }
 
-      if (n < 1000)
+      if (i < 1000)
         return 3;
 
       return 4;
