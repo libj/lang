@@ -729,7 +729,7 @@ public final class Strings {
     }
 
     if (truncate)
-      return str.substring(0, indexPrintable(str, length));
+      return align == Align.LEFT ? str.substring(0, indexPrintable(str, length)) : str.substring(indexPrintable(str, str.length() - length));
 
     throw new IllegalArgumentException("length (" + length + ") must be greater or equal to printable string length (" + lenPrint + ")");
   }
@@ -768,14 +768,14 @@ public final class Strings {
   }
 
   public static int lengthPrintable(final CharSequence str) {
-    return countPrintable(str, -1, false);
+    return countPrintable(str, -1);
   }
 
   public static int indexPrintable(final CharSequence str, final int index) {
-    return countPrintable(str, index, true);
+    return countPrintable(str, index);
   }
 
-  private static int countPrintable(final CharSequence str, final int index, final boolean indexOrLength) {
+  private static int countPrintable(final CharSequence str, final int index) {
     final int len = str.length();
     int start = 0;
     char ch, last = '\0';
@@ -791,11 +791,11 @@ public final class Strings {
       if ((esc = (ch == '[' && last == '\033')) || !Characters.isPrintable(ch))
         continue;
 
-      if (++start == index)
+      if (start++ == index)
         break;
     }
 
-    return indexOrLength ? i : start;
+    return index == -1 ? start : i;
   }
 
   public enum Align {

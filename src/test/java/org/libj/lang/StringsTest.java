@@ -280,6 +280,9 @@ public class StringsTest {
     assertEquals("A  ", Strings.pad("A", LEFT, 3));
     assertEquals("Axxx", Strings.pad("A", LEFT, 4, 'x'));
 
+    assertEquals("1234", Strings.pad("12345", LEFT, 4, ' ', true));
+    assertEquals("2345", Strings.pad("12345", RIGHT, 4, ' ', true));
+
     assertEquals("  A\n  A\n  A", Strings.padAll("A\nA\nA", RIGHT, 3));
     assertEquals("A  \nA  \nA  ", Strings.padAll("A\nA\nA", LEFT, 3));
   }
