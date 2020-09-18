@@ -3026,8 +3026,8 @@ public final class Numbers {
      * log10(2). Using 646456993/2^31 is accurate up to max possible reported
      * bitLength.
      */
-    final int r = (int)((((long)n.bitLength() + 1) * 646456993) >>> 31);
-    return n.abs().compareTo(BigInteger.TEN.pow(r)) < 0 ? r : r + 1;
+    final int p = (int)(((n.bitLength() + 1) * 646456993L) >>> 31);
+    return n.abs().compareTo(BigInteger.TEN.pow(p)) < 0 ? p : p + 1;
   }
 
   /**
