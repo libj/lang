@@ -131,16 +131,17 @@ public final class Characters {
   }
 
   /**
-   * Converts the provided string to a new character array.
+   * Converts the provided string to a new character array, or returns
+   * {@code null} if {@code str} is null.
    *
    * @param str The string to convert to a new character array.
    * @return A newly allocated character array whose length is the length of the
    *         provided string and whose contents are initialized to contain the
-   *         character sequence represented by the provided string.
-   * @throws NullPointerException If {@code str} is null.
+   *         character sequence represented by the provided string, or returns
+   *         {@code null} if {@code str} is null.
    */
   public static char[] valueOf(final String str) {
-    return str.toCharArray();
+    return str == null ? null : str.toCharArray();
   }
 
   private Characters() {
