@@ -20,7 +20,8 @@ import java.awt.event.KeyEvent;
 import java.util.Arrays;
 
 /**
- * Utility functions for operations pertaining to {@code char} and {@link Character}.
+ * Utility functions for operations pertaining to {@code char} and
+ * {@link Character}.
  */
 public final class Characters {
   private static final char[] escapableChars = {'"', '\'', '0', '1', '2', '3', '4', '5', '6', '7', '\\', 'b', 'f', 'n', 'r', 't'};
