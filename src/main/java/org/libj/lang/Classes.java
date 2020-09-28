@@ -335,7 +335,7 @@ public final class Classes {
     return getGenericParameters(field.getGenericType());
   }
 
-  private static Class<?>[] getGenericParameters(final Type genericType) {
+  public static Class<?>[] getGenericParameters(final Type genericType) {
     if (!(genericType instanceof ParameterizedType))
       return emptyClasses;
 
