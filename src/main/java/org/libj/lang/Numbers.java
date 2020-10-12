@@ -2345,6 +2345,26 @@ public final class Numbers {
   }
 
   /**
+   * Returns {@code true} if the specified {@code int} is a power of 2.
+   *
+   * @param a The {@code int}.
+   * @return {@code true} if the specified {@code int} is a power of 2.
+   */
+  public static boolean isPowerOf2(final int a) {
+    return a > 0 && Integer.bitCount(a) == 1;
+  }
+
+  /**
+   * Returns {@code true} if the specified {@code long} is a power of 2.
+   *
+   * @param a The {@code long}.
+   * @return {@code true} if the specified {@code long} is a power of 2.
+   */
+  public static boolean isPowerOf2(final long a) {
+    return a > 0 && Long.bitCount(a) == 1;
+  }
+
+  /**
    * Returns the numeric value of the specified character representing a digit.
    * The specified character must be within the following ranges:
    * <ol>

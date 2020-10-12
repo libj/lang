@@ -620,4 +620,26 @@ public class NumbersTest {
       assertEquals(j < 0 ? -1 : j == 0 ? 0 : 1, Numbers.signum(j));
     }
   }
+
+  @Test
+  public void testIsPowerOf2Int() {
+    final double log2 = Math.log(2);
+    for (int i = 0, x; i < 1000000; ++i) {
+      x = random.nextInt();
+      final boolean expected = Math.ceil(Math.log(x) / log2) == Math.floor(Math.log(x) / log2);
+      final boolean actual = Numbers.isPowerOf2(x);
+      assertEquals("" + x, expected, actual);
+    }
+  }
+
+  @Test
+  public void testIsPowerOf2Long() {
+    final double log2 = Math.log(2);
+    for (long i = 0, x; i < 1000000; ++i) {
+      x = random.nextLong();
+      final boolean expected = Math.ceil(Math.log(x) / log2) == Math.floor(Math.log(x) / log2);
+      final boolean actual = Numbers.isPowerOf2(x);
+      assertEquals("" + x, expected, actual);
+    }
+  }
 }
