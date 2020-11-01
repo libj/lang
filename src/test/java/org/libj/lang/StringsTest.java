@@ -703,7 +703,22 @@ public class StringsTest {
   }
 
   @Test
-  public void testContainsIgnoreCase() {
+  public void testContainsIgnoreCaseChar() {
+    try {
+      Strings.containsIgnoreCase(null, '\0');
+      fail("Expected NullPointerException");
+    }
+    catch (final NullPointerException e) {
+    }
+
+    assertFalse(Strings.containsIgnoreCase("", '\0'));
+    assertFalse(Strings.containsIgnoreCase("foo", '\0'));
+    assertTrue(Strings.containsIgnoreCase("hElXLo", "X"));
+    assertTrue(Strings.containsIgnoreCase("hElXLo", "x"));
+  }
+
+  @Test
+  public void testContainsIgnoreCaseCharSequence() {
     try {
       Strings.containsIgnoreCase(null, "");
       fail("Expected NullPointerException");

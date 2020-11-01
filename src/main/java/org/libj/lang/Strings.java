@@ -2313,6 +2313,74 @@ public final class Strings {
 
   /**
    * Returns the index within the specified {@link CharSequence str} of the
+   * first occurrence of the specified {@code char}.
+   * <p>
+   * The returned index is the smallest value {@code k} for which:
+   *
+   * <pre>
+   * {@code this.startsWith(str, k)}
+   * </pre>
+   *
+   * If no such value of {@code k} exists, then {@code -1} is returned.
+   *
+   * @param str The {@link CharSequence} in which to search.
+   * @param ch The {@code char} to search for.
+   * @return The index of the first occurrence of the specified {@code char}, or
+   *         {@code -1} if there is no such occurrence.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static int indexOfIgnoreCase(final CharSequence str, final char ch) {
+    return indexOfIgnoreCase(str, ch, 0);
+  }
+
+  /**
+   * Returns the index within the specified {@link CharSequence str} of the
+   * first occurrence of the specified {@code char}.
+   * <p>
+   * The returned index is the smallest value {@code k} for which:
+   *
+   * <pre>
+   * {@code this.startsWith(str, k)}
+   * </pre>
+   *
+   * If no such value of {@code k} exists, then {@code -1} is returned.
+   *
+   * @param str The {@link CharSequence} in which to search.
+   * @param ch The {@code char} to search for.
+   * @param fromIndex The index from which to start the search.
+   * @return The index of the first occurrence of the specified {@code char}, or
+   *         {@code -1} if there is no such occurrence.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static int indexOfIgnoreCase(final CharSequence str, char ch, int fromIndex) {
+    if (fromIndex < 0)
+      fromIndex = 0;
+
+    final int len = str.length();
+    if (fromIndex > len)
+      return -1;
+
+    final char uCh, lCh;
+    if (Character.isUpperCase(ch)) {
+      uCh = ch;
+      lCh = Character.toLowerCase(ch);
+    }
+    else {
+      uCh = Character.toUpperCase(ch);
+      lCh = ch;
+    }
+
+    for (int i = fromIndex; i < len; ++i) {
+      ch = str.charAt(i);
+      if (ch == uCh || ch == lCh)
+        return i;
+    }
+
+    return -1;
+  }
+
+  /**
+   * Returns the index within the specified {@link CharSequence str} of the
    * first occurrence of the specified {@link CharSequence substr}.
    * <p>
    * The returned index is the smallest value {@code k} for which:
@@ -2368,6 +2436,19 @@ public final class Strings {
         return i;
 
     return -1;
+  }
+
+  /**
+   * Returns {@code true} if and only if the specified {@link CharSequence str}
+   * contains the specified {@code char}.
+   *
+   * @param str The {@link CharSequence} in which to search.
+   * @param ch The {@code char} to search for.
+   * @return true If this string contains {@code ch}, false otherwise.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static boolean containsIgnoreCase(final CharSequence str, final char ch) {
+    return indexOfIgnoreCase(str, ch) > -1;
   }
 
   /**
