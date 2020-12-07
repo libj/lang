@@ -35,154 +35,89 @@ public final class Numbers {
    * Utility functions to convert between signed and unsigned numbers.
    */
   public static final class Unsigned {
-    /** Max value of an unsigned long: {@code 2^64 - 1}. */
-    public static final BigInteger UNSIGNED_LONG_MAX_VALUE = new BigInteger("18446744073709551615");
-
     /**
-     * Returns the value of the specified unsigned {@code byte} as a signed
-     * {@code short}.
+     * Return an <i>unsigned</i> {@code byte} equal to the value of the
+     * argument.
      *
-     * @param unsigned The unsigned {@code byte}.
-     * @return The value of the specified unsigned {@code byte} as a signed
-     *         {@code short}.
+     * @param int8 The unsigned 8-bit magnitude of the {@code long} to be
+     *          returned.
+     * @return An <i>unsigned</i> {@code short} equal to the value of the
+     *         argument.
+     * @throws ArithmeticException If {@code int8} is negative or is too big to
+     *           fit in 8 bits of an unsigned {@code byte}.
      */
-    public static short toSigned(final byte unsigned) {
-      return (short)(unsigned - Byte.MIN_VALUE);
+    public static byte toUINT8(final short int8) {
+      if ((int8 >> 8) != 0)
+        throw new ArithmeticException(int8 + " is too big to fit in 8 bits of an unsigned byte");
+
+      return (byte)int8;
     }
 
     /**
-     * Returns the value of the specified unsigned {@code short} as a signed
-     * {@code int}.
+     * Return an <i>unsigned</i> {@code short} equal to the value of the
+     * argument.
      *
-     * @param unsigned The unsigned {@code short}.
-     * @return The value of the specified unsigned {@code short} as a signed
-     *         {@code int}.
+     * @param int16 The unsigned 16-bit magnitude of the {@code long} to be
+     *          returned.
+     * @return An <i>unsigned</i> {@code int} equal to the value of the
+     *         argument.
+     * @throws ArithmeticException If {@code int16} is negative or is too big to
+     *           fit in 16 bits of an unsigned {@code short}.
      */
-    public static int toSigned(final short unsigned) {
-      return unsigned - Short.MIN_VALUE;
+    public static short toUINT16(final int int16) {
+      if ((int16 >> 16) != 0)
+        throw new ArithmeticException(int16 + " is too big to fit in 16 bits of an unsigned short");
+
+      return (short)int16;
     }
 
     /**
-     * Returns the value of the specified unsigned {@code int} as a signed
-     * {@code long}.
+     * Return an <i>unsigned</i> {@code int} equal to the value of the argument.
      *
-     * @param unsigned The unsigned {@code int}.
-     * @return The value of the specified unsigned {@code int} as a signed
-     *         {@code long}.
+     * @param int32 The unsigned 32-bit magnitude of the {@code long} to be
+     *          returned.
+     * @return An <i>unsigned</i> {@code long} equal to the value of the
+     *         argument.
+     * @throws ArithmeticException If {@code int32} is negative or is too big to
+     *           fit in 32 bits of an unsigned {@code int}.
      */
-    public static long toSigned(final int unsigned) {
-      return (long)unsigned - Integer.MIN_VALUE;
+    public static int toUINT32(final long int32) {
+      if ((int32 >> 32) != 0)
+        throw new ArithmeticException(int32 + " is too big to fit in 32 bits of an unsigned int");
+
+      return (int)int32;
     }
 
     /**
-     * Returns the value of the specified unsigned {@code long} as a signed
-     * {@link BigInteger}.
+     * Return an <i>unsigned</i> {@code long} equal to the value of the
+     * argument.
      *
-     * @param unsigned The unsigned {@code long}.
-     * @return The value of the specified unsigned {@code long} as a signed
-     *         {@link BigInteger}.
+     * @param int64 The unsigned 64-bit magnitude of the {@link BigInteger} to
+     *          be returned.
+     * @return An <i>unsigned</i> {@code long} equal to the value of the
+     *         argument.
+     * @throws ArithmeticException If {@code int64} is negative or is too big to
+     *           fit in 64 bits of an unsigned {@code long}.
      */
-    public static BigInteger toSigned(final long unsigned) {
-      return BigInteger.valueOf(unsigned).subtract(LONG_MIN_VALUE);
+    public static long toUINT64(final BigInteger int64) {
+      if (int64.signum() < 0)
+        throw new ArithmeticException(int64 + " must be positive");
+
+      if (int64.bitLength() > 64)
+        throw new ArithmeticException(int64 + " is too big to fit in 64 bits of an unsigned long");
+
+      return int64.longValue();
     }
 
     /**
-     * Returns the value of the specified {@code byte} array representing an
-     * unsigned value as a signed {@link BigInteger}.
+     * Return a {@link BigInteger} equal to the unsigned value of the argument.
      *
-     * @param unsigned The {@code byte} array representing an unsigned value.
-     * @return The value of the specified {@code byte} array representing an
-     *         unsigned value as a signed {@link BigInteger}.
+     * @param uint64 The unsigned magnitude of the {@link BigInteger} to be
+     *          returned.
+     * @return A {@link BigInteger} equal to the unsigned value of the argument.
      */
-    public static BigInteger toSigned(final byte[] unsigned) {
-      return new BigInteger(1, unsigned);
-    }
-
-    // FIXME: jdk9+
-//    public static BigInteger toSigned(final byte[] unsigned, final int off, final int len) {
-//      return new BigInteger(1, unsigned, off, len);
-//    }
-
-    /**
-     * Returns the unsigned representation of the signed value. The signed value
-     * cannot be less than {@code 0}.
-     *
-     * @param signed The signed value.
-     * @return The unsigned representation of the signed value.
-     * @throws IllegalArgumentException If {@code signed < 0}.
-     */
-    public static byte toUnsigned(final byte signed) {
-      if (signed < 0)
-        throw new IllegalArgumentException("signed < 0");
-
-      return (byte)(signed + Byte.MIN_VALUE);
-    }
-
-    /**
-     * Returns the unsigned representation of the signed value. The signed value
-     * cannot be less than {@code 0}.
-     *
-     * @param signed The signed value.
-     * @return The unsigned representation of the signed value.
-     * @throws IllegalArgumentException If {@code signed < 0}.
-     */
-    public static short toUnsigned(final short signed) {
-      if (signed < 0)
-        throw new IllegalArgumentException("signed < 0: " + signed);
-
-      return (short)(signed + Short.MIN_VALUE);
-    }
-
-    /**
-     * Returns the unsigned representation of the signed value. The signed value
-     * cannot be less than {@code 0}.
-     *
-     * @param signed The signed value.
-     * @return The unsigned representation of the signed value.
-     * @throws IllegalArgumentException If {@code signed < 0}.
-     */
-    public static int toUnsigned(final int signed) {
-      if (signed < 0)
-        throw new IllegalArgumentException("signed < 0: " + signed);
-
-      return signed + Integer.MIN_VALUE;
-    }
-
-    /**
-     * Returns the unsigned representation of the signed value. The signed value
-     * cannot be less than {@code 0}.
-     *
-     * @param signed The signed value.
-     * @return The unsigned representation of the signed value.
-     * @throws IllegalArgumentException If {@code signed < 0}.
-     */
-    public static long toUnsigned(final long signed) {
-      if (signed < 0)
-        throw new IllegalArgumentException("signed < 0: " + signed);
-
-      return signed + Long.MIN_VALUE;
-    }
-
-    /**
-     * Returns the unsigned representation of the signed value as a {@code byte}
-     * array. The signed value cannot be less than {@code 0}.
-     *
-     * @param signed The signed value.
-     * @return The unsigned representation of the signed value as a {@code byte}
-     *         array.
-     * @throws IllegalArgumentException If {@code signed < 0}.
-     */
-    public static byte[] toUnsigned(final BigInteger signed) {
-      if (signed.signum() == -1)
-        throw new IllegalArgumentException("signed < 0: " + signed);
-
-      final byte[] bytes = signed.toByteArray();
-      if (bytes[0] != 0)
-        return bytes;
-
-      final byte[] trimmed = new byte[bytes.length - 1];
-      System.arraycopy(bytes, 1, trimmed, 0, trimmed.length);
-      return trimmed;
+    public static BigInteger toUnsignedBigInteger(final long uint64) {
+      return BigIntegers.valueOf(1, uint64);
     }
 
     private Unsigned() {
@@ -2868,7 +2803,7 @@ public final class Numbers {
    * @return The count of the number of digits in the specified {@code byte}
    *         value.
    */
-  public static byte precision(byte n) {
+  public static byte precision(final byte n) {
     final int i = Math.abs(n);
     return (byte)(i < 10 ? 1 : i < 100 ? 2 : 3);
   }
@@ -2881,7 +2816,7 @@ public final class Numbers {
    * @return The count of the number of digits in the specified {@code short}
    *         value.
    */
-  public static byte precision(short n) {
+  public static byte precision(final short n) {
     final int i = Math.abs(n);
     if (i < 10000) {
       if (i < 100) {

@@ -17,6 +17,7 @@
 package org.libj.lang;
 
 import static org.junit.Assert.*;
+import static org.libj.lang.Numbers.Unsigned.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -29,6 +30,46 @@ import org.junit.Test;
 public class NumbersTest {
   private static final Random random = new Random();
   private static final float epsilon = 0.00000001f;
+
+  public static class UnsignedTest {
+    private static final int numTests = 1000000;
+
+    @Test
+    public void testShort() {
+      for (int i = 0; i < numTests; ++i) {
+        final short signed = (short)(Math.abs((short)random.nextInt()) & 0xff);
+        final byte unsigned = toUINT8(signed);
+        assertEquals(signed, (short)Byte.toUnsignedInt(unsigned));
+      }
+    }
+
+    @Test
+    public void testInt() {
+      for (int i = 0; i < numTests; ++i) {
+        final int signed = Math.abs(random.nextInt()) & 0xffff;
+        final short unsigned = toUINT16(signed);
+        assertEquals(signed, Short.toUnsignedInt(unsigned));
+      }
+    }
+
+    @Test
+    public void testLong() {
+      for (int i = 0; i < numTests; ++i) {
+        final long signed = Math.abs(random.nextLong()) & 0xffffffffL;
+        final int unsigned = toUINT32(signed);
+        assertEquals(signed, Integer.toUnsignedLong(unsigned));
+      }
+    }
+
+    @Test
+    public void testBigInteger() {
+      for (int i = 0; i < numTests; ++i) {
+        final BigInteger signed = BigIntegers.valueOf(1, random.nextLong());
+        final long unsigned = toUINT64(signed);
+        assertEquals(signed, toUnsignedBigInteger(unsigned));
+      }
+    }
+  }
 
   public static class CompoundTest {
     private static final Random random = new Random();
@@ -252,36 +293,6 @@ public class NumbersTest {
     assertEquals("0.00833333333333", Numbers.toString(0.008333333333330742, 14));
     assertEquals("0.00833333333334", Numbers.toString(0.008333333333339323, 14));
     assertEquals("0.008333333333", Numbers.toString(0.008333333333000000, 14));
-  }
-
-  @Test
-  public void testUnsignedByte() {
-    final byte value = Byte.MAX_VALUE;
-    assertEquals(value, Numbers.Unsigned.toSigned(Numbers.Unsigned.toUnsigned(value)));
-  }
-
-  @Test
-  public void testUnsignedShort() {
-    final short value = Short.MAX_VALUE;
-    assertEquals(value, Numbers.Unsigned.toSigned(Numbers.Unsigned.toUnsigned(value)));
-  }
-
-  @Test
-  public void testUnsignedInt() {
-    final int value = Integer.MAX_VALUE;
-    assertEquals(value, Numbers.Unsigned.toSigned(Numbers.Unsigned.toUnsigned(value)));
-  }
-
-  @Test
-  public void testUnsignedLong() {
-    final long value = Long.MAX_VALUE;
-    assertEquals(BigInteger.valueOf(value), Numbers.Unsigned.toSigned(Numbers.Unsigned.toUnsigned(value)));
-  }
-
-  @Test
-  public void testUnsignedBigInteger() {
-    final BigInteger value = new BigInteger("18446744073709551615");
-    assertEquals(value, Numbers.Unsigned.toSigned(Numbers.Unsigned.toUnsigned(value)));
   }
 
   private static final Class<?>[] numberTypes = new Class<?>[] {Byte.class, Short.class, Integer.class, Float.class, Double.class, Long.class};
