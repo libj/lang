@@ -295,21 +295,6 @@ public class NumbersTest {
     assertEquals("0.008333333333", Numbers.toString(0.008333333333000000, 14));
   }
 
-  private static final Class<?>[] numberTypes = new Class<?>[] {Byte.class, Short.class, Integer.class, Float.class, Double.class, Long.class};
-
-  @Test
-  @SuppressWarnings("unchecked")
-  public void testValueOf() {
-    for (int i = 0; i < numberTypes.length; ++i) {
-      for (int j = 0; j < numberTypes.length; ++j) {
-        final Class<? extends Number> from = (Class<? extends Number>)numberTypes[i];
-        final Class<? extends Number> to = (Class<? extends Number>)numberTypes[j];
-        final Number value = Numbers.valueOf(111, from);
-        assertEquals(value, Numbers.valueOf(Numbers.valueOf(value, to), from));
-      }
-    }
-  }
-
   @Test
   public void testPrecision() {
     assertEquals(3, Numbers.precision(349));
