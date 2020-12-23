@@ -72,17 +72,10 @@ public class PackageLoader {
    */
   public static PackageLoader getPackageLoader(final ClassLoader classLoader) {
     PackageLoader packageLoader = instances.get(classLoader);
-    if (packageLoader != null)
-      return packageLoader;
-
-    synchronized (classLoader) {
-      packageLoader = instances.get(classLoader);
-      if (packageLoader != null)
-        return packageLoader;
-
+    if (packageLoader == null)
       instances.put(classLoader, packageLoader = new PackageLoader(classLoader));
-      return packageLoader;
-    }
+
+    return packageLoader;
   }
 
   private final ClassLoader classLoader;
