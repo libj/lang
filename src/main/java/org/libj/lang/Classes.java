@@ -1222,6 +1222,68 @@ public final class Classes {
   }
 
   /**
+   * Returns the annotation for the specified {@code annotationClass} on the
+   * provided class if such an annotation is <i>present</i>, else null.
+   * <p>
+   * <b>Note:</b> This method differentiates itself from
+   * {@link Class#getAnnotation(Class)} by continuing to look at each superclass
+   * of the provided class if the specified annotation cannot be found.
+   *
+   * @param <A> The type of the annotation to query for and return if present.
+   * @param cls The {@link Class} on which to look for the specified annotation
+   *          type.
+   * @param annotationClass The {@link Class} object corresponding to the
+   *          annotation type.
+   * @return The annotation for the specified annotation type on the provided
+   *         class if present, else null.
+   * @throws NullPointerException If the given annotation class is null.
+   */
+  public static <A extends Annotation>A getAnnotationDeep(final Class<?> cls, final Class<A> annotationClass) {
+    Class<?> parent = cls;
+    A annotation;
+    do {
+      annotation = parent.getAnnotation(annotationClass);
+      if (annotation != null)
+        return annotation;
+    }
+    while ((parent = parent.getSuperclass()) != null);
+    return null;
+  }
+
+  /**
+   * Returns {@code true} if an annotation for the specified type is
+   * <i>present</i> on the provided class, else {@code false}. This method is
+   * designed primarily for convenient access to marker annotations.
+   * <p>
+   * The truth value returned by this method is equivalent to:
+   * {@code Classes.getAnnotationDeep(cls,annotationClass) != null}
+   * <p>
+   * The body of the default method is specified to be the code above.
+   * <p>
+   * <b>Note:</b> This method differentiates itself from
+   * {@link Class#isAnnotationPresent(Class)} by continuing to look at each
+   * superclass of the provided class if the specified annotation cannot be
+   * found.
+   *
+   * @param cls The {@link Class} on which to look for the specified annotation
+   *          type.
+   * @param annotationClass The {@link Class} object corresponding to the
+   *          annotation type.
+   * @return {@code true} if an annotation for the specified annotation type is
+   *         present on this element, else {@code false}.
+   * @throws NullPointerException If the given annotation class is null.
+   */
+  public static boolean isAnnotationPresentDeep(final Class<?> cls, final Class<? extends Annotation> annotationClass) {
+    Class<?> parent = cls;
+    do {
+      if (parent.isAnnotationPresent(annotationClass))
+        return true;
+    }
+    while ((parent = parent.getSuperclass()) != null);
+    return false;
+  }
+
+  /**
    * Returns all interfaces implemented by the class or interface represented by
    * the specified class. This method differentiates itself from
    * {@link Class#getInterfaces()} by returning <i>all</i> interfaces (full
