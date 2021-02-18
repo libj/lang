@@ -555,7 +555,7 @@ public class StringsTest {
     }
 
     try {
-      Strings.derefEL("foo ${bar}", null);
+      Strings.derefEL("foo ${bar}", (Map<String,String>)null);
       fail("Expected NullPointerException");
     }
     catch (final NullPointerException e) {

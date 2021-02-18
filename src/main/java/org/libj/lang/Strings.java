@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -1897,9 +1898,10 @@ public final class Strings {
     return (Character.isLowerCase(ch) ? Character.toUpperCase(ch) : Character.toLowerCase(ch)) + str.substring(1);
   }
 
-  private static void appendElVar(final Map<String,String> variables, final StringBuilder builder, final StringBuilder var) {
+  @SuppressWarnings("rawtypes")
+  private static void appendElVar(final Map variables, final StringBuilder builder, final StringBuilder var) {
     final String name = var.toString();
-    final String value = variables.get(name);
+    final Object value = variables.get(name);
     if (value != null)
       builder.append(value);
     else
@@ -1917,6 +1919,30 @@ public final class Strings {
 
     if (close != '\0')
       builder.append(close);
+  }
+
+  /**
+   * Dereferences all Expression Language-encoded names, such as
+   * <code>${foo}</code> or <code>${bar}</code>, in the specified string with
+   * values in the specified properties.
+   * <p>
+   * Names encoded in Expression Language follow the same rules as <a href=
+   * "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.8">Java
+   * Identifiers</a>.
+   *
+   * @param s The string in which EL-encoded names are to be dereferenced.
+   * @param variables The properties of name to value pairs.
+   * @return The specified string with EL-encoded names replaced with their
+   *         mapped values. If a name is missing from the specified properties,
+   *         or if a name does not conform to the rules of <a href=
+   *         "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.8">Java
+   *         Identifiers</a>, or if the Expression Language encoding is
+   *         malformed, it will remain in the string as-is.
+   * @throws NullPointerException If {@code s} is null, or if {@code s} contains
+   *           an EL-encoded name and {@code variables} is null.
+   */
+  public static String derefEL(final String s, final Properties variables) {
+    return derefEL(variables, s);
   }
 
   /**
@@ -1940,6 +1966,11 @@ public final class Strings {
    *           an EL-encoded name and {@code variables} is null.
    */
   public static String derefEL(final String s, final Map<String,String> variables) {
+    return derefEL(variables, s);
+  }
+
+  @SuppressWarnings("rawtypes")
+  private static String derefEL(final Map variables, final String s) {
     if (s.length() < 4)
       return s;
 
