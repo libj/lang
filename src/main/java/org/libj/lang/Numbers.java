@@ -2063,28 +2063,31 @@ public final class Numbers {
    */
   @SuppressWarnings("unchecked")
   public static <T extends Number>T cast(final Number n, final Class<T> as) {
-    if (float.class == as || Float.class == as)
-      return (T)Float.valueOf(n.floatValue());
-
-    if (double.class == as || Double.class == as)
-      return (T)Double.valueOf(n.doubleValue());
-
-    if (byte.class == as || Byte.class == as)
-      return (T)Byte.valueOf(n.byteValue());
-
-    if (short.class == as || Short.class == as)
-      return (T)Short.valueOf(n.shortValue());
-
-    if (int.class == as || Integer.class == as)
-      return (T)Integer.valueOf(n.intValue());
+    if (n == null)
+      return null;
 
     if (long.class == as || Long.class == as)
       return (T)Long.valueOf(n.longValue());
 
-    if (BigInteger.class.isAssignableFrom(as))
+    if (int.class == as || Integer.class == as)
+      return (T)Integer.valueOf(n.intValue());
+
+    if (short.class == as || Short.class == as)
+      return (T)Short.valueOf(n.shortValue());
+
+    if (byte.class == as || Byte.class == as)
+      return (T)Byte.valueOf(n.byteValue());
+
+    if (double.class == as || Double.class == as)
+      return (T)Double.valueOf(n.doubleValue());
+
+    if (float.class == as || Float.class == as)
+      return (T)Float.valueOf(n.floatValue());
+
+    if (BigInteger.class == as)
       return (T)new BigInteger(n.toString());
 
-    if (BigDecimal.class.isAssignableFrom(as))
+    if (BigDecimal.class == as)
       return (T)new BigDecimal(n.toString());
 
     throw new UnsupportedOperationException("Unsupported type: " + as.getName());
