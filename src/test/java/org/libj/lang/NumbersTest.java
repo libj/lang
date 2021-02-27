@@ -35,7 +35,7 @@ public class NumbersTest {
     private static final int numTests = 1000000;
 
     @Test
-    public void testShort() {
+    public void testToUINT8() {
       for (int i = 0; i < numTests; ++i) {
         final short signed = (short)(Math.abs((short)random.nextInt()) & 0xff);
         final byte unsigned = toUINT8(signed);
@@ -44,7 +44,7 @@ public class NumbersTest {
     }
 
     @Test
-    public void testInt() {
+    public void testToUINT16() {
       for (int i = 0; i < numTests; ++i) {
         final int signed = Math.abs(random.nextInt()) & 0xffff;
         final short unsigned = toUINT16(signed);
@@ -53,7 +53,7 @@ public class NumbersTest {
     }
 
     @Test
-    public void testLong() {
+    public void testToUINT32() {
       for (int i = 0; i < numTests; ++i) {
         final long signed = Math.abs(random.nextLong()) & 0xffffffffL;
         final int unsigned = toUINT32(signed);
@@ -62,10 +62,19 @@ public class NumbersTest {
     }
 
     @Test
-    public void testBigInteger() {
+    public void testToUINT64() {
       for (int i = 0; i < numTests; ++i) {
         final BigInteger signed = BigIntegers.valueOf(1, random.nextLong());
         final long unsigned = toUINT64(signed);
+        assertEquals(signed, toUnsignedBigInteger(unsigned));
+      }
+    }
+
+    @Test
+    public void testToUINT() {
+      for (int i = 0; i < numTests; ++i) {
+        final BigInteger signed = new BigInteger(Strings.getRandomNumeric(Math.abs(random.nextInt()) % 100 + 1));
+        final byte[] unsigned = toUINT(signed);
         assertEquals(signed, toUnsignedBigInteger(unsigned));
       }
     }

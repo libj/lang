@@ -108,14 +108,22 @@ public final class BigIntegers {
     if (mag >= 0L)
       return BigInteger.valueOf(signum == -1 ? -mag : mag);
 
-    // (upper << 32) + lower
-    final int upper = (int)(mag >>> 32);
-    final int lower = (int)mag;
+    final long upper = signum * Integer.toUnsignedLong((int)(mag >>> 32));
+    final long lower = signum * Integer.toUnsignedLong((int)mag);
+    return BigInteger.valueOf(upper).shiftLeft(32).add(BigInteger.valueOf(lower));
+  }
 
-    if (signum == -1)
-      return BigInteger.valueOf(-Integer.toUnsignedLong(upper)).shiftLeft(32).add(BigInteger.valueOf(-Integer.toUnsignedLong(lower)));
-
-    return BigInteger.valueOf(Integer.toUnsignedLong(upper)).shiftLeft(32).add(BigInteger.valueOf(Integer.toUnsignedLong(lower)));
+  /**
+   * Return a {@link BigInteger} equal to the unsigned value of the argument.
+   *
+   * @param signum The sign of the {@link BigInteger} to be returned.
+   * @param mag The unsigned magnitude of the {@link BigInteger} to be returned.
+   * @return A {@link BigInteger} equal to the unsigned value of the argument.
+   * @throws NumberFormatException If {@code signum} is not -1, 0 or 1, or if
+   *           {@code signum == 0 && mag != 0}.
+   */
+  public static BigInteger valueOf(final int signum, final byte[] mag) {
+    return new BigInteger(signum, mag);
   }
 
   private BigIntegers() {

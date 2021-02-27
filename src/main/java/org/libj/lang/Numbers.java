@@ -110,6 +110,28 @@ public final class Numbers {
     }
 
     /**
+     * Returns the unsigned representation of the provided {@link BigInteger} as
+     * a {@code byte} array. The provided {@link BigInteger} must be positive.
+     *
+     * @param bigInteger The signed value.
+     * @return The unsigned representation of the signed value as a {@code byte}
+     *         array.
+     * @throws IllegalArgumentException If {@code bigInteger} is negative.
+     */
+    public static byte[] toUINT(final BigInteger bigInteger) {
+      if (bigInteger.signum() == -1)
+        throw new IllegalArgumentException(bigInteger + " must be positive");
+
+      final byte[] bytes = bigInteger.toByteArray();
+      if (bytes[0] != 0)
+        return bytes;
+
+      final byte[] trimmed = new byte[bytes.length - 1];
+      System.arraycopy(bytes, 1, trimmed, 0, trimmed.length);
+      return trimmed;
+    }
+
+    /**
      * Return a {@link BigInteger} equal to the unsigned value of the argument.
      *
      * @param uint64 The unsigned magnitude of the {@link BigInteger} to be
@@ -118,6 +140,17 @@ public final class Numbers {
      */
     public static BigInteger toUnsignedBigInteger(final long uint64) {
       return BigIntegers.valueOf(1, uint64);
+    }
+
+    /**
+     * Return a {@link BigInteger} equal to the unsigned value of the argument.
+     *
+     * @param uint The unsigned magnitude of the {@link BigInteger} to be
+     *          returned.
+     * @return A {@link BigInteger} equal to the unsigned value of the argument.
+     */
+    public static BigInteger toUnsignedBigInteger(final byte[] uint) {
+      return BigIntegers.valueOf(1, uint);
     }
 
     private Unsigned() {
