@@ -17,6 +17,7 @@
 package org.libj.lang;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,6 +27,57 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class BigDecimals {
   private static final ConcurrentHashMap<String,BigDecimal> instances = new ConcurrentHashMap<>();
+
+  private static class BigDecimalInfinity extends BigDecimal {
+    private static final long serialVersionUID = -6061982086335481343L;
+
+    private final int signum;
+    private final String str;
+
+    private BigDecimalInfinity(final int signum) {
+      super(0);
+      this.signum = signum;
+      this.str = signum < 0 ? "-Infinity" : "Infinity";
+    }
+
+    @Override
+    public int signum() {
+      return signum;
+    }
+
+    @Override
+    public BigDecimal scaleByPowerOfTen(final int n) {
+      return this;
+    }
+
+    @Override
+    public BigDecimal stripTrailingZeros() {
+      return this;
+    }
+
+    @Override
+    public BigInteger toBigIntegerExact() {
+      throw new ArithmeticException();
+    }
+
+    @Override
+    public String toEngineeringString() {
+      return toString();
+    }
+
+    @Override
+    public String toPlainString() {
+      return toString();
+    }
+
+    @Override
+    public String toString() {
+      return str;
+    }
+  }
+
+  public static final BigDecimal POSITIVE_INFINITY = new BigDecimalInfinity(1);
+  public static final BigDecimal NEGATIVE_INFINITY = new BigDecimalInfinity(-1);
 
   /** The {@link BigDecimal} constant {@code 0}, with a scale of {@code 0}. */
   public static final BigDecimal ZERO = init("0", BigDecimal.ZERO);
@@ -109,6 +161,10 @@ public final class BigDecimals {
    *         unscaled value is determined by multiplying or dividing the
    *         provided {@link BigDecimal}'s unscaled value by the appropriate
    *         power of ten to maintain its overall value.
+   * @throws ArithmeticException If {@code rm} is
+   *           {@link RoundingMode#UNNECESSARY} and the specified scaling
+   *           operation would require rounding.
+   * @throws NullPointerException If {@code rm} is null.
    */
   public static BigDecimal setScale(BigDecimal v, final int newScale, final RoundingMode rm) {
     if (v.scale() <= newScale + 1)

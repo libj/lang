@@ -19,10 +19,13 @@ package org.libj.lang;
 import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
+import java.util.Random;
 
 import org.junit.Test;
 
 public class BigDecimalsTest {
+  private static final Random random = new Random();
+
   @Test
   public void testInternBigDecimal() {
     final BigDecimal a = new BigDecimal("589.21");
@@ -45,5 +48,22 @@ public class BigDecimalsTest {
         }
       }).start();
     }
+  }
+
+  private static void testBigDecimalInfinity(final BigDecimal infinity, final int signum, final boolean recurse) {
+    final String expected = (signum == -1 ? "-" : "") + "Infinity";
+    assertEquals(expected, infinity.toEngineeringString());
+    assertEquals(expected, infinity.toPlainString());
+    assertEquals(expected, infinity.toString());
+    if (recurse) {
+      testBigDecimalInfinity(infinity.stripTrailingZeros(), signum, false);
+      testBigDecimalInfinity(infinity.scaleByPowerOfTen(random.nextInt()), signum, false);
+    }
+  }
+
+  @Test
+  public void testBigDecimalInfinity() {
+    testBigDecimalInfinity(BigDecimals.POSITIVE_INFINITY, 1, true);
+    testBigDecimalInfinity(BigDecimals.NEGATIVE_INFINITY, -1, true);
   }
 }
