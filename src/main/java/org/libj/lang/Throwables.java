@@ -70,13 +70,14 @@ public final class Throwables {
    * Copies the cause, stack trace elements, and suppressed exceptions from the
    * first specified {@link Throwable}, to the second.
    *
-   * @param <T> The type parameter of the {@link Throwable}.
+   * @param <F> The type parameter of the {@code from} {@link Throwable}.
+   * @param <T> The type parameter of the {@code to} {@link Throwable}.
    * @param from The {@link Throwable} to copy from.
    * @param to The {@link Throwable} to copy to.
    * @return The {@link Throwable} being copied to.
    * @throws NullPointerException If {@code from} or {@code to} are null.
    */
-  public static <T extends Throwable>T copy(final T from, final T to) {
+  public static <F extends Throwable,T extends F>T copy(final F from, final T to) {
     to.initCause(from.getCause());
     to.setStackTrace(from.getStackTrace());
     if (from.getSuppressed() != null)
