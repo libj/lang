@@ -35,7 +35,7 @@ public final class Booleans {
    * @return The {@link Boolean} represented by the string argument.
    * @see Boolean#parseBoolean(String)
    */
-  public static Boolean parseBoolean(final String s) {
+  public static Boolean valueOf(final String s) {
     return s == null ? null : Boolean.parseBoolean(s);
   }
 
@@ -48,7 +48,7 @@ public final class Booleans {
    * @return {@link Boolean#FALSE} if {@code i == 0}, otherwise
    *         {@link Boolean#TRUE}.
    */
-  public static Boolean parseBoolean(final Integer i) {
+  public static Boolean valueOf(final Integer i) {
     return i == null ? null : i == 0 ? Boolean.FALSE : Boolean.TRUE;
   }
 
@@ -70,8 +70,8 @@ public final class Booleans {
    * @param b The {@code boolean}.
    * @return {@code 0} if {@code b == false}, otherwise {@code 1}.
    */
-  public static int toInt(final boolean b) {
-    return b ? 1 : 0;
+  public static byte byteValue(final boolean b) {
+    return b ? (byte)1 : 0;
   }
 
   /**
@@ -80,7 +80,7 @@ public final class Booleans {
    * @param b The {@code boolean}.
    * @return {@code 0} if {@code b == false}, otherwise {@code 1}.
    */
-  public static double toDouble(final boolean b) {
+  public static double doubleValue(final boolean b) {
     return b ? 1 : 0;
   }
 
@@ -92,8 +92,8 @@ public final class Booleans {
    * @return {@code 0} if {@code b == false}, {@code 1} if {@code b == true},
    *         and {@code null} if {@code b == null}.
    */
-  public static Integer toInteger(final Boolean b) {
-    return b == null ? null : b ? 1 : 0;
+  public static Byte toByte(final Boolean b) {
+    return b == null ? null : b ? (byte)1 : 0;
   }
 
   private Booleans() {

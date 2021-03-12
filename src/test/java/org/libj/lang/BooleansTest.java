@@ -22,37 +22,37 @@ import org.junit.Test;
 
 public class BooleansTest {
   @Test
-  public void testParseBooleanInteger() {
-    assertNull(Booleans.parseBoolean((Integer)null));
+  public void testValueOfInteger() {
+    assertNull(Booleans.valueOf((Integer)null));
     assertFalse(Booleans.parseBoolean(0));
     assertTrue(Booleans.parseBoolean(1));
     assertTrue(Booleans.parseBoolean(100));
   }
 
   @Test
-  public void testParseBooleanString() {
-    assertNull(Booleans.parseBoolean((String)null));
-    assertFalse(Booleans.parseBoolean("0"));
-    assertTrue(Booleans.parseBoolean("true"));
-    assertTrue(Booleans.parseBoolean("TRUE"));
+  public void testValueOfString() {
+    assertNull(Booleans.valueOf((String)null));
+    assertFalse(Booleans.valueOf("0"));
+    assertTrue(Booleans.valueOf("true"));
+    assertTrue(Booleans.valueOf("TRUE"));
   }
 
   @Test
-  public void testToDouble() {
-    assertEquals(0, Booleans.toDouble(false), 0);
-    assertEquals(1, Booleans.toDouble(true), 0);
+  public void testDoubleValue() {
+    assertEquals(0, Booleans.doubleValue(false), 0);
+    assertEquals(1, Booleans.doubleValue(true), 0);
   }
 
   @Test
-  public void testToInt() {
-    assertEquals(0, Booleans.toInt(false));
-    assertEquals(1, Booleans.toInt(true));
+  public void testByteValue() {
+    assertEquals(0, Booleans.byteValue(false));
+    assertEquals(1, Booleans.byteValue(true));
   }
 
   @Test
   public void testToInteger() {
-    assertNull(Booleans.toInteger(null));
-    assertEquals(Integer.valueOf(0), Booleans.toInteger(Boolean.FALSE));
-    assertEquals(Integer.valueOf(1), Booleans.toInteger(Boolean.TRUE));
+    assertNull(Booleans.toByte(null));
+    assertEquals(Byte.valueOf((byte)0), Booleans.toByte(Boolean.FALSE));
+    assertEquals(Byte.valueOf((byte)1), Booleans.toByte(Boolean.TRUE));
   }
 }
