@@ -611,8 +611,7 @@ public final class Identifiers {
       return string;
 
     final char prefix = 'x';
-    final StringBuilder builder = toCamelCase0(string, prefix, '\0', substitutes, null);
-    return transformNotReserved(prefix, '\0', substitutes, null, builder);
+    return transformNotReserved(prefix, '\0', substitutes, null, toCamelCase0(string, prefix, '\0', substitutes, null));
   }
 
   private static StringBuilder toCamelCase0(final String string, final char prefix, final char substitute, final Map<Character,String> substitutes, final Function<? super Character,String> function) {
