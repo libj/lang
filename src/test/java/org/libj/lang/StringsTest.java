@@ -46,6 +46,17 @@ public class StringsTest {
   }
 
   @Test
+  public void testIndexOfScopeClose() {
+    assertEquals(-1, Strings.indexOfScopeClose("{abc}abc", '{', '}'));
+    assertEquals(3, Strings.indexOfScopeClose("abc}abc", '{', '}'));
+    assertEquals(4, Strings.indexOfScopeClose("{abc}abc", '{', '}', 1));
+    assertEquals(9, Strings.indexOfScopeClose("{abc{abc}}abc", '{', '}', 1));
+    assertEquals(8, Strings.indexOfScopeClose("abc{abc}}abc", '{', '}'));
+    assertEquals(22, Strings.indexOfScopeClose("{country:([a-zA-Z]{2})}{p:/?}{state:(([\\}\\{a-zA-Z]{2})?)}", '{', '}', 1));
+    assertEquals(56, Strings.indexOfScopeClose("{country:([a-zA-Z]{2})}{p:/?}{state:(([\\}\\{a-zA-Z]{2})?)}", '{', '}', 34));
+  }
+
+  @Test
   public void testGetRandomAlphaString() {
     try {
       Strings.getRandomAlpha(-1);

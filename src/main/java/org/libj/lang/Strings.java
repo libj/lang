@@ -1748,8 +1748,6 @@ public final class Strings {
     boolean enclosed = false;
     final int substrLen = substr.length();
     for (int i = Math.max(fromIndex, 0), len = str.length(); i < len; ++i) {
-      if (i == 120)
-        System.console();
       final char c = str.charAt(i);
       if (escaped)
         escaped = false;
@@ -1785,6 +1783,80 @@ public final class Strings {
    */
   public static int indexOfUnEnclosed(final CharSequence str, final CharSequence substr, final char open, final char close) {
     return indexOfUnEnclosed(str, substr, open, close, 0);
+  }
+
+  /**
+   * Returns the index within the specified string of the provided {@code close}
+   * {@code char} corresponding to the matching scope of the given {@code open}
+   * {@code char}, starting the search at the specified {@code fromIndex}.
+   * <p>
+   * As the specified string is traversed, this method keeps track of the depth
+   * of scope, whereby "scope" is defined by a matching {@code open}
+   * {@code char} followed by a {@code close} {@code char}, within which space
+   * no other unmatched {@code open} or {@code close} {@code char} can exist.
+   * <p>
+   * <b>Note:</b> The leading {@code open} {@code char} corresponding to the
+   * ending {@code close} {@code char} that is sought is expected to not be
+   * present, or is on an index that is less than {@code fromIndex}.
+   *
+   * @param str The string.
+   * @param open The {@code char} indicating a scope open.
+   * @param close The {@code char} indicating a scope close.
+   * @param fromIndex The index to start the search from. There is no
+   *          restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the string, it has the same effect
+   *          as if it were equal to one less than the length of the string: the
+   *          entire string may be searched. If it is negative, it has the same
+   *          effect as if it were {@code -1}: {@code -1} is returned.
+   * @return The index within the specified string of the provided {@code close}
+   *         {@code char} corresponding to the matching scope of the given
+   *         {@code open} {@code char}, starting the search at the specified
+   *         {@code fromIndex}, or {@code -1} if the close scope is not found.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static int indexOfScopeClose(final CharSequence str, final char open, final char close, final int fromIndex) {
+    boolean escaped = false;
+    int scope = 1;
+    for (int i = Math.max(fromIndex, 0), len = str.length(); i < len; ++i) {
+      final char c = str.charAt(i);
+      if (escaped)
+        escaped = false;
+      else if (c == '\\')
+        escaped = true;
+      else if (c == open)
+        ++scope;
+      else if (c == close && --scope == 0)
+        return i;
+    }
+
+    return -1;
+  }
+
+  /**
+   * Returns the index within the specified string of the provided {@code close}
+   * {@code char} corresponding to the matching scope of the given {@code open}
+   * {@code char}, starting the search at the specified {@code fromIndex}.
+   * <p>
+   * As the specified string is traversed, this method keeps track of the depth
+   * of scope, whereby "scope" is defined by a matching {@code open}
+   * {@code char} followed by a {@code close} {@code char}, within which space
+   * no other unmatched {@code open} or {@code close} {@code char} can exist.
+   * <p>
+   * <b>Note:</b> The leading {@code open} {@code char} corresponding to the
+   * ending {@code close} {@code char} that is sought is expected to not be
+   * present.
+   *
+   * @param str The string.
+   * @param open The {@code char} indicating a scope open.
+   * @param close The {@code char} indicating a scope close.
+   * @return The index within the specified string of the provided {@code close}
+   *         {@code char} corresponding to the matching scope of the given
+   *         {@code open} {@code char}, starting the search at the specified
+   *         {@code fromIndex}, or {@code -1} if the close scope is not found.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static int indexOfScopeClose(final CharSequence str, final char open, final char close) {
+    return indexOfScopeClose(str, open, close, 0);
   }
 
   /**
