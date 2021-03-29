@@ -31,6 +31,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
@@ -275,7 +276,7 @@ public final class Classes {
    * @param forEach The {@link Predicate} called for each visited superclass and
    *          superinterface. If the {@link Predicate} returns {@code false},
    *          traversal will terminate, and the method will return the set of
-   *          classes that had been visited before termination.
+   *          classes that had been visited before the termination.
    * @return The class hierarchy of the specified {@link Class}.
    * @throws NullPointerException If {@code cls} or {@code forEach} is null.
    */
@@ -295,6 +296,19 @@ public final class Classes {
     }
     while ((cls = queue.poll()) != null);
     return visited;
+  }
+
+  /**
+   * Traverses and returns the class hierarchy of the specified {@link Class}.
+   * This method visits the superclasses and superinterfaces with Breadth First
+   * Search.
+   *
+   * @param cls The {@link Class}.
+   * @return The class hierarchy of the specified {@link Class}.
+   * @throws NullPointerException If {@code cls} is null.
+   */
+  public static Set<Class<?>> getClassHierarchy(final Class<?> cls) {
+    return getClassHierarchy(cls, c -> true);
   }
 
   private static boolean visitSuperclass(final Class<?> cls, final Queue<? super Class<?>> queue, final Set<? super Class<?>> visited, final Predicate<? super Class<?>> forEach) {
@@ -342,12 +356,15 @@ public final class Classes {
     final Type[] types = ((ParameterizedType)genericType).getActualTypeArguments();
     final Class<?>[] classes = new Class[types.length];
     for (int i = 0; i < classes.length; ++i) {
-      if (types[i] instanceof Class)
-        classes[i] = (Class<?>)types[i];
-      else if (types[i] instanceof ParameterizedType)
-        classes[i] = (Class<?>)((ParameterizedType)types[i]).getRawType();
-      else if (types[i] instanceof WildcardTypeImpl)
-        classes[i] = (Class<?>)((WildcardTypeImpl)types[i]).getUpperBounds()[0];
+      final Type type = types[i];
+      if (type instanceof Class)
+        classes[i] = (Class<?>)type;
+      else if (type instanceof ParameterizedType)
+        classes[i] = (Class<?>)((ParameterizedType)type).getRawType();
+      else if (type instanceof TypeVariable)
+        classes[i] = (Class<?>)((TypeVariable<?>)type).getBounds()[0];
+      else if (type instanceof WildcardTypeImpl)
+        classes[i] = (Class<?>)((WildcardTypeImpl)type).getUpperBounds()[0];
     }
 
     return classes;
