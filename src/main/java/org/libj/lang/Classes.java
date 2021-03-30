@@ -35,9 +35,9 @@ import java.lang.reflect.TypeVariable;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -1222,23 +1222,6 @@ public final class Classes {
   }
 
   /**
-   * Adds all interfaces extended by the specified {@code iface} interface
-   * {@link Class}.
-   *
-   * @param iface The interface {@link Class}.
-   * @param set The set into which all extended interfaces are to be added.
-   * @throws NullPointerException If {@code iface} or {@code set} is null.
-   */
-  private static void recurse(final Class<?> iface, final HashSet<Class<?>> set) {
-    if (set.contains(iface))
-      return;
-
-    set.add(iface);
-    for (final Class<?> extended : iface.getInterfaces())
-      recurse(extended, set);
-  }
-
-  /**
    * Returns the annotation for the specified {@code annotationClass} on the
    * provided class if such an annotation is <i>present</i>, else null.
    * <p>
@@ -1312,23 +1295,106 @@ public final class Classes {
    *         the specified class.
    * @throws NullPointerException If {@code cls} is null.
    */
-  public static Class<?>[] getAllInterfaces(final Class<?> cls) {
-    Class<?> parent = cls;
-    Class<?>[] ifaces = null;
-    HashSet<Class<?>> set = null;
+  public static Class<?>[] getAllInterfaces(Class<?> cls) {
+    Class<?>[] thisInterfaces = null;
+    LinkedHashSet<Class<?>> allInterfaces = null;
     do {
-      ifaces = parent.getInterfaces();
-      if (ifaces.length == 0)
+      thisInterfaces = cls.getInterfaces();
+      if (thisInterfaces.length == 0)
         continue;
 
-      if (set == null)
-        set = new HashSet<>(4);
+      if (allInterfaces == null)
+        allInterfaces = new LinkedHashSet<>(4);
 
-      for (final Class<?> iface : ifaces)
-        recurse(iface, set);
+      for (final Class<?> iface : thisInterfaces)
+        getAllInterfaces(iface, allInterfaces);
     }
-    while ((parent = parent.getSuperclass()) != null);
-    return set == null ? ifaces : set.toArray(new Class[set.size()]);
+    while ((cls = cls.getSuperclass()) != null);
+    return allInterfaces == null ? thisInterfaces : allInterfaces.toArray(new Class[allInterfaces.size()]);
+  }
+
+  /**
+   * Adds all interfaces extended by the specified {@code iface} interface
+   * {@link Class}.
+   *
+   * @param iface The interface {@link Class}.
+   * @param allInterfaces The set into which all extended interfaces are to be
+   *          added.
+   * @throws NullPointerException If {@code iface} or {@code allInterfaces} is
+   *           null.
+   */
+  private static void getAllInterfaces(final Class<?> iface, final LinkedHashSet<Class<?>> allInterfaces) {
+    if (allInterfaces.contains(iface))
+      return;
+
+    allInterfaces.add(iface);
+    for (final Class<?> extended : iface.getInterfaces())
+      getAllInterfaces(extended, allInterfaces);
+  }
+
+  /**
+   * Returns all generic interfaces implemented by the class or interface
+   * represented by the specified class. This method differentiates itself from
+   * {@link Class#getGenericInterfaces()} by returning <i>all</i> generic
+   * interfaces (full depth and breadth) instead of just the interfaces
+   * <i>directly</i> implemented by the class.
+   *
+   * @param cls The class.
+   * @return All generic interfaces implemented by the class or interface
+   *         represented by the specified class.
+   * @throws NullPointerException If {@code cls} is null.
+   */
+  public static Type[] getAllGenericInterfaces(Class<?> cls) {
+    Class<?>[] thisInterfaces = null;
+    Type[] thisGenericInterfaces = null;
+    LinkedHashSet<Class<?>> allInterfaces = null;
+    LinkedHashSet<Type> allGenericInterfaces = null;
+    do {
+      thisInterfaces = cls.getInterfaces();
+      thisGenericInterfaces = cls.getGenericInterfaces();
+      if (thisGenericInterfaces.length > 0) {
+        if (allGenericInterfaces == null)
+          allGenericInterfaces = new LinkedHashSet<>(2);
+
+        Collections.addAll(allGenericInterfaces, thisGenericInterfaces);
+      }
+
+      if (thisInterfaces.length == 0)
+        continue;
+
+      if (allInterfaces == null) {
+        allInterfaces = new LinkedHashSet<>(4);
+        if (allGenericInterfaces == null)
+          allGenericInterfaces = new LinkedHashSet<>(2);
+      }
+
+      for (final Class<?> iface : thisInterfaces)
+        getAllGenericInterfaces(iface, allInterfaces, allGenericInterfaces);
+    }
+    while ((cls = cls.getSuperclass()) != null);
+    return allGenericInterfaces == null ? new Type[0] : allGenericInterfaces.toArray(new Type[allGenericInterfaces.size()]);
+  }
+
+  /**
+   * Adds all generic interfaces extended by the specified {@code iface}
+   * interface {@link Class}.
+   *
+   * @param iface The interface {@link Class}.
+   * @param allInterfaces The set into which all extended interfaces are to be
+   *          added.
+   * @param allGenericInterfaces The set into which all extended generic
+   *          interfaces are to be added.
+   * @throws NullPointerException If {@code iface}, {@code allInterfaces} or
+   *           {@code allGenericInterfaces} is null.
+   */
+  private static void getAllGenericInterfaces(final Class<?> iface, final LinkedHashSet<Class<?>> allInterfaces, final LinkedHashSet<Type> allGenericInterfaces) {
+    if (allInterfaces.contains(iface))
+      return;
+
+    allInterfaces.add(iface);
+    Collections.addAll(allGenericInterfaces, iface.getGenericInterfaces());
+    for (final Class<?> extended : iface.getInterfaces())
+      getAllGenericInterfaces(extended, allInterfaces, allGenericInterfaces);
   }
 
   /**

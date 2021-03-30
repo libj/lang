@@ -25,6 +25,7 @@ import java.io.FilterInputStream;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.AbstractCollection;
 import java.util.AbstractList;
 import java.util.AbstractSequentialList;
@@ -231,6 +232,26 @@ public class ClassesTest {
     private Optional<?> wildGeneric;
     private Optional<String> stringGeneric;
     private Map<List<Integer>,Map<List<Integer>,String>> multiGeneric;
+  }
+
+  private static interface W<T> {
+  }
+
+  private static interface X<T,U> extends W<T> {
+  }
+
+  private static class Y<U> implements X<Integer,U> {
+  }
+
+  private static class Z extends Y<Double> {
+  }
+
+  @Test
+  // FIXME: Improve this test
+  public void testGetAllGenericInterfaces() {
+    final Type[] interfaces = Classes.getAllGenericInterfaces(Z.class);
+    assertEquals(2, interfaces.length);
+//    assertEquals("[org.libj.lang.ClassesTest$X<java.lang.Integer, U>, org.libj.lang.ClassesTest$W<T>]", Arrays.toString(interfaces));
   }
 
   @Test
