@@ -38,6 +38,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -45,7 +46,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -267,18 +270,77 @@ public final class Classes {
     return cls.getGenericSuperclass() instanceof ParameterizedType ? ((ParameterizedType)cls.getGenericSuperclass()).getActualTypeArguments() : null;
   }
 
+  private static <T>T visitSuperclass(final Class<?> cls, final Queue<? super Class<?>> queue, final Set<? super Class<?>> visited, final Function<? super Class<?>,T> function) {
+    if (cls == null || !visited.add(cls))
+      return null;
+
+    T t;
+    if (function != null && (t = function.apply(cls)) != null)
+      return t;
+
+    queue.add(cls);
+    return null;
+  }
+
+  /**
+   * Traverses and the class hierarchy of the specified {@link Class} in Breadth
+   * First Search order, calling the provided {@code function} for each
+   * superclass and superinterface in the hierarchy, and returns the first
+   * non-null value returned from the {@code function}.
+   *
+   * @param <T> The type parameter of the object returned by the provided
+   *          {@code function}.
+   * @param cls The {@link Class}.
+   * @param function If not null, the {@link Function} to be called for each
+   *          visited superclass and superinterface. If the {@link Function}
+   *          returns a non-null value, traversal will terminate, and the method
+   *          will return the value returned by the {@code function}.
+   * @return The first non-null value returned from the {@code function}.
+   * @throws NullPointerException If {@code cls} null.
+   */
+  public static <T>T walkClassHierarchy(Class<?> cls, final Function<? super Class<?>,T> function) {
+    final Set<Class<?>> visited = new LinkedHashSet<>();
+    final Queue<Class<?>> queue = new LinkedList<>();
+    T t;
+    if ((t = visitSuperclass(cls, queue, visited, function)) != null)
+      return t;
+
+    do {
+      if ((t = visitSuperclass(cls.getSuperclass(), queue, visited, function)) != null)
+        return t;
+
+      for (final Class<?> superInterface : cls.getInterfaces())
+        if ((t = visitSuperclass(superInterface, queue, visited, function)) != null)
+          return t;
+    }
+    while ((cls = queue.poll()) != null);
+    return t;
+  }
+
+  private static boolean visitSuperclass(final Class<?> cls, final Queue<? super Class<?>> queue, final Set<? super Class<?>> visited, final Predicate<? super Class<?>> forEach) {
+    if (cls == null || !visited.add(cls))
+      return true;
+
+    if (forEach != null && !forEach.test(cls))
+      return false;
+
+    queue.add(cls);
+    return true;
+  }
+
   /**
    * Traverses and returns the class hierarchy of the specified {@link Class}.
    * This method visits the superclasses and superinterfaces with Breadth First
    * Search.
    *
    * @param cls The {@link Class}.
-   * @param forEach The {@link Predicate} called for each visited superclass and
-   *          superinterface. If the {@link Predicate} returns {@code false},
-   *          traversal will terminate, and the method will return the set of
-   *          classes that had been visited before the termination.
+   * @param forEach If not null, the {@link Predicate} to be called for each
+   *          visited superclass and superinterface. If the {@link Predicate}
+   *          returns {@code false}, traversal will terminate, and the method
+   *          will return the set of classes that had been visited before
+   *          termination.
    * @return The class hierarchy of the specified {@link Class}.
-   * @throws NullPointerException If {@code cls} or {@code forEach} is null.
+   * @throws NullPointerException If {@code cls} null.
    */
   public static Set<Class<?>> getClassHierarchy(Class<?> cls, final Predicate<? super Class<?>> forEach) {
     final Set<Class<?>> visited = new LinkedHashSet<>();
@@ -308,18 +370,125 @@ public final class Classes {
    * @throws NullPointerException If {@code cls} is null.
    */
   public static Set<Class<?>> getClassHierarchy(final Class<?> cls) {
-    return getClassHierarchy(cls, c -> true);
+    return getClassHierarchy(cls, null);
   }
 
-  private static boolean visitSuperclass(final Class<?> cls, final Queue<? super Class<?>> queue, final Set<? super Class<?>> visited, final Predicate<? super Class<?>> forEach) {
-    if (cls == null || !visited.add(cls))
-      return true;
+  /**
+   * Finds the specified {@code interfaceType} in the class hierarchy of the
+   * provided {@code cls}, and returns an array of {@link Type} objects
+   * representing the actual type arguments to the generic type.
+   * <p>
+   * Note that in some cases, the returned array be empty. This can occur if
+   * this type represents a non-parameterized type nested within a parameterized
+   * type.
+   *
+   * @param cls The {@link Class} in which to find the specified
+   *          {@code interfaceType}.
+   * @param interfaceType The interface {@link Class} to find in the provided
+   *          {@code cls}.
+   * @return An array of {@link Type} objects representing the actual type
+   *         arguments to this type.
+   * @throws TypeNotPresentException If any of the actual type arguments refers
+   *           to a non-existent type declaration.
+   * @throws MalformedParameterizedTypeException If any of the actual type
+   *           parameters refer to a parameterized type that cannot be
+   *           instantiated for any reason.
+   * @throws IllegalArgumentException If {@code interfaceType} is not a
+   *           {@link Class} of an interface type.
+   * @throws NullPointerException If {@code interfaceType} or {@code cls} is
+   *           null.
+   */
+  public static Type[] getGenericInterfaceTypeArguments(final Class<?> cls, final Class<?> interfaceType) {
+    if (!interfaceType.isInterface())
+      throw new IllegalArgumentException(interfaceType.getName() + " is not an interface type");
 
-    if (!forEach.test(cls))
-      return false;
+    final Type[] types = resolveGenericTypes(cls, null, new HashSet<>(), (c,t) -> c == interfaceType ? t : null);
+    return types != null ? types : new Type[0];
+  }
 
-    queue.add(cls);
-    return true;
+  /**
+   * Traverses the class hierarchy of the specified {@link Class} in Depth First
+   * Search order, invoking the provided {@code function} for each superclasses
+   * and superinterface in the class hierarchy with resolved generic type
+   * arguments, and returns the first non-null value returned from the
+   * {@code function}.
+   *
+   * @param <T> The type parameter of the object returned by the provided
+   *          {@code function}.
+   * @param cls The {@link Class} whose superclasses and superinterface are to
+   *          be resolved.
+   * @param function The {@link BiFunction} to be invoked for each superclasses
+   *          and superinterface of the specified {@link Class}, whereby a
+   *          return of {@code false} will terminate subsequent traversal of the
+   *          class hierarchy.
+   * @return The first non-null value returned from the {@code function}.
+   * @throws NullPointerException If {@code cls} or {@code function} is null.
+   */
+  public static <T>T resolveGenericTypes(final Class<?> cls, final BiFunction<Class<?>,Type[],T> function) {
+    return resolveGenericTypes(cls, null, new HashSet<>(8), function);
+  }
+
+  private static <T>T resolveGenericTypes(final Class<?> cls, final Object[][] args, final Set<Class<?>> visited, final BiFunction<Class<?>,Type[],T> function) {
+    final Class<?> superclass = cls.getSuperclass();
+    T result;
+    if (superclass != null && cls.getGenericSuperclass() instanceof ParameterizedType && (result = resolveGenericTypes(superclass, (ParameterizedType)cls.getGenericSuperclass(), args, visited, function)) != null)
+      return result;
+
+    final Class<?>[] superInterfaces = cls.getInterfaces();
+    final Type[] genericSuperInterfaces = cls.getGenericInterfaces();
+    for (int i = 0; i < genericSuperInterfaces.length; ++i) {
+      final Class<?> superInterface = superInterfaces[i];
+      if (!visited.add(superInterface))
+        continue;
+
+      final Type genericSuperInterface = genericSuperInterfaces[i];
+      if (genericSuperInterface instanceof ParameterizedType && (result = resolveGenericTypes(superInterface, (ParameterizedType)genericSuperInterface, args, visited, function)) != null)
+        return result;
+    }
+
+    return null;
+  }
+
+  private static <T>T resolveGenericTypes(final Class<?> superClass, final ParameterizedType superType, final Object[][] args, final Set<Class<?>> visited, final BiFunction<Class<?>,Type[],T> function) {
+    final TypeVariable<?>[] typeVariables = superClass.getTypeParameters();
+    final Type[] typeArguments = superType.getActualTypeArguments();
+    final Object[][] nextArgs = recurseArgs(typeVariables, typeArguments, args, 0, 0);
+    T result = function.apply(superClass, typeArguments);
+    if (result != null)
+      return result;
+
+    result = resolveGenericTypes(superClass, nextArgs, visited, function);
+    if (result != null)
+      return result;
+
+    return null;
+  }
+
+  private static Object[][] recurseArgs(final TypeVariable<?>[] typeVariables, final Type[] typeArguments, final Object[][] args, final int index, final int depth) {
+    if (index == typeVariables.length)
+      return new Object[depth][2];
+
+    final Object[][] nextArgs;
+    if (typeArguments[index] instanceof Class<?>) {
+      final Object[] arg = {typeVariables[index].getName(), (Class<?>)typeArguments[index]};
+      nextArgs = recurseArgs(typeVariables, typeArguments, args, index + 1, depth + 1);
+      nextArgs[depth] = arg;
+      return nextArgs;
+    }
+
+    final String localName = typeArguments[index].getTypeName();
+    if (args != null) {
+      for (final Object[] arg : args) {
+        if (localName.equals(arg[0])) {
+          typeArguments[index] = (Class<?>)arg[1];
+          nextArgs = recurseArgs(typeVariables, typeArguments, args, index + 1, depth + 1);
+          nextArgs[depth] = new Object[] {typeVariables[index].getTypeName(), typeArguments[index]};
+          return nextArgs;
+        }
+      }
+    }
+
+    return recurseArgs(typeVariables, typeArguments, args, index + 1, depth);
   }
 
   /**

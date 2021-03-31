@@ -234,24 +234,69 @@ public class ClassesTest {
     private Map<List<Integer>,Map<List<Integer>,String>> multiGeneric;
   }
 
-  private static interface W<T> {
+  private static interface V<V> {
   }
 
-  private static interface X<T,U> extends W<T> {
+  private static interface W<T,U> {
   }
 
-  private static class Y<U> implements X<Integer,U> {
+  private static interface X<T,U> extends W<Long,T>, V<Short> {
   }
 
-  private static class Z extends Y<Double> {
+  private static class Y<U,R> implements X<Integer,U> {
+  }
+
+  private static class Z<R> extends Y<Double,R> implements V<Short> {
+  }
+
+  private static class ZZ<X> extends Z<Byte> implements V<Short> {
   }
 
   @Test
   // FIXME: Improve this test
   public void testGetAllGenericInterfaces() {
     final Type[] interfaces = Classes.getAllGenericInterfaces(Z.class);
-    assertEquals(2, interfaces.length);
+    assertEquals(3, interfaces.length);
 //    assertEquals("[org.libj.lang.ClassesTest$X<java.lang.Integer, U>, org.libj.lang.ClassesTest$W<T>]", Arrays.toString(interfaces));
+  }
+
+  @Test
+  public void testResolveGenericTypes() {
+    final Map<Class<?>,Type[]> classToTypes = new HashMap<>();
+    Classes.resolveGenericTypes(ZZ.class, classToTypes::put);
+    assertEquals(5, classToTypes.size());
+    assertArrayEquals(new Class[] {Byte.class}, classToTypes.get(Z.class));
+    assertArrayEquals(new Class[] {Double.class, Byte.class}, classToTypes.get(Y.class));
+    assertArrayEquals(new Class[] {Integer.class, Double.class}, classToTypes.get(X.class));
+    assertArrayEquals(new Class[] {Long.class, Integer.class}, classToTypes.get(W.class));
+    assertArrayEquals(new Class[] {Short.class}, classToTypes.get(V.class));
+  }
+
+  @Test
+  public void testGetGenericInterfaceTypeArguments() {
+    try {
+      Classes.getGenericInterfaceTypeArguments(Integer.class, null);
+      fail("Expected NullPointerException");
+    }
+    catch (final NullPointerException e) {
+    }
+
+    try {
+      Classes.getGenericInterfaceTypeArguments(null, Serializable.class);
+      fail("Expected NullPointerException");
+    }
+    catch (final NullPointerException e) {
+    }
+
+    try {
+      Classes.getGenericInterfaceTypeArguments(Integer.class, Integer.class);
+      fail("Expected IllegalArgumentException");
+    }
+    catch (final IllegalArgumentException e) {
+    }
+
+    assertArrayEquals(new Type[0], Classes.getGenericInterfaceTypeArguments(Integer.class, Serializable.class));
+    assertArrayEquals(new Class[] {Integer.class, Double.class}, Classes.getGenericInterfaceTypeArguments(Z.class, X.class));
   }
 
   @Test
@@ -272,18 +317,27 @@ public class ClassesTest {
     catch (final NullPointerException e) {
     }
 
+    final Class<?>[] hierarchy = {LinkedList.class, AbstractSequentialList.class, List.class, Deque.class, Cloneable.class, Serializable.class, AbstractList.class, Collection.class, Queue.class, AbstractCollection.class, Iterable.class, Object.class};
+
+    assertEquals(asCollection(new LinkedHashSet<>(), hierarchy, 0, hierarchy.length), Classes.getClassHierarchy(LinkedList.class, null));
+    assertEquals(asCollection(new LinkedHashSet<>(), hierarchy, 0, hierarchy.length), Classes.getClassHierarchy(LinkedList.class, c -> true));
+    assertEquals(asCollection(new LinkedHashSet<>(), hierarchy, 0, 6), Classes.getClassHierarchy(LinkedList.class, c -> c != Serializable.class));
+    assertEquals(asCollection(new LinkedHashSet<>(), hierarchy, 0, 9), Classes.getClassHierarchy(LinkedList.class, c -> c != Queue.class));
+  }
+
+  @Test
+  public void testWalkClassHierarchy() {
     try {
-      Classes.getClassHierarchy(String.class, null);
+      Classes.walkClassHierarchy(null, c -> false);
       fail("Expected NullPointerException");
     }
     catch (final NullPointerException e) {
     }
 
-    final Class<?>[] hierarchy = {LinkedList.class, AbstractSequentialList.class, List.class, Deque.class, Cloneable.class, Serializable.class, AbstractList.class, Collection.class, Queue.class, AbstractCollection.class, Iterable.class, Object.class};
-
-    assertEquals(asCollection(new LinkedHashSet<>(), hierarchy, 0, hierarchy.length), Classes.getClassHierarchy(LinkedList.class, c -> true));
-    assertEquals(asCollection(new LinkedHashSet<>(), hierarchy, 0, 6), Classes.getClassHierarchy(LinkedList.class, c -> c != Serializable.class));
-    assertEquals(asCollection(new LinkedHashSet<>(), hierarchy, 0, 9), Classes.getClassHierarchy(LinkedList.class, c -> c != Queue.class));
+    assertNull(Classes.walkClassHierarchy(LinkedList.class, null));
+    assertNull(Classes.walkClassHierarchy(LinkedList.class, c -> c == Integer.class ? "found" : null));
+    assertEquals("found", Classes.walkClassHierarchy(LinkedList.class, c -> c == Queue.class ? "found" : null));
+    assertEquals("found", Classes.walkClassHierarchy(LinkedList.class, c -> c == Serializable.class ? "found" : null));
   }
 
   private static <T>Collection<T> asCollection(final Collection<T> c, final T[] a, final int fromIndex, final int toIndex) {
