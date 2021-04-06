@@ -50,6 +50,50 @@ public class BigDecimalsTest {
     }
   }
 
+  @Test
+  public void testInternlong() {
+    for (int i = 0; i < 100; ++i) {
+      new Thread(() -> {
+        for (long j = 0; j < 1000; ++j) {
+          BigDecimals.intern(j);
+        }
+      }).start();
+    }
+  }
+
+  @Test
+  public void testInternLong() {
+    for (int i = 0; i < 100; ++i) {
+      new Thread(() -> {
+        for (Long j = 0L; j < 1000; ++j) {
+          BigDecimals.intern(j);
+        }
+      }).start();
+    }
+  }
+
+  @Test
+  public void testInterndouble() {
+    for (int i = 0; i < 100; ++i) {
+      new Thread(() -> {
+        for (double j = 0; j < 1000; ++j) {
+          BigDecimals.intern(j);
+        }
+      }).start();
+    }
+  }
+
+  @Test
+  public void testInternDouble() {
+    for (int i = 0; i < 100; ++i) {
+      new Thread(() -> {
+        for (Double j = 0D; j < 1000; ++j) {
+          BigDecimals.intern(j);
+        }
+      }).start();
+    }
+  }
+
   private static void testBigDecimalInfinity(final BigDecimal infinity, final int signum, final boolean recurse) {
     final String expected = (signum == -1 ? "-" : "") + "Infinity";
     assertEquals(expected, infinity.toEngineeringString());

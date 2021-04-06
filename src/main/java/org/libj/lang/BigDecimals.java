@@ -16,6 +16,7 @@
 
 package org.libj.lang;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
@@ -26,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Utility functions for operations pertaining to {@link BigDecimal}.
  */
 public final class BigDecimals {
-  private static final ConcurrentHashMap<String,BigDecimal> instances = new ConcurrentHashMap<>();
+  private static final ConcurrentHashMap<Serializable,BigDecimal> instances = new ConcurrentHashMap<>();
 
   private static class BigDecimalInfinity extends BigDecimal {
     private static final long serialVersionUID = -6061982086335481343L;
@@ -103,8 +104,8 @@ public final class BigDecimals {
   /** The {@link BigDecimal} constant {@code sqrt(2)}, with a scale of {@code 15}. */
   public static final BigDecimal SQRT_2 = init(String.valueOf(Constants.SQRT_2), BigDecimal.valueOf(Constants.SQRT_2));
 
-  private static BigDecimal init(final String str, final BigDecimal val) {
-    instances.put(str, val);
+  private static BigDecimal init(final Serializable key, final BigDecimal val) {
+    instances.put(key, val);
     return val;
   }
 
@@ -134,6 +135,60 @@ public final class BigDecimals {
   public static BigDecimal intern(final BigDecimal n) {
     final BigDecimal instance = instances.putIfAbsent(n.toString(), n);
     return instance != null ? instance : n;
+  }
+
+  /**
+   * Returns a canonical representation of the {@link BigDecimal} object
+   * representing the specified {@code long} value.
+   *
+   * @param val The value of the desired {@link BigDecimal} instance.
+   * @return A canonical representation of the {@link BigDecimal} object
+   *         representing the specified {@code long} value.
+   */
+  public static BigDecimal intern(final long val) {
+    final BigDecimal instance = instances.get(val);
+    return instance != null ? instance : init(val, new BigDecimal(val));
+  }
+
+  /**
+   * Returns a canonical representation of the {@link BigDecimal} object
+   * representing the specified {@link Long} value.
+   *
+   * @param val The value of the desired {@link BigDecimal} instance.
+   * @return A canonical representation of the {@link BigDecimal} object
+   *         representing the specified {@link Long} value.
+   * @throws NullPointerException If the specified {@link Long} value is null.
+   */
+  public static BigDecimal intern(final Long val) {
+    final BigDecimal instance = instances.get(Objects.requireNonNull(val));
+    return instance != null ? instance : init(val, new BigDecimal(val));
+  }
+
+  /**
+   * Returns a canonical representation of the {@link BigDecimal} object
+   * representing the specified {@code double} value.
+   *
+   * @param val The value of the desired {@link BigDecimal} instance.
+   * @return A canonical representation of the {@link BigDecimal} object
+   *         representing the specified {@code double} value.
+   */
+  public static BigDecimal intern(final double val) {
+    final BigDecimal instance = instances.get(val);
+    return instance != null ? instance : init(val, new BigDecimal(val));
+  }
+
+  /**
+   * Returns a canonical representation of the {@link BigDecimal} object
+   * representing the specified {@link Double} value.
+   *
+   * @param val The value of the desired {@link BigDecimal} instance.
+   * @return A canonical representation of the {@link BigDecimal} object
+   *         representing the specified {@link Double} value.
+   * @throws NullPointerException If the specified {@link Double} value is null.
+   */
+  public static BigDecimal intern(final Double val) {
+    final BigDecimal instance = instances.get(Objects.requireNonNull(val));
+    return instance != null ? instance : init(val, new BigDecimal(val));
   }
 
   /**
