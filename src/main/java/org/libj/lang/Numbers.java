@@ -2729,13 +2729,13 @@ public final class Numbers {
 
   /**
    * Tests whether the provided {@link Class Class&lt;? extends Number&gt;} is
-   * an exact number type.
+   * an whole number type.
    *
    * @param cls The {@link Class Class&lt;? extends Number&gt;} to test.
    * @return Whether the provided {@link Class Class&lt;? extends Number&gt;} is
-   *         an exact number type.
+   *         an whole number type.
    */
-  public static boolean isExactType(final Class<? extends Number> cls) {
+  public static boolean isWholeType(final Class<? extends Number> cls) {
     if (cls == null)
       return false;
 
