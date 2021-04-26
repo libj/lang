@@ -80,9 +80,8 @@ public final class Throwables {
   public static <F extends Throwable,T extends F>T copy(final F from, final T to) {
     to.initCause(from.getCause());
     to.setStackTrace(from.getStackTrace());
-    if (from.getSuppressed() != null)
-      for (final Throwable suppressed : from.getSuppressed())
-        to.addSuppressed(suppressed);
+    for (final Throwable suppressed : from.getSuppressed())
+      to.addSuppressed(suppressed);
 
     return to;
   }

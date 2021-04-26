@@ -91,6 +91,6 @@ public class ResourcesTest {
       counter.getAndIncrement();
       return true;
     });
-    assertEquals(352, counter.get());
+    assertEquals(354, counter.get());
   }
 }

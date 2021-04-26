@@ -402,7 +402,7 @@ public final class Classes {
     if (!interfaceType.isInterface())
       throw new IllegalArgumentException(interfaceType.getName() + " is not an interface type");
 
-    final Type[] types = resolveGenericTypes(cls, null, new HashSet<>(), (c,t) -> c == interfaceType ? t : null);
+    final Type[] types = resolveGenericTypes(cls, null, new HashSet<>(), (c, t) -> c == interfaceType ? t : null);
     return types != null ? types : new Type[0];
   }
 
