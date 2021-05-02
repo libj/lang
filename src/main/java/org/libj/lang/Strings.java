@@ -1072,13 +1072,13 @@ public final class Strings {
   }
 
   /**
-   * Returns the specified string with any leading and trailing characters
+   * Returns the provided string with any leading and trailing characters
    * matching the provided {@code char} removed.
    *
    * @param str The string to be trimmed.
    * @param ch The {@code char} to remove from the front and back of the
-   *          specified string.
-   * @return The specified string with any leading and trailing characters
+   *          provided string.
+   * @return The provided string with any leading and trailing characters
    *         matching the provided {@code char} removed.
    */
   public static String trim(final String str, final char ch) {
@@ -1094,6 +1094,34 @@ public final class Strings {
     int j = len;
     while (j > i && str.charAt(--j) == ch);
     return i == 0 && j == len - 1 ? str : str.substring(i, j + 1);
+  }
+
+  /**
+   * Returns the provided string with the provided {@code start} and {@code end}
+   * characters removed from the start and end of the string, respectfully. If
+   * the provided string does not start with {@code start} or end with
+   * {@code end}, the provided string is returned unchanged.
+   *
+   * @param str The string to be trimmed.
+   * @param start The {@code char} to remove as the starting character of the
+   *          string.
+   * @param end The {@code char} to remove as the ending character of the
+   *          string.
+   * @return The provided string with the provided {@code start} and {@code end}
+   *         characters removed from the start and end of the string,
+   *         respectfully. If the provided string does not start with
+   *         {@code start} or end with {@code end}, the provided string is
+   *         returned unchanged.
+   */
+  public static String trimStartEnd(final String str, final char start, final char end) {
+    if (str == null)
+      return null;
+
+    final int len = str.length();
+    if (len > 1 && str.charAt(0) == start && str.charAt(len - 1) == end)
+      return str.substring(1, len - 1);
+
+    return str;
   }
 
   /**
