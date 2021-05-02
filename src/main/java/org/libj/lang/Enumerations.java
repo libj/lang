@@ -26,33 +26,56 @@ import java.util.List;
  */
 public final class Enumerations {
   @SuppressWarnings("unchecked")
-  private static <T>T[] recurse(final Class<T> componentType, final Enumeration<? extends T> enumeration, final int depth) {
+  private static <T>T[] recurse(final Class<T> componentType, final Enumeration<? extends T> enumeration, final T[] dest, final int depth) {
     if (!enumeration.hasMoreElements())
-      return (T[])Array.newInstance(componentType, depth);
+      return dest != null && dest.length >= depth ? dest : (T[])Array.newInstance(componentType, depth);
 
     final T element = enumeration.nextElement();
-    final T[] array = recurse(componentType, enumeration, depth + 1);
+    final T[] array = recurse(componentType, enumeration, dest, depth + 1);
     array[depth] = element;
     return array;
   }
 
   /**
    * Returns an array of type {@code <T>} containing the object references in
-   * the specified {@link Enumeration}.
+   * the provided {@link Enumeration}.
    * <p>
    * <b>Note:</b> This implementation uses a recursive algorithm for optimal
-   * performance, and may fail if the specified {@link Enumeration} contains
+   * performance, and may fail if the provided {@link Enumeration} contains
    * ~8000+ elements.
    *
-   * @param <T> The type parameter of the specified {@link Class} and
+   * @param <T> The type parameter of the provided {@link Class} and
    *          {@link Enumeration}.
    * @param componentType The class for the type {@code <T>}.
    * @param enumeration The {@link Enumeration}.
    * @return An array of type {@code T} containing the object references in the
-   *         specified {@link Enumeration}.
+   *         provided {@link Enumeration}.
    */
   public static <T>T[] toArray(final Class<T> componentType, final Enumeration<? extends T> enumeration) {
-    return recurse(componentType, enumeration, 0);
+    return recurse(componentType, enumeration, null, 0);
+  }
+
+  /**
+   * Returns an array of type {@code <T>} containing the object references in
+   * the provided {@link Enumeration}.
+   * <p>
+   * <b>Note:</b> This implementation uses a recursive algorithm for optimal
+   * performance, and may fail if the provided {@link Enumeration} contains
+   * ~8000+ elements.
+   *
+   * @param <T> The type parameter of the provided {@link Class} and
+   *          {@link Enumeration}.
+   * @param componentType The class for the type {@code <T>}.
+   * @param enumeration The {@link Enumeration}.
+   * @param array The array into which the elements of the provided
+   *          {@link Enumeration} are to be stored, if it is big enough;
+   *          otherwise, a new array of the same runtime type is allocated for
+   *          this purpose.
+   * @return An array of type {@code T} containing the object references in the
+   *         provided {@link Enumeration}.
+   */
+  public static <T>T[] toArray(final Class<T> componentType, final Enumeration<? extends T> enumeration, final T[] array) {
+    return recurse(componentType, enumeration, array, 0);
   }
 
   /**
@@ -72,6 +95,19 @@ public final class Enumerations {
    */
   public static <T>List<T> toList(final Class<T> componentType, final Enumeration<? extends T> enumeration) {
     return Arrays.asList(toArray(componentType, enumeration));
+  }
+
+  /**
+   * Returns the size of the provided {@link Enumeration}.
+   *
+   * @param enumeration The {@link Enumeration}.
+   * @return The size of the provided {@link Enumeration}.
+   * @throws NullPointerException If {@code enumeration} is null.
+   */
+  public static int getSize(final Enumeration<?> enumeration) {
+    int size = 0;
+    for (; enumeration.hasMoreElements(); enumeration.nextElement(), ++size);
+    return size;
   }
 
   /**
