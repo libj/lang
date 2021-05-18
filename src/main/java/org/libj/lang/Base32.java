@@ -109,7 +109,7 @@ public class Base32 extends DataEncoding<byte[],String> {
    * @throws NullPointerException If {@code base32} or {@code bytes} is null.
    */
   public static void decode(final String base32, final byte[] bytes, int offset) {
-    for (int i = 0, index = 0, ch, digit; i < base32.length(); ++i) {
+    for (int i = 0, len = base32.length(), index = 0, ch, digit; i < len; ++i) {
       ch = base32.charAt(i) - '0';
       if (ch < 0 || lookup.length < ch)
         continue;
