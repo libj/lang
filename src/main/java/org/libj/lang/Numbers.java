@@ -574,7 +574,7 @@ public final class Numbers {
     if (s == null)
       return null;
 
-    Assertions.assertRange(fromIndex, toIndex, s.length());
+    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseShort0(s, fromIndex, toIndex, 10);
   }
 
@@ -619,7 +619,7 @@ public final class Numbers {
     if (s == null)
       return defaultValue;
 
-    Assertions.assertRange(fromIndex, toIndex, s.length());
+    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseShort0(s, fromIndex, toIndex, 10, defaultValue);
   }
 
@@ -665,7 +665,7 @@ public final class Numbers {
     if (cbuf == null)
       return defaultValue;
 
-    Assertions.assertRange(fromIndex, toIndex, cbuf.length);
+    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
     return parseShort0(cbuf, fromIndex, toIndex, 10, defaultValue);
   }
 
@@ -710,7 +710,7 @@ public final class Numbers {
     if (s == null)
       return null;
 
-    Assertions.assertRange(fromIndex, toIndex, s.length());
+    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseShort0(s, fromIndex, toIndex, radix);
   }
 
@@ -812,7 +812,7 @@ public final class Numbers {
     if (s == null)
       return defaultValue;
 
-    Assertions.assertRange(fromIndex, toIndex, s.length());
+    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseShort0(s, fromIndex, toIndex, radix, defaultValue);
   }
 
@@ -869,7 +869,7 @@ public final class Numbers {
     if (cbuf == null)
       return defaultValue;
 
-    Assertions.assertRange(fromIndex, toIndex, cbuf.length);
+    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
     return parseShort0(cbuf, fromIndex, toIndex, radix, defaultValue);
   }
 
@@ -913,7 +913,7 @@ public final class Numbers {
     if (s == null)
       return null;
 
-    Assertions.assertRange(fromIndex, toIndex, s.length());
+    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseInteger0(s, fromIndex, toIndex, 10);
   }
 
@@ -958,7 +958,7 @@ public final class Numbers {
     if (s == null)
       return defaultValue;
 
-    Assertions.assertRange(fromIndex, toIndex, s.length());
+    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseInt0(s, fromIndex, toIndex, 10, defaultValue);
   }
 
@@ -1004,7 +1004,7 @@ public final class Numbers {
     if (cbuf == null)
       return defaultValue;
 
-    Assertions.assertRange(fromIndex, toIndex, cbuf.length);
+    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
     return parseInt0(cbuf, fromIndex, toIndex, 10, defaultValue);
   }
 
@@ -1051,7 +1051,7 @@ public final class Numbers {
     if (s == null)
       return defaultValue;
 
-    Assertions.assertRange(fromIndex, toIndex, s.length());
+    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseInt0(s, fromIndex, toIndex, radix, defaultValue);
   }
 
@@ -1149,7 +1149,7 @@ public final class Numbers {
     if (cbuf == null)
       return defaultValue;
 
-    Assertions.assertRange(fromIndex, toIndex, cbuf.length);
+    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
     return parseInt0(cbuf, fromIndex, toIndex, radix, defaultValue);
   }
 
@@ -1237,7 +1237,7 @@ public final class Numbers {
     if (s == null)
       return null;
 
-    Assertions.assertRange(fromIndex, toIndex, s.length());
+    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseInteger0(s, fromIndex, toIndex, radix);
   }
 
@@ -1329,7 +1329,7 @@ public final class Numbers {
     if (cbuf == null)
       return null;
 
-    Assertions.assertRange(fromIndex, toIndex, cbuf.length);
+    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
     return parseInteger0(cbuf, fromIndex, toIndex, radix);
   }
 
@@ -1418,7 +1418,7 @@ public final class Numbers {
     if (s == null)
       return null;
 
-    Assertions.assertRange(fromIndex, toIndex, s.length());
+    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseLong0(s, fromIndex, toIndex, 10);
   }
 
@@ -1463,7 +1463,7 @@ public final class Numbers {
     if (s == null)
       return defaultValue;
 
-    Assertions.assertRange(fromIndex, toIndex, s.length());
+    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseLong0(s, fromIndex, toIndex, 10, defaultValue);
   }
 
@@ -1509,7 +1509,7 @@ public final class Numbers {
     if (cbuf == null)
       return defaultValue;
 
-    Assertions.assertRange(fromIndex, toIndex, cbuf.length);
+    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
     return parseLong0(cbuf, fromIndex, toIndex, 10, defaultValue);
   }
 
@@ -1550,7 +1550,7 @@ public final class Numbers {
     if (s == null)
       return null;
 
-    Assertions.assertRange(fromIndex, toIndex, s.length());
+    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseLong0(s, fromIndex, toIndex, radix);
   }
 
@@ -1639,7 +1639,7 @@ public final class Numbers {
     if (cbuf == null)
       return null;
 
-    Assertions.assertRange(fromIndex, toIndex, cbuf.length);
+    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
     return parseLong0(cbuf, fromIndex, toIndex, radix);
   }
 
@@ -1733,7 +1733,7 @@ public final class Numbers {
     if (s == null)
       return defaultValue;
 
-    Assertions.assertRange(fromIndex, toIndex, s.length());
+    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseLong0(s, fromIndex, toIndex, radix);
   }
 
@@ -1828,7 +1828,7 @@ public final class Numbers {
     if (cbuf == null)
       return defaultValue;
 
-    Assertions.assertRange(fromIndex, toIndex, cbuf.length);
+    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
     return parseLong0(cbuf, fromIndex, toIndex, radix);
   }
 

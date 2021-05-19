@@ -69,7 +69,7 @@ public class ArrayCharSequence implements CharSequence, Serializable {
    * @throws NullPointerException If {@code buf} is null.
    */
   public ArrayCharSequence(final char[] buf, final int offset, final int count) {
-    Assertions.assertBoundsOffsetCount(buf.length, offset, count, "length", "offset", "count");
+    Assertions.assertBoundsOffsetCount("length", buf.length, "offset", offset, "count", count);
     this.buf = buf;
     this.offset = offset;
     this.count = count;
