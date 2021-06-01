@@ -151,32 +151,34 @@ public final class ObjectUtil {
 
     final Class<?> t1 = c1.getComponentType();
     final Class<?> t2 = c2.getComponentType();
-    if (t1 != t2)
-      return false;
+    if (t1.isPrimitive() || t2.isPrimitive()) {
+      if (t1 != t2)
+        return false;
 
-    if (t1 == boolean.class)
-      return Arrays.equals((boolean[])o1, (boolean[])o2);
+      if (t1 == boolean.class)
+        return Arrays.equals((boolean[])o1, (boolean[])o2);
 
-    if (t1 == byte.class)
-      return Arrays.equals((byte[])o1, (byte[])o2);
+      if (t1 == byte.class)
+        return Arrays.equals((byte[])o1, (byte[])o2);
 
-    if (t1 == char.class)
-      return Arrays.equals((char[])o1, (char[])o2);
+      if (t1 == char.class)
+        return Arrays.equals((char[])o1, (char[])o2);
 
-    if (t1 == short.class)
-      return Arrays.equals((short[])o1, (short[])o2);
+      if (t1 == short.class)
+        return Arrays.equals((short[])o1, (short[])o2);
 
-    if (t1 == int.class)
-      return Arrays.equals((int[])o1, (int[])o2);
+      if (t1 == int.class)
+        return Arrays.equals((int[])o1, (int[])o2);
 
-    if (t1 == long.class)
-      return Arrays.equals((long[])o1, (long[])o2);
+      if (t1 == long.class)
+        return Arrays.equals((long[])o1, (long[])o2);
 
-    if (t1 == float.class)
-      return Arrays.equals((float[])o1, (float[])o2);
+      if (t1 == float.class)
+        return Arrays.equals((float[])o1, (float[])o2);
 
-    if (t1 == double.class)
-      return Arrays.equals((double[])o1, (double[])o2);
+      if (t1 == double.class)
+        return Arrays.equals((double[])o1, (double[])o2);
+    }
 
     final Object[] a1 = (Object[])o1;
     final Object[] a2 = (Object[])o2;
@@ -310,7 +312,18 @@ public final class ObjectUtil {
     if (type == double.class)
       return Arrays.toString((double[])obj);
 
-    return Arrays.toString((Object[])obj);
+    final StringBuilder builder = new StringBuilder();
+    builder.append('[');
+    final Object[] array = (Object[])obj;
+    for (int i = 0; i < array.length; ++i) {
+      if (i > 0)
+        builder.append(", ");
+
+      builder.append(toString(array[i]));
+    }
+
+    builder.append(']');
+    return builder.toString();
   }
 
   private ObjectUtil() {

@@ -242,6 +242,9 @@ public final class Classes {
    * @throws NullPointerException If {@code cls} is null.
    */
   public static String getCanonicalCompoundName(final Class<?> cls) {
+    if (cls.isPrimitive())
+      return cls.getCanonicalName();
+
     final String pkg = cls.getPackage().getName();
     return pkg.length() == 0 ? cls.getCanonicalName() : cls.getCanonicalName().substring(pkg.length() + 1);
   }
