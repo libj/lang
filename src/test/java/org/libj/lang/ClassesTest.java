@@ -48,6 +48,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@SuppressWarnings({"hiding", "unused"})
 public class ClassesTest {
   private static final Logger logger = LoggerFactory.getLogger(ClassesTest.class);
 
@@ -225,7 +226,7 @@ public class ClassesTest {
     assertEquals("Map.Entry", Classes.getCanonicalCompoundName(Map.Entry.class));
   }
 
-  @SuppressWarnings({"rawtypes", "unused"})
+  @SuppressWarnings("rawtypes")
   private static class GetGenericTypesTest {
     private String nonGeneric;
     private Optional rawGeneric;
@@ -482,9 +483,10 @@ public class ClassesTest {
 
   @Test
   public void testSortDeclarativeOrder() {
-    final Method[] methods = BootProxyClassLoader.class.getMethods();
-//    System.err.println(Arrays.toString(methods));
-    logger.warn("Classes.sortDeclarativeOrder: " + Classes.sortDeclarativeOrder(methods));
-//    System.err.println(Arrays.toString(methods));
+    // FIXME: Implement more tests
+    final Method[] methods = BootProxyClassLoader.class.getDeclaredMethods();
+    Classes.sortDeclarativeOrder(methods);
+    final String str = Arrays.toString(methods);
+    assertTrue(str, str.startsWith("[public java.lang.Class org.libj.lang.BootProxyClassLoader.findClass(java.lang.String) throws java.lang.ClassNotFoundException, public java.lang.Class org.libj.lang.BootProxyClassLoader.loadClass(java.lang.String,boolean) throws java.lang.ClassNotFoundException, public java.lang.Class org.libj.lang.BootProxyClassLoader.loadClassOrNull(java.lang.String), public java.lang.Class org.libj.lang.BootProxyClassLoader.loadClassOrNull(java.lang.String,boolean)"));
   }
 }

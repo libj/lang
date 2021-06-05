@@ -16,9 +16,6 @@
 
 package org.libj.lang;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
@@ -32,11 +29,10 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
-import java.nio.charset.StandardCharsets;
+import java.lang.reflect.WildcardType;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
@@ -52,13 +48,20 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import sun.reflect.generics.reflectiveObjects.WildcardTypeImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtMethod;
 
 /**
  * Utility providing implementations of methods missing from the API of
  * {@link Class}.
  */
 public final class Classes {
+  private static final Logger logger = LoggerFactory.getLogger(Classes.class);
+
   /**
    * Returns the name of the declaring class of the specified class name.
    * <ul>
@@ -535,8 +538,8 @@ public final class Classes {
         classes[i] = (Class<?>)((ParameterizedType)type).getRawType();
       else if (type instanceof TypeVariable)
         classes[i] = (Class<?>)((TypeVariable<?>)type).getBounds()[0];
-      else if (type instanceof WildcardTypeImpl)
-        classes[i] = (Class<?>)((WildcardTypeImpl)type).getUpperBounds()[0];
+      else if (type instanceof WildcardType)
+        classes[i] = (Class<?>)((WildcardType)type).getUpperBounds()[0];
     }
 
     return classes;
@@ -1867,158 +1870,148 @@ public final class Classes {
     }
   }
 
-  private static final Comparator<Class<?>> subclassComparator = new Comparator<Class<?>>() {
-    /**
-     * Returns {@code 0} if {@code o2 == o1}, {@code -1} if {@code o2} is a
-     * subclass of {@code o1}, otherwise {@code 1}.
-     *
-     * @param o1 A {@link Class}.
-     * @param o2 A {@link Class}.
-     * @return {@code 0} if {@code o2 == o1}, {@code -1} if {@code o2} is a
-     *         subclass of {@code o1}, otherwise {@code 1}.
-     */
-    @Override
-    public int compare(final Class<?> o1, Class<?> o2) {
-      if (o1 == o2)
-        return 0;
-
-      while ((o2 = o2.getSuperclass()) != null)
-        if (o1 == o2)
-          return -1;
-
-      return 1;
-    }
-  };
-
-  private static class MethodOffset implements Comparable<MethodOffset> {
-    private final Method method;
-    private final int offset;
-
-    private MethodOffset(final Method method, final int offset) {
-      this.method = method;
-      this.offset = offset;
-    }
-
-    @Override
-    public int compareTo(final MethodOffset o) {
-      final int c = subclassComparator.compare(o.method.getDeclaringClass(), method.getDeclaringClass());
-      return c != 0 ? c : offset - o.offset;
-    }
+  private static String getName(final Class<?> cls) {
+    return cls.isPrimitive() || cls.isArray() ? cls.getCanonicalName() : cls.getName();
   }
 
-  private static final Comparator<Method> methodNameComparator = new Comparator<Method>() {
-    @Override
-    public int compare(final Method o1, final Method o2) {
-      return o2.getName().length() - o1.getName().length();
-    }
-  };
+  private static String getSignature(final Method method) {
+    final StringBuilder builder = new StringBuilder();
+    builder.append(method.getModifiers());
+    builder.append(':');
+    builder.append(method.getDeclaringClass().getName());
+    builder.append('.');
+    builder.append(method.getName());
+    final int i = builder.length();
+    for (final Class<?> parameterType : method.getParameterTypes())
+      builder.append(',').append(getName(parameterType));
 
-  private static byte[] getBlocks(final InputStream in, final int length) throws IOException {
-    byte[] block = new byte[16 * 1024];
-    final int n = in.read(block);
-    if (n <= 0)
-      return new byte[length];
+    if (builder.length() > i)
+      builder.setCharAt(i, '(');
+    else
+      builder.append('(');
 
-//    if (n < block.length)
-//      block = Arrays.copyOf(block, n);
-
-    final byte[] blocks = getBlocks(in, length + block.length);
-    System.arraycopy(block, 0, blocks, length, block.length);
-    return blocks;
+    builder.append("):");
+    builder.append(getName(method.getReturnType()));
+    return builder.toString();
   }
 
-  private static final String lineNumberTableLabel = "LineNumberTable";
-  private static final int lineNumberTableOffset = lineNumberTableLabel.length() + 3;
-
-  private static final StringBuilder NULL_DATA = new StringBuilder();
-  private static final IdentityHashMap<Class<?>,StringBuilder> classToByteBlocks = new IdentityHashMap<>();
-
-  private static StringBuilder getMethodData(final Class<?> cls) {
-    StringBuilder data = classToByteBlocks.get(cls);
-    if (data != null)
-      return data == NULL_DATA ? null : data;
-
-    final Method[] methods = cls.getDeclaredMethods();
-    final ClassLoader classLoader = cls.getClassLoader() != null ? cls.getClassLoader() : BootProxyClassLoader.INSTANCE;
-    try (final InputStream in = classLoader.getResourceAsStream(cls.getName().replace('.', '/').concat(".class"))) {
-      if (in != null) {
-        Arrays.sort(methods, methodNameComparator);
-        data = new StringBuilder(new String(getBlocks(in, 0), StandardCharsets.UTF_8));
-
-        final int lineNumberTable = data.indexOf(lineNumberTableLabel);
-        if (lineNumberTable != -1)
-          data.delete(0, lineNumberTable + lineNumberTableOffset);
-
-        final int sourceFile = data.lastIndexOf("SourceFile");
-        if (sourceFile != -1)
-          data.setLength(sourceFile);
-      }
-      else {
-        data = NULL_DATA;
-      }
-    }
-    catch (final IOException e) {
-      throw new UncheckedIOException(e);
-    }
-
-    classToByteBlocks.put(cls, data);
-    return data;
+  private static String getSignature(final CtMethod method) throws Exception {
+    return method.getModifiers() + ":" + method.getLongName() + ":" + method.getReturnType().getName();
   }
 
+  private static Set<String> errorMethodSigs;
+  private static Boolean hasJavaAssist;
+
+  /**
+   * Sorts the provided {@link Method} array in order of the declaration of the
+   * methods in their defining class. The {@code methods} array is expected to
+   * contain methods that belong to:
+   * <ul>
+   * <li>A single class.</li>
+   * <li>Classes in an inheritance hierarchy.</li>
+   * </ul>
+   * If the {@code methods} array contains {@link Method}s that belong to
+   * classes in an inheritance hierarchy, the methods defined in classes at the
+   * top of the hierarchy (super-classes) are ordered before those that belong
+   * to sub-classes.
+   *
+   * @implNote This function utilizes bytecode introspection via
+   *           <a href="https://www.javassist.org/">Javassist</a> to determine
+   *           the declarative order of the provided methods. Javassist is
+   *           declared as {@code <scope>provided</scope>} in this Maven module,
+   *           and therefore must be provided explicitly. This function will
+   *           return {@code false} if Javassist is not present on the system
+   *           classpath.
+   * @param methods The {@code Method} array to be sorted.
+   * @return {@code true} if Javassist is present on the system classpath and
+   *         line number information is available in the bytecode of the
+   *         {@code methods}, otherwise {@code false}.
+   */
   public static boolean sortDeclarativeOrder(final Method[] methods) {
-    // FIXME: This implementation is brittle. Need to reimplement it by reading the bytecode byte by byte,
-    // FIXME: and creating a manifest that identifies the order of all methods (native, overwritten, overloaded, etc).
-    final MethodOffset[] methodOffset = new MethodOffset[methods.length];
-    final HashMap<String,Integer> counts = new HashMap<>();
-    for (int i = 0; i < methods.length; ++i) {
-      final Method method = methods[i];
-      final String name = method.getName();
-      final Integer count = counts.get(name);
-      counts.put(name, count != null ? count + 1 : 1);
-    }
+    if (hasJavaAssist == null)
+      hasJavaAssist = forNameOrNull("javassist.ClassPool") != null;
 
-    for (int i = 0, pos = -1; i < methods.length; ++i, pos = -1) {
-      final Method method = methods[i];
-      final Class<?> cls = method.getDeclaringClass();
-      final StringBuilder data = getMethodData(cls);
-      if (data == null)
-        return false;
+    if (!hasJavaAssist)
+      return false;
 
-      final String name = method.getName();
-      final int nameLen = name.length();
-      final String methodSig = "(" + getInternalName(method.getParameterTypes()) + ")";
-      final int methodSigLen = methodSig.length();
-      final String returnSig = getInternalName(method.getReturnType());
-      final int returnSigLen = returnSig.length();
-      final boolean isOverloaded = counts.get(name) > 1;
-      for (boolean match = false; !match && (pos = data.indexOf(name, pos)) != -1;) {
-        final char ch = data.charAt(pos += nameLen);
-        if (ch > 7)
-          continue;
+    if (methods.length == 0)
+      return true;
 
-        if (!isOverloaded)
-          break;
+    // First, sort the methods based on the class hierarchy
+    Arrays.sort(methods, (a, b) -> a.getDeclaringClass() == b.getDeclaringClass() ? 0 : a.getDeclaringClass().isAssignableFrom(b.getDeclaringClass()) ? -1 : 1);
 
-        final int s = data.indexOf(methodSig, pos);
-        if (s == -1) // This can happen in case of StackMapTable
-          break;
+    // Create a map of the method signature to the index of the method in the methods array
+    final HashMap<String,Integer> methodSigToIndex = new HashMap<>(methods.length);
+    for (int i = 0; i < methods.length; ++i)
+      methodSigToIndex.put(getSignature(methods[i]), i);
 
-        pos = s + methodSigLen;
-        match = Strings.regionMatches(data, false, pos, returnSig, 0, returnSigLen);
-        pos += returnSigLen;
+    // Create a composite set connecting the method to its line number
+    final Object[][] methodLineNumbers = new Object[methods.length][2];
+    for (int i = 0; i < methods.length; ++i)
+      methodLineNumbers[i] = new Object[] {methods[i], null};
+
+    final boolean[] success = {true};
+    try {
+      final ClassPool pool = ClassPool.getDefault();
+      Class<?> cls, last = null;
+      for (int i = 0; i < methodLineNumbers.length; ++i, last = cls) {
+        cls = methods[i].getDeclaringClass();
+        if (cls != last) {
+          final CtClass ctClass = pool.get(cls.getName());
+          for (final CtMethod ctMethod : ctClass.getDeclaredMethods()) {
+            final Integer index = methodSigToIndex.get(getSignature(ctMethod));
+            if (index != null) {
+              final int lineNumber = ctMethod.getMethodInfo().getLineNumber(0);
+              success[0] |= lineNumber != -1;
+              methodLineNumbers[index][1] = lineNumber;
+            }
+          }
+        }
       }
 
-      if (pos == -1)
-        return false;
+      Arrays.sort(methodLineNumbers, (a, b) -> {
+        final Class<?> clsA = ((Method)a[0]).getDeclaringClass();
+        final Class<?> clsB = ((Method)b[0]).getDeclaringClass();
+        if (clsA != clsB)
+          return clsA.isAssignableFrom(clsB) ? -1 : 1;
 
-      methodOffset[i] = new MethodOffset(method, pos);
+        if (a[1] == null) {
+          success[0] = false;
+          warnNotFound((Method)a[0]);
+          return b[1] == null ? 0 : 1;
+        }
+
+        if (b[1] == null) {
+          success[0] = false;
+          warnNotFound((Method)b[0]);
+          return a[1] == null ? 0 : -1;
+        }
+
+        return Integer.compare((Integer)a[1], (Integer)b[1]);
+      });
+
+      for (int i = 0; i < methods.length; ++i)
+        methods[i] = (Method)methodLineNumbers[i][0];
+
+      return success[0];
     }
+    catch (final Exception e) {
+      throw new IllegalStateException(e);
+    }
+  }
 
-    Arrays.sort(methodOffset);
-    for (int i = 0; i < methodOffset.length; ++i)
-      methods[i] = methodOffset[i].method;
+  private static void warnNotFound(final Method method) {
+    if (!logger.isWarnEnabled())
+      return;
 
-    return true;
+    final String signature = getSignature(method);
+    if (errorMethodSigs == null)
+      errorMethodSigs = new HashSet<>();
+    else if (errorMethodSigs.contains(signature))
+      return;
+
+    errorMethodSigs.add(signature);
+    logger.warn("sortDeclarativeOrder: Could not find " + signature);
   }
 
   /**
