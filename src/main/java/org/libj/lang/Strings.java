@@ -2111,7 +2111,7 @@ public final class Strings {
             }
             else {
               ch = s.charAt(i);
-              if ('a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || ch == '_')
+              if ('a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || ch == '_' || ch == '.')
                 var.append(ch);
               else
                 appendElNoMatch(builder, var, ch);
@@ -2119,7 +2119,7 @@ public final class Strings {
           }
         }
         else if (var.length() > 0) {
-          if ('a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || '0' <= ch && ch <= '9' || ch == '_') {
+          if ('a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || '0' <= ch && ch <= '9' || ch == '_' || ch == '.') {
             var.append(ch);
           }
           else if (ch != '}') {
