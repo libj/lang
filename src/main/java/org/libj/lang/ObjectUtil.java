@@ -19,6 +19,7 @@ package org.libj.lang;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
@@ -67,6 +68,8 @@ public final class ObjectUtil {
     return obj.getClass().getSimpleName() + "@" + Integer.toHexString(System.identityHashCode(obj));
   }
 
+  private static final HashMap<Class<?>,Method> classToCloneMethod = new HashMap<>();
+
   /**
    * Returns a clone of the specified object that implements the
    * {@link Cloneable} interface.
@@ -79,14 +82,24 @@ public final class ObjectUtil {
    */
   @SuppressWarnings("unchecked")
   public static <T extends Cloneable>T clone(final T obj) {
+    final Class<?> cls = obj.getClass();
+    Method cloneMethod = classToCloneMethod.get(cls);
+    if (cloneMethod == null) {
+      try {
+        classToCloneMethod.put(cls, cloneMethod = obj.getClass().getDeclaredMethod("clone"));
+      }
+      catch (final NoSuchMethodException e) {
+        throw new RuntimeException(e);
+      }
+    }
+
     try {
-      final Method cloneMethod = obj.getClass().getDeclaredMethod("clone");
       cloneMethod.setAccessible(true);
       final T clone = (T)cloneMethod.invoke(obj);
       cloneMethod.setAccessible(false);
       return clone;
     }
-    catch (final IllegalAccessException | NoSuchMethodException e) {
+    catch (final IllegalAccessException e) {
       throw new RuntimeException(e);
     }
     catch (final InvocationTargetException e) {
