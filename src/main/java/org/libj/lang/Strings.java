@@ -351,6 +351,32 @@ public final class Strings {
   }
 
   /**
+   * Tests if the specified {@link CharSequence} starts with the specified
+   * prefix, ignoring case.
+   *
+   * @param str The {@link CharSequence}.
+   * @param prefix The prefix.
+   * @return {@code true} if the {@code prefix} character sequence is a prefix
+   *         of {@code builder}, ignoring case; {@code false} otherwise. Note
+   *         also that {@code true} will be returned if {@code prefix} is an
+   *         empty string or is equal to {@code builder}.
+   * @throws NullPointerException If {@code builder} or {@code prefix} is null.
+   */
+  public static boolean startsWithIgnoreCase(final CharSequence str, final CharSequence prefix) {
+    if (prefix.length() == 0)
+      return true;
+
+    if (str.length() < prefix.length())
+      return false;
+
+    for (int i = 0; i < prefix.length(); ++i)
+      if (Character.toLowerCase(str.charAt(i)) != Character.toLowerCase(prefix.charAt(i)))
+        return false;
+
+    return true;
+  }
+
+  /**
    * Tests if the specified {@link CharSequence} ends with the specified suffix.
    *
    * @param str The {@link CharSequence}.
@@ -2330,19 +2356,6 @@ public final class Strings {
         return false;
 
     return true;
-  }
-
-  public static String requireLettersOrDigits(final String token) {
-    if (token == null)
-      return null;
-
-    for (int i = 0; i < token.length(); ++i) {
-      final char ch = token.charAt(i);
-      if (!Character.isLetterOrDigit(ch))
-        throw new IllegalArgumentException(token);
-    }
-
-    return token;
   }
 
   /**
