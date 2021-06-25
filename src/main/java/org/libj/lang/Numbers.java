@@ -282,6 +282,34 @@ public final class Numbers {
     }
 
     /**
+     * Encodes a {@code float} and two {@code short}s into a {@code long}.
+     *
+     * @param a The {@code float}.
+     * @param b The first {@code short}.
+     * @param c The second {@code short}.
+     * @return A compounded {@code long} representing a {@code float} and two
+     *         {@code short}s.
+     */
+    public static long encode(final float a, final short b, final short c) {
+      return encode(Float.floatToIntBits(a), encode(b, c));
+    }
+
+    /**
+     * Encodes a {@code float} and four {@code bytes}s into a {@code long}.
+     *
+     * @param a The {@code float}.
+     * @param b The first {@code byte}.
+     * @param c The second {@code byte}.
+     * @param d The third {@code byte}.
+     * @param e The fourth {@code byte}.
+     * @return A compounded {@code long} representing a {@code float} and four
+     *         {@code byte}s.
+     */
+    public static long encode(final float a, final byte b, final byte c, final byte d, final byte e) {
+      return encode(Float.floatToIntBits(a), encode(encode(b, c), encode(d, e)));
+    }
+
+    /**
      * Encodes an {@code int} and a {@code float} into a {@code long}.
      *
      * @param a The {@code int}.
