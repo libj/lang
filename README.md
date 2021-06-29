@@ -1,6 +1,6 @@
 # LibJ Lang
 
-[![Build Status](https://github.com/libj/lang/workflows/build.yml/badge.svg)](https://github.com/libj/lang/actions/workflows/build.yml)
+[![Build Status](https://github.com/libj/lang/actions/workflows/build.yml/badge.svg)](https://github.com/libj/lang/actions/workflows/build.yml)
 [![Coverage Status](https://coveralls.io/repos/github/libj/lang/badge.svg)](https://coveralls.io/github/libj/lang)
 [![Javadocs](https://www.javadoc.io/badge/org.libj/lang.svg)](https://www.javadoc.io/doc/org.libj/lang)
 [![Released Version](https://img.shields.io/maven-central/v/org.libj/lang.svg)](https://mvnrepository.com/artifact/org.libj/lang)
