@@ -104,8 +104,8 @@ public final class Bytes {
   }
 
   /**
-   * Create a {@code byte} array representation of a {@code short} value with
-   * big- or little- endian encoding.
+   * Returns a {@code byte} array representing the provided {@code short} value
+   * with big- or little- endian encoding.
    * <p>
    * A Java {@code short} is 2 bytes in size. If the {@code byte} array is
    * shorter than 2 bytes minus the offset, the missing bytes are skipped. For
@@ -117,107 +117,116 @@ public final class Bytes {
    * @param offset The byte offset into the destination array.
    * @param isBigEndian If {@code true}, bytes will be written in big-endian
    *          encoding. If {@code false}, in little-endian.
+   * @return A {@code byte} array representing the provided {@code short} value
+   *         with big- or little- endian encoding.
    * @throws NullPointerException If {@code bytes} is null.
    */
-  public static void toBytes(final short value, final byte[] bytes, int offset, final boolean isBigEndian) {
+  public static byte[] toBytes(final short value, final byte[] bytes, int offset, final boolean isBigEndian) {
     if (isBigEndian) {
       offset = bytes.length - offset;
       bytes[--offset] = (byte)(value & 0xff);
       if (offset == 0)
-        return;
+        return bytes;
 
       bytes[--offset] = (byte)((value >> 8) & 0xff);
+      return bytes;
     }
-    else {
-      bytes[offset++] = (byte)(value & 0xff);
-      bytes[offset] = (byte)((value >> 8) & 0xff);
-    }
+
+    bytes[offset++] = (byte)(value & 0xff);
+    bytes[offset] = (byte)((value >> 8) & 0xff);
+    return bytes;
   }
 
   /**
-   * Create a {@code byte} array representation of a char value with big- or little-
-   * endian encoding.
+   * Returns a {@code byte} array representing the provided {@code char} value
+   * with big- or little- endian encoding.
    * <p>
-   * A Java char is 2 bytes in size. If the {@code byte} array is shorter than 2 bytes
-   * minus the offset, the missing bytes are skipped. For each missing byte, the
-   * byte sequence is shifted such that the least significant bytes are skipped
-   * first.
+   * A Java char is 2 bytes in size. If the {@code byte} array is shorter than 2
+   * bytes minus the offset, the missing bytes are skipped. For each missing
+   * byte, the byte sequence is shifted such that the least significant bytes
+   * are skipped first.
    *
    * @param c The char value.
    * @param bytes The destination {@code byte[]} array.
    * @param offset The byte offset into the destination array.
    * @param isBigEndian If {@code true}, bytes will be written in big-endian
    *          encoding. If {@code false}, in little-endian.
+   * @return A {@code byte} array representing the provided {@code char} value
+   *         with big- or little- endian encoding.
    * @throws NullPointerException If {@code bytes} is null.
    */
-  public static void toBytes(final char c, final byte[] bytes, int offset, final boolean isBigEndian) {
+  public static byte[] toBytes(final char c, final byte[] bytes, int offset, final boolean isBigEndian) {
     if (isBigEndian) {
       offset = bytes.length - offset;
       bytes[--offset] = (byte)(c & 0xff);
       if (offset == 0)
-        return;
+        return bytes;
 
       bytes[--offset] = (byte)((c >> 8) & 0xff);
+      return bytes;
     }
-    else {
-      bytes[offset++] = (byte)(c & 0xff);
-      bytes[offset] = (byte)((c >> 8) & 0xff);
-    }
+
+    bytes[offset++] = (byte)(c & 0xff);
+    bytes[offset] = (byte)((c >> 8) & 0xff);
+    return bytes;
   }
 
   /**
-   * Create a {@code byte} array representation of an {@code int} value with big- or
-   * little- endian encoding.
+   * Returns a {@code byte} array representing the provided {@code int} value
+   * with big- or little- endian encoding.
    * <p>
-   * A Java {@code int} is 4 bytes in size. If the {@code byte} array is shorter than 4
-   * bytes minus the offset, the missing bytes are skipped. For each missing
-   * byte, the byte sequence is shifted such that the least significant bytes
-   * are skipped first.
+   * A Java {@code int} is 4 bytes in size. If the {@code byte} array is shorter
+   * than 4 bytes minus the offset, the missing bytes are skipped. For each
+   * missing byte, the byte sequence is shifted such that the least significant
+   * bytes are skipped first.
    *
    * @param i The {@code int} value.
    * @param bytes The destination {@code byte[]} array.
    * @param offset The byte offset into the destination array.
    * @param isBigEndian If {@code true}, bytes will be written in big-endian
    *          encoding. If {@code false}, in little-endian.
+   * @return A {@code byte} array representing the provided {@code int} value
+   *         with big- or little- endian encoding.
    * @throws NullPointerException If {@code bytes} is null.
    */
-  public static void toBytes(final int i, final byte[] bytes, int offset, final boolean isBigEndian) {
+  public static byte[] toBytes(final int i, final byte[] bytes, int offset, final boolean isBigEndian) {
     if (isBigEndian) {
       offset = bytes.length - offset;
       bytes[--offset] = (byte)(i & 0xff);
       if (offset == 0)
-        return;
+        return bytes;
 
       bytes[--offset] = (byte)((i >> 8) & 0xff);
       if (offset == 0)
-        return;
+        return bytes;
 
       bytes[--offset] = (byte)((i >> 16) & 0xff);
       if (offset == 0)
-        return;
+        return bytes;
 
       bytes[--offset] = (byte)((i >> 24) & 0xff);
+      return bytes;
     }
-    else {
-      bytes[offset++] = (byte)(i & 0xff);
-      if (offset == bytes.length)
-        return;
 
-      bytes[offset++] = (byte)((i >> 8) & 0xff);
-      if (offset == bytes.length)
-        return;
+    bytes[offset++] = (byte)(i & 0xff);
+    if (offset == bytes.length)
+      return bytes;
 
-      bytes[offset++] = (byte)((i >> 16) & 0xff);
-      if (offset == bytes.length)
-        return;
+    bytes[offset++] = (byte)((i >> 8) & 0xff);
+    if (offset == bytes.length)
+      return bytes;
 
-      bytes[offset] = (byte)((i >> 24) & 0xff);
-    }
+    bytes[offset++] = (byte)((i >> 16) & 0xff);
+    if (offset == bytes.length)
+      return bytes;
+
+    bytes[offset] = (byte)((i >> 24) & 0xff);
+    return bytes;
   }
 
   /**
-   * Create a {@code byte} array representation of a {@code long} value with
-   * big- or little- endian encoding.
+   * Returns a {@code byte} array representing the provided {@code long} value
+   * with big- or little- endian encoding.
    * <p>
    * A Java {@code long} is 8 bytes in size. If the {@code byte} array is
    * shorter than 8 bytes minus the offset, the missing bytes are skipped. For
@@ -229,72 +238,75 @@ public final class Bytes {
    * @param offset The byte offset into the destination array.
    * @param isBigEndian If {@code true}, bytes will be written in big-endian
    *          encoding. If {@code false}, in little-endian.
+   * @return A {@code byte} array representing the provided {@code long} value
+   *         with big- or little- endian encoding.
    * @throws NullPointerException If {@code bytes} is null.
    */
-  public static void toBytes(final long l, final byte[] bytes, int offset, final boolean isBigEndian) {
+  public static byte[] toBytes(final long l, final byte[] bytes, int offset, final boolean isBigEndian) {
     if (isBigEndian) {
       offset = bytes.length - offset;
       bytes[--offset] = (byte)(l & 0xff);
       if (offset == 0)
-        return;
+        return bytes;
 
       bytes[--offset] = (byte)((l >> 8) & 0xff);
       if (offset == 0)
-        return;
+        return bytes;
 
       bytes[--offset] = (byte)((l >> 16) & 0xff);
       if (offset == 0)
-        return;
+        return bytes;
 
       bytes[--offset] = (byte)((l >> 24) & 0xff);
       if (offset == 0)
-        return;
+        return bytes;
 
       bytes[--offset] = (byte)((l >> 32) & 0xff);
       if (offset == 0)
-        return;
+        return bytes;
 
       bytes[--offset] = (byte)((l >> 40) & 0xff);
       if (offset == 0)
-        return;
+        return bytes;
 
       bytes[--offset] = (byte)((l >> 48) & 0xff);
       if (offset == 0)
-        return;
+        return bytes;
 
       bytes[--offset] = (byte)((l >> 56) & 0xff);
+      return bytes;
     }
-    else {
-      bytes[offset++] = (byte)(l & 0xff);
-      if (offset == bytes.length)
-        return;
 
-      bytes[offset++] = (byte)((l >> 8) & 0xff);
-      if (offset == bytes.length)
-        return;
+    bytes[offset++] = (byte)(l & 0xff);
+    if (offset == bytes.length)
+      return bytes;
 
-      bytes[offset++] = (byte)((l >> 16) & 0xff);
-      if (offset == bytes.length)
-        return;
+    bytes[offset++] = (byte)((l >> 8) & 0xff);
+    if (offset == bytes.length)
+      return bytes;
 
-      bytes[offset++] = (byte)((l >> 24) & 0xff);
-      if (offset == bytes.length)
-        return;
+    bytes[offset++] = (byte)((l >> 16) & 0xff);
+    if (offset == bytes.length)
+      return bytes;
 
-      bytes[offset++] = (byte)((l >> 32) & 0xff);
-      if (offset == bytes.length)
-        return;
+    bytes[offset++] = (byte)((l >> 24) & 0xff);
+    if (offset == bytes.length)
+      return bytes;
 
-      bytes[offset++] = (byte)((l >> 40) & 0xff);
-      if (offset == bytes.length)
-        return;
+    bytes[offset++] = (byte)((l >> 32) & 0xff);
+    if (offset == bytes.length)
+      return bytes;
 
-      bytes[offset++] = (byte)((l >> 48) & 0xff);
-      if (offset == bytes.length)
-        return;
+    bytes[offset++] = (byte)((l >> 40) & 0xff);
+    if (offset == bytes.length)
+      return bytes;
 
-      bytes[offset] = (byte)((l >> 56) & 0xff);
-    }
+    bytes[offset++] = (byte)((l >> 48) & 0xff);
+    if (offset == bytes.length)
+      return bytes;
+
+    bytes[offset] = (byte)((l >> 56) & 0xff);
+    return bytes;
   }
 
   /**
