@@ -23,7 +23,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -57,8 +56,8 @@ public final class Strings {
    *          random values.
    * @param len The length of the string to construct.
    * @return A randomly constructed alphanumeric string of the specified length.
-   * @throws IllegalArgumentException If {@code len} is negative.
-   * @throws NullPointerException If {@code secureRandom} is null.
+   * @throws IllegalArgumentException If {@code secureRandom} is null, or if
+   *           {@code len} is negative.
    */
   public static String getRandomAlphaNumeric(final SecureRandom secureRandom, final int len) {
     return getRandom(secureRandom, len, 0, alphaNumeric.length);
@@ -85,8 +84,8 @@ public final class Strings {
    *          random values.
    * @param len The length of the string to construct.
    * @return A randomly constructed alpha string of the specified length.
-   * @throws IllegalArgumentException If {@code len} is negative.
-   * @throws NullPointerException If {@code secureRandom} is null.
+   * @throws IllegalArgumentException If {@code secureRandom} is null, or if
+   *           {@code len} is negative.
    */
   public static String getRandomAlpha(final SecureRandom secureRandom, final int len) {
     return getRandom(secureRandom, len, 0, alphaNumeric.length - 10);
@@ -113,8 +112,8 @@ public final class Strings {
    *          random values.
    * @param len The length of the string to construct.
    * @return A randomly constructed numeric string of the specified length.
-   * @throws IllegalArgumentException If {@code len} is negative.
-   * @throws NullPointerException If {@code secureRandom} is null.
+   * @throws IllegalArgumentException If {@code secureRandom} is null, or if
+   *           {@code len} is negative.
    */
   public static String getRandomNumeric(final SecureRandom secureRandom, final int len) {
     return getRandom(secureRandom, len, alphaNumeric.length - 10, 10);
@@ -200,15 +199,14 @@ public final class Strings {
    * @param suffix String suffixing the key name.
    * @return The specified map, with its values interpolated.
    * @see #interpolate(String,Map,String,String)
-   * @throws IllegalArgumentException If the specified {@code properties} has
-   *           {@code key=value} entries that result in a loop.
-   * @throws NullPointerException If {@code properties}, {@code prefix}, or
-   *           {@code suffix} is null.
+   * @throws IllegalArgumentException If {@code properties}, {@code prefix} or
+   *           {@code suffix} is null, or if the specified {@code properties}
+   *           has {@code key=value} entries that result in a loop.
    */
   public static Map<String,String> interpolate(final Map<String,String> properties, final String prefix, final String suffix) {
-    Objects.requireNonNull(properties);
-    Objects.requireNonNull(prefix);
-    Objects.requireNonNull(suffix);
+    Assertions.assertNotNull(properties);
+    Assertions.assertNotNull(prefix);
+    Assertions.assertNotNull(suffix);
     StringBuilder builder = null;
     for (final Map.Entry<String,String> entry : properties.entrySet()) {
       final String value = entry.getValue();
@@ -253,11 +251,11 @@ public final class Strings {
    * @param suffix String suffixing the key name.
    * @return The interpolated string.
    * @see #interpolate(Map,String,String)
-   * @throws NullPointerException If {@code text}, {@code properties},
+   * @throws IllegalArgumentException If {@code text}, {@code properties},
    *           {@code prefix}, or {@code suffix} is null.
    */
   public static String interpolate(final String text, final Map<String,String> properties, final String prefix, final String suffix) {
-    return interpolateDeep(new StringBuilder(Objects.requireNonNull(text)), Objects.requireNonNull(properties), Objects.requireNonNull(prefix), Objects.requireNonNull(suffix));
+    return interpolateDeep(new StringBuilder(Assertions.assertNotNull(text)), Assertions.assertNotNull(properties), Assertions.assertNotNull(prefix), Assertions.assertNotNull(suffix));
   }
 
   /**
@@ -272,7 +270,7 @@ public final class Strings {
    * @param replacement The replacement sequence of char values
    * @return Whether the specified {@link StringBuilder} was changed as a result
    *         of this operation.
-   * @throws NullPointerException If {@code builder}, {@code target}, or
+   * @throws IllegalArgumentException If {@code builder}, {@code target}, or
    *           {@code replacement} is null.
    * @see String#replace(CharSequence, CharSequence)
    * @throws OutOfMemoryError If the specified parameters result in a
@@ -331,12 +329,14 @@ public final class Strings {
    * @param str The {@link CharSequence}.
    * @param prefix The prefix.
    * @return {@code true} if the {@code prefix} character sequence is a prefix
-   *         of {@code builder}; {@code false} otherwise. Note also that
+   *         of {@code str}; {@code false} otherwise. Note also that
    *         {@code true} will be returned if {@code prefix} is an empty string
-   *         or is equal to {@code builder}.
-   * @throws NullPointerException If {@code builder} or {@code prefix} is null.
+   *         or is equal to {@code str}.
+   * @throws IllegalArgumentException If {@code str} or {@code prefix} is null.
    */
   public static boolean startsWith(final CharSequence str, final CharSequence prefix) {
+    Assertions.assertNotNull(str);
+    Assertions.assertNotNull(prefix);
     if (prefix.length() == 0)
       return true;
 
@@ -357,12 +357,14 @@ public final class Strings {
    * @param str The {@link CharSequence}.
    * @param prefix The prefix.
    * @return {@code true} if the {@code prefix} character sequence is a prefix
-   *         of {@code builder}, ignoring case; {@code false} otherwise. Note
-   *         also that {@code true} will be returned if {@code prefix} is an
-   *         empty string or is equal to {@code builder}.
-   * @throws NullPointerException If {@code builder} or {@code prefix} is null.
+   *         of {@code str}, ignoring case; {@code false} otherwise. Note also
+   *         that {@code true} will be returned if {@code prefix} is an empty
+   *         string or is equal to {@code str}.
+   * @throws IllegalArgumentException If {@code str} or {@code prefix} is null.
    */
   public static boolean startsWithIgnoreCase(final CharSequence str, final CharSequence prefix) {
+    Assertions.assertNotNull(str);
+    Assertions.assertNotNull(prefix);
     if (prefix.length() == 0)
       return true;
 
@@ -382,12 +384,14 @@ public final class Strings {
    * @param str The {@link CharSequence}.
    * @param suffix The suffix.
    * @return {@code true} if the {@code suffix} character sequence is a suffix
-   *         of {@code builder}; {@code false} otherwise. Note also that
+   *         of {@code str}; {@code false} otherwise. Note also that
    *         {@code true} will be returned if {@code suffix} is an empty string
-   *         or is equal to {@code builder}.
-   * @throws NullPointerException If {@code builder} or {@code suffix} is null.
+   *         or is equal to {@code str}.
+   * @throws IllegalArgumentException If {@code str} or {@code suffix} is null.
    */
   public static boolean endsWith(final CharSequence str, final CharSequence suffix) {
+    Assertions.assertNotNull(str);
+    Assertions.assertNotNull(suffix);
     if (suffix.length() == 0)
       return true;
 
@@ -413,12 +417,12 @@ public final class Strings {
    * @param builder The {@link StringBuilder}.
    * @return The specified {@link StringBuilder}, with its characters converted
    *         to "proper case".
-   * @throws NullPointerException If {@code builder} is null.
+   * @throws IllegalArgumentException If {@code builder} is null.
    * @see Character#toLowerCase(char)
    */
   public static StringBuilder toProperCase(final StringBuilder builder) {
     boolean nextUpper = true;
-    for (int i = 0, len = builder.length(); i < len; ++i) {
+    for (int i = 0, len = Assertions.assertNotNull(builder).length(); i < len; ++i) {
       final char ch = builder.charAt(i);
       if (Character.isWhitespace(ch)) {
         nextUpper = true;
@@ -443,11 +447,11 @@ public final class Strings {
    * @param str The {@link String}.
    * @return The specified {@link String}, with its characters converted
    *         to lowercase.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null.
    * @see Character#toLowerCase(char)
    */
   public static StringBuilder toProperCase(final String str) {
-    return toProperCase(new StringBuilder(str));
+    return toProperCase(new StringBuilder(Assertions.assertNotNull(str)));
   }
 
   /**
@@ -457,11 +461,11 @@ public final class Strings {
    * @param builder The {@link StringBuilder}.
    * @return The specified {@link StringBuilder}, with its characters converted
    *         to lowercase.
-   * @throws NullPointerException If {@code builder} is null.
+   * @throws IllegalArgumentException If {@code builder} is null.
    * @see Character#toLowerCase(char)
    */
   public static StringBuilder toLowerCase(final StringBuilder builder) {
-    for (int i = 0; i < builder.length(); ++i)
+    for (int i = 0, len = Assertions.assertNotNull(builder).length(); i < len; ++i)
       builder.setCharAt(i, Character.toLowerCase(builder.charAt(i)));
 
     return builder;
@@ -474,18 +478,18 @@ public final class Strings {
    * @param builder The {@link StringBuilder}.
    * @return The specified {@link StringBuilder}, with its characters converted
    *         to uppercase.
-   * @throws NullPointerException If {@code builder} is null.
+   * @throws IllegalArgumentException If {@code builder} is null.
    * @see Character#toUpperCase(char)
    */
   public static StringBuilder toUpperCase(final StringBuilder builder) {
-    for (int i = 0; i < builder.length(); ++i)
+    for (int i = 0, len = Assertions.assertNotNull(builder).length(); i < len; ++i)
       builder.setCharAt(i, Character.toUpperCase(builder.charAt(i)));
 
     return builder;
   }
 
   private static StringBuilder changeCase(final StringBuilder builder, final boolean upper, final int beginIndex, final int endIndex) {
-    if (builder.length() == 0)
+    if (Assertions.assertNotNull(builder).length() == 0)
       return builder;
 
     if (beginIndex < 0)
@@ -520,7 +524,7 @@ public final class Strings {
    *              or {@code endIndex} is larger than the length of the
    *              {@link StringBuilder}, or {@code beginIndex} is larger than
    *              {@code endIndex}.
-   * @throws NullPointerException If {@code builder} is null.
+   * @throws IllegalArgumentException If {@code builder} is null.
    * @see Character#toLowerCase(char)
    */
   public static StringBuilder toLowerCase(final StringBuilder builder, final int beginIndex, final int endIndex) {
@@ -538,7 +542,7 @@ public final class Strings {
    *         following the provided begin index converted to lowercase.
    * @exception IllegalArgumentException If the {@code beginIndex} is negative
    *              or larger than the length of the {@link StringBuilder}.
-   * @throws NullPointerException If {@code builder} is null.
+   * @throws IllegalArgumentException If {@code builder} is null.
    * @see Character#toLowerCase(char)
    */
   public static StringBuilder toLowerCase(final StringBuilder builder, final int beginIndex) {
@@ -559,7 +563,7 @@ public final class Strings {
    *              or {@code endIndex} is larger than the length of the
    *              {@link StringBuilder}, or {@code beginIndex} is larger than
    *              {@code endIndex}.
-   * @throws NullPointerException If {@code builder} is null.
+   * @throws IllegalArgumentException If {@code builder} is null.
    * @see Character#toLowerCase(char)
    */
   public static StringBuilder toUpperCase(final StringBuilder builder, final int beginIndex, final int endIndex) {
@@ -577,7 +581,7 @@ public final class Strings {
    *         following the provided begin index converted to uppercase.
    * @exception IllegalArgumentException If the {@code beginIndex} is negative
    *              or larger than the length of the {@link StringBuilder}.
-   * @throws NullPointerException If {@code builder} is null.
+   * @throws IllegalArgumentException If {@code builder} is null.
    * @see Character#toLowerCase(char)
    */
   public static StringBuilder toUpperCase(final StringBuilder builder, final int beginIndex) {
@@ -598,9 +602,8 @@ public final class Strings {
    * @param length The length of the returned, padded string.
    * @return A left-padded representation of the specified length for the
    *         provided string.
-   * @throws IllegalArgumentException If {@code length} is less than
-   *           {@code str.length()}.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null, or if
+   *           {@code length} is less than {@code str.length()}.
    */
   public static String pad(final String str, final Align align, final int length) {
     return pad(str, align, length, ' ', false);
@@ -621,21 +624,19 @@ public final class Strings {
    * @param length The length of the returned, padded string.
    * @return A left-padded representation of the specified length for the
    *         provided string.
-   * @throws IllegalArgumentException If {@code length} is less than
-   *           {@code str.length()}.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null, or if
+   *           {@code length} is less than {@code str.length()}.
    */
   public static String padAll(final String str, final Align align, final int length) {
     return padAll(str, align, length, ' ', false);
   }
 
   /**
-   * Returns a padded representation of the specified length for the
-   * provided string. If {@code length > str.length()}, preceding characters
-   * are filled with spaces ({@code ' '}). If {@code length == str.length()},
-   * the provided string instance is returned. If
-   * {@code length < str.length()}, this method throws
-   * {@link IllegalArgumentException}.
+   * Returns a padded representation of the specified length for the provided
+   * string. If {@code length > str.length()}, preceding characters are filled
+   * with spaces ({@code ' '}). If {@code length == str.length()}, the provided
+   * string instance is returned. If {@code length < str.length()}, this method
+   * throws {@link IllegalArgumentException}.
    * <p>
    * This method is equivalent to calling {@code padLeft(str, length, ' ')}.
    *
@@ -646,9 +647,9 @@ public final class Strings {
    *          the provided {@code length}.
    * @return A left-padded representation of the specified length for the
    *         provided string.
-   * @throws IllegalArgumentException If {@code truncate == false} and
-   *           {@code length} is less than {@code str.length()}.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null, or if
+   *           {@code truncate == false} and {@code length} is less than
+   *           {@code str.length()}.
    */
   public static String pad(final String str, final Align align, final int length, final boolean truncate) {
     return pad(str, align, length, ' ', truncate);
@@ -671,18 +672,18 @@ public final class Strings {
    *          the provided {@code length}.
    * @return A left-padded representation of the specified length for the
    *         provided string.
-   * @throws IllegalArgumentException If {@code truncate == false} and
-   *           {@code length} is less than {@code str.length()}.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null, or if
+   *           {@code truncate == false} and {@code length} is less than
+   *           {@code str.length()}.
    */
   public static String padAll(final String str, final Align align, final int length, final boolean truncate) {
     return padAll(str, align, length, ' ', truncate);
   }
 
   /**
-   * Returns a padded representation of the specified length for the
-   * provided string. If {@code length > string.length()}, preceding characters
-   * are filled with the specified {@code pad} char. If
+   * Returns a padded representation of the specified length for the provided
+   * string. If {@code length > string.length()}, preceding characters are
+   * filled with the specified {@code pad} char. If
    * {@code length == string.length()}, the provided string instance is
    * returned. If {@code length < string.length()}, this method throws
    * {@link IllegalArgumentException}.
@@ -693,9 +694,8 @@ public final class Strings {
    * @param pad The padding character.
    * @return A left-padded representation of the specified length for the
    *         provided string.
-   * @throws IllegalArgumentException If {@code length} is less than
-   *           {@code str.length()}.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null, or if
+   *           {@code length} is less than {@code str.length()}.
    */
   public static String pad(final String str, final Align align, final int length, final char pad) {
     return pad(str, align, length, pad, false);
@@ -715,18 +715,17 @@ public final class Strings {
    * @param pad The padding character.
    * @return A left-padded representation of the specified length for the
    *         provided string.
-   * @throws IllegalArgumentException If {@code length} is less than
-   *           {@code str.length()}.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null, or if
+   *           {@code length} is less than {@code str.length()}.
    */
   public static String padAll(final String str, final Align align, final int length, final char pad) {
     return padAll(str, align, length, pad, false);
   }
 
   /**
-   * Returns a padded representation of the specified length for the
-   * provided string. If {@code length > string.length()}, preceding characters
-   * are filled with the specified {@code pad} char. If
+   * Returns a padded representation of the specified length for the provided
+   * string. If {@code length > string.length()}, preceding characters are
+   * filled with the specified {@code pad} char. If
    * {@code length == string.length()}, the provided string instance is
    * returned. If {@code length < string.length()}, this method throws
    * {@link IllegalArgumentException}.
@@ -739,9 +738,9 @@ public final class Strings {
    *          the provided {@code length}.
    * @return A left-padded representation of the specified length for the
    *         provided string.
-   * @throws IllegalArgumentException If {@code truncate == false} and
-   *           {@code length} is less than {@code str.length()}.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null, or if
+   *           {@code truncate == false} and {@code length} is less than
+   *           {@code str.length()}.
    */
   public static String pad(final String str, final Align align, final int length, final char pad, final boolean truncate) {
     final int lenPrint = lengthPrintable(str);
@@ -777,13 +776,13 @@ public final class Strings {
    *          the provided {@code length}.
    * @return A left-padded representation of the specified length for the
    *         provided string.
-   * @throws IllegalArgumentException If {@code truncate == false} and
-   *           {@code length} is less than {@code str.length()}.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null, or if
+   *           {@code truncate == false} and {@code length} is less than
+   *           {@code str.length()}.
    */
   public static String padAll(final String str, final Align align, final int length, final char pad, final boolean truncate) {
     final StringBuilder builder = new StringBuilder();
-    final String[] lines = str.split("[\n\r]");
+    final String[] lines = Assertions.assertNotNull(str).split("[\n\r]");
     for (int i = 0; i < lines.length; ++i) {
       if (i > 0)
         builder.append('\n');
@@ -803,7 +802,7 @@ public final class Strings {
   }
 
   private static int countPrintable(final CharSequence str, final int index) {
-    final int len = str.length();
+    final int len = Assertions.assertNotNull(str).length();
     int start = 0;
     char ch, last = '\0';
     boolean esc = false;
@@ -940,6 +939,7 @@ public final class Strings {
    * @param strings The {@link String} array in which to find a common prefix.
    * @return The prefix string that is shared amongst all members for the
    *         specified {@link String} array.
+   * @throws IllegalArgumentException If any member of {@code strings} is null.
    */
   public static String getCommonPrefix(final String ... strings) {
     if (strings == null || strings.length == 0)
@@ -948,12 +948,14 @@ public final class Strings {
     if (strings.length == 1)
       return strings[0];
 
-    for (int i = 0; i < strings[0].length(); ++i)
+    final String string0 = strings[0];
+    Assertions.assertNotNull(string0);
+    for (int i = 0; i < string0.length(); ++i)
       for (int j = 1; j < strings.length; ++j)
-        if (i == strings[j].length() || strings[0].charAt(i) != strings[j].charAt(i))
-          return strings[0].substring(0, i);
+        if (i == Assertions.assertNotNull(strings[j]).length() || string0.charAt(i) != strings[j].charAt(i))
+          return string0.substring(0, i);
 
-    return strings[0];
+    return string0;
   }
 
   /**
@@ -1038,12 +1040,13 @@ public final class Strings {
    * @return A string containing the specified {@code str} repeated
    *         {@code count} times; an empty string if {@code count == 0}; the
    *         {@code str} if {@code count == 1}.
-   * @throws NullPointerException If {@code str} is null.
-   * @throws IllegalArgumentException If {@code count < 0}.
+   * @throws IllegalArgumentException If {@code str} is null, or if
+   *           {@code count < 0}.
    * @throws ArrayIndexOutOfBoundsException If
    *           {@code str.length() * count > Integer.MAX_VALUE}.
    */
   public static String repeat(final String str, final int count) {
+    Assertions.assertNotNull(str);
     if (count < 0)
       throw new IllegalArgumentException("count (" + count + ") must be greater than or equal to 0");
 
@@ -1084,13 +1087,13 @@ public final class Strings {
    * @return The resultant byte array.
    * @throws UnsupportedOperationException If the named charset is not
    *           supported.
-   * @throws NullPointerException If {@code str} or {@code charsetName} is
+   * @throws IllegalArgumentException If {@code str} or {@code charsetName} is
    *           null.
    * @see String#getBytes(String)
    */
   public static byte[] getBytes(final String str, final String charsetName) {
     try {
-      return str.getBytes(charsetName);
+      return Assertions.assertNotNull(str).getBytes(charsetName);
     }
     catch (final UnsupportedEncodingException e) {
       throw new UnsupportedOperationException(e);
@@ -1187,14 +1190,14 @@ public final class Strings {
    *         sequence represented by this object that is less than or equal to
    *         {@code fromIndex}, or {@code -1} if the character does not occur
    *         before that point.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null.
    */
   public static int lastIndexOf(final CharSequence str, final char ch, final int fromIndex) {
     return lastIndexOf0(str, ch, fromIndex);
   }
 
   private static int lastIndexOf0(final CharSequence str, final char ch, final int fromIndex) {
-    for (int i = Math.min(fromIndex, str.length() - 1); i >= 0; --i)
+    for (int i = Math.min(fromIndex, Assertions.assertNotNull(str).length() - 1); i >= 0; --i)
       if (str.charAt(i) == ch)
         return i;
 
@@ -1212,7 +1215,7 @@ public final class Strings {
    * @return The index of the last occurrence of the substring in the provided
    *         {@link CharSequence}, or {@code -1} if the substring does not
    *         occur.
-   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int lastIndexOf(final CharSequence str, final CharSequence substr) {
     return lastIndexOf0(str, substr, str.length() - 1);
@@ -1239,15 +1242,15 @@ public final class Strings {
    *         {@link CharSequence} represented by this object that is less than
    *         or equal to {@code fromIndex}, or {@code -1} if the substring does
    *         not occur before that point.
-   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int lastIndexOf(final CharSequence str, final CharSequence substr, final int fromIndex) {
     return lastIndexOf0(str, substr, fromIndex);
   }
 
   private static int lastIndexOf0(final CharSequence str, final CharSequence substr, final int fromIndex) {
-    final int substrLen = substr.length();
-    for (int i = Math.min(fromIndex, str.length() - 1); i >= 0; --i)
+    final int substrLen = Assertions.assertNotNull(substr).length();
+    for (int i = Math.min(fromIndex, Assertions.assertNotNull(str).length() - 1); i >= 0; --i)
       if (regionMatches(str, false, i, substr, 0, substrLen))
         return i;
 
@@ -1271,11 +1274,11 @@ public final class Strings {
    *         occurrence of the provided character that is not escaped, starting
    *         the search at the specified index, or {@code -1} if the unescaped
    *         character is not found.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null.
    */
   public static int indexOfUnEscaped(final CharSequence str, final char ch, final int fromIndex) {
     boolean escaped = false;
-    for (int i = Math.max(fromIndex, 0), len = str.length(); i < len; ++i) {
+    for (int i = Math.max(fromIndex, 0), len = Assertions.assertNotNull(str).length(); i < len; ++i) {
       final char c = str.charAt(i);
       if (escaped) {
         if (c == '\\' && ch == '\\')
@@ -1303,7 +1306,7 @@ public final class Strings {
    *         the provided character that is not escaped, starting the search at
    *         the specified index, or {@code -1} if the unescaped character is
    *         not found.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null.
    */
   public static int indexOfUnEscaped(final CharSequence str, final char ch) {
     return indexOfUnEscaped(str, ch, 0);
@@ -1326,13 +1329,13 @@ public final class Strings {
    *         occurrence of the provided substring that is not escaped, starting
    *         the search at the specified index, or {@code -1} if the unescaped
    *         substring is not found.
-   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int indexOfUnEscaped(final CharSequence str, final CharSequence substr, final int fromIndex) {
-    final int substrLen = substr.length();
+    final int substrLen = Assertions.assertNotNull(substr).length();
     boolean escaped = false;
     final boolean substrIsBackslash = substr.length() == 1 && substr.charAt(0) == '\\';
-    for (int i = Math.max(fromIndex, 0), len = str.length(); i < len; ++i) {
+    for (int i = Math.max(fromIndex, 0), len = Assertions.assertNotNull(str).length(); i < len; ++i) {
       final char c = str.charAt(i);
       if (escaped) {
         if (c == '\\' && substrIsBackslash)
@@ -1360,7 +1363,7 @@ public final class Strings {
    *         the provided substring that is not escaped, starting the search at
    *         the specified index, or {@code -1} if the unescaped substring is
    *         not found.
-   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int indexOfUnEscaped(final CharSequence str, final CharSequence substr) {
     return indexOfUnEscaped(str, substr, 0);
@@ -1383,7 +1386,7 @@ public final class Strings {
    *         occurrence of the provided character that is not escaped, searching
    *         backward starting at the specified index, or {@code -1} if the
    *         unescaped character is not found.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null.
    */
   public static int lastIndexOfUnEscaped(final CharSequence str, final char ch, int fromIndex) {
     do {
@@ -1413,7 +1416,7 @@ public final class Strings {
    * @return The index within the specified string of the last occurrence of the
    *         provided character that is not escaped, or {@code -1} if the
    *         unescaped character is not found.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null.
    */
   public static int lastIndexOfUnEscaped(final CharSequence str, final char ch) {
     return lastIndexOfUnEscaped(str, ch, str.length() - 1);
@@ -1436,7 +1439,7 @@ public final class Strings {
    *         occurrence of the provided substring that is not escaped, searching
    *         backward starting at the specified index, or {@code -1} if the
    *         unescaped substring is not found.
-   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int lastIndexOfUnEscaped(final CharSequence str, final CharSequence substr, int fromIndex) {
     do {
@@ -1466,10 +1469,10 @@ public final class Strings {
    * @return The index within the specified string of the last occurrence of the
    *         provided substring that is not escaped, or {@code -1} if the
    *         unescaped character is not found.
-   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int lastIndexOfUnEscaped(final CharSequence str, final CharSequence substr) {
-    return lastIndexOfUnEscaped(str, substr, str.length() - 1);
+    return lastIndexOfUnEscaped(str, substr, Assertions.assertNotNull(str).length() - 1);
   }
 
   /**
@@ -1491,12 +1494,12 @@ public final class Strings {
    *         the provided character that is not within a quoted section of the
    *         string, or {@code -1} if the character is not found in an unquoted
    *         section.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null.
    */
   public static int indexOfUnQuoted(final CharSequence str, final char ch, final int fromIndex) {
     boolean escaped = false;
     boolean quoted = false;
-    for (int i = Math.max(fromIndex, 0), len = str.length(); i < len; ++i) {
+    for (int i = Math.max(fromIndex, 0), len = Assertions.assertNotNull(str).length(); i < len; ++i) {
       final char c = str.charAt(i);
       if (escaped)
         escaped = false;
@@ -1524,7 +1527,7 @@ public final class Strings {
    *         the provided character that is not within a quoted section of the
    *         string, or {@code -1} if the character is not found in an unquoted
    *         section.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null.
    */
   public static int indexOfUnQuoted(final CharSequence str, final char ch) {
     return indexOfUnQuoted(str, ch, 0);
@@ -1549,13 +1552,13 @@ public final class Strings {
    *         the provided substring that is not within a quoted section of the
    *         string, or {@code -1} if the substring is not found in an unquoted
    *         section.
-   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int indexOfUnQuoted(final CharSequence str, final CharSequence substr, final int fromIndex) {
-    final int substrLen = substr.length();
+    final int substrLen = Assertions.assertNotNull(substr).length();
     boolean escaped = false;
     boolean quoted = false;
-    for (int i = Math.max(fromIndex, 0), len = str.length(); i < len; ++i) {
+    for (int i = Math.max(fromIndex, 0), len = Assertions.assertNotNull(str).length(); i < len; ++i) {
       final char c = str.charAt(i);
       if (escaped)
         escaped = false;
@@ -1583,7 +1586,7 @@ public final class Strings {
    *         the provided substring that is not within a quoted section of the
    *         string, or {@code -1} if the substring is not found in an unquoted
    *         section.
-   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int indexOfUnQuoted(final CharSequence str, final CharSequence substr) {
     return indexOfUnQuoted(str, substr, 0);
@@ -1608,13 +1611,13 @@ public final class Strings {
    *         the provided character that is not within a quoted section of the
    *         string, or {@code -1} if the character is not found in an unquoted
    *         section.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null.
    */
   public static int lastIndexOfUnQuoted(final CharSequence str, final char ch, final int fromIndex) {
     boolean esacped = false;
     boolean quoted = false;
     char n = '\0';
-    for (int end = str.length() - 1, i = Math.min(fromIndex, end); i >= 0; --i) {
+    for (int end = Assertions.assertNotNull(str).length() - 1, i = Math.min(fromIndex, end); i >= 0; --i) {
       final char c = str.charAt(i);
       if (c == '\\')
         esacped = true;
@@ -1643,10 +1646,10 @@ public final class Strings {
    *         the provided character that is not within a quoted section of the
    *         string, or {@code -1} if the character is not found in an unquoted
    *         section.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null.
    */
   public static int lastIndexOfUnQuoted(final CharSequence str, final char ch) {
-    return lastIndexOfUnQuoted(str, ch, str.length());
+    return lastIndexOfUnQuoted(str, ch, Assertions.assertNotNull(str).length());
   }
 
   /**
@@ -1668,14 +1671,14 @@ public final class Strings {
    *         the provided substring that is not within a quoted section of the
    *         string, or {@code -1} if the substring is not found in an unquoted
    *         section.
-   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int lastIndexOfUnQuoted(final CharSequence str, final CharSequence substr, final int fromIndex) {
-    final int substrLen = substr.length();
+    final int substrLen = Assertions.assertNotNull(substr).length();
     boolean esacped = false;
     boolean quoted = false;
     char n = '\0';
-    for (int end = str.length() - 1, i = Math.min(fromIndex, end); i >= 0; --i) {
+    for (int end = Assertions.assertNotNull(str).length() - 1, i = Math.min(fromIndex, end); i >= 0; --i) {
       final char c = str.charAt(i);
       if (c == '\\')
         esacped = true;
@@ -1704,10 +1707,10 @@ public final class Strings {
    *         the provided substring that is not within a quoted section of the
    *         string, or {@code -1} if the substring is not found in an unquoted
    *         section.
-   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int lastIndexOfUnQuoted(final CharSequence str, final CharSequence substr) {
-    return lastIndexOfUnQuoted(str, substr, str.length());
+    return lastIndexOfUnQuoted(str, substr, Assertions.assertNotNull(str).length());
   }
 
   /**
@@ -1731,12 +1734,12 @@ public final class Strings {
    *         the provided character that is not within an enclosed section of
    *         the string, or {@code -1} if the character is not found in an
    *         unenclosed section.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null.
    */
   public static int indexOfUnEnclosed(final CharSequence str, final char ch, final char open, final char close, final int fromIndex) {
     boolean escaped = false;
     boolean enclosed = false;
-    for (int i = Math.max(fromIndex, 0), len = str.length(); i < len; ++i) {
+    for (int i = Math.max(fromIndex, 0), len = Assertions.assertNotNull(str).length(); i < len; ++i) {
       final char c = str.charAt(i);
       if (escaped)
         escaped = false;
@@ -1768,7 +1771,7 @@ public final class Strings {
    *         the provided character that is not within an enclosed section of
    *         the string, or {@code -1} if the character is not found in an
    *         unenclosed section.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null.
    */
   public static int indexOfUnEnclosed(final CharSequence str, final char ch, final char open, final char close) {
     return indexOfUnEnclosed(str, ch, open, close, 0);
@@ -1795,13 +1798,13 @@ public final class Strings {
    *         the provided substring that is not within an enclosed section of
    *         the string, or {@code -1} if the substring is not found in an
    *         unenclosed section.
-   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int indexOfUnEnclosed(final CharSequence str, final CharSequence substr, final char open, final char close, final int fromIndex) {
     boolean escaped = false;
     boolean enclosed = false;
-    final int substrLen = substr.length();
-    for (int i = Math.max(fromIndex, 0), len = str.length(); i < len; ++i) {
+    final int substrLen = Assertions.assertNotNull(substr).length();
+    for (int i = Math.max(fromIndex, 0), len = Assertions.assertNotNull(str).length(); i < len; ++i) {
       final char c = str.charAt(i);
       if (escaped)
         escaped = false;
@@ -1833,7 +1836,7 @@ public final class Strings {
    *         the provided substring that is not within an enclosed section of
    *         the string, or {@code -1} if the substring is not found in an
    *         unenclosed section.
-   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int indexOfUnEnclosed(final CharSequence str, final CharSequence substr, final char open, final char close) {
     return indexOfUnEnclosed(str, substr, open, close, 0);
@@ -1866,12 +1869,12 @@ public final class Strings {
    *         {@code char} corresponding to the matching scope of the given
    *         {@code open} {@code char}, starting the search at the specified
    *         {@code fromIndex}, or {@code -1} if the close scope is not found.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null.
    */
   public static int indexOfScopeClose(final CharSequence str, final char open, final char close, final int fromIndex) {
     boolean escaped = false;
     int scope = 1;
-    for (int i = Math.max(fromIndex, 0), len = str.length(); i < len; ++i) {
+    for (int i = Math.max(fromIndex, 0), len = Assertions.assertNotNull(str).length(); i < len; ++i) {
       final char c = str.charAt(i);
       if (escaped)
         escaped = false;
@@ -1907,7 +1910,7 @@ public final class Strings {
    *         {@code char} corresponding to the matching scope of the given
    *         {@code open} {@code char}, starting the search at the specified
    *         {@code fromIndex}, or {@code -1} if the close scope is not found.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null.
    */
   public static int indexOfScopeClose(final CharSequence str, final char open, final char close) {
     return indexOfScopeClose(str, open, close, 0);
@@ -1962,7 +1965,8 @@ public final class Strings {
    * @param withEllipsis Whether ellipses should be added in case the specified
    *          string is truncated.
    * @return The truncated string.
-   * @throws IllegalArgumentException If {@code withEllipsis == true} and the provided length is less than 3.
+   * @throws IllegalArgumentException If {@code withEllipsis == true} and the
+   *           provided length is less than 3.
    */
   public static String truncate(String str, final int maxLength, final boolean withEllipsis) {
     if (str == null)
@@ -2001,10 +2005,10 @@ public final class Strings {
    * @param str The string.
    * @return The specified string with its first character's capitalization
    *         flipped, as per the described rules.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null.
    */
   public static String flipFirstCap(final String str) {
-    if (str.length() == 0)
+    if (Assertions.assertNotNull(str).length() == 0)
       return str;
 
     boolean hasLower = false;
@@ -2025,9 +2029,9 @@ public final class Strings {
   }
 
   @SuppressWarnings("rawtypes")
-  private static void appendElVar(final Map variables, final StringBuilder builder, final StringBuilder var) {
+  private static void appendElVar(final Map vars, final StringBuilder builder, final StringBuilder var) {
     final String name = var.toString();
-    final Object value = variables.get(name);
+    final Object value = vars.get(name);
     if (value != null)
       builder.append(value);
     else
@@ -2057,18 +2061,17 @@ public final class Strings {
    * Identifiers</a>.
    *
    * @param s The string in which EL-encoded names are to be dereferenced.
-   * @param variables The properties of name to value pairs.
+   * @param vars The properties of name to value pairs.
    * @return The specified string with EL-encoded names replaced with their
    *         mapped values. If a name is missing from the specified properties,
    *         or if a name does not conform to the rules of <a href=
    *         "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.8">Java
    *         Identifiers</a>, or if the Expression Language encoding is
    *         malformed, it will remain in the string as-is.
-   * @throws NullPointerException If {@code s} is null, or if {@code s} contains
-   *           an EL-encoded name and {@code variables} is null.
+   * @throws IllegalArgumentException If {@code s} or {@code vars} is null.
    */
-  public static String derefEL(final String s, final Properties variables) {
-    return derefEL(variables, s);
+  public static String derefEL(final String s, final Properties vars) {
+    return derefEL(vars, s);
   }
 
   /**
@@ -2081,22 +2084,23 @@ public final class Strings {
    * Identifiers</a>.
    *
    * @param s The string in which EL-encoded names are to be dereferenced.
-   * @param variables The map of name to value pairs.
+   * @param vars The map of name to value pairs.
    * @return The specified string with EL-encoded names replaced with their
    *         mapped values. If a name is missing from the specified map, or if a
    *         name does not conform to the rules of <a href=
    *         "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.8">Java
    *         Identifiers</a>, or if the Expression Language encoding is
    *         malformed, it will remain in the string as-is.
-   * @throws NullPointerException If {@code s} is null, or if {@code s} contains
-   *           an EL-encoded name and {@code variables} is null.
+   * @throws IllegalArgumentException If {@code s} or {@code vars} is null.
    */
-  public static String derefEL(final String s, final Map<String,String> variables) {
-    return derefEL(variables, s);
+  public static String derefEL(final String s, final Map<String,String> vars) {
+    return derefEL(vars, s);
   }
 
   @SuppressWarnings("rawtypes")
-  private static String derefEL(final Map variables, final String s) {
+  private static String derefEL(final Map vars, final String s) {
+    Assertions.assertNotNull(s);
+    Assertions.assertNotNull(vars);
     if (s.length() < 4)
       return s;
 
@@ -2118,7 +2122,7 @@ public final class Strings {
       else if (!escape) {
         if (ch == '$') {
           if (var.length() > 0) {
-            appendElVar(variables, builder, var);
+            appendElVar(vars, builder, var);
           }
 
           if (++i == len) {
@@ -2152,7 +2156,7 @@ public final class Strings {
             appendElNoMatch(builder, var, ch);
           }
           else {
-            appendElVar(variables, builder, var);
+            appendElVar(vars, builder, var);
             if (ch != '}')
               builder.append(ch);
           }
@@ -2163,7 +2167,7 @@ public final class Strings {
       }
       else {
         if (var.length() > 0)
-          appendElVar(variables, builder, var);
+          appendElVar(vars, builder, var);
 
         builder.append(ch);
         escape = false;
@@ -2176,8 +2180,8 @@ public final class Strings {
     return builder.toString();
   }
 
-  private static void appendEvVar(final Map<String,String> variables, final StringBuilder builder, final StringBuilder var) {
-    final String variable = variables.get(var.toString());
+  private static void appendEvVar(final Map<String,String> vars, final StringBuilder builder, final StringBuilder var) {
+    final String variable = vars.get(var.toString());
     if (variable != null)
       builder.append(variable);
 
@@ -2195,16 +2199,17 @@ public final class Strings {
    * Std 1003.1-2017</a>.
    *
    * @param s The string in which POSIX-compliant names are to be dereferenced.
-   * @param variables The map of name to value pairs.
+   * @param vars The map of name to value pairs.
    * @return The specified string with POSIX-compliant names replaced with their
    *         mapped values. If a name is missing from the specified map, it will
    *         remain in the string as-is.
    * @throws ParseException If the encoding of the environment variable name is
    *           malformed.
-   * @throws NullPointerException If {@code s} is null, or if {@code s} contains
-   *           an POSIX-compliant name and {@code variables} is null.
+   * @throws IllegalArgumentException If {@code s} or {@code vars} is null.
    */
-  public static String derefEV(final String s, final Map<String,String> variables) throws ParseException {
+  public static String derefEV(final String s, final Map<String,String> vars) throws ParseException {
+    Assertions.assertNotNull(s);
+    Assertions.assertNotNull(vars);
     if (s.length() < 2)
       return s;
 
@@ -2217,7 +2222,7 @@ public final class Strings {
       char ch = s.charAt(i);
       if (ch == '\\') {
         if (var.length() > 0)
-          appendEvVar(variables, builder, var);
+          appendEvVar(vars, builder, var);
 
         if (!(escape = !escape))
           builder.append(ch);
@@ -2225,7 +2230,7 @@ public final class Strings {
       else if (!escape) {
         if (ch == '$') {
           if (var.length() > 0)
-            appendEvVar(variables, builder, var);
+            appendEvVar(vars, builder, var);
 
           if (++i == len) {
             builder.append('$');
@@ -2264,7 +2269,7 @@ public final class Strings {
             throw new ParseException("${" + var + ch + ": bad substitution", i);
           }
           else {
-            appendEvVar(variables, builder, var);
+            appendEvVar(vars, builder, var);
             if (!bracket || ch != '}')
               builder.append(ch);
           }
@@ -2275,7 +2280,7 @@ public final class Strings {
       }
       else {
         if (var.length() > 0)
-          appendEvVar(variables, builder, var);
+          appendEvVar(vars, builder, var);
 
         builder.append(ch);
         escape = false;
@@ -2286,7 +2291,7 @@ public final class Strings {
       if (bracket)
         throw new ParseException("${" + var + ": bad substitution", len);
 
-      appendEvVar(variables, builder, var);
+      appendEvVar(vars, builder, var);
     }
 
     return builder.toString();
@@ -2320,12 +2325,10 @@ public final class Strings {
    * @return {@code true} if all characters in the specified
    *         {@link CharSequence} are lower-case characters; otherwise
    *         {@code false}.
-   * @throws IllegalArgumentException If the specified {@link CharSequence} is
-   *           empty.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null or empty.
    */
   public static boolean isLowerCase(final CharSequence str) {
-    if (str.length() == 0)
+    if (Assertions.assertNotNull(str).length() == 0)
       throw new IllegalArgumentException("Empty string");
 
     for (int i = 0, len = str.length(); i < len; ++i)
@@ -2343,12 +2346,10 @@ public final class Strings {
    * @return {@code true} if all characters in the specified
    *         {@link CharSequence} are upper-case characters; otherwise
    *         {@code false}.
-   * @throws IllegalArgumentException If the specified {@link CharSequence} is
-   *           empty.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null or empty.
    */
   public static boolean isUpperCase(final CharSequence str) {
-    if (str.length() == 0)
+    if (Assertions.assertNotNull(str).length() == 0)
       throw new IllegalArgumentException("Empty string");
 
     for (int i = 0, len = str.length(); i < len; ++i)
@@ -2387,11 +2388,11 @@ public final class Strings {
    * @param str The {@link String}.
    * @param spaces The number of spaces to indent.
    * @return A {@link StringBuilder} instance with the indented string.
-   * @throws IllegalArgumentException If the number of spaces is negative.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null, or if the number
+   *           of spaces is negative.
    */
   public static StringBuilder indent(final String str, final int spaces) {
-    return indent(new StringBuilder(str), spaces);
+    return indent(new StringBuilder(Assertions.assertNotNull(str)), spaces);
   }
 
   /**
@@ -2402,8 +2403,8 @@ public final class Strings {
    * @param str The {@link StringBuilder}.
    * @param spaces The number of spaces to indent.
    * @return The specified {@link StringBuilder} instance, indented.
-   * @throws IllegalArgumentException If the number of spaces is negative.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null, or if the number
+   *           of spaces is negative.
    */
   public static StringBuilder indent(final StringBuilder str, final int spaces) {
     if (spaces == 0)
@@ -2429,9 +2430,11 @@ public final class Strings {
    *         specified subregion of {@code substr}; {@code false} otherwise.
    *         Whether the matching is exact or case insensitive depends on the
    *         {@code ignoreCase} argument.
-   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static boolean regionMatches(final CharSequence str, final boolean ignoreCase, final int strOffset, final CharSequence substr, final int substrOffset, int len) {
+    Assertions.assertNotNull(str);
+    Assertions.assertNotNull(substr);
     if (str instanceof String && substr instanceof String)
       return ((String)str).regionMatches(ignoreCase, strOffset, (String)substr, substrOffset, len);
 
@@ -2471,7 +2474,7 @@ public final class Strings {
    * @param ch The {@code char} to search for.
    * @return The index of the first occurrence of the specified {@code char}, or
    *         {@code -1} if there is no such occurrence.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null.
    */
   public static int indexOfIgnoreCase(final CharSequence str, final char ch) {
     return indexOfIgnoreCase(str, ch, 0);
@@ -2494,13 +2497,13 @@ public final class Strings {
    * @param fromIndex The index from which to start the search.
    * @return The index of the first occurrence of the specified {@code char}, or
    *         {@code -1} if there is no such occurrence.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null.
    */
   public static int indexOfIgnoreCase(final CharSequence str, char ch, int fromIndex) {
     if (fromIndex < 0)
       fromIndex = 0;
 
-    final int len = str.length();
+    final int len = Assertions.assertNotNull(str).length();
     if (fromIndex > len)
       return -1;
 
@@ -2539,7 +2542,7 @@ public final class Strings {
    * @param substr The {@link CharSequence} to search for.
    * @return The index of the first occurrence of the specified substring, or
    *         {@code -1} if there is no such occurrence.
-   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int indexOfIgnoreCase(final CharSequence str, final CharSequence substr) {
     return indexOfIgnoreCase(str, substr, 0);
@@ -2562,13 +2565,13 @@ public final class Strings {
    * @param fromIndex The index from which to start the search.
    * @return The index of the first occurrence of the specified substring, or
    *         {@code -1} if there is no such occurrence.
-   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int indexOfIgnoreCase(final CharSequence str, final CharSequence substr, int fromIndex) {
     if (fromIndex < 0)
       fromIndex = 0;
 
-    final int len = str.length() - substr.length() + 1;
+    final int len = Assertions.assertNotNull(str).length() - Assertions.assertNotNull(substr).length() + 1;
     if (fromIndex > len)
       return -1;
 
@@ -2589,7 +2592,7 @@ public final class Strings {
    * @param str The {@link CharSequence} in which to search.
    * @param ch The {@code char} to search for.
    * @return true If this string contains {@code ch}, false otherwise.
-   * @throws NullPointerException If {@code str} is null.
+   * @throws IllegalArgumentException If {@code str} is null.
    */
   public static boolean containsIgnoreCase(final CharSequence str, final char ch) {
     return indexOfIgnoreCase(str, ch) > -1;
@@ -2602,7 +2605,7 @@ public final class Strings {
    * @param str The {@link CharSequence} in which to search.
    * @param substr The {@link CharSequence} to search for.
    * @return true If this string contains {@code substr}, false otherwise.
-   * @throws NullPointerException If {@code str} or {@code substr} is null.
+   * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static boolean containsIgnoreCase(final CharSequence str, final CharSequence substr) {
     return indexOfIgnoreCase(str, substr) > -1;

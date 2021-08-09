@@ -20,7 +20,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -116,10 +115,10 @@ public final class BigDecimals {
    * @param val The value of the desired {@link BigDecimal} instance.
    * @return A canonical representation of the {@link BigDecimal} object
    *         representing the specified string value.
-   * @throws NullPointerException If the specified string value is null.
+   * @throws IllegalArgumentException If {@code val} is null.
    */
   public static BigDecimal intern(final String val) {
-    final BigDecimal instance = instances.get(Objects.requireNonNull(val));
+    final BigDecimal instance = instances.get(Assertions.assertNotNull(val));
     return instance != null ? instance : init(val, new BigDecimal(val));
   }
 
@@ -130,10 +129,10 @@ public final class BigDecimals {
    * @return A {@link BigDecimal} that has the same contents as the specified
    *         {@link BigDecimal}, but is guaranteed to be from a pool of unique
    *         instances.
-   * @throws NullPointerException If {@code n} is null.
+   * @throws IllegalArgumentException If {@code n} is null.
    */
   public static BigDecimal intern(final BigDecimal n) {
-    final BigDecimal instance = instances.putIfAbsent(n.toString(), n);
+    final BigDecimal instance = instances.putIfAbsent(Assertions.assertNotNull(n).toString(), n);
     return instance != null ? instance : n;
   }
 
@@ -157,10 +156,10 @@ public final class BigDecimals {
    * @param val The value of the desired {@link BigDecimal} instance.
    * @return A canonical representation of the {@link BigDecimal} object
    *         representing the specified {@link Long} value.
-   * @throws NullPointerException If the specified {@link Long} value is null.
+   * @throws IllegalArgumentException If {@code val} is null.
    */
   public static BigDecimal intern(final Long val) {
-    final BigDecimal instance = instances.get(Objects.requireNonNull(val));
+    final BigDecimal instance = instances.get(Assertions.assertNotNull(val));
     return instance != null ? instance : init(val, new BigDecimal(val));
   }
 
@@ -184,10 +183,10 @@ public final class BigDecimals {
    * @param val The value of the desired {@link BigDecimal} instance.
    * @return A canonical representation of the {@link BigDecimal} object
    *         representing the specified {@link Double} value.
-   * @throws NullPointerException If the specified {@link Double} value is null.
+   * @throws IllegalArgumentException If {@code val} is null.
    */
   public static BigDecimal intern(final Double val) {
-    final BigDecimal instance = instances.get(Objects.requireNonNull(val));
+    final BigDecimal instance = instances.get(Assertions.assertNotNull(val));
     return instance != null ? instance : init(val, new BigDecimal(val));
   }
 
@@ -219,9 +218,11 @@ public final class BigDecimals {
    * @throws ArithmeticException If {@code rm} is
    *           {@link RoundingMode#UNNECESSARY} and the specified scaling
    *           operation would require rounding.
-   * @throws NullPointerException If {@code rm} is null.
+   * @throws IllegalArgumentException If @{@code v} or {@code rm} is null.
    */
   public static BigDecimal setScale(BigDecimal v, final int newScale, final RoundingMode rm) {
+    Assertions.assertNotNull(v);
+    Assertions.assertNotNull(rm);
     if (v.scale() <= newScale + 1)
       return v.setScale(newScale, rm);
 

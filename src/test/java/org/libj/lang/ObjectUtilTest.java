@@ -25,9 +25,9 @@ public class ObjectUtilTest {
   public void testIdentity() {
     try {
       ObjectUtil.identityString(null);
-      fail("Expected NullPointerException");
+      fail("Expected IllegalArgumentException");
     }
-    catch (final NullPointerException e) {
+    catch (final IllegalArgumentException e) {
     }
 
     assertTrue(ObjectUtil.identityString("hello").startsWith(String.class.getName() + "@"));

@@ -29,10 +29,10 @@ public final class UUIDs {
    * @param uuid The {@link UUID}.
    * @return A string representation of the specified {@link UUID} with its
    *         dashes removed, making it 32 characters in length.
-   * @throws NullPointerException If {@code uuid} is null.
+   * @throws IllegalAnnotationException If {@code uuid} is null.
    */
   public static String toString32(final UUID uuid) {
-    final String str = uuid.toString();
+    final String str = Assertions.assertNotNull(uuid).toString();
     return str.substring(0, 8) + str.substring(9, 13) + str.substring(14, 18) + str.substring(19, 23) + str.substring(24, 36);
   }
 

@@ -64,10 +64,10 @@ public final class Enums {
    *         {@code names}.
    * @throws IllegalArgumentException If the specified class object does not
    *           represent an enum type.
-   * @throws NullPointerException If {@code type} or {@code names} is null.
+   * @throws IllegalArgumentException If {@code type} or {@code names} is null.
    */
   public static <T extends Enum<T>>T[] valueOf(final Class<T> type, final String ... names) {
-    return recurseValueOf(type, 0, 0, names);
+    return recurseValueOf(Assertions.assertNotNull(type), 0, 0, Assertions.assertNotNull(names));
   }
 
   /**
@@ -89,11 +89,11 @@ public final class Enums {
    * @return A {@link List} of type {@code <T>} containing the results of
    *         {@link Enum#valueOf(Class,String)} applied to each of the provided
    *         {@code names}.
-   * @throws IllegalArgumentException If the specified class object does not
-   *           represent an enum type.
+   * @throws IllegalArgumentException If {@code type} or {@code names} is null,
+   *           or if the specified class object does not represent an enum type.
    */
   public static <T extends Enum<T>>T[] valueOf(final Class<T> type, final List<String> names) {
-    return valueOf(type, names.toArray(new String[names.size()]));
+    return valueOf(type, Assertions.assertNotNull(names).toArray(new String[names.size()]));
   }
 
   /**
@@ -112,13 +112,13 @@ public final class Enums {
      * @param enums The {@code enum} instances at ordinals of which the bits in
      *          {@code mask} will be toggled.
      * @return The {@code mask}.
-     * @throws NullPointerException If {@code enums} or a member of
+     * @throws IllegalArgumentException If {@code enums} or a member of
      *           {@code enums} is null.
      */
     @SafeVarargs
     public static <E extends Enum<?>>byte toggle(byte mask, final E ... enums) {
-      for (int i = 0; i < enums.length; ++i)
-        mask ^= 1 << enums[i].ordinal();
+      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
+        mask ^= 1 << Assertions.assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -132,13 +132,13 @@ public final class Enums {
      * @param enums The {@code enum} instances at ordinals of which the bits in
      *          {@code mask} will be toggled.
      * @return The {@code mask}.
-     * @throws NullPointerException If {@code enums} or a member of
+     * @throws IllegalArgumentException If {@code enums} or a member of
      *           {@code enums} is null.
      */
     @SafeVarargs
     public static <E extends Enum<?>>short toggle(short mask, final E ... enums) {
-      for (int i = 0; i < enums.length; ++i)
-        mask ^= 1 << enums[i].ordinal();
+      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
+        mask ^= 1 << Assertions.assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -152,13 +152,13 @@ public final class Enums {
      * @param enums The {@code enum} instances at ordinals of which the bits in
      *          {@code mask} will be toggled.
      * @return The {@code mask}.
-     * @throws NullPointerException If {@code enums} or a member of
+     * @throws IllegalArgumentException If {@code enums} or a member of
      *           {@code enums} is null.
      */
     @SafeVarargs
     public static <E extends Enum<?>>int toggle(int mask, final E ... enums) {
-      for (int i = 0; i < enums.length; ++i)
-        mask ^= 1 << enums[i].ordinal();
+      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
+        mask ^= 1 << Assertions.assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -172,13 +172,13 @@ public final class Enums {
      * @param enums The {@code enum} instances at ordinals of which the bits in
      *          {@code mask} will be toggled.
      * @return The {@code mask}.
-     * @throws NullPointerException If {@code enums} or a member of
+     * @throws IllegalArgumentException If {@code enums} or a member of
      *           {@code enums} is null.
      */
     @SafeVarargs
     public static <E extends Enum<?>>long toggle(long mask, final E ... enums) {
-      for (int i = 0; i < enums.length; ++i)
-        mask ^= 1 << enums[i].ordinal();
+      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
+        mask ^= 1 << Assertions.assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -192,13 +192,13 @@ public final class Enums {
      * @param enums The {@code enum} instances at ordinals of which the bits in
      *          {@code mask} will be set.
      * @return The {@code mask}.
-     * @throws NullPointerException If {@code enums} or a member of
+     * @throws IllegalArgumentException If {@code enums} or a member of
      *           {@code enums} is null.
      */
     @SafeVarargs
     public static <E extends Enum<?>>byte set(byte mask, final E ... enums) {
-      for (int i = 0; i < enums.length; ++i)
-        mask |= 1 << enums[i].ordinal();
+      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
+        mask |= 1 << Assertions.assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -212,13 +212,13 @@ public final class Enums {
      * @param enums The {@code enum} instances at ordinals of which the bits in
      *          {@code mask} will be set.
      * @return The {@code mask}.
-     * @throws NullPointerException If {@code enums} or a member of
+     * @throws IllegalArgumentException If {@code enums} or a member of
      *           {@code enums} is null.
      */
     @SafeVarargs
     public static <E extends Enum<?>>short set(short mask, final E ... enums) {
-      for (int i = 0; i < enums.length; ++i)
-        mask |= 1 << enums[i].ordinal();
+      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
+        mask |= 1 << Assertions.assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -232,13 +232,13 @@ public final class Enums {
      * @param enums The {@code enum} instances at ordinals of which the bits in
      *          {@code mask} will be set.
      * @return The {@code mask}.
-     * @throws NullPointerException If {@code enums} or a member of
+     * @throws IllegalArgumentException If {@code enums} or a member of
      *           {@code enums} is null.
      */
     @SafeVarargs
     public static <E extends Enum<?>>int set(int mask, final E ... enums) {
-      for (int i = 0; i < enums.length; ++i)
-        mask |= 1 << enums[i].ordinal();
+      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
+        mask |= 1 << Assertions.assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -252,13 +252,13 @@ public final class Enums {
      * @param enums The {@code enum} instances at ordinals of which the bits in
      *          {@code mask} will be set.
      * @return The {@code mask}.
-     * @throws NullPointerException If {@code enums} or a member of
+     * @throws IllegalArgumentException If {@code enums} or a member of
      *           {@code enums} is null.
      */
     @SafeVarargs
     public static <E extends Enum<?>>long set(long mask, final E ... enums) {
-      for (int i = 0; i < enums.length; ++i)
-        mask |= 1 << enums[i].ordinal();
+      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
+        mask |= 1 << Assertions.assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -272,13 +272,13 @@ public final class Enums {
      * @param enums The {@code enum} instances at ordinals of which the bits in
      *          {@code mask} will be unset.
      * @return The {@code mask}.
-     * @throws NullPointerException If {@code enums} or a member of
+     * @throws IllegalArgumentException If {@code enums} or a member of
      *           {@code enums} is null.
      */
     @SafeVarargs
     public static <E extends Enum<?>>byte unset(byte mask, final E ... enums) {
-      for (int i = 0; i < enums.length; ++i)
-        mask &= 1 << enums[i].ordinal();
+      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
+        mask &= 1 << Assertions.assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -292,13 +292,13 @@ public final class Enums {
      * @param enums The {@code enum} instances at ordinals of which the bits in
      *          {@code mask} will be unset.
      * @return The {@code mask}.
-     * @throws NullPointerException If {@code enums} or a member of
+     * @throws IllegalArgumentException If {@code enums} or a member of
      *           {@code enums} is null.
      */
     @SafeVarargs
     public static <E extends Enum<?>>short unset(short mask, final E ... enums) {
-      for (int i = 0; i < enums.length; ++i)
-        mask &= 1 << enums[i].ordinal();
+      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
+        mask &= 1 << Assertions.assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -312,13 +312,13 @@ public final class Enums {
      * @param enums The {@code enum} instances at ordinals of which the bits in
      *          {@code mask} will be unset.
      * @return The {@code mask}.
-     * @throws NullPointerException If {@code enums} or a member of
+     * @throws IllegalArgumentException If {@code enums} or a member of
      *           {@code enums} is null.
      */
     @SafeVarargs
     public static <E extends Enum<?>>int unset(int mask, final E ... enums) {
-      for (int i = 0; i < enums.length; ++i)
-        mask &= 1 << enums[i].ordinal();
+      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
+        mask &= 1 << Assertions.assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -332,13 +332,13 @@ public final class Enums {
      * @param enums The {@code enum} instances at ordinals of which the bits in
      *          {@code mask} will be unset.
      * @return The {@code mask}.
-     * @throws NullPointerException If {@code enums} or a member of
+     * @throws IllegalArgumentException If {@code enums} or a member of
      *           {@code enums} is null.
      */
     @SafeVarargs
     public static <E extends Enum<?>>long unset(long mask, final E ... enums) {
-      for (int i = 0; i < enums.length; ++i)
-        mask &= 1 << enums[i].ordinal();
+      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
+        mask &= 1 << Assertions.assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -414,10 +414,10 @@ public final class Enums {
      * @return {@code true} if the bit position represented by the specified
      *         {@code enum} is set in the specified mask, otherwise
      *         {@code false}.
-     * @throws NullPointerException If {@link Enum enm} is null.
+     * @throws IllegalArgumentException If {@link Enum enm} is null.
      */
     public static boolean check(final byte mask, final Enum<?> enm) {
-      return check(mask, enm.ordinal());
+      return check(mask, Assertions.assertNotNull(enm).ordinal());
     }
 
     /**
@@ -431,10 +431,10 @@ public final class Enums {
      * @return {@code true} if the bit position represented by the specified
      *         {@code enum} is set in the specified mask, otherwise
      *         {@code false}.
-     * @throws NullPointerException If {@link Enum enm} is null.
+     * @throws IllegalArgumentException If {@link Enum enm} is null.
      */
     public static boolean check(final short mask, final Enum<?> enm) {
-      return check(mask, enm.ordinal());
+      return check(mask, Assertions.assertNotNull(enm).ordinal());
     }
 
     /**
@@ -448,10 +448,10 @@ public final class Enums {
      * @return {@code true} if the bit position represented by the specified
      *         {@code enum} is set in the specified mask, otherwise
      *         {@code false}.
-     * @throws NullPointerException If {@link Enum enm} is null.
+     * @throws IllegalArgumentException If {@link Enum enm} is null.
      */
     public static boolean check(final int mask, final Enum<?> enm) {
-      return check(mask, enm.ordinal());
+      return check(mask, Assertions.assertNotNull(enm).ordinal());
     }
 
     /**
@@ -465,10 +465,10 @@ public final class Enums {
      * @return {@code true} if the bit position represented by the specified
      *         {@code enum} is set in the specified mask, otherwise
      *         {@code false}.
-     * @throws NullPointerException If {@link Enum enm} is null.
+     * @throws IllegalArgumentException If {@link Enum enm} is null.
      */
     public static boolean check(final long mask, final Enum<?> enm) {
-      return check(mask, enm.ordinal());
+      return check(mask, Assertions.assertNotNull(enm).ordinal());
     }
 
     /**
@@ -486,11 +486,11 @@ public final class Enums {
      * @throws ArrayIndexOutOfBoundsException If the mask defines an ordinal
      *           that is out of bounds of the values array of the {@code enum}
      *           of interest.
-     * @throws NullPointerException If {@code values} is null.
+     * @throws IllegalArgumentException If {@code values} is null.
      */
     @SafeVarargs
     public static <E extends Enum<?>>E[] toArray(final byte mask, final E ... values) {
-      return toArray(values, mask, Byte.SIZE, 0, 0);
+      return toArray(Assertions.assertNotNull(values), mask, Byte.SIZE, 0, 0);
     }
 
     /**
@@ -508,11 +508,11 @@ public final class Enums {
      * @throws ArrayIndexOutOfBoundsException If the mask defines an ordinal
      *           that is out of bounds of the values array of the {@code enum}
      *           of interest.
-     * @throws NullPointerException If {@code values} is null.
+     * @throws IllegalArgumentException If {@code values} is null.
      */
     @SafeVarargs
     public static <E extends Enum<?>>E[] toArray(final short mask, final E ... values) {
-      return toArray(values, mask, Short.SIZE, 0, 0);
+      return toArray(Assertions.assertNotNull(values), mask, Short.SIZE, 0, 0);
     }
 
     /**
@@ -530,11 +530,11 @@ public final class Enums {
      * @throws ArrayIndexOutOfBoundsException If the mask defines an ordinal
      *           that is out of bounds of the values array of the {@code enum}
      *           of interest.
-     * @throws NullPointerException If {@code values} is null.
+     * @throws IllegalArgumentException If {@code values} is null.
      */
     @SafeVarargs
     public static <E extends Enum<?>>E[] toArray(final int mask, final E ... values) {
-      return toArray(values, mask, Integer.SIZE, 0, 0);
+      return toArray(Assertions.assertNotNull(values), mask, Integer.SIZE, 0, 0);
     }
 
     /**
@@ -552,11 +552,11 @@ public final class Enums {
      * @throws ArrayIndexOutOfBoundsException If the mask defines an ordinal
      *           that is out of bounds of the values array of the {@code enum}
      *           of interest.
-     * @throws NullPointerException If {@code values} is null.
+     * @throws IllegalArgumentException If {@code values} is null.
      */
     @SafeVarargs
     public static <E extends Enum<?>>E[] toArray(final long mask, final E ... values) {
-      return toArray(values, mask, 0, 0);
+      return toArray(Assertions.assertNotNull(values), mask, 0, 0);
     }
 
     @SuppressWarnings("unchecked")

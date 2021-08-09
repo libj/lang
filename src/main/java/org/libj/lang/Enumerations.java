@@ -102,9 +102,10 @@ public final class Enumerations {
    *
    * @param enumeration The {@link Enumeration}.
    * @return The size of the provided {@link Enumeration}.
-   * @throws NullPointerException If {@code enumeration} is null.
+   * @throws IllegalArgumentException If {@code enumeration} is null.
    */
   public static int getSize(final Enumeration<?> enumeration) {
+    Assertions.assertNotNull(enumeration);
     int size = 0;
     for (; enumeration.hasMoreElements(); enumeration.nextElement(), ++size);
     return size;

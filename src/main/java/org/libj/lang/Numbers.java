@@ -119,7 +119,7 @@ public final class Numbers {
      * @throws IllegalArgumentException If {@code bigInteger} is negative.
      */
     public static byte[] toUINT(final BigInteger bigInteger) {
-      if (bigInteger.signum() == -1)
+      if (Assertions.assertNotNull(bigInteger).signum() == -1)
         throw new IllegalArgumentException(bigInteger + " must be positive");
 
       final byte[] bytes = bigInteger.toByteArray();
@@ -2580,9 +2580,10 @@ public final class Numbers {
    * @param n The {@link Number} to convert to a {@link BigDecimal}.
    * @return The {@link BigDecimal} representation of the specified
    *         {@link Number}.
-   * @throws NullPointerException If {@code n} is null.
+   * @throws IllegalArgumentException If {@code n} is null.
    */
   public static BigDecimal toBigDecimal(final Number n) {
+    Assertions.assertNotNull(n);
     if (n instanceof BigDecimal)
       return (BigDecimal)n;
 
@@ -2612,11 +2613,11 @@ public final class Numbers {
    *
    * @param numbers The numbers to be used to compute the average.
    * @return The average of the specified numbers.
-   * @throws NullPointerException If {@code numbers} is null.
+   * @throws IllegalArgumentException If {@code numbers} is null.
    * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
    */
   public static BigDecimal average(final BigDecimal ... numbers) {
-    BigDecimal sum = numbers[0];
+    BigDecimal sum = Assertions.assertNotNull(numbers)[0];
     for (int i = 1; i < numbers.length; ++i)
       sum = sum.add(numbers[i]);
 
@@ -2628,11 +2629,11 @@ public final class Numbers {
    *
    * @param numbers The numbers to be used to compute the average.
    * @return The average of the specified numbers.
-   * @throws NullPointerException If {@code numbers} is null.
+   * @throws IllegalArgumentException If {@code numbers} is null.
    * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
    */
   public static BigDecimal average(final BigInteger ... numbers) {
-    BigDecimal sum = new BigDecimal(numbers[0]);
+    BigDecimal sum = new BigDecimal(Assertions.assertNotNull(numbers)[0]);
     for (int i = 1; i < numbers.length; ++i)
       sum = sum.add(new BigDecimal(numbers[i]));
 
@@ -2644,11 +2645,11 @@ public final class Numbers {
    *
    * @param numbers The numbers to be used to compute the average.
    * @return The average of the specified numbers.
-   * @throws NullPointerException If {@code numbers} is null.
+   * @throws IllegalArgumentException If {@code numbers} is null.
    * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
    */
   public static double average(final byte ... numbers) {
-    long sum = numbers[0];
+    long sum = Assertions.assertNotNull(numbers)[0];
     for (int i = 1; i < numbers.length; ++i)
       sum += numbers[i];
 
@@ -2660,11 +2661,11 @@ public final class Numbers {
    *
    * @param numbers The numbers to be used to compute the average.
    * @return The average of the specified numbers.
-   * @throws NullPointerException If {@code numbers} is null.
+   * @throws IllegalArgumentException If {@code numbers} is null.
    * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
    */
   public static double average(final short ... numbers) {
-    long sum = numbers[0];
+    long sum = Assertions.assertNotNull(numbers)[0];
     for (int i = 1; i < numbers.length; ++i)
       sum += numbers[i];
 
@@ -2676,11 +2677,11 @@ public final class Numbers {
    *
    * @param numbers The numbers to be used to compute the average.
    * @return The average of the specified numbers.
-   * @throws NullPointerException If {@code numbers} is null.
+   * @throws IllegalArgumentException If {@code numbers} is null.
    * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
    */
   public static double average(final int ... numbers) {
-    long sum = numbers[0];
+    long sum = Assertions.assertNotNull(numbers)[0];
     for (int i = 1; i < numbers.length; ++i)
       sum += numbers[i];
 
@@ -2692,11 +2693,11 @@ public final class Numbers {
    *
    * @param numbers The numbers to be used to compute the average.
    * @return The average of the specified numbers.
-   * @throws NullPointerException If {@code numbers} is null.
+   * @throws IllegalArgumentException If {@code numbers} is null.
    * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
    */
   public static double average(final long ... numbers) {
-    long sum = numbers[0];
+    long sum = Assertions.assertNotNull(numbers)[0];
     for (int i = 1; i < numbers.length; ++i)
       sum += numbers[i];
 
@@ -2708,11 +2709,11 @@ public final class Numbers {
    *
    * @param numbers The numbers to be used to compute the average.
    * @return The average of the specified numbers.
-   * @throws NullPointerException If {@code numbers} is null.
+   * @throws IllegalArgumentException If {@code numbers} is null.
    * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
    */
   public static double average(final float ... numbers) {
-    double sum = numbers[0];
+    double sum = Assertions.assertNotNull(numbers)[0];
     for (int i = 1; i < numbers.length; ++i)
       sum += numbers[i];
 
@@ -2724,11 +2725,11 @@ public final class Numbers {
    *
    * @param numbers The numbers to be used to compute the average.
    * @return The average of the specified numbers.
-   * @throws NullPointerException If {@code numbers} is null.
+   * @throws IllegalArgumentException If {@code numbers} is null.
    * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
    */
   public static double average(final double ... numbers) {
-    double sum = numbers[0];
+    double sum = Assertions.assertNotNull(numbers)[0];
     for (int i = 1; i < numbers.length; ++i)
       sum += numbers[i];
 

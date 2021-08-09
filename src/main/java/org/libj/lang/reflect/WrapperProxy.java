@@ -21,6 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.libj.lang.Assertions;
 import org.libj.lang.Classes;
 
 /**
@@ -111,10 +112,10 @@ public final class WrapperProxy {
    *
    * @param obj The object to test.
    * @return Whether the specified object is a proxy of a wrapped object.
-   * @throws NullPointerException If {@code obj} is null.
+   * @throws IllegalArgumentException If {@code obj} is null.
    */
   public static boolean isWrapper(final Object obj) {
-    return Proxy.isProxyClass(obj.getClass()) && Proxy.getInvocationHandler(obj) instanceof WrapperInvocationHandler;
+    return Proxy.isProxyClass(obj.getClass()) && Proxy.getInvocationHandler(Assertions.assertNotNull(obj)) instanceof WrapperInvocationHandler;
   }
 
   /**
@@ -127,10 +128,12 @@ public final class WrapperProxy {
    *          {@code obj}.
    * @return Whether the specified object is a proxy of a wrapped instance type
    *         matching the provided {@code wrappedClass}.
-   * @throws NullPointerException If {@code obj} or {@code wrappedClass} is
+   * @throws IllegalArgumentException If {@code obj} or {@code wrappedClass} is
    *           null.
    */
   public static <T>boolean isWrapper(final T obj, final Class<T> wrappedClass) {
+    Assertions.assertNotNull(obj);
+    Assertions.assertNotNull(wrappedClass);
     if (!Proxy.isProxyClass(obj.getClass()))
       return false;
 
@@ -138,7 +141,7 @@ public final class WrapperProxy {
     if (!(handler instanceof WrapperInvocationHandler))
       return false;
 
-    return wrappedClass.isAssignableFrom(((WrapperInvocationHandler<?>)handler).getWrapper().getClass());
+    return Assertions.assertNotNull(wrappedClass).isAssignableFrom(((WrapperInvocationHandler<?>)handler).getWrapper().getClass());
   }
 
   private WrapperProxy() {

@@ -16,7 +16,6 @@
 
 package org.libj.lang;
 
-import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -31,7 +30,7 @@ public final class Runtimes {
    *
    * @param closeable The {@link AutoCloseable} instance to automatically close
    *          when the virtual-machine shuts down.
-   * @throws NullPointerException If {@code closeable} is null.
+   * @throws IllegalAnnotationException If {@code closeable} is null.
    */
   public static void closeOnExit(final AutoCloseable closeable) {
     closeOnExit(closeable, null);
@@ -47,10 +46,10 @@ public final class Runtimes {
    * @param onException The {@link Consumer} to accept an exception that may
    *          occur during the execution of the {@link AutoCloseable#close()} of
    *          the provided {@link AutoCloseable} instance.
-   * @throws NullPointerException If {@code closeable} is null.
+   * @throws IllegalAnnotationException If {@code closeable} is null.
    */
   public static void closeOnExit(final AutoCloseable closeable, final Consumer<Exception> onException) {
-    Objects.requireNonNull(closeable);
+    Assertions.assertNotNull(closeable);
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
       try {
         closeable.close();

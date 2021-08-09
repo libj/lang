@@ -48,10 +48,10 @@ public class Hexadecimal extends DataEncoding<byte[],String> {
    *
    * @param bytes The bytes to encode.
    * @return The hex encoding of the provided {@code bytes} array.
-   * @throws NullPointerException If {@code bytes} is null.
+   * @throws IllegalArgumentException If {@code bytes} is null.
    */
   public static String encode(final byte[] bytes) {
-    return encode(bytes, 0, bytes.length);
+    return encode(bytes, 0, Assertions.assertNotNull(bytes).length);
   }
 
   /**
@@ -61,9 +61,10 @@ public class Hexadecimal extends DataEncoding<byte[],String> {
    * @param offset The initial offset.
    * @param len The length.
    * @return The hexadecimal encoding of the provided {@code bytes} array.
-   * @throws NullPointerException If {@code bytes} is null.
+   * @throws IllegalArgumentException If {@code bytes} is null.
    */
   public static String encode(final byte[] bytes, final int offset, final int len) {
+    Assertions.assertNotNull(bytes);
     final StringBuilder builder = new StringBuilder(len * 2);
     for (int i = offset; i < len + offset; ++i) {
       builder.append(hexChar[(bytes[i] & 0xf0) >>> 4]);
@@ -90,9 +91,11 @@ public class Hexadecimal extends DataEncoding<byte[],String> {
    * @throws ArrayIndexOutOfBoundsException If the size of {@code bytes} is not
    *           big enough, or if {@code offset} causes the index to go out of
    *           bounds.
-   * @throws NullPointerException If {@code hex} or {@code bytes} is null.
+   * @throws IllegalArgumentException If {@code hex} or {@code bytes} is null.
    */
   public static void decode(final String hex, final byte[] bytes, final int offset) {
+    Assertions.assertNotNull(hex);
+    Assertions.assertNotNull(bytes);
     final int length = hex.length();
     if (length == 0)
       return;
@@ -108,10 +111,10 @@ public class Hexadecimal extends DataEncoding<byte[],String> {
    *
    * @param hex The hex string.
    * @return A {@code new byte[]} of the decoded {@code hex} string.
-   * @throws NullPointerException If {@code hex} is null.
+   * @throws IllegalArgumentException If {@code hex} is null.
    */
   public static byte[] decode(final String hex) {
-    final int length = hex.length();
+    final int length = Assertions.assertNotNull(hex).length();
     if (length == 0)
       return new byte[0];
 

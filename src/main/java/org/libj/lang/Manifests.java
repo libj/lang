@@ -40,9 +40,10 @@ public final class Manifests {
    * @return The {@link Manifest} associated to the provided {@link Class}, or
    *         {@code null} if no such {@link Manifest} exists.
    * @throws IOException If an I/O error has occurred.
+   * @throws IllegalArgumentException If {@code cls} is null.
    */
   public static Manifest getManifest(final Class<?> cls) throws IOException {
-    final CodeSource codeSource = cls.getProtectionDomain().getCodeSource();
+    final CodeSource codeSource = Assertions.assertNotNull(cls).getProtectionDomain().getCodeSource();
     if (codeSource == null)
       return null;
 
@@ -70,9 +71,10 @@ public final class Manifests {
    *         {@link Class}, or an array of zero members if no such
    *         {@link Manifest} exists.
    * @throws IOException If an I/O error has occurred.
+   * @throws IllegalArgumentException If {@code cls} is null.
    */
   public static Manifest[] getManifests(final Class<?> cls) throws IOException {
-    final String name = cls.getName().replace('.', '/').concat(".class");
+    final String name = Assertions.assertNotNull(cls).getName().replace('.', '/').concat(".class");
     return getManifests(cls.getClassLoader().getResources(name), name.length(), 0);
   }
 

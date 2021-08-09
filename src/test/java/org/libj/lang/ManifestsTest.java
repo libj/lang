@@ -27,9 +27,9 @@ public class ManifestsTest {
   public void testGetManifest() throws IOException {
     try {
       Manifests.getManifest(null);
-      fail("Expected NullPointerException");
+      fail("Expected IllegalArgumentException");
     }
-    catch (final NullPointerException e) {
+    catch (final IllegalArgumentException e) {
     }
 
     Manifests.getManifest(ManifestsTest.class);
@@ -38,9 +38,9 @@ public class ManifestsTest {
   public void testGetManifests() throws IOException {
     try {
       Manifests.getManifests(null);
-      fail("Expected NullPointerException");
+      fail("Expected IllegalArgumentException");
     }
-    catch (final NullPointerException e) {
+    catch (final IllegalArgumentException e) {
     }
 
     Manifests.getManifests(ManifestsTest.class);

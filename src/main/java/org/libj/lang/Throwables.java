@@ -56,13 +56,12 @@ public final class Throwables {
    * @param t The throwable.
    * @return The string representation of the specified {@link Throwable
    *         throwable} and its backtrace.
-   * @throws NullPointerException If the specified {@link Throwable throwable}
-   *           is null.
+   * @throws IllegalAnnotationException If {@code t} is null.
    * @see Throwable#printStackTrace(java.io.PrintStream)
    */
   public static String toString(final Throwable t) {
     final StringWriter out = new StringWriter();
-    t.printStackTrace(new PrintWriter(out));
+    Assertions.assertNotNull(t).printStackTrace(new PrintWriter(out));
     return out.toString();
   }
 
@@ -75,9 +74,11 @@ public final class Throwables {
    * @param from The {@link Throwable} to copy from.
    * @param to The {@link Throwable} to copy to.
    * @return The {@link Throwable} being copied to.
-   * @throws NullPointerException If {@code from} or {@code to} are null.
+   * @throws IllegalAnnotationException If {@code from} or {@code to} are null.
    */
   public static <F extends Throwable,T extends F>T copy(final F from, final T to) {
+    Assertions.assertNotNull(from);
+    Assertions.assertNotNull(to);
     to.initCause(from.getCause());
     to.setStackTrace(from.getStackTrace());
     for (final Throwable suppressed : from.getSuppressed())

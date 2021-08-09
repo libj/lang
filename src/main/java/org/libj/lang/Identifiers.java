@@ -39,13 +39,13 @@ public final class Identifiers {
    * @param identifier The identifier.
    * @param qualified Test versus rules of qualified or unqualified identifiers.
    * @return Whether the argument {@code identifier} is a valid identifier.
-   * @throws NullPointerException If {@code identifier} is null.
+   * @throws IllegalArgumentException If {@code identifier} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.8">JLS
    *      3.8 Identifiers</a>
    */
   public static boolean isValid(final String identifier, final boolean qualified) {
-    return (qualified ? qualifiedJavaIdentifierPattern : unqualifiedJavaIdentifierPattern).matcher(identifier).matches();
+    return (qualified ? qualifiedJavaIdentifierPattern : unqualifiedJavaIdentifierPattern).matcher(Assertions.assertNotNull(identifier)).matches();
   }
 
   /**
@@ -55,7 +55,7 @@ public final class Identifiers {
    *
    * @param identifier The class name.
    * @return Whether the argument {@code identifier} is a valid identifier.
-   * @throws NullPointerException If {@code identifier} is null.
+   * @throws IllegalArgumentException If {@code identifier} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.8">JLS
    *      3.8 Identifiers</a>
@@ -114,13 +114,13 @@ public final class Identifiers {
    * @param word The word to test.
    * @return {@code true} if the specified word is a Java reserved word;
    *         otherwise, {@code false}.
-   * @throws NullPointerException If {@code word} is null.
+   * @throws IllegalArgumentException If {@code word} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.9">3.9.
    *      Keywords</a>
    */
   public static boolean isReservedWord(final String word) {
-    return Arrays.binarySearch(reservedWords, word) >= 0;
+    return Arrays.binarySearch(reservedWords, Assertions.assertNotNull(word)) >= 0;
   }
 
   private static String transformNotReserved(final char prefix, final char suffix, final Map<Character,String> substitutes, final Function<Character,String> function, final StringBuilder builder) {
@@ -156,13 +156,13 @@ public final class Identifiers {
    * @param substitutes The mapping of illegal characters to their
    *          substitutions. This mapping overrides the default substitution.
    * @return The string transformed to a valid Java Identifier.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toIdentifier(final String string, final char prefix, final char substitute, final Map<Character,String> substitutes) {
-    return string.length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toIdentifier0(string, prefix, substitute, substitutes, null));
+    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toIdentifier0(string, prefix, substitute, substitutes, null));
   }
 
   /**
@@ -177,13 +177,13 @@ public final class Identifiers {
    * @param substitutes The mapping of illegal characters to their
    *          substitutions.
    * @return The string transformed to a valid Java Identifier.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toIdentifier(final String string, final Map<Character,String> substitutes) {
-    if (string.length() == 0)
+    if (Assertions.assertNotNull(string).length() == 0)
       return string;
 
     final char prefix = '_';
@@ -204,13 +204,13 @@ public final class Identifiers {
    * @param substitutes The mapping of illegal characters to their
    *          substitutions.
    * @return The string transformed to a valid Java Identifier.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toIdentifier(final String string, final char prefix, final Map<Character,String> substitutes) {
-    return string.length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toIdentifier0(string, prefix, '\0', substitutes, null));
+    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toIdentifier0(string, prefix, '\0', substitutes, null));
   }
 
   /**
@@ -225,13 +225,13 @@ public final class Identifiers {
    * @param substitutes Function to dereference illegal characters to their
    *          substitutions.
    * @return The string transformed to a valid Java Identifier.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toIdentifier(final String string, final char prefix, final Function<Character,String> substitutes) {
-    return string.length() == 0 ? string : transformNotReserved(prefix, '\0', null, substitutes, toIdentifier0(string, prefix, '\0', null, substitutes));
+    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, substitutes, toIdentifier0(string, prefix, '\0', null, substitutes));
   }
 
   /**
@@ -245,13 +245,13 @@ public final class Identifiers {
    *          first character is not valid.
    * @param substitute The default substitution for illegal characters.
    * @return The string transformed to a valid Java Identifier.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toIdentifier(final String string, final char prefix, final char substitute) {
-    return string.length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toIdentifier0(string, prefix, substitute, null, null));
+    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toIdentifier0(string, prefix, substitute, null, null));
   }
 
   /**
@@ -264,13 +264,13 @@ public final class Identifiers {
    * @param prefix The character that will be prepended to the string if the
    *          first character is not valid.
    * @return The string transformed to a valid Java Identifier.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toIdentifier(final String string, final char prefix) {
-    return string.length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toIdentifier0(string, prefix, '\0', null, null));
+    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toIdentifier0(string, prefix, '\0', null, null));
   }
 
   /**
@@ -283,13 +283,13 @@ public final class Identifiers {
    * @param substitutes Function to dereference illegal characters to their
    *          substitutions.
    * @return The string transformed to a valid Java Identifier.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toIdentifier(final String string, final Function<Character,String> substitutes) {
-    if (string.length() == 0)
+    if (Assertions.assertNotNull(string).length() == 0)
       return string;
 
     final char prefix = '_';
@@ -304,13 +304,13 @@ public final class Identifiers {
    *
    * @param string The input string.
    * @return The string transformed to a valid Java Identifier.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toIdentifier(final String string) {
-    if (string.length() == 0)
+    if (Assertions.assertNotNull(string).length() == 0)
       return string;
 
     final char prefix = '_';
@@ -381,7 +381,7 @@ public final class Identifiers {
    *          substitutions.
    * @return The string transformed to a valid Java Identifier that meets
    *         suggested package name guidelines.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
@@ -393,7 +393,7 @@ public final class Identifiers {
    *      Package Names</a>
    */
   public static String toPackageCase(final String string, final Function<Character,String> substitutes) {
-    if (string.length() == 0)
+    if (Assertions.assertNotNull(string).length() == 0)
       return string;
 
     final char prefix = '_';
@@ -415,7 +415,7 @@ public final class Identifiers {
    * @param string The input string.
    * @return The string transformed to a valid Java Identifier that meets
    *         suggested package name guidelines.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
@@ -427,7 +427,7 @@ public final class Identifiers {
    *      Package Names</a>
    */
   public static String toPackageCase(final String string) {
-    if (string.length() == 0)
+    if (Assertions.assertNotNull(string).length() == 0)
       return string;
 
     final char prefix = '_';
@@ -453,13 +453,13 @@ public final class Identifiers {
    * @param substitutes The mapping of illegal characters to their
    *          substitutions. This mapping overrides the default substitution.
    * @return The string transformed to a valid Java Identifier in camelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toCamelCase(final String string, final char prefix, final char substitute, final Map<Character,String> substitutes) {
-    return string.length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toCamelCase0(string, prefix, substitute, substitutes, null));
+    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toCamelCase0(string, prefix, substitute, substitutes, null));
   }
 
   /**
@@ -476,13 +476,13 @@ public final class Identifiers {
    * @param substitutes The mapping of illegal characters to their
    *          substitutions. This mapping overrides the default substitution.
    * @return The string transformed to a valid Java Identifier in camelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toCamelCase(final String string, final char prefix, final Map<Character,String> substitutes) {
-    return string.length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toCamelCase0(string, prefix, '\0', substitutes, null));
+    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toCamelCase0(string, prefix, '\0', substitutes, null));
   }
 
   /**
@@ -496,13 +496,13 @@ public final class Identifiers {
    *          first character is not valid.
    * @param substitute The default substitution for illegal characters.
    * @return The string transformed to a valid Java Identifier in camelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toCamelCase(final String string, final char prefix, final char substitute) {
-    return string.length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toCamelCase0(string, prefix, substitute, null, null));
+    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toCamelCase0(string, prefix, substitute, null, null));
   }
 
   /**
@@ -517,13 +517,13 @@ public final class Identifiers {
    * @param substitutes Function to dereference illegal characters to their
    *          substitutions.
    * @return The string transformed to a valid Java Identifier in camelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toCamelCase(final String string, final char prefix, final Function<Character,String> substitutes) {
-    return string.length() == 0 ? string : transformNotReserved(prefix, '\0', null, substitutes, toCamelCase0(string, prefix, '\0', null, substitutes));
+    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, substitutes, toCamelCase0(string, prefix, '\0', null, substitutes));
   }
 
   /**
@@ -536,13 +536,13 @@ public final class Identifiers {
    * @param prefix The character that will be prepended to the string if the
    *          first character is not valid.
    * @return The string transformed to a valid Java Identifier in camelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toCamelCase(final String string, final char prefix) {
-    return string.length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toCamelCase0(string, prefix, '\0', null, null));
+    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toCamelCase0(string, prefix, '\0', null, null));
   }
 
   /**
@@ -555,13 +555,13 @@ public final class Identifiers {
    * @param substitutes Function to dereference illegal characters to their
    *          substitutions.
    * @return The string transformed to a valid Java Identifier in camelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toCamelCase(final String string, final Function<Character,String> substitutes) {
-    if (string.length() == 0)
+    if (Assertions.assertNotNull(string).length() == 0)
       return string;
 
     final char prefix = 'x';
@@ -576,13 +576,13 @@ public final class Identifiers {
    *
    * @param string The input string.
    * @return The string transformed to a valid Java Identifier in camelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toCamelCase(final String string) {
-    if (string.length() == 0)
+    if (Assertions.assertNotNull(string).length() == 0)
       return string;
 
     final char prefix = 'x';
@@ -601,13 +601,13 @@ public final class Identifiers {
    * @param substitutes The mapping of illegal characters to their
    *          substitutions. This mapping overrides the default substitution.
    * @return The string transformed to a valid Java Identifier in camelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toCamelCase(final String string, final Map<Character,String> substitutes) {
-    if (string.length() == 0)
+    if (Assertions.assertNotNull(string).length() == 0)
       return string;
 
     final char prefix = 'x';
@@ -681,13 +681,13 @@ public final class Identifiers {
    *          substitutions. This mapping overrides the default substitution.
    * @return The string transformed to a valid Java Identifier in
    *         lower-CamelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toInstanceCase(final String string, final char prefix, final char substitute, final Map<Character,String> substitutes) {
-    return string.length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toInstanceCase0(string, prefix, substitute, substitutes, null));
+    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toInstanceCase0(string, prefix, substitute, substitutes, null));
   }
 
   /**
@@ -705,13 +705,13 @@ public final class Identifiers {
    *          substitutions.
    * @return The string transformed to a valid Java Identifier in
    *         lower-CamelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toInstanceCase(final String string, final char prefix, final Map<Character,String> substitutes) {
-    return string.length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toInstanceCase0(string, prefix, '\0', substitutes, null));
+    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toInstanceCase0(string, prefix, '\0', substitutes, null));
   }
 
   /**
@@ -729,13 +729,13 @@ public final class Identifiers {
    *          substitutions.
    * @return The string transformed to a valid Java Identifier in
    *         lower-CamelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toInstanceCase(final String string, final char prefix, final Function<Character,String> substitutes) {
-    return string.length() == 0 ? string : transformNotReserved(prefix, '\0', null, substitutes, toInstanceCase0(string, prefix, '\0', null, substitutes));
+    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, substitutes, toInstanceCase0(string, prefix, '\0', null, substitutes));
   }
 
   /**
@@ -751,13 +751,13 @@ public final class Identifiers {
    * @param substitute The default substitution for illegal characters.
    * @return The string transformed to a valid Java Identifier in
    *         lower-CamelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toInstanceCase(final String string, final char prefix, final char substitute) {
-    return string.length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toInstanceCase0(string, prefix, substitute, null, null));
+    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toInstanceCase0(string, prefix, substitute, null, null));
   }
 
   /**
@@ -771,13 +771,13 @@ public final class Identifiers {
    *          first character is not valid.
    * @return The string transformed to a valid Java Identifier in
    *         lower-CamelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toInstanceCase(final String string, final char prefix) {
-    return string.length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toInstanceCase0(string, prefix, '\0', null, null));
+    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toInstanceCase0(string, prefix, '\0', null, null));
   }
 
   /**
@@ -793,7 +793,7 @@ public final class Identifiers {
    *          substitutions.
    * @return The string transformed to a valid Java Identifier in
    *         lower-CamelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
@@ -817,7 +817,7 @@ public final class Identifiers {
    *          substitutions.
    * @return The string transformed to a valid Java Identifier in
    *         lower-CamelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
@@ -839,13 +839,13 @@ public final class Identifiers {
    * @param string The input string.
    * @return The string transformed to a valid Java Identifier in
    *         lower-CamelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toInstanceCase(final String string) {
-    if (string.length() == 0)
+    if (Assertions.assertNotNull(string).length() == 0)
       return string;
 
     final char prefix = '_';
@@ -865,7 +865,7 @@ public final class Identifiers {
    * @param substitutes The mapping of illegal characters to their
    *          substitutions. This mapping overrides the default substitution.
    * @return The string transformed to a legal Java [c]amelCase identifier.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    */
   private static StringBuilder toInstanceCase0(final String string, final char prefix, final char substitute, final Map<Character,String> substitutes, final Function<? super Character,String> function) {
     final StringBuilder builder = toCamelCase0(string, prefix, substitute, substitutes, function);
@@ -928,13 +928,13 @@ public final class Identifiers {
    *          substitutions. This mapping overrides the default substitution.
    * @return The string transformed to a valid Java Identifier in
    *         Title-CamelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toClassCase(final String string, final char prefix, final char substitute, final Map<Character,String> substitutes) {
-    return string.length() == 0 ? string : toClassCase(toCamelCase0(string, prefix, substitute, substitutes, null));
+    return Assertions.assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, prefix, substitute, substitutes, null));
   }
 
   /**
@@ -951,13 +951,13 @@ public final class Identifiers {
    *          substitutions.
    * @return The string transformed to a valid Java Identifier in
    *         Title-CamelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toClassCase(final String string, final char prefix, final Map<Character,String> substitutes) {
-    return string.length() == 0 ? string : toClassCase(toCamelCase0(string, prefix, '\0', substitutes, null));
+    return Assertions.assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, prefix, '\0', substitutes, null));
   }
 
   /**
@@ -974,13 +974,13 @@ public final class Identifiers {
    *          substitutions.
    * @return The string transformed to a valid Java Identifier in
    *         Title-CamelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toClassCase(final String string, final char prefix, final Function<? super Character,String> substitutes) {
-    return string.length() == 0 ? string : toClassCase(toCamelCase0(string, prefix, '\0', null, substitutes));
+    return Assertions.assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, prefix, '\0', null, substitutes));
   }
 
   /**
@@ -995,13 +995,13 @@ public final class Identifiers {
    * @param substitute The default substitution for illegal characters.
    * @return The string transformed to a valid Java Identifier in
    *         Title-CamelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toClassCase(final String string, final char prefix, final char substitute) {
-    return string.length() == 0 ? string : toClassCase(toCamelCase0(string, prefix, substitute, null, null));
+    return Assertions.assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, prefix, substitute, null, null));
   }
 
   /**
@@ -1014,13 +1014,13 @@ public final class Identifiers {
    *          first character is not valid.
    * @return The string transformed to a valid Java Identifier in
    *         Title-CamelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toClassCase(final String string, final char prefix) {
-    return string.length() == 0 ? string : toClassCase(toCamelCase0(string, prefix, '\0', null, null));
+    return Assertions.assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, prefix, '\0', null, null));
   }
 
   /**
@@ -1035,13 +1035,13 @@ public final class Identifiers {
    *          substitutions.
    * @return The string transformed to a valid Java Identifier in
    *         Title-CamelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toClassCase(final String string, final Map<Character,String> substitutes) {
-    return string.length() == 0 ? string : toClassCase(toCamelCase0(string, 'X', '\0', substitutes, null));
+    return Assertions.assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, 'X', '\0', substitutes, null));
   }
 
   /**
@@ -1054,13 +1054,13 @@ public final class Identifiers {
    *          substitutions.
    * @return The string transformed to a valid Java Identifier in
    *         Title-CamelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toClassCase(final String string, final Function<? super Character,String> substitutes) {
-    return string.length() == 0 ? string : toClassCase(toCamelCase0(string, 'X', '\0', null, substitutes));
+    return Assertions.assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, 'X', '\0', null, substitutes));
   }
 
   /**
@@ -1071,13 +1071,13 @@ public final class Identifiers {
    * @param string The input string.
    * @return The string transformed to a valid Java Identifier in
    *         Title-CamelCase.
-   * @throws NullPointerException If {@code string} is null.
+   * @throws IllegalArgumentException If {@code string} is null.
    * @see <a href=
    *      "https://docs.oracle.com/javase/specs/jls/se9/html/jls-3.html#jls-3.8">Java
    *      Identifiers</a>
    */
   public static String toClassCase(final String string) {
-    return string.length() == 0 ? string : toClassCase(toCamelCase0(string, 'X', '\0', null, null));
+    return Assertions.assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, 'X', '\0', null, null));
   }
 
   private Identifiers() {

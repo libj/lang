@@ -37,7 +37,7 @@ public final class Annotations {
    * @param annotation The {@link Annotation} whose attributes to get.
    * @return A map of name-value pairs representing the attributes in the
    *         specified annotation.
-   * @throws NullPointerException If the specified annotation is null.
+   * @throws IllegalArgumentException If {@code annotation} is null.
    */
   public static Map<String,Object> getAttributes(final Annotation annotation) {
     return getAttributes(annotation, false);
@@ -52,10 +52,10 @@ public final class Annotations {
    *          {@code annotation}'s defaults should be omitted.
    * @return A map of name-value pairs representing the attributes in the
    *         specified annotation.
-   * @throws NullPointerException If the specified annotation is null.
+   * @throws IllegalArgumentException If {@code annotation} is null.
    */
   public static Map<String,Object> getAttributes(final Annotation annotation, final boolean removeDefaults) {
-    final Class<? extends Annotation> annotationType = annotation.annotationType();
+    final Class<? extends Annotation> annotationType = Assertions.assertNotNull(annotation).annotationType();
     final HashMap<String,Object> attributes = new HashMap<>();
     try {
       for (final Method method : annotationType.getDeclaredMethods()) {
@@ -90,7 +90,7 @@ public final class Annotations {
    * @param annotation The {@link Annotation}.
    * @return A {@link #toString()} representation of {@code annotation}, with
    *         its property names sorted by {@code comparator}.
-   * @throws NullPointerException If the specified annotation is null.
+   * @throws IllegalArgumentException If {@code annotation} is null.
    */
   public static String toSortedString(final Annotation annotation) {
     return toSortedString(annotation, null, false);
@@ -111,7 +111,7 @@ public final class Annotations {
    *          {@code annotation}'s defaults should be omitted.
    * @return A {@link #toString()} representation of {@code annotation}, with
    *         its property names sorted by {@code comparator}.
-   * @throws NullPointerException If the specified annotation is null.
+   * @throws IllegalArgumentException If {@code annotation} is null.
    */
   public static String toSortedString(final Annotation annotation, final boolean removeDefaults) {
     return toSortedString(annotation, null, removeDefaults);
@@ -125,7 +125,7 @@ public final class Annotations {
    * @param comparator The {@link Comparator}.
    * @return A {@link #toString()} representation of {@code annotation}, with
    *         its property names sorted by {@code comparator}.
-   * @throws NullPointerException If the specified annotation is null.
+   * @throws IllegalArgumentException If {@code annotation} is null.
    */
   public static String toSortedString(final Annotation annotation, final Comparator<String> comparator) {
     return toSortedString(annotation, comparator, false);
@@ -142,10 +142,10 @@ public final class Annotations {
    *          {@code annotation}'s defaults should be omitted.
    * @return A {@link #toString()} representation of {@code annotation}, with
    *         its property names sorted by {@code comparator}.
-   * @throws NullPointerException If the specified annotation is null.
+   * @throws IllegalArgumentException If {@code annotation} is null.
    */
   public static String toSortedString(final Annotation annotation, final Comparator<String> comparator, final boolean removeDefaults) {
-    final String str = annotation.toString();
+    final String str = Assertions.assertNotNull(annotation).toString();
     if (str.indexOf('(') < 0)
       return str;
 

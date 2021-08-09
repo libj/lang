@@ -62,9 +62,10 @@ public final class Threads {
    * to the specified string consumer.
    *
    * @param s {@link Consumer Consumer&lt;String&gt;} to use for output.
-   * @throws NullPointerException If {@code s} is null.
+   * @throws IllegalAnnotationException If {@code s} is null.
    */
   public static void printThreadTrace(final Consumer<String> s) {
+    Assertions.assertNotNull(s);
     final Map<Thread,StackTraceElement[]> stackTraces = Thread.getAllStackTraces();
     final Map<Long,Thread> tidToThread = new HashMap<>(stackTraces.size());
     for (final Thread thread : stackTraces.keySet())

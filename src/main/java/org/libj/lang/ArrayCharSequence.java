@@ -36,10 +36,10 @@ public class ArrayCharSequence implements CharSequence, Serializable {
    * with the char sequence range as {@code 0} to {@code buf.length}.
    *
    * @param buf The {@code char[]}.
-   * @throws NullPointerException If {@code buf} is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public ArrayCharSequence(final char[] buf) {
-    this(buf, 0, buf.length);
+    this(buf, 0, Assertions.assertNotNull(buf).length);
   }
 
   /**
@@ -50,10 +50,10 @@ public class ArrayCharSequence implements CharSequence, Serializable {
    * @param count The count.
    * @throws IndexOutOfBoundsException If {@code count} is negative, or
    *           {@code buf.length} is less than {@code count}.
-   * @throws NullPointerException If {@code buf} is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public ArrayCharSequence(final char[] buf, final int count) {
-    this(buf, 0, count);
+    this(Assertions.assertNotNull(buf), 0, count);
   }
 
   /**
@@ -66,10 +66,10 @@ public class ArrayCharSequence implements CharSequence, Serializable {
    * @throws IndexOutOfBoundsException If {@code offset} is negative,
    *           {@code count} is negative, or {@code buf.length} is less than
    *           {@code offset + count}.
-   * @throws NullPointerException If {@code buf} is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public ArrayCharSequence(final char[] buf, final int offset, final int count) {
-    Assertions.assertBoundsOffsetCount("length", buf.length, "offset", offset, "count", count);
+    Assertions.assertBoundsOffsetCount("length", Assertions.assertNotNull(buf).length, "offset", offset, "count", count);
     this.buf = buf;
     this.offset = offset;
     this.count = count;

@@ -53,9 +53,9 @@ public class HexadecimalTest {
   public void testHexToBytes() {
     try {
       Hexadecimal.decode(null);
-      fail("Expected NullPointerException");
+      fail("Expected IllegalArgumentException");
     }
-    catch (final NullPointerException e) {
+    catch (final IllegalArgumentException e) {
     }
 
     try {
@@ -75,9 +75,9 @@ public class HexadecimalTest {
   public void testBytesToHex() {
     try {
       Hexadecimal.encode(null);
-      fail("Expected NullPointerException");
+      fail("Expected IllegalArgumentException");
     }
-    catch (final NullPointerException e) {
+    catch (final IllegalArgumentException e) {
     }
 
     testBytesToHex(new byte[0]);

@@ -54,11 +54,11 @@ public final class Buffers {
    * @throws ArrayIndexOutOfBoundsException If the specified index is negative,
    *           or if {@code resize == 0}. and the bit index is greater than the
    *           number of bits in the {@code buf} array.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static byte[] set(byte[] buf, final int bit, final double resize) {
     final int i = bit / Byte.SIZE;
-    if (i >= buf.length) {
+    if (i >= Assertions.assertNotNull(buf).length) {
       if (resize == 0)
         throw new ArrayIndexOutOfBoundsException(bit);
 
@@ -103,11 +103,11 @@ public final class Buffers {
    * @throws ArrayIndexOutOfBoundsException If the specified index is negative,
    *           or if {@code resize == 0}. and the bit index is greater than the
    *           number of bits in the {@code buf} array.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static char[] set(char[] buf, final int bit, final double resize) {
     final int i = bit / Character.SIZE;
-    if (i >= buf.length) {
+    if (i >= Assertions.assertNotNull(buf).length) {
       if (resize == 0)
         throw new ArrayIndexOutOfBoundsException(bit);
 
@@ -152,11 +152,11 @@ public final class Buffers {
    * @throws ArrayIndexOutOfBoundsException If the specified index is negative,
    *           or if {@code resize == 0}. and the bit index is greater than the
    *           number of bits in the {@code buf} array.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static short[] set(short[] buf, final int bit, final double resize) {
     final int i = bit / Short.SIZE;
-    if (i >= buf.length) {
+    if (i >= Assertions.assertNotNull(buf).length) {
       if (resize == 0)
         throw new ArrayIndexOutOfBoundsException(bit);
 
@@ -201,11 +201,11 @@ public final class Buffers {
    * @throws ArrayIndexOutOfBoundsException If the specified index is negative,
    *           or if {@code resize == 0}. and the bit index is greater than the
    *           number of bits in the {@code buf} array.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static int[] set(int[] buf, final int bit, final double resize) {
     final int i = bit / Integer.SIZE;
-    if (i >= buf.length) {
+    if (i >= Assertions.assertNotNull(buf).length) {
       if (resize == 0)
         throw new ArrayIndexOutOfBoundsException(bit);
 
@@ -250,11 +250,11 @@ public final class Buffers {
    * @throws ArrayIndexOutOfBoundsException If the specified index is negative,
    *           or if {@code resize == 0}. and the bit index is greater than the
    *           number of bits in the {@code buf} array.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static long[] set(long[] buf, final int bit, final double resize) {
     final int i = bit / Long.SIZE;
-    if (i >= buf.length) {
+    if (i >= Assertions.assertNotNull(buf).length) {
       if (resize == 0)
         throw new ArrayIndexOutOfBoundsException(bit);
 
@@ -275,11 +275,11 @@ public final class Buffers {
    * @param bit The index of the bit to be cleared.
    * @return The provided {@code byte[]} buffer.
    * @throws ArrayIndexOutOfBoundsException If the specified index is negative.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static byte[] clear(final byte[] buf, final int bit) {
     final int i = bit / Byte.SIZE;
-    if (i >= buf.length)
+    if (i >= Assertions.assertNotNull(buf).length)
       return buf;
 
     buf[bit / Byte.SIZE] &= ~(1 << (bit % Byte.SIZE));
@@ -294,11 +294,11 @@ public final class Buffers {
    * @param bit The index of the bit to be cleared.
    * @return The provided {@code char[]} buffer.
    * @throws ArrayIndexOutOfBoundsException If the specified index is negative.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static char[] clear(final char[] buf, final int bit) {
     final int i = bit / Character.SIZE;
-    if (i >= buf.length)
+    if (i >= Assertions.assertNotNull(buf).length)
       return buf;
 
     buf[bit / Character.SIZE] &= ~(1 << (bit % Character.SIZE));
@@ -313,11 +313,11 @@ public final class Buffers {
    * @param bit The index of the bit to be cleared.
    * @return The provided {@code short[]} buffer.
    * @throws ArrayIndexOutOfBoundsException If the specified index is negative.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static short[] clear(final short[] buf, final int bit) {
     final int i = bit / Short.SIZE;
-    if (i >= buf.length)
+    if (i >= Assertions.assertNotNull(buf).length)
       return buf;
 
     buf[bit / Short.SIZE] &= ~(1 << (bit % Short.SIZE));
@@ -332,11 +332,11 @@ public final class Buffers {
    * @param bit The index of the bit to be cleared.
    * @return The provided {@code int[]} buffer.
    * @throws ArrayIndexOutOfBoundsException If the specified index is negative.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static int[] clear(final int[] buf, final int bit) {
     final int i = bit / Integer.SIZE;
-    if (i >= buf.length)
+    if (i >= Assertions.assertNotNull(buf).length)
       return buf;
 
     buf[bit / Integer.SIZE] &= ~(1 << (bit % Integer.SIZE));
@@ -351,11 +351,11 @@ public final class Buffers {
    * @param bit The index of the bit to be cleared.
    * @return The provided {@code long[]} buffer.
    * @throws ArrayIndexOutOfBoundsException If the specified index is negative.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static long[] clear(final long[] buf, final int bit) {
     final int i = bit / Long.SIZE;
-    if (i >= buf.length)
+    if (i >= Assertions.assertNotNull(buf).length)
       return buf;
 
     buf[bit / Long.SIZE] &= ~(1L << (bit % Long.SIZE));
@@ -371,11 +371,11 @@ public final class Buffers {
    * @param bit The bit index.
    * @return The value of the bit at the specified index.
    * @throws ArrayIndexOutOfBoundsException If the specified index is negative.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static boolean get(final byte[] buf, final int bit) {
     final int i = bit / Byte.SIZE;
-    return i < buf.length && ((buf[i] >> (bit % Byte.SIZE)) & 1) != 0;
+    return i < Assertions.assertNotNull(buf).length && ((buf[i] >> (bit % Byte.SIZE)) & 1) != 0;
   }
 
   /**
@@ -387,11 +387,11 @@ public final class Buffers {
    * @param bit The bit index.
    * @return The value of the bit at the specified index.
    * @throws ArrayIndexOutOfBoundsException If the specified index is negative.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static boolean get(final char[] buf, final int bit) {
     final int i = bit / Character.SIZE;
-    return i < buf.length && ((buf[i] >> (bit % Character.SIZE)) & 1) != 0;
+    return i < Assertions.assertNotNull(buf).length && ((buf[i] >> (bit % Character.SIZE)) & 1) != 0;
   }
 
   /**
@@ -403,11 +403,11 @@ public final class Buffers {
    * @param bit The bit index.
    * @return The value of the bit at the specified index.
    * @throws ArrayIndexOutOfBoundsException If the specified index is negative.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static boolean get(final short[] buf, final int bit) {
     final int i = bit / Short.SIZE;
-    return i < buf.length && ((buf[i] >> (bit % Short.SIZE)) & 1) != 0;
+    return i < Assertions.assertNotNull(buf).length && ((buf[i] >> (bit % Short.SIZE)) & 1) != 0;
   }
 
   /**
@@ -419,11 +419,11 @@ public final class Buffers {
    * @param bit The bit index.
    * @return The value of the bit at the specified index.
    * @throws ArrayIndexOutOfBoundsException If the specified index is negative.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static boolean get(final int[] buf, final int bit) {
     final int i = bit / Integer.SIZE;
-    return i < buf.length && ((buf[i] >> (bit % Integer.SIZE)) & 1) != 0;
+    return i < Assertions.assertNotNull(buf).length && ((buf[i] >> (bit % Integer.SIZE)) & 1) != 0;
   }
 
   /**
@@ -435,11 +435,11 @@ public final class Buffers {
    * @param bit The bit index.
    * @return The value of the bit at the specified index.
    * @throws ArrayIndexOutOfBoundsException If the specified index is negative.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static boolean get(final long[] buf, final int bit) {
     final int i = bit / Long.SIZE;
-    return i < buf.length && ((buf[i] >> (bit % Long.SIZE)) & 1) != 0;
+    return i < Assertions.assertNotNull(buf).length && ((buf[i] >> (bit % Long.SIZE)) & 1) != 0;
   }
 
   /**
@@ -449,10 +449,10 @@ public final class Buffers {
    *
    * @param buf The {@code byte[]} buffer.
    * @return The logical size of the {@code buf}.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static int length(final byte[] buf) {
-    if (buf.length == 0)
+    if (Assertions.assertNotNull(buf).length == 0)
       return 0;
 
     int i = buf.length - 1;
@@ -467,10 +467,10 @@ public final class Buffers {
    *
    * @param buf The {@code char[]} buffer.
    * @return The logical size of the {@code buf}.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static int length(final char[] buf) {
-    if (buf.length == 0)
+    if (Assertions.assertNotNull(buf).length == 0)
       return 0;
 
     int i = buf.length - 1;
@@ -485,10 +485,10 @@ public final class Buffers {
    *
    * @param buf The {@code short[]} buffer.
    * @return The logical size of the {@code buf}.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static int length(final short[] buf) {
-    if (buf.length == 0)
+    if (Assertions.assertNotNull(buf).length == 0)
       return 0;
 
     int i = buf.length - 1;
@@ -503,10 +503,10 @@ public final class Buffers {
    *
    * @param buf The {@code int[]} buffer.
    * @return The logical size of the {@code buf}.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static int length(final int[] buf) {
-    if (buf.length == 0)
+    if (Assertions.assertNotNull(buf).length == 0)
       return 0;
 
     int i = buf.length - 1;
@@ -521,10 +521,10 @@ public final class Buffers {
    *
    * @param buf The {@code long[]} buffer.
    * @return The logical size of the {@code buf}.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static int length(final long[] buf) {
-    if (buf.length == 0)
+    if (Assertions.assertNotNull(buf).length == 0)
       return 0;
 
     int i = buf.length - 1;
@@ -544,12 +544,12 @@ public final class Buffers {
    *
    * @param buf The {@code byte[]} buffer.
    * @return A trimmed byte array of {@code buf}.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    * @see #length(byte[])
    */
   public static byte[] trimToLength(final byte[] buf) {
     final int length = length(buf);
-    if (buf.length == length)
+    if (Assertions.assertNotNull(buf).length == length)
       return buf;
 
     final byte[] trimmed = new byte[length];
@@ -569,12 +569,12 @@ public final class Buffers {
    *
    * @param buf The {@code char[]} buffer.
    * @return A trimmed char array of {@code buf}.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    * @see #length(char[])
    */
   public static char[] trimToLength(final char[] buf) {
     final int length = length(buf);
-    if (buf.length == length)
+    if (Assertions.assertNotNull(buf).length == length)
       return buf;
 
     final char[] trimmed = new char[length];
@@ -594,12 +594,12 @@ public final class Buffers {
    *
    * @param buf The {@code short[]} buffer.
    * @return A trimmed short array of {@code buf}.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    * @see #length(short[])
    */
   public static short[] trimToLength(final short[] buf) {
     final int length = length(buf);
-    if (buf.length == length)
+    if (Assertions.assertNotNull(buf).length == length)
       return buf;
 
     final short[] trimmed = new short[length];
@@ -619,12 +619,12 @@ public final class Buffers {
    *
    * @param buf The {@code int[]} buffer.
    * @return A trimmed int array of {@code buf}.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    * @see #length(int[])
    */
   public static int[] trimToLength(final int[] buf) {
     final int length = length(buf);
-    if (buf.length == length)
+    if (Assertions.assertNotNull(buf).length == length)
       return buf;
 
     final int[] trimmed = new int[length];
@@ -644,12 +644,12 @@ public final class Buffers {
    *
    * @param buf The {@code long[]} buffer.
    * @return A trimmed long array of {@code buf}.
-   * @throws NullPointerException If the specified array is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    * @see #length(long[])
    */
   public static long[] trimToLength(final long[] buf) {
     final int length = length(buf);
-    if (buf.length == length)
+    if (Assertions.assertNotNull(buf).length == length)
       return buf;
 
     final long[] trimmed = new long[length];
@@ -683,10 +683,10 @@ public final class Buffers {
    * @param buf The byte values.
    * @return A string representing the big-endian binary representation of the
    *         specified byte values.
-   * @throws NullPointerException If {@code buf} is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static String toString(final byte ... buf) {
-    final byte[] bytes = new byte[buf.length * Byte.SIZE];
+    final byte[] bytes = new byte[Assertions.assertNotNull(buf).length * Byte.SIZE];
     for (int i = 0; i < buf.length; ++i)
       toUnsignedString(buf[i], bytes, i, Byte.SIZE);
 
@@ -700,10 +700,10 @@ public final class Buffers {
    * @param buf The char values.
    * @return A string representing the big-endian binary representation of the
    *         specified char values.
-   * @throws NullPointerException If {@code buf} is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static String toString(final char ... buf) {
-    final byte[] bytes = new byte[buf.length * Character.SIZE];
+    final byte[] bytes = new byte[Assertions.assertNotNull(buf).length * Character.SIZE];
     for (int i = 0; i < buf.length; ++i)
       toUnsignedString(buf[i], bytes, i, Character.SIZE);
 
@@ -717,10 +717,10 @@ public final class Buffers {
    * @param buf The short values.
    * @return A string representing the big-endian binary representation of the
    *         specified short values.
-   * @throws NullPointerException If {@code buf} is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static String toString(final short ... buf) {
-    final byte[] bytes = new byte[buf.length * Short.SIZE];
+    final byte[] bytes = new byte[Assertions.assertNotNull(buf).length * Short.SIZE];
     for (int i = 0; i < buf.length; ++i)
       toUnsignedString(buf[i], bytes, i, Short.SIZE);
 
@@ -734,10 +734,10 @@ public final class Buffers {
    * @param buf The int values.
    * @return A string representing the big-endian binary representation of the
    *         specified int values.
-   * @throws NullPointerException If {@code buf} is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static String toString(final int ... buf) {
-    final byte[] bytes = new byte[buf.length * Integer.SIZE];
+    final byte[] bytes = new byte[Assertions.assertNotNull(buf).length * Integer.SIZE];
     for (int i = 0; i < buf.length; ++i)
       toUnsignedString(buf[i], bytes, i, Integer.SIZE);
 
@@ -751,10 +751,10 @@ public final class Buffers {
    * @param buf The long values.
    * @return A string representing the big-endian binary representation of the
    *         specified long values.
-   * @throws NullPointerException If {@code buf} is null.
+   * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static String toString(final long ... buf) {
-    final byte[] bytes = new byte[buf.length * Long.SIZE];
+    final byte[] bytes = new byte[Assertions.assertNotNull(buf).length * Long.SIZE];
     for (int i = 0; i < buf.length; ++i)
       toUnsignedString(buf[i], bytes, i, Long.SIZE);
 

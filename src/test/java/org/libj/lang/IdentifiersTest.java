@@ -29,7 +29,7 @@ public class IdentifiersTest {
     try {
       identifier = function.apply(value);
     }
-    catch (final NullPointerException e) {
+    catch (final IllegalArgumentException e) {
       if (expected == null)
         return;
 
@@ -46,9 +46,9 @@ public class IdentifiersTest {
   public void testIsValid() {
     try {
       Identifiers.isValid(null);
-      fail("Expected NullPointerException");
+      fail("Expected IllegalArgumentException");
     }
-    catch (final NullPointerException e) {
+    catch (final IllegalArgumentException e) {
     }
 
     assertFalse(Identifiers.isValid(""));

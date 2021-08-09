@@ -62,9 +62,9 @@ public class PackageLoaderTest {
 
     try {
       PackageLoader.getContextPackageLoader().loadPackage((String)null);
-      fail("Expected NullPointerException");
+      fail("Expected IllegalArgumentException");
     }
-    catch (final NullPointerException e) {
+    catch (final IllegalArgumentException e) {
     }
   }
 

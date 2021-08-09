@@ -68,9 +68,9 @@ public class ClassesTest {
   public void testGreatestCommonClass() throws Exception {
     try {
       Classes.getGreatestCommonSuperclass((Class<?>[])null);
-      fail("Expected NullPointerException");
+      fail("Expected IllegalArgumentException");
     }
-    catch (final NullPointerException e) {
+    catch (final IllegalArgumentException e) {
     }
 
     for (final Map.Entry<Class<?>[],Class<?>> entry : classes.entrySet())
@@ -95,9 +95,9 @@ public class ClassesTest {
   public void testGetDeclaringClassName() {
     try {
       Classes.getDeclaringClassName(null);
-      fail("Expected NullPointerException");
+      fail("Expected IllegalArgumentException");
     }
-    catch (final NullPointerException e) {
+    catch (final IllegalArgumentException e) {
     }
 
     try {
@@ -133,9 +133,9 @@ public class ClassesTest {
   public void testGetRootDeclaringClassName() {
     try {
       Classes.getRootDeclaringClassName(null);
-      fail("Expected NullPointerException");
+      fail("Expected IllegalArgumentException");
     }
-    catch (final NullPointerException e) {
+    catch (final IllegalArgumentException e) {
     }
 
     try {
@@ -170,9 +170,9 @@ public class ClassesTest {
   public void testToCanonicalClassName() {
     try {
       Classes.toCanonicalClassName(null);
-      fail("Expected NullPointerException");
+      fail("Expected IllegalArgumentException");
     }
-    catch (final NullPointerException e) {
+    catch (final IllegalArgumentException e) {
     }
 
     try {
@@ -206,9 +206,9 @@ public class ClassesTest {
   public void testGetCompoundName() {
     try {
       Classes.getCompoundName(null);
-      fail("Expected NullPointerException");
+      fail("Expected IllegalArgumentException");
     }
-    catch (final NullPointerException e) {
+    catch (final IllegalArgumentException e) {
     }
 
     assertEquals("Map$Entry", Classes.getCompoundName(Map.Entry.class));
@@ -218,9 +218,9 @@ public class ClassesTest {
   public void testGetCanonicalCompoundName() {
     try {
       Classes.getCompoundName(null);
-      fail("Expected NullPointerException");
+      fail("Expected IllegalArgumentException");
     }
-    catch (final NullPointerException e) {
+    catch (final IllegalArgumentException e) {
     }
 
     assertEquals("Map.Entry", Classes.getCanonicalCompoundName(Map.Entry.class));
@@ -277,16 +277,16 @@ public class ClassesTest {
   public void testGetGenericInterfaceTypeArguments() {
     try {
       Classes.getGenericInterfaceTypeArguments(Integer.class, null);
-      fail("Expected NullPointerException");
+      fail("Expected IllegalArgumentException");
     }
-    catch (final NullPointerException e) {
+    catch (final IllegalArgumentException e) {
     }
 
     try {
       Classes.getGenericInterfaceTypeArguments(null, Serializable.class);
-      fail("Expected NullPointerException");
+      fail("Expected IllegalArgumentException");
     }
-    catch (final NullPointerException e) {
+    catch (final IllegalArgumentException e) {
     }
 
     try {
@@ -313,9 +313,9 @@ public class ClassesTest {
   public void testGetClassHierarchy() {
     try {
       Classes.getClassHierarchy(null, c -> false);
-      fail("Expected NullPointerException");
+      fail("Expected IllegalArgumentException");
     }
-    catch (final NullPointerException e) {
+    catch (final IllegalArgumentException e) {
     }
 
     final Class<?>[] hierarchy = {LinkedList.class, AbstractSequentialList.class, List.class, Deque.class, Cloneable.class, Serializable.class, AbstractList.class, Collection.class, Queue.class, AbstractCollection.class, Iterable.class, Object.class};
@@ -330,9 +330,9 @@ public class ClassesTest {
   public void testWalkClassHierarchy() {
     try {
       Classes.walkClassHierarchy(null, c -> false);
-      fail("Expected NullPointerException");
+      fail("Expected IllegalArgumentException");
     }
-    catch (final NullPointerException e) {
+    catch (final IllegalArgumentException e) {
     }
 
     assertNull(Classes.walkClassHierarchy(LinkedList.class, null));

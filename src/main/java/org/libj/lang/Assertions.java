@@ -21,6 +21,50 @@ package org.libj.lang;
  */
 public final class Assertions {
   /**
+   * Checks that the specified object reference is not {@code null}. This method
+   * is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(Bar bar) {
+   *   this.bar = Arguments.assertNonNull(bar);
+   * }
+   * </pre>
+   *
+   * @param <T> The type of the reference.
+   * @param obj The object reference to check for nullity.
+   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @return {@code obj} if not {@code null}.
+   * @throws IllegalArgumentException if {@code obj} is {@code null}
+   */
+  public static <T>T assertNotNull(final T obj, final String message) {
+    if (obj == null)
+      throw new IllegalArgumentException(message);
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified object reference is not {@code null}. This method
+   * is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(Bar bar) {
+   *   this.bar = Arguments.assertNonNull(bar);
+   * }
+   * </pre>
+   *
+   * @param <T> The type of the reference.
+   * @param obj The object reference to check for nullity.
+   * @return {@code obj} if not {@code null}.
+   * @throws IllegalArgumentException if {@code obj} is {@code null}
+   */
+  public static <T>T assertNotNull(final T obj) {
+    return assertNotNull(obj, "null");
+  }
+
+  /**
    * Checks if the given {@code offset} and {@code length} are non-negative. If
    * not, throws an {@link ArrayIndexOutOfBoundsException}.
    *
