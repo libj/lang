@@ -19,17 +19,19 @@ package org.libj.lang;
 import java.io.Serializable;
 
 /**
- * A {@link CharSequence} backed by a {@code char[]}.
+ * A {@link CharSequence} backed by a {@code String} or {@code char[]}.
  */
 public class ArrayCharSequence implements CharSequence, Serializable {
   private static final long serialVersionUID = -3119966124596469581L;
-  private final char[] buf;
+
   private final int offset;
   private final int count;
 
-  private volatile int hashCode;
-  private volatile boolean hashCodeInited;
-  private transient volatile String str;
+  private char[] buf;
+  private String str;
+
+  private int hashCode;
+  private boolean hashCodeInited;
 
   /**
    * Creates a new {@link ArrayCharSequence} with the specified {@code char[]},
@@ -39,7 +41,8 @@ public class ArrayCharSequence implements CharSequence, Serializable {
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public ArrayCharSequence(final char[] buf) {
-    this(buf, 0, Assertions.assertNotNull(buf).length);
+    this(buf, null, 0, Assertions.assertNotNull(buf).length);
+    Assertions.assertBoundsOffsetCount("length", buf.length, "offset", offset, "count", count);
   }
 
   /**
@@ -53,7 +56,7 @@ public class ArrayCharSequence implements CharSequence, Serializable {
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public ArrayCharSequence(final char[] buf, final int count) {
-    this(Assertions.assertNotNull(buf), 0, count);
+    this(buf, 0, count);
   }
 
   /**
@@ -69,15 +72,63 @@ public class ArrayCharSequence implements CharSequence, Serializable {
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public ArrayCharSequence(final char[] buf, final int offset, final int count) {
+    this(buf, null, offset, count);
     Assertions.assertBoundsOffsetCount("length", Assertions.assertNotNull(buf).length, "offset", offset, "count", count);
+  }
+
+  private ArrayCharSequence(final char[] buf, final String str, final int offset, final int count) {
     this.buf = buf;
+    this.str = str;
     this.offset = offset;
     this.count = count;
   }
 
+  /**
+   * Creates a new {@link ArrayCharSequence} with the specified string, with the
+   * char sequence range as {@code 0} to {@code buf.length}.
+   *
+   * @param str The string.
+   * @throws IllegalArgumentException If {@code str} is null.
+   */
+  public ArrayCharSequence(final String str) {
+    this(null, str, 0, Assertions.assertNotNull(str).length());
+    Assertions.assertBoundsOffsetCount("length", str.length(), "offset", offset, "count", count);
+  }
+
+  /**
+   * Creates a new {@link ArrayCharSequence} with the specified string, with the
+   * char sequence range as {@code 0} to {@code count}.
+   *
+   * @param str The string.
+   * @param count The count.
+   * @throws IndexOutOfBoundsException If {@code count} is negative, or
+   *           {@code str.length()} is less than {@code count}.
+   * @throws IllegalArgumentException If {@code str} is null.
+   */
+  public ArrayCharSequence(final String str, final int count) {
+    this(str, 0, count);
+  }
+
+  /**
+   * Creates a new {@link ArrayCharSequence} with the specified string, with the
+   * char sequence range as {@code offset} to {@code count}.
+   *
+   * @param str The string.
+   * @param offset The offset.
+   * @param count The count.
+   * @throws IndexOutOfBoundsException If {@code offset} is negative,
+   *           {@code count} is negative, or {@code str.length()} is less than
+   *           {@code offset + count}.
+   * @throws IllegalArgumentException If {@code str} is null.
+   */
+  public ArrayCharSequence(final String str, final int offset, final int count) {
+    this(null, str, offset, count);
+    Assertions.assertBoundsOffsetCount("length", Assertions.assertNotNull(str).length(), "offset", offset, "count", count);
+  }
+
   @Override
   public char charAt(final int index) {
-    return buf[offset + index];
+    return buf != null ? buf[offset + index] : str.charAt(index);
   }
 
   @Override
@@ -91,7 +142,7 @@ public class ArrayCharSequence implements CharSequence, Serializable {
       return this;
 
     Assertions.assertRangeArray(start, end, count);
-    return new ArrayCharSequence(buf, offset + start, end - start);
+    return new ArrayCharSequence(buf, str, offset + start, end - start);
   }
 
   @Override
@@ -103,9 +154,30 @@ public class ArrayCharSequence implements CharSequence, Serializable {
       return false;
 
     final ArrayCharSequence that = (ArrayCharSequence)obj;
-    for (int i = 0; i < count; ++i)
-      if (buf[offset + i] != that.buf[that.offset + i])
-        return false;
+    if (buf != null) {
+      if (that.buf != null) {
+        for (int i = 0; i < count; ++i)
+          if (buf[offset + i] != that.buf[that.offset + i])
+            return false;
+      }
+      else {
+        for (int i = 0; i < count; ++i)
+          if (buf[offset + i] != that.str.charAt(that.offset + i))
+            return false;
+      }
+    }
+    else {
+      if (that.buf != null) {
+        for (int i = 0; i < count; ++i)
+          if (str.charAt(offset + i) != that.buf[that.offset + i])
+            return false;
+      }
+      else {
+        for (int i = 0; i < count; ++i)
+          if (str.charAt(offset + i) != that.str.charAt(that.offset + i))
+            return false;
+      }
+    }
 
     return true;
   }
@@ -116,8 +188,13 @@ public class ArrayCharSequence implements CharSequence, Serializable {
       return this.hashCode;
 
     int hashCode = 1;
-    for (int i = offset, len = offset + count; i < len; ++i)
+    if (buf != null)
+      for (int i = offset, len = offset + count; i < len; ++i)
         hashCode = 31 * hashCode + buf[i];
+    else
+      for (int i = offset, len = offset + count; i < len; ++i)
+        hashCode = 31 * hashCode + str.charAt(i);
+
 
     hashCodeInited = true;
     return this.hashCode = hashCode;
@@ -125,6 +202,6 @@ public class ArrayCharSequence implements CharSequence, Serializable {
 
   @Override
   public String toString() {
-    return str == null ? str = new String(this.buf, this.offset, this.count) : str;
+    return str == null ? str = new String(buf, offset, count) : str;
   }
 }
