@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import java.util.Collection;
+
 /**
  * Utility methods implementing common assertion operations.
  */
@@ -35,7 +37,7 @@ public final class Assertions {
    * @param obj The object reference to check for nullity.
    * @param message The detail message to be used for the {@link IllegalArgumentException}.
    * @return {@code obj} if not {@code null}.
-   * @throws IllegalArgumentException if {@code obj} is {@code null}
+   * @throws IllegalArgumentException If {@code obj} is {@code null}
    */
   public static <T>T assertNotNull(final T obj, final String message) {
     if (obj == null)
@@ -58,10 +60,110 @@ public final class Assertions {
    * @param <T> The type of the reference.
    * @param obj The object reference to check for nullity.
    * @return {@code obj} if not {@code null}.
-   * @throws IllegalArgumentException if {@code obj} is {@code null}
+   * @throws IllegalArgumentException If {@code obj} is {@code null}
    */
   public static <T>T assertNotNull(final T obj) {
     return assertNotNull(obj, "null");
+  }
+
+  /**
+   * Checks that the specified array is not null nor empty. This method is
+   * designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(Bar ... bars) {
+   *   this.bar = Arguments.assertNonEmpty(bars);
+   * }
+   * </pre>
+   *
+   * @param <T> The type of the reference.
+   * @param obj The array to check for nullity or emptiness.
+   * @param message The detail message to be used for the
+   *          {@link IllegalArgumentException}.
+   * @return {@code obj} if not {@code null} or empty.
+   * @throws IllegalArgumentException If {@code obj} is {@code null} or empty.
+   */
+  public static <T>T[] assertNotEmpty(final T[] obj, final String message) {
+    assertNotNull(obj, message);
+    if (obj.length == 0)
+      throw new IllegalArgumentException(message);
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified array is not null nor empty. This method is
+   * designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(Bar ... bars) {
+   *   this.bar = Arguments.assertNonEmpty(bars);
+   * }
+   * </pre>
+   *
+   * @param <T> The type of the reference.
+   * @param obj The array to check for nullity or emptiness.
+   * @return {@code obj} if not {@code null} or empty.
+   * @throws IllegalArgumentException If {@code obj} is {@code null} or empty.
+   */
+  public static <T>T[] assertNotEmpty(final T[] obj) {
+    assertNotNull(obj, "null");
+    if (obj.length == 0)
+      throw new IllegalArgumentException("empty");
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified collection is not null nor empty. This method is
+   * designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(Bar ... bars) {
+   *   this.bar = Arguments.assertNonEmpty(bars);
+   * }
+   * </pre>
+   *
+   * @param <T> The type of the reference.
+   * @param obj The collection to check for nullity or emptiness.
+   * @param message The detail message to be used for the
+   *          {@link IllegalArgumentException}.
+   * @return {@code obj} if not {@code null} or empty.
+   * @throws IllegalArgumentException If {@code obj} is {@code null} or empty.
+   */
+  public static <T>Collection<T> assertNotEmpty(final Collection<T> obj, final String message) {
+    assertNotNull(obj, message);
+    if (obj.size() == 0)
+      throw new IllegalArgumentException(message);
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified collection is not null nor empty. This method is
+   * designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(Bar ... bars) {
+   *   this.bar = Arguments.assertNonEmpty(bars);
+   * }
+   * </pre>
+   *
+   * @param <T> The type of the reference.
+   * @param obj The collection to check for nullity or emptiness.
+   * @return {@code obj} if not {@code null} or empty.
+   * @throws IllegalArgumentException If {@code obj} is {@code null} or empty.
+   */
+  public static <T>Collection<T> assertNotEmpty(final Collection<T> obj) {
+    assertNotNull(obj, "null");
+    if (obj.size() == 0)
+      throw new IllegalArgumentException("empty");
+
+    return obj;
   }
 
   /**
