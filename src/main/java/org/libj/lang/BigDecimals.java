@@ -218,7 +218,7 @@ public final class BigDecimals {
    * @throws ArithmeticException If {@code rm} is
    *           {@link RoundingMode#UNNECESSARY} and the specified scaling
    *           operation would require rounding.
-   * @throws IllegalArgumentException If @{@code v} or {@code rm} is null.
+   * @throws IllegalArgumentException If {@code v} or {@code rm} is null.
    */
   public static BigDecimal setScale(BigDecimal v, final int newScale, final RoundingMode rm) {
     Assertions.assertNotNull(v);
