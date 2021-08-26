@@ -167,6 +167,690 @@ public final class Assertions {
   }
 
   /**
+   * Checks that the provided value is positive. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(byte bar) {
+   *   this.bar = Arguments.assertPositive(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as positive.
+   * @param message The detail message to be used for the
+   *          {@link IllegalArgumentException}.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not positive.
+   */
+  public static byte assertPositive(final byte value, final String message) {
+    if (value <= 0)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is positive. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(byte bar) {
+   *   this.bar = Arguments.assertPositive(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as positive.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not positive.
+   */
+  public static byte assertPositive(final byte value) {
+    if (value <= 0)
+      throw new IllegalArgumentException(value + " is not positive");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is positive. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(short bar) {
+   *   this.bar = Arguments.assertPositive(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as positive.
+   * @param message The detail message to be used for the
+   *          {@link IllegalArgumentException}.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not positive.
+   */
+  public static short assertPositive(final short value, final String message) {
+    if (value <= 0)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is positive. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(short bar) {
+   *   this.bar = Arguments.assertPositive(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as positive.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not positive.
+   */
+  public static short assertPositive(final short value) {
+    if (value <= 0)
+      throw new IllegalArgumentException(value + " is not positive");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is positive. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(int bar) {
+   *   this.bar = Arguments.assertPositive(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as positive.
+   * @param message The detail message to be used for the
+   *          {@link IllegalArgumentException}.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not positive.
+   */
+  public static int assertPositive(final int value, final String message) {
+    if (value <= 0)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is positive. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(int bar) {
+   *   this.bar = Arguments.assertPositive(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as positive.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not positive.
+   */
+  public static int assertPositive(final int value) {
+    if (value <= 0)
+      throw new IllegalArgumentException(value + " is not positive");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is positive. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(long bar) {
+   *   this.bar = Arguments.assertPositive(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as positive.
+   * @param message The detail message to be used for the
+   *          {@link IllegalArgumentException}.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not positive.
+   */
+  public static long assertPositive(final long value, final String message) {
+    if (value <= 0)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is positive. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(long bar) {
+   *   this.bar = Arguments.assertPositive(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as positive.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not positive.
+   */
+  public static long assertPositive(final long value) {
+    if (value <= 0)
+      throw new IllegalArgumentException(value + " is not positive");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is positive. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(float bar) {
+   *   this.bar = Arguments.assertPositive(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as positive.
+   * @param message The detail message to be used for the
+   *          {@link IllegalArgumentException}.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not positive.
+   */
+  public static float assertPositive(final float value, final String message) {
+    if (value <= 0)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is positive. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(float bar) {
+   *   this.bar = Arguments.assertPositive(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as positive.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not positive.
+   */
+  public static float assertPositive(final float value) {
+    if (value <= 0)
+      throw new IllegalArgumentException(value + " is not positive");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is positive. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(double bar) {
+   *   this.bar = Arguments.assertPositive(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as positive.
+   * @param message The detail message to be used for the
+   *          {@link IllegalArgumentException}.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not positive.
+   */
+  public static double assertPositive(final double value, final String message) {
+    if (value <= 0)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is positive. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(double bar) {
+   *   this.bar = Arguments.assertPositive(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as positive.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not positive.
+   */
+  public static double assertPositive(final double value) {
+    if (value <= 0)
+      throw new IllegalArgumentException(value + " is not positive");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not negative. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(byte bar) {
+   *   this.bar = Arguments.assertNotNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not negative.
+   * @param message The detail message to be used for the
+   *          {@link IllegalArgumentException}.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is negative.
+   */
+  public static byte assertNotNegative(final byte value, final String message) {
+    if (value < 0)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not negative. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(byte bar) {
+   *   this.bar = Arguments.assertNotNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not negative.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is negative.
+   */
+  public static byte assertNotNegative(final byte value) {
+    if (value < 0)
+      throw new IllegalArgumentException(value + " is negative");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not negative. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(short bar) {
+   *   this.bar = Arguments.assertNotNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not negative.
+   * @param message The detail message to be used for the
+   *          {@link IllegalArgumentException}.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is negative.
+   */
+  public static short assertNotNegative(final short value, final String message) {
+    if (value < 0)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not negative. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(short bar) {
+   *   this.bar = Arguments.assertNotNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not negative.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is negative.
+   */
+  public static short assertNotNegative(final short value) {
+    if (value < 0)
+      throw new IllegalArgumentException(value + " is negative");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not negative. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(int bar) {
+   *   this.bar = Arguments.assertNotNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not negative.
+   * @param message The detail message to be used for the
+   *          {@link IllegalArgumentException}.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is negative.
+   */
+  public static int assertNotNegative(final int value, final String message) {
+    if (value < 0)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not negative. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(int bar) {
+   *   this.bar = Arguments.assertNotNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not negative.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is negative.
+   */
+  public static int assertNotNegative(final int value) {
+    if (value < 0)
+      throw new IllegalArgumentException(value + " is negative");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not negative. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(long bar) {
+   *   this.bar = Arguments.assertNotNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not negative.
+   * @param message The detail message to be used for the
+   *          {@link IllegalArgumentException}.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is negative.
+   */
+  public static long assertNotNegative(final long value, final String message) {
+    if (value < 0)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not negative. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(long bar) {
+   *   this.bar = Arguments.assertNotNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not negative.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is negative.
+   */
+  public static long assertNotNegative(final long value) {
+    if (value < 0)
+      throw new IllegalArgumentException(value + " is negative");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not negative. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(float bar) {
+   *   this.bar = Arguments.assertNotNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not negative.
+   * @param message The detail message to be used for the
+   *          {@link IllegalArgumentException}.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is negative.
+   */
+  public static float assertNotNegative(final float value, final String message) {
+    if (value < 0)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not negative. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(float bar) {
+   *   this.bar = Arguments.assertNotNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not negative.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is negative.
+   */
+  public static float assertNotNegative(final float value) {
+    if (value < 0)
+      throw new IllegalArgumentException(value + " is negative");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not negative. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(double bar) {
+   *   this.bar = Arguments.assertNotNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not negative.
+   * @param message The detail message to be used for the
+   *          {@link IllegalArgumentException}.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is negative.
+   */
+  public static double assertNotNegative(final double value, final String message) {
+    if (value < 0)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not negative. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(double bar) {
+   *   this.bar = Arguments.assertNotNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not negative.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is negative.
+   */
+  public static double assertNotNegative(final double value) {
+    if (value < 0)
+      throw new IllegalArgumentException(value + " is negative");
+
+    return value;
+  }
+
+  /**
+   * Checks the given {@code value} is between {@code min} (inclusive) and
+   * {@code max} (inclusive).
+   *
+   * @param value The value to assert as between {@code min} (inclusive) and
+   *          {@code max} (inclusive).
+   * @param min The minimum bound of the range (inclusive).
+   * @param max The maximum bound of the range (inclusive).
+   * @return {@code value} if it is in range.
+   * @throws IllegalArgumentException If {@code value} is not in range, or if
+   *           {@code min} is not less than or equal to {@code max}.
+   */
+  public static byte assertRangeMinMax(final byte value, final byte min, final byte max) {
+    if (max < min)
+      throw new IllegalArgumentException("Illegal bounds: min (" + min + ") is not less than or equal to max (" + max + ")");
+
+    if (value < min || max < value)
+      throw new IllegalArgumentException(value + " is not in range: [" + min + "," + max + ")");
+
+    return value;
+  }
+
+  /**
+   * Checks the given {@code value} is between {@code min} (inclusive) and
+   * {@code max} (inclusive).
+   *
+   * @param value The value to assert as between {@code min} (inclusive) and
+   *          {@code max} (inclusive).
+   * @param min The minimum bound of the range (inclusive).
+   * @param max The maximum bound of the range (inclusive).
+   * @return {@code value} if it is in range.
+   * @throws IllegalArgumentException If {@code value} is not in range, or if
+   *           {@code min} is not less than or equal to {@code max}.
+   */
+  public static short assertRangeMinMax(final short value, final short min, final short max) {
+    if (max < min)
+      throw new IllegalArgumentException("Illegal bounds: min (" + min + ") is not less than or equal to max (" + max + ")");
+
+    if (value < min || max < value)
+      throw new IllegalArgumentException(value + " is not in range: [" + min + "," + max + ")");
+
+    return value;
+  }
+
+  /**
+   * Checks the given {@code value} is between {@code min} (inclusive) and
+   * {@code max} (inclusive).
+   *
+   * @param value The value to assert as between {@code min} (inclusive) and
+   *          {@code max} (inclusive).
+   * @param min The minimum bound of the range (inclusive).
+   * @param max The maximum bound of the range (inclusive).
+   * @return {@code value} if it is in range.
+   * @throws IllegalArgumentException If {@code value} is not in range, or if
+   *           {@code min} is not less than or equal to {@code max}.
+   */
+  public static int assertRangeMinMax(final int value, final int min, final int max) {
+    if (max < min)
+      throw new IllegalArgumentException("Illegal bounds: min (" + min + ") is not less than or equal to max (" + max + ")");
+
+    if (value < min || max < value)
+      throw new IllegalArgumentException(value + " is not in range: [" + min + "," + max + ")");
+
+    return value;
+  }
+
+  /**
+   * Checks the given {@code value} is between {@code min} (inclusive) and
+   * {@code max} (inclusive).
+   *
+   * @param value The value to assert as between {@code min} (inclusive) and
+   *          {@code max} (inclusive).
+   * @param min The minimum bound of the range (inclusive).
+   * @param max The maximum bound of the range (inclusive).
+   * @return {@code value} if it is in range.
+   * @throws IllegalArgumentException If {@code value} is not in range, or if
+   *           {@code min} is not less than or equal to {@code max}.
+   */
+  public static long assertRangeMinMax(final long value, final long min, final long max) {
+    if (max < min)
+      throw new IllegalArgumentException("Illegal bounds: min (" + min + ") is not less than or equal to max (" + max + ")");
+
+    if (value < min || max < value)
+      throw new IllegalArgumentException(value + " is not in range: [" + min + "," + max + ")");
+
+    return value;
+  }
+
+  /**
+   * Checks the given {@code value} is between {@code min} (inclusive) and
+   * {@code max} (inclusive).
+   *
+   * @param value The value to assert as between {@code min} (inclusive) and
+   *          {@code max} (inclusive).
+   * @param min The minimum bound of the range (inclusive).
+   * @param max The maximum bound of the range (inclusive).
+   * @return {@code value} if it is in range.
+   * @throws IllegalArgumentException If {@code value} is not in range, or if
+   *           {@code min} is not less than or equal to {@code max}.
+   */
+  public static float assertRangeMinMax(final float value, final float min, final float max) {
+    if (max < min)
+      throw new IllegalArgumentException("Illegal bounds: min (" + min + ") is not less than or equal to max (" + max + ")");
+
+    if (value < min || max < value)
+      throw new IllegalArgumentException(value + " is not in range: [" + min + "," + max + ")");
+
+    return value;
+  }
+
+  /**
+   * Checks the given {@code value} is between {@code min} (inclusive) and
+   * {@code max} (inclusive).
+   *
+   * @param value The value to assert as between {@code min} (inclusive) and
+   *          {@code max} (inclusive).
+   * @param min The minimum bound of the range (inclusive).
+   * @param max The maximum bound of the range (inclusive).
+   * @return {@code value} if it is in range.
+   * @throws IllegalArgumentException If {@code value} is not in range, or if
+   *           {@code min} is not less than or equal to {@code max}.
+   */
+  public static double assertRangeMinMax(final double value, final double min, final double max) {
+    if (max < min)
+      throw new IllegalArgumentException("Illegal bounds: min (" + min + ") is not less than or equal to max (" + max + ")");
+
+    if (value < min || max < value)
+      throw new IllegalArgumentException(value + " is not in range: [" + min + "," + max + ")");
+
+    return value;
+  }
+
+  /**
    * Checks if the given {@code offset} and {@code length} are non-negative. If
    * not, throws an {@link ArrayIndexOutOfBoundsException}.
    *

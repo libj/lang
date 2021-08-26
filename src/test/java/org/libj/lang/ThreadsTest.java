@@ -16,7 +16,12 @@
 
 package org.libj.lang;
 
+import static org.junit.Assert.*;
+
 import java.io.PrintWriter;
+import java.util.Random;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
@@ -39,5 +44,59 @@ public class ThreadsTest {
   @Test
   public void testConsumer() {
     Threads.printThreadTrace(System.out::println);
+  }
+
+  public static class Task implements Runnable {
+    private final CountDownLatch latch;
+    private final long sleepTime;
+    private final long timeout;
+
+    public Task(final CountDownLatch latch, final long sleepTime, final long timeout) {
+      this.latch = latch;
+      this.sleepTime = sleepTime;
+      this.timeout = timeout;
+    }
+
+    @Override
+    public void run() {
+      final long ts = System.currentTimeMillis();
+      try {
+        Thread.sleep(sleepTime);
+        final long runTime = System.currentTimeMillis() - ts;
+        assertTrue("timeout (" + timeout + ") >= " + "sleepTime (" + sleepTime + ")", timeout >= sleepTime);
+        assertEquals(sleepTime + " ~ " + runTime, sleepTime, runTime, 10);
+      }
+      catch (final InterruptedException e) {
+        final long runTime = System.currentTimeMillis() - ts;
+        assertTrue("timeout (" + timeout + ") <= " + "sleepTime (" + sleepTime + ")", timeout <= sleepTime);
+        assertEquals(timeout + " ~ " + runTime, timeout, runTime, 10);
+      }
+      finally {
+        latch.countDown();
+      }
+    }
+  }
+
+  private static final Random r = new Random();
+  private static final int numTests = 1000;
+
+  public static Runnable newRandomRunnable(final CountDownLatch latch) {
+    final long sleepTime = 100 + r.nextInt(900);
+    final long delta = 50 + r.nextInt(50);
+    final long timeout = r.nextBoolean() ? sleepTime - delta : sleepTime + delta;
+    return newRunnable(latch, sleepTime, timeout);
+  }
+
+  public static Runnable newRunnable(final CountDownLatch latch, final long sleep, final long timeout) {
+    return Threads.interruptAfterTimeout(new Task(latch, sleep, timeout), timeout, TimeUnit.MILLISECONDS);
+  }
+
+  @Test
+  public void testInterruptAfterTimeout() throws InterruptedException {
+    final CountDownLatch latch = new CountDownLatch(numTests);
+    for (int i = 0; i < numTests; ++i)
+      new Thread(newRandomRunnable(latch)).start();
+
+    latch.await();
   }
 }
