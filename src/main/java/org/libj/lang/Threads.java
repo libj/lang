@@ -264,6 +264,18 @@ public final class Threads {
     };
   }
 
+  /**
+   * Checks the interrupted flag of the current thread.
+   *
+   * @implNote If the current thread's interrupt flag is set, this method clears
+   *           the flag before throwing an {@link InterruptedException}.
+   * @throws InterruptedException If the current thread's interrupt flag is set.
+   */
+  public static void checkInterrupted() throws InterruptedException {
+    if (Thread.interrupted())
+      throw new InterruptedException();
+  }
+
   private Threads() {
   }
 }
