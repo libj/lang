@@ -35,13 +35,42 @@ public final class Assertions {
    *
    * @param <T> The type of the reference.
    * @param obj The object reference to check for nullity.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message The detail message to be used for the
+   *          {@link IllegalArgumentException}.
    * @return {@code obj} if not {@code null}.
    * @throws IllegalArgumentException If {@code obj} is {@code null}
    */
   public static <T>T assertNotNull(final T obj, final String message) {
     if (obj == null)
       throw new IllegalArgumentException(message);
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified object reference is not {@code null}. This method
+   * is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(Bar bar) {
+   *   this.bar = Arguments.assertNonNull(bar);
+   * }
+   * </pre>
+   *
+   * @param <T> The type of the reference.
+   * @param obj The object reference to check for nullity.
+   * @param format The detail message <a href=
+   *          "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format
+   *          string to be passed to {@link String#format(String,Object...)}.
+   * @return {@code obj} if not {@code null}.
+   * @throws IllegalArgumentException If {@code obj} is {@code null}
+   */
+  public static <T>T assertNotNull(final T obj, final String format, final Object ... args) {
+    if (obj == null)
+      throw new IllegalArgumentException(String.format(format, args));
 
     return obj;
   }
@@ -88,6 +117,35 @@ public final class Assertions {
     assertNotNull(obj, message);
     if (obj.length == 0)
       throw new IllegalArgumentException(message);
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified array is not null nor empty. This method is
+   * designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(Bar ... bars) {
+   *   this.bar = Arguments.assertNonEmpty(bars);
+   * }
+   * </pre>
+   *
+   * @param <T> The type of the reference.
+   * @param obj The array to check for nullity or emptiness.
+   * @param format The detail message <a href=
+   *          "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format
+   *          string to be passed to {@link String#format(String,Object...)}.
+   * @return {@code obj} if not {@code null} or empty.
+   * @throws IllegalArgumentException If {@code obj} is {@code null} or empty.
+   */
+  public static <T>T[] assertNotEmpty(final T[] obj, final String format, final Object ... args) {
+    assertNotNull(obj, format);
+    if (obj.length == 0)
+      throw new IllegalArgumentException(String.format(format, args));
 
     return obj;
   }
@@ -155,6 +213,34 @@ public final class Assertions {
    *
    * @param <T> The type of the reference.
    * @param obj The collection to check for nullity or emptiness.
+   * @param format The detail message <a href=
+   *          "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format
+   *          string to be passed to {@link String#format(String,Object...)}.
+   * @return {@code obj} if not {@code null} or empty.
+   * @throws IllegalArgumentException If {@code obj} is {@code null} or empty.
+   */
+  public static <T>Collection<T> assertNotEmpty(final Collection<T> obj, final String format, final Object ... args) {
+    if (assertNotNull(obj, format).size() == 0)
+      throw new IllegalArgumentException(String.format(format, args));
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified collection is not null nor empty. This method is
+   * designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(Bar ... bars) {
+   *   this.bar = Arguments.assertNonEmpty(bars);
+   * }
+   * </pre>
+   *
+   * @param <T> The type of the reference.
+   * @param obj The collection to check for nullity or emptiness.
    * @return {@code obj} if not {@code null} or empty.
    * @throws IllegalArgumentException If {@code obj} is {@code null} or empty.
    */
@@ -186,6 +272,33 @@ public final class Assertions {
   public static byte assertPositive(final byte value, final String message) {
     if (value <= 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is positive. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(byte bar) {
+   *   this.bar = Arguments.assertPositive(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as positive.
+   * @param format The detail message <a href=
+   *          "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format
+   *          string to be passed to {@link String#format(String,Object...)}.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not positive.
+   */
+  public static byte assertPositive(final byte value, final String format, final Object ... args) {
+    if (value <= 0)
+      throw new IllegalArgumentException(String.format(format, args));
 
     return value;
   }
@@ -248,6 +361,33 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as positive.
+   * @param format The detail message <a href=
+   *          "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format
+   *          string to be passed to {@link String#format(String,Object...)}.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not positive.
+   */
+  public static short assertPositive(final short value, final String format, final Object ... args) {
+    if (value <= 0)
+      throw new IllegalArgumentException(String.format(format, args));
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is positive. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(short bar) {
+   *   this.bar = Arguments.assertPositive(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as positive.
    * @return {@code value} if positive.
    * @throws IllegalArgumentException If {@code value} is not positive.
    */
@@ -278,6 +418,33 @@ public final class Assertions {
   public static int assertPositive(final int value, final String message) {
     if (value <= 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is positive. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(int bar) {
+   *   this.bar = Arguments.assertPositive(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as positive.
+   * @param format The detail message <a href=
+   *          "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format
+   *          string to be passed to {@link String#format(String,Object...)}.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not positive.
+   */
+  public static int assertPositive(final int value, final String format, final Object ... args) {
+    if (value <= 0)
+      throw new IllegalArgumentException(String.format(format, args));
 
     return value;
   }
@@ -340,6 +507,33 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as positive.
+   * @param format The detail message <a href=
+   *          "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format
+   *          string to be passed to {@link String#format(String,Object...)}.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not positive.
+   */
+  public static long assertPositive(final long value, final String format, final Object ... args) {
+    if (value <= 0)
+      throw new IllegalArgumentException(String.format(format, args));
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is positive. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(long bar) {
+   *   this.bar = Arguments.assertPositive(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as positive.
    * @return {@code value} if positive.
    * @throws IllegalArgumentException If {@code value} is not positive.
    */
@@ -370,6 +564,33 @@ public final class Assertions {
   public static float assertPositive(final float value, final String message) {
     if (value <= 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is positive. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(float bar) {
+   *   this.bar = Arguments.assertPositive(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as positive.
+   * @param format The detail message <a href=
+   *          "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format
+   *          string to be passed to {@link String#format(String,Object...)}.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not positive.
+   */
+  public static float assertPositive(final float value, final String format, final Object ... args) {
+    if (value <= 0)
+      throw new IllegalArgumentException(String.format(format, args));
 
     return value;
   }
@@ -432,6 +653,33 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as positive.
+   * @param format The detail message <a href=
+   *          "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format
+   *          string to be passed to {@link String#format(String,Object...)}.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not positive.
+   */
+  public static double assertPositive(final double value, final String format, final Object ... args) {
+    if (value <= 0)
+      throw new IllegalArgumentException(String.format(format, args));
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is positive. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(double bar) {
+   *   this.bar = Arguments.assertPositive(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as positive.
    * @return {@code value} if positive.
    * @throws IllegalArgumentException If {@code value} is not positive.
    */
@@ -462,6 +710,33 @@ public final class Assertions {
   public static byte assertNotNegative(final byte value, final String message) {
     if (value < 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not negative. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(byte bar) {
+   *   this.bar = Arguments.assertNotNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not negative.
+   * @param format The detail message <a href=
+   *          "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format
+   *          string to be passed to {@link String#format(String,Object...)}.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is negative.
+   */
+  public static byte assertNotNegative(final byte value, final String format, final Object ... args) {
+    if (value < 0)
+      throw new IllegalArgumentException(String.format(format, args));
 
     return value;
   }
@@ -524,6 +799,33 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as not negative.
+   * @param format The detail message <a href=
+   *          "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format
+   *          string to be passed to {@link String#format(String,Object...)}.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is negative.
+   */
+  public static short assertNotNegative(final short value, final String format, final Object ... args) {
+    if (value < 0)
+      throw new IllegalArgumentException(String.format(format, args));
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not negative. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(short bar) {
+   *   this.bar = Arguments.assertNotNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not negative.
    * @return {@code value} if not negative.
    * @throws IllegalArgumentException If {@code value} is negative.
    */
@@ -554,6 +856,33 @@ public final class Assertions {
   public static int assertNotNegative(final int value, final String message) {
     if (value < 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not negative. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(int bar) {
+   *   this.bar = Arguments.assertNotNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not negative.
+   * @param format The detail message <a href=
+   *          "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format
+   *          string to be passed to {@link String#format(String,Object...)}.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is negative.
+   */
+  public static int assertNotNegative(final int value, final String format, final Object ... args) {
+    if (value < 0)
+      throw new IllegalArgumentException(String.format(format, args));
 
     return value;
   }
@@ -616,6 +945,33 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as not negative.
+   * @param format The detail message <a href=
+   *          "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format
+   *          string to be passed to {@link String#format(String,Object...)}.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is negative.
+   */
+  public static long assertNotNegative(final long value, final String format, final Object ... args) {
+    if (value < 0)
+      throw new IllegalArgumentException(String.format(format, args));
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not negative. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(long bar) {
+   *   this.bar = Arguments.assertNotNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not negative.
    * @return {@code value} if not negative.
    * @throws IllegalArgumentException If {@code value} is negative.
    */
@@ -662,6 +1018,33 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as not negative.
+   * @param format The detail message <a href=
+   *          "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format
+   *          string to be passed to {@link String#format(String,Object...)}.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is negative.
+   */
+  public static float assertNotNegative(final float value, final String format, final Object ... args) {
+    if (value < 0)
+      throw new IllegalArgumentException(String.format(format, args));
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not negative. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(float bar) {
+   *   this.bar = Arguments.assertNotNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not negative.
    * @return {@code value} if not negative.
    * @throws IllegalArgumentException If {@code value} is negative.
    */
@@ -692,6 +1075,33 @@ public final class Assertions {
   public static double assertNotNegative(final double value, final String message) {
     if (value < 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not negative. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(double bar) {
+   *   this.bar = Arguments.assertNotNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not negative.
+   * @param format The detail message <a href=
+   *          "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format
+   *          string to be passed to {@link String#format(String,Object...)}.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is negative.
+   */
+  public static double assertNotNegative(final double value, final String format, final Object ... args) {
+    if (value < 0)
+      throw new IllegalArgumentException(String.format(format, args));
 
     return value;
   }
