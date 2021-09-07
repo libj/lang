@@ -264,6 +264,28 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as positive.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not positive.
+   */
+  public static byte assertPositive(final byte value) {
+    if (value <= 0)
+      throw new IllegalArgumentException(value + " is not positive");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is positive. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as
+   * demonstrated below:
+   *
+   * <pre>
+   * public Foo(byte bar) {
+   *   this.bar = Arguments.assertPositive(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as positive.
    * @param message The detail message to be used for the
    *          {@link IllegalArgumentException}.
    * @return {@code value} if positive.
@@ -309,7 +331,7 @@ public final class Assertions {
    * demonstrated below:
    *
    * <pre>
-   * public Foo(byte bar) {
+   * public Foo(short bar) {
    *   this.bar = Arguments.assertPositive(bar);
    * }
    * </pre>
@@ -318,7 +340,7 @@ public final class Assertions {
    * @return {@code value} if positive.
    * @throws IllegalArgumentException If {@code value} is not positive.
    */
-  public static byte assertPositive(final byte value) {
+  public static short assertPositive(final short value) {
     if (value <= 0)
       throw new IllegalArgumentException(value + " is not positive");
 
@@ -382,7 +404,7 @@ public final class Assertions {
    * demonstrated below:
    *
    * <pre>
-   * public Foo(short bar) {
+   * public Foo(int bar) {
    *   this.bar = Arguments.assertPositive(bar);
    * }
    * </pre>
@@ -391,7 +413,7 @@ public final class Assertions {
    * @return {@code value} if positive.
    * @throws IllegalArgumentException If {@code value} is not positive.
    */
-  public static short assertPositive(final short value) {
+  public static int assertPositive(final int value) {
     if (value <= 0)
       throw new IllegalArgumentException(value + " is not positive");
 
@@ -455,7 +477,7 @@ public final class Assertions {
    * demonstrated below:
    *
    * <pre>
-   * public Foo(int bar) {
+   * public Foo(long bar) {
    *   this.bar = Arguments.assertPositive(bar);
    * }
    * </pre>
@@ -464,7 +486,7 @@ public final class Assertions {
    * @return {@code value} if positive.
    * @throws IllegalArgumentException If {@code value} is not positive.
    */
-  public static int assertPositive(final int value) {
+  public static long assertPositive(final long value) {
     if (value <= 0)
       throw new IllegalArgumentException(value + " is not positive");
 
@@ -528,7 +550,7 @@ public final class Assertions {
    * demonstrated below:
    *
    * <pre>
-   * public Foo(long bar) {
+   * public Foo(float bar) {
    *   this.bar = Arguments.assertPositive(bar);
    * }
    * </pre>
@@ -537,7 +559,7 @@ public final class Assertions {
    * @return {@code value} if positive.
    * @throws IllegalArgumentException If {@code value} is not positive.
    */
-  public static long assertPositive(final long value) {
+  public static float assertPositive(final float value) {
     if (value <= 0)
       throw new IllegalArgumentException(value + " is not positive");
 
@@ -601,7 +623,7 @@ public final class Assertions {
    * demonstrated below:
    *
    * <pre>
-   * public Foo(float bar) {
+   * public Foo(double bar) {
    *   this.bar = Arguments.assertPositive(bar);
    * }
    * </pre>
@@ -610,7 +632,7 @@ public final class Assertions {
    * @return {@code value} if positive.
    * @throws IllegalArgumentException If {@code value} is not positive.
    */
-  public static float assertPositive(final float value) {
+  public static double assertPositive(final double value) {
     if (value <= 0)
       throw new IllegalArgumentException(value + " is not positive");
 
@@ -664,28 +686,6 @@ public final class Assertions {
   public static double assertPositive(final double value, final String format, final Object ... args) {
     if (value <= 0)
       throw new IllegalArgumentException(String.format(format, args));
-
-    return value;
-  }
-
-  /**
-   * Checks that the provided value is positive. This method is designed
-   * primarily for doing parameter validation in methods and constructors, as
-   * demonstrated below:
-   *
-   * <pre>
-   * public Foo(double bar) {
-   *   this.bar = Arguments.assertPositive(bar);
-   * }
-   * </pre>
-   *
-   * @param value The value to assert as positive.
-   * @return {@code value} if positive.
-   * @throws IllegalArgumentException If {@code value} is not positive.
-   */
-  public static double assertPositive(final double value) {
-    if (value <= 0)
-      throw new IllegalArgumentException(value + " is not positive");
 
     return value;
   }
