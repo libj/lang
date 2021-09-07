@@ -39,11 +39,10 @@ public final class Enumerations {
   /**
    * Returns an array of type {@code <T>} containing the object references in
    * the provided {@link Enumeration}.
-   * <p>
-   * <b>Note:</b> This implementation uses a recursive algorithm for optimal
-   * performance, and may fail if the provided {@link Enumeration} contains
-   * ~8000+ elements.
    *
+   * @implNote This implementation uses a recursive algorithm for optimal
+   *           performance, and may fail if the provided {@link Enumeration}
+   *           contains ~8000+ elements.
    * @param <T> The type parameter of the provided {@link Class} and
    *          {@link Enumeration}.
    * @param componentType The class for the type {@code <T>}.
@@ -58,11 +57,10 @@ public final class Enumerations {
   /**
    * Returns an array of type {@code <T>} containing the object references in
    * the provided {@link Enumeration}.
-   * <p>
-   * <b>Note:</b> This implementation uses a recursive algorithm for optimal
-   * performance, and may fail if the provided {@link Enumeration} contains
-   * ~8000+ elements.
    *
+   * @implNote This implementation uses a recursive algorithm for optimal
+   *           performance, and may fail if the provided {@link Enumeration}
+   *           contains ~8000+ elements.
    * @param <T> The type parameter of the provided {@link Class} and
    *          {@link Enumeration}.
    * @param componentType The class for the type {@code <T>}.
@@ -81,11 +79,10 @@ public final class Enumerations {
   /**
    * Returns a {@link List} of type {@code <T>} containing the object references
    * in the specified {@link Enumeration}.
-   * <p>
-   * <b>Note:</b> This implementation uses a recursive algorithm for optimal
-   * performance, and may fail if the specified {@link Enumeration} contains
-   * ~8000+ elements.
    *
+   * @implNote This implementation uses a recursive algorithm for optimal
+   *           performance, and may fail if the provided {@link Enumeration}
+   *           contains ~8000+ elements.
    * @param <T> The type parameter of the specified {@link Class} and
    *          {@link Enumeration}.
    * @param componentType The class for the type {@code <T>}.

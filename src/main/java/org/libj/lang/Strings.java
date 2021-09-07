@@ -1851,11 +1851,10 @@ public final class Strings {
    * of scope, whereby "scope" is defined by a matching {@code open}
    * {@code char} followed by a {@code close} {@code char}, within which space
    * no other unmatched {@code open} or {@code close} {@code char} can exist.
-   * <p>
-   * <b>Note:</b> The leading {@code open} {@code char} corresponding to the
-   * ending {@code close} {@code char} that is sought is expected to not be
-   * present, or is on an index that is less than {@code fromIndex}.
    *
+   * @implNote The leading {@code open} {@code char} corresponding to the ending
+   *           {@code close} {@code char} that is sought is expected to not be
+   *           present, or is on an index that is less than {@code fromIndex}.
    * @param str The string.
    * @param open The {@code char} indicating a scope open.
    * @param close The {@code char} indicating a scope close.
@@ -1898,11 +1897,10 @@ public final class Strings {
    * of scope, whereby "scope" is defined by a matching {@code open}
    * {@code char} followed by a {@code close} {@code char}, within which space
    * no other unmatched {@code open} or {@code close} {@code char} can exist.
-   * <p>
-   * <b>Note:</b> The leading {@code open} {@code char} corresponding to the
-   * ending {@code close} {@code char} that is sought is expected to not be
-   * present.
    *
+   * @implNote The leading {@code open} {@code char} corresponding to the ending
+   *           {@code close} {@code char} that is sought is expected to not be
+   *           present.
    * @param str The string.
    * @param open The {@code char} indicating a scope open.
    * @param close The {@code char} indicating a scope close.

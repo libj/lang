@@ -50,11 +50,10 @@ public final class Enums {
    * <p>
    * All names that do not match a constant in the specified enum class are
    * omitted in the returned array.
-   * <p>
-   * <b>Note:</b> This implementation uses a recursive algorithm for optimal
-   * performance, and may fail if the provided {@code names} contains ~8000+
-   * elements.
    *
+   * @implNote This implementation uses a recursive algorithm for optimal
+   *           performance, and may fail if the provided {@code names} contains
+   *           ~8000+ elements.
    * @param <T> The type parameter of the specified {@link Enum}.
    * @param type The class for the type {@code <T>}.
    * @param names The string array of names on which to apply
@@ -77,11 +76,10 @@ public final class Enums {
    * <p>
    * All names that do not match a constant in the specified enum class are
    * omitted in the returned array.
-   * <p>
-   * <b>Note:</b> This implementation uses a recursive algorithm for optimal
-   * performance, and may fail if the provided {@code names} contains ~8000+
-   * elements.
    *
+   * @implNote This implementation uses a recursive algorithm for optimal
+   *           performance, and may fail if the provided {@code names} contains
+   *           ~8000+ elements.
    * @param <T> The type parameter of the specified {@link Enum}.
    * @param type The class for the type {@code <T>}.
    * @param names The {@link List} of names on which to apply

@@ -46,13 +46,12 @@ public final class WrapperProxy {
    * The type of the returned {@linkplain Proxy proxy} will be the composition
    * of all super-interfaces of the runtime type of the specified {@code obj}
    * instance.
-   * <p>
-   * <b>Note:</b> The runtime type of the returned instance will <i>not be</i>
-   * of a concrete class, but rather a composition of all super-interfaces of
-   * the concrete class {@code <T>}. It is therefore not possible to cast the
-   * instance returned by this method to a concrete class, but rather any
-   * super-interface of the concrete class.
    *
+   * @implNote The runtime type of the returned instance will <i>not be</i> of a
+   *           concrete class, but rather a composition of all super-interfaces
+   *           of the concrete class {@code <T>}. It is therefore not possible
+   *           to cast the instance returned by this method to a concrete class,
+   *           but rather any super-interface of the concrete class.
    * @param <T> The type parameter of the specified arguments.
    * @param obj The target object instance to wrap.
    * @param wrapper The wrapping object.

@@ -39,10 +39,6 @@ public final class Characters {
 
   /**
    * Returns the escaped representation of the specified character.
-   * <p>
-   * <b>Note:</b> This method only supports single-character escape sequences,
-   * and therefore does not handle 2-digit or 3-digit octal escape sequences, or
-   * 4-hex-digit unicode sequences.
    * <blockquote>
    * <table>
    * <caption>Escape Sequences</caption>
@@ -66,6 +62,9 @@ public final class Characters {
    * </table>
    * </blockquote>
    *
+   * @implSpec This method only supports single-character escape sequences, and
+   *           therefore does not handle 2-digit or 3-digit octal escape
+   *           sequences, or 4-hex-digit unicode sequences.
    * @param ch The character to escape.
    * @return The escaped character.
    * @throws IllegalArgumentException If the specified character is not escapable.
@@ -83,10 +82,6 @@ public final class Characters {
 
   /**
    * Tests whether the specified character is escapable.
-   * <p>
-   * <b>Note:</b> This method only supports single-character escape sequences,
-   * and therefore does not handle 2-digit or 3-digit octal escape sequences, or
-   * 4-hex-digit unicode sequences.
    * <blockquote>
    * <table>
    * <caption>Escape Sequences</caption>
@@ -110,6 +105,9 @@ public final class Characters {
    * </table>
    * </blockquote>
    *
+   * @implSpec This method only supports single-character escape sequences, and
+   *           therefore does not handle 2-digit or 3-digit octal escape
+   *           sequences, or 4-hex-digit unicode sequences.
    * @param ch The character to test.
    * @return {@code true} if the specified character is escapable.
    * @see <a href=

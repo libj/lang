@@ -1216,12 +1216,11 @@ public final class Classes {
    * {@code "<init>"} or {@code "<clinit>"} this method returns {@code null}. If
    * this Class object represents an array type, then this method does not find
    * the {@code clone()} method.
-   * <p>
-   * This method differentiates itself from
-   * {@link Class#getDeclaredMethod(String,Class...)} by returning {@code null}
-   * when a method is not found, instead of throwing
-   * {@link NoSuchMethodException}.
    *
+   * @implNote This method differentiates itself from
+   *           {@link Class#getDeclaredMethod(String,Class...)} by returning
+   *           {@code null} when a method is not found, instead of throwing
+   *           {@link NoSuchMethodException}.
    * @param cls The class in which to find the declared method.
    * @param name The simple name of the method.
    * @param parameterTypes The parameter array.
@@ -1406,11 +1405,11 @@ public final class Classes {
   /**
    * Returns the annotation for the specified {@code annotationClass} on the
    * provided class if such an annotation is <i>present</i>, else null.
-   * <p>
-   * <b>Note:</b> This method differentiates itself from
-   * {@link Class#getAnnotation(Class)} by continuing to look at each superclass
-   * of the provided class if the specified annotation cannot be found.
    *
+   * @implNote This method differentiates itself from
+   *           {@link Class#getAnnotation(Class)} by continuing to look at each
+   *           superclass of the provided class if the specified annotation
+   *           cannot be found.
    * @param <A> The type of the annotation to query for and return if present.
    * @param cls The {@link Class} on which to look for the specified annotation
    *          type.
@@ -1444,10 +1443,7 @@ public final class Classes {
    * <p>
    * The body of the default method is specified to be the code above.
    * <p>
-   * <b>Note:</b> This method differentiates itself from
-   * {@link Class#isAnnotationPresent(Class)} by continuing to look at each
-   * superclass of the provided class if the specified annotation cannot be
-   * found.
+   *
    *
    * @param cls The {@link Class} on which to look for the specified annotation
    *          type.
@@ -1455,7 +1451,8 @@ public final class Classes {
    *          annotation type.
    * @return {@code true} if an annotation for the specified annotation type is
    *         present on this element, else {@code false}.
-   * @throws IllegalArgumentException If {@code cls} or {@code annotationClass} is null.
+   * @throws IllegalArgumentException If {@code cls} or {@code annotationClass}
+   *           is null.
    */
   public static boolean isAnnotationPresentDeep(final Class<?> cls, final Class<? extends Annotation> annotationClass) {
     Class<?> parent = Assertions.assertNotNull(cls);
