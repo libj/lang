@@ -305,8 +305,8 @@ public class PackageLoader {
    */
   public Set<Class<?>> loadPackage(final String name, final boolean includeSubPackages, final boolean initialize) throws IOException, PackageNotFoundException {
     final Set<Class<?>> classes = new HashSet<>();
-    loadPackage(name, includeSubPackages, initialize, t -> {
-      classes.add(t);
+    loadPackage(name, includeSubPackages, initialize, (final Class<?> cls) -> {
+      classes.add(cls);
       return true;
     }, classLoader);
     return classes;
@@ -319,27 +319,24 @@ public class PackageLoader {
     if (!resources.hasMoreElements())
       throw new PackageNotFoundException(packageName.length() > 0 ? packageName : "<default>");
 
-    Resources.traverse(resources, resourceName, includeSubPackages, new Resources.ForEachEntry() {
-      @Override
-      public boolean test(final URL root, final String path, final boolean isDirectory) {
-        if (isDirectory || !path.endsWith(".class"))
-          return true;
-
-        try {
-          final String className = path.substring(0, path.length() - 6).replace('/', '.');
-          final Class<?> cls = Class.forName(className, initialize, loader);
-          if (predicate != null && predicate.test(cls))
-            Class.forName(className, true, loader);
-        }
-        catch (final ClassNotFoundException | VerifyError e) {
-          if (logger.isTraceEnabled())
-            logger.trace("Problem loading package: " + (packageName.length() > 0 ? packageName : "<default>"), e);
-        }
-        catch (final NoClassDefFoundError ignored) {
-        }
-
+    Resources.traverse(resources, resourceName, includeSubPackages, (final URL root, final String path, final boolean isDirectory) -> {
+      if (isDirectory || !path.endsWith(".class"))
         return true;
+
+      try {
+        final String className = path.substring(0, path.length() - 6).replace('/', '.');
+        final Class<?> cls = Class.forName(className, initialize, loader);
+        if (predicate != null && predicate.test(cls))
+          Class.forName(className, true, loader);
       }
+      catch (final ClassNotFoundException | VerifyError e) {
+        if (logger.isTraceEnabled())
+          logger.trace("Problem loading package: " + (packageName.length() > 0 ? packageName : "<default>"), e);
+      }
+      catch (final NoClassDefFoundError ignored) {
+      }
+
+      return true;
     });
   }
 }

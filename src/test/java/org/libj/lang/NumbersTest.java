@@ -80,7 +80,7 @@ public class NumbersTest {
     }
   }
 
-  public static class CompoundTest {
+  public static class CompositeTest {
     private static final Random random = new Random();
 
     private static byte randomByte() {
@@ -135,9 +135,9 @@ public class NumbersTest {
     public void testLongOfInts() {
       for (int i = 0; i < 10000; ++i) {
         final int[] expected = randomInts(2);
-        final long encoded = Numbers.Compound.encode(expected[0], expected[1]);
+        final long encoded = Numbers.Composite.encode(expected[0], expected[1]);
         for (int j = 0; j < expected.length; ++j)
-          assertEquals("Index: " + j + ", Value: " + expected[j], expected[j], Numbers.Compound.decodeInt(encoded, j));
+          assertEquals("Index: " + j + ", Value: " + expected[j], expected[j], Numbers.Composite.decodeInt(encoded, j));
       }
     }
 
@@ -145,11 +145,11 @@ public class NumbersTest {
     public void testLongOfShorts() {
       for (int i = 0; i < 10000; ++i) {
         final short[] expected = randomShorts(4);
-        final long encoded1 = Numbers.Compound.encode(expected[0], expected[1], expected[2], expected[3]);
-        final long encoded2 = Numbers.Compound.encode(Numbers.Compound.encode(expected[0], expected[1]), Numbers.Compound.encode(expected[2], expected[3]));
+        final long encoded1 = Numbers.Composite.encode(expected[0], expected[1], expected[2], expected[3]);
+        final long encoded2 = Numbers.Composite.encode(Numbers.Composite.encode(expected[0], expected[1]), Numbers.Composite.encode(expected[2], expected[3]));
         assertEquals(encoded1, encoded2);
         for (int j = 0; j < expected.length; ++j)
-          assertEquals("Index: " + j + ", Value: " + expected[j], expected[j], Numbers.Compound.decodeShort(encoded1, j));
+          assertEquals("Index: " + j + ", Value: " + expected[j], expected[j], Numbers.Composite.decodeShort(encoded1, j));
       }
     }
 
@@ -157,13 +157,13 @@ public class NumbersTest {
     public void testLongOfBytes() {
       for (int i = 0; i < 10000; ++i) {
         final byte[] expected = randomBytes(8);
-        final long encoded1 = Numbers.Compound.encode(expected[0], expected[1], expected[2], expected[3], expected[4], expected[5], expected[6], expected[7]);
-        final long encoded2 = Numbers.Compound.encode(Numbers.Compound.encode(expected[0], expected[1], expected[2], expected[3]), Numbers.Compound.encode(expected[4], expected[5], expected[6], expected[7]));
-        final long encoded3 = Numbers.Compound.encode(Numbers.Compound.encode(expected[0], expected[1]), Numbers.Compound.encode(expected[2], expected[3]), Numbers.Compound.encode(expected[4], expected[5]), Numbers.Compound.encode(expected[6], expected[7]));
+        final long encoded1 = Numbers.Composite.encode(expected[0], expected[1], expected[2], expected[3], expected[4], expected[5], expected[6], expected[7]);
+        final long encoded2 = Numbers.Composite.encode(Numbers.Composite.encode(expected[0], expected[1], expected[2], expected[3]), Numbers.Composite.encode(expected[4], expected[5], expected[6], expected[7]));
+        final long encoded3 = Numbers.Composite.encode(Numbers.Composite.encode(expected[0], expected[1]), Numbers.Composite.encode(expected[2], expected[3]), Numbers.Composite.encode(expected[4], expected[5]), Numbers.Composite.encode(expected[6], expected[7]));
         assertEquals(encoded1, encoded2);
         assertEquals(encoded2, encoded3);
         for (int j = 0; j < expected.length; ++j)
-          assertEquals("Index: " + j + ", Value: " + expected[j], expected[j], Numbers.Compound.decodeByte(encoded1, j));
+          assertEquals("Index: " + j + ", Value: " + expected[j], expected[j], Numbers.Composite.decodeByte(encoded1, j));
       }
     }
 
@@ -172,9 +172,9 @@ public class NumbersTest {
       for (int i = 0; i < 10000; ++i) {
         final int expectedInt = randomInt();
         final float expectedFloat = randomFloat();
-        final long encoded = Numbers.Compound.encode(expectedInt, expectedFloat);
-        assertEquals("Index: 0, Value: " + expectedInt, expectedInt, Numbers.Compound.decodeInt(encoded, 0));
-        assertEquals("Index: 1, Value: " + expectedFloat, expectedFloat, Numbers.Compound.decodeFloat(encoded, 1), epsilon);
+        final long encoded = Numbers.Composite.encode(expectedInt, expectedFloat);
+        assertEquals("Index: 0, Value: " + expectedInt, expectedInt, Numbers.Composite.decodeInt(encoded, 0));
+        assertEquals("Index: 1, Value: " + expectedFloat, expectedFloat, Numbers.Composite.decodeFloat(encoded, 1), epsilon);
       }
     }
 
@@ -182,9 +182,9 @@ public class NumbersTest {
     public void testLongOfFloats() {
       for (int i = 0; i < 10000; ++i) {
         final float[] expected = randomFloats(2);
-        final long encoded = Numbers.Compound.encode(expected[0], expected[1]);
+        final long encoded = Numbers.Composite.encode(expected[0], expected[1]);
         for (int j = 0; j < expected.length; ++j)
-          assertEquals("Index: " + j + ", Value: " + expected[j], expected[j], Numbers.Compound.decodeFloat(encoded, j), epsilon);
+          assertEquals("Index: " + j + ", Value: " + expected[j], expected[j], Numbers.Composite.decodeFloat(encoded, j), epsilon);
       }
     }
 
@@ -193,9 +193,9 @@ public class NumbersTest {
       for (int i = 0; i < 10000; ++i) {
         final float expectedFloat = randomFloat();
         final int expectedInt = randomInt();
-        final long encoded = Numbers.Compound.encode(expectedFloat, expectedInt);
-        assertEquals("Index: 0, Value: " + expectedFloat, expectedFloat, Numbers.Compound.decodeFloat(encoded, 0), epsilon);
-        assertEquals("Index: 1, Value: " + expectedInt, expectedInt, Numbers.Compound.decodeInt(encoded, 1));
+        final long encoded = Numbers.Composite.encode(expectedFloat, expectedInt);
+        assertEquals("Index: 0, Value: " + expectedFloat, expectedFloat, Numbers.Composite.decodeFloat(encoded, 0), epsilon);
+        assertEquals("Index: 1, Value: " + expectedInt, expectedInt, Numbers.Composite.decodeInt(encoded, 1));
       }
     }
 
@@ -203,9 +203,9 @@ public class NumbersTest {
     public void testIntOfShorts() {
       for (int i = 0; i < 10000; ++i) {
         final short[] expected = randomShorts(2);
-        final int encoded = Numbers.Compound.encode(expected[0], expected[1]);
+        final int encoded = Numbers.Composite.encode(expected[0], expected[1]);
         for (int j = 0; j < expected.length; ++j)
-          assertEquals("Index: " + j + ", Value: " + expected[j], expected[j], Numbers.Compound.decodeShort(encoded, j));
+          assertEquals("Index: " + j + ", Value: " + expected[j], expected[j], Numbers.Composite.decodeShort(encoded, j));
       }
     }
 
@@ -213,9 +213,9 @@ public class NumbersTest {
     public void testIntOfBytes() {
       for (int i = 0; i < 10000; ++i) {
         final byte[] expected = randomBytes(4);
-        final int encoded = Numbers.Compound.encode(expected[0], expected[1], expected[2], expected[3]);
+        final int encoded = Numbers.Composite.encode(expected[0], expected[1], expected[2], expected[3]);
         for (int j = 0; j < expected.length; ++j)
-          assertEquals("Index: " + j + ", Value: " + expected[j], expected[j], Numbers.Compound.decodeByte(encoded, j));
+          assertEquals("Index: " + j + ", Value: " + expected[j], expected[j], Numbers.Composite.decodeByte(encoded, j));
       }
     }
 
@@ -223,9 +223,9 @@ public class NumbersTest {
     public void testShortOfBytes() {
       for (int i = 0; i < 10000; ++i) {
         final byte[] expected = randomBytes(2);
-        final short encoded = Numbers.Compound.encode(expected[0], expected[1]);
+        final short encoded = Numbers.Composite.encode(expected[0], expected[1]);
         for (int j = 0; j < expected.length; ++j)
-          assertEquals("Index: " + j + ", Value: " + expected[j], expected[j], Numbers.Compound.decodeByte(encoded, j));
+          assertEquals("Index: " + j + ", Value: " + expected[j], expected[j], Numbers.Composite.decodeByte(encoded, j));
       }
     }
   }

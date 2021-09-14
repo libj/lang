@@ -203,27 +203,27 @@ public class ClassesTest {
   }
 
   @Test
-  public void testGetCompoundName() {
+  public void testGetCompositeName() {
     try {
-      Classes.getCompoundName(null);
+      Classes.getCompositeName(null);
       fail("Expected IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {
     }
 
-    assertEquals("Map$Entry", Classes.getCompoundName(Map.Entry.class));
+    assertEquals("Map$Entry", Classes.getCompositeName(Map.Entry.class));
   }
 
   @Test
-  public void testGetCanonicalCompoundName() {
+  public void testGetCanonicalCompositeName() {
     try {
-      Classes.getCompoundName(null);
+      Classes.getCompositeName(null);
       fail("Expected IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {
     }
 
-    assertEquals("Map.Entry", Classes.getCanonicalCompoundName(Map.Entry.class));
+    assertEquals("Map.Entry", Classes.getCanonicalCompositeName(Map.Entry.class));
   }
 
   @SuppressWarnings("rawtypes")

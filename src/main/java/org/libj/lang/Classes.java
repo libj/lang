@@ -195,52 +195,53 @@ public final class Classes {
   }
 
   /**
-   * Returns the "Compound Name" of the class or interface represented by
+   * Returns the "Composite Name" of the class or interface represented by
    * {@code cls}.
    * <p>
-   * The "Compound Name" is the fully qualified name of a class
+   * The "Composite Name" is the fully qualified name of a class
    * ({@link Class#getName()} with its package name
    * ({@link Class#getPackage()}.getName()) removed.
    * <p>
    * For example:
    * <ol>
-   * <li>The "Compound Name" of {@code java.lang.String} is {@link String}.</li>
-   * <li>The "Compound Name" of {@code java.lang.Map.Entry} is
+   * <li>The "Composite Name" of {@code java.lang.String} is
+   * {@link String}.</li>
+   * <li>The "Composite Name" of {@code java.lang.Map.Entry} is
    * {@code Map$Entry}.</li>
    * </ol>
    *
    * @param cls The class or interface.
-   * @return The "Compound Name" of the class or interface represented by
+   * @return The "Composite Name" of the class or interface represented by
    *         {@code cls}.
    * @throws IllegalArgumentException If {@code cls} is null.
    */
-  public static String getCompoundName(final Class<?> cls) {
+  public static String getCompositeName(final Class<?> cls) {
     final String pkg = Assertions.assertNotNull(cls).getPackage().getName();
     return pkg.length() == 0 ? cls.getName() : cls.getName().substring(pkg.length() + 1);
   }
 
   /**
-   * Returns the canonical "Compound Name" of the class or interface represented
-   * by {@code cls}.
+   * Returns the canonical "Composite Name" of the class or interface
+   * represented by {@code cls}.
    * <p>
-   * The canonical "Compound Name" is the fully qualified name of a class
+   * The canonical "Composite Name" is the fully qualified name of a class
    * ({@link Class#getCanonicalName()} with its package name
    * ({@link Class#getPackage()}.getName()) removed.
    * <p>
    * For example:
    * <ol>
-   * <li>The canonical "Compound Name" of {@code java.lang.String} is
+   * <li>The canonical "Composite Name" of {@code java.lang.String} is
    * {@link String}.</li>
-   * <li>The canonical "Compound Name" of {@code java.lang.Map.Entry} is
+   * <li>The canonical "Composite Name" of {@code java.lang.Map.Entry} is
    * {@code Map.Entry}.</li>
    * </ol>
    *
    * @param cls The class or interface.
-   * @return The canonical "Compound Name" of the class or interface represented
-   *         by {@code cls}.
+   * @return The canonical "Composite Name" of the class or interface
+   *         represented by {@code cls}.
    * @throws IllegalArgumentException If {@code cls} is null.
    */
-  public static String getCanonicalCompoundName(final Class<?> cls) {
+  public static String getCanonicalCompositeName(final Class<?> cls) {
     if (Assertions.assertNotNull(cls).isPrimitive())
       return cls.getCanonicalName();
 
