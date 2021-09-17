@@ -36,7 +36,7 @@ import java.util.function.UnaryOperator;
 public class WrappedArrayList<E> extends AbstractList<E> implements RandomAccess, Serializable, Cloneable {
   private static final long serialVersionUID = -2190789720213859076L;
 
-  protected final E[] a;
+  protected final E[] array;
 
   /**
    * Creates a new {@link WrappedArrayList} that wraps the provided {@code objs}
@@ -47,17 +47,17 @@ public class WrappedArrayList<E> extends AbstractList<E> implements RandomAccess
    */
   @SafeVarargs
   public WrappedArrayList(final E ... objs) {
-    a = Assertions.assertNotNull(objs);
+    array = Assertions.assertNotNull(objs);
   }
 
   @Override
   public int size() {
-    return a.length;
+    return array.length;
   }
 
   @Override
   public Object[] toArray() {
-    return a.clone();
+    return array.clone();
   }
 
   /**
@@ -70,9 +70,9 @@ public class WrappedArrayList<E> extends AbstractList<E> implements RandomAccess
   public <T>T[] toArray(final T[] a) {
     final int size = size();
     if (Assertions.assertNotNull(a).length < size)
-      return Arrays.copyOf(this.a, size, (Class<? extends T[]>)a.getClass());
+      return Arrays.copyOf(this.array, size, (Class<? extends T[]>)a.getClass());
 
-    System.arraycopy(this.a, 0, a, 0, size);
+    System.arraycopy(this.array, 0, a, 0, size);
     if (a.length > size)
       a[size] = null;
 
@@ -81,19 +81,19 @@ public class WrappedArrayList<E> extends AbstractList<E> implements RandomAccess
 
   @Override
   public E get(final int index) {
-    return a[index];
+    return array[index];
   }
 
   @Override
   public E set(final int index, final E element) {
-    final E oldValue = a[index];
-    a[index] = element;
+    final E oldValue = array[index];
+    array[index] = element;
     return oldValue;
   }
 
   @Override
   public int indexOf(final Object o) {
-    final E[] a = this.a;
+    final E[] a = this.array;
     if (o == null) {
       for (int i = 0; i < a.length; ++i)
         if (a[i] == null)
@@ -116,7 +116,7 @@ public class WrappedArrayList<E> extends AbstractList<E> implements RandomAccess
 
   @Override
   public Spliterator<E> spliterator() {
-    return Spliterators.spliterator(a, Spliterator.ORDERED);
+    return Spliterators.spliterator(array, Spliterator.ORDERED);
   }
 
   /**
@@ -127,7 +127,7 @@ public class WrappedArrayList<E> extends AbstractList<E> implements RandomAccess
   @Override
   public void forEach(final Consumer<? super E> action) {
     Assertions.assertNotNull(action);
-    for (final E e : a)
+    for (final E e : array)
       action.accept(e);
   }
 
@@ -139,7 +139,7 @@ public class WrappedArrayList<E> extends AbstractList<E> implements RandomAccess
   @Override
   public void replaceAll(final UnaryOperator<E> operator) {
     Assertions.assertNotNull(operator);
-    final E[] a = this.a;
+    final E[] a = this.array;
     for (int i = 0; i < a.length; ++i)
       a[i] = operator.apply(a[i]);
   }
@@ -151,11 +151,11 @@ public class WrappedArrayList<E> extends AbstractList<E> implements RandomAccess
    */
   @Override
   public void sort(final Comparator<? super E> c) {
-    Arrays.sort(Assertions.assertNotNull(a), c);
+    Arrays.sort(Assertions.assertNotNull(array), c);
   }
 
   @Override
   public WrappedArrayList<E> clone() {
-    return new WrappedArrayList<>(a.clone());
+    return new WrappedArrayList<>(array.clone());
   }
 }
