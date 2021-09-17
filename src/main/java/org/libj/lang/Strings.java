@@ -407,6 +407,22 @@ public final class Strings {
   }
 
   /**
+   * Tests if the specified {@link CharSequence} ends with the specified suffix.
+   *
+   * @param str The {@link CharSequence}.
+   * @param suffix The suffix.
+   * @return {@code true} if the {@code suffix} character sequence is a suffix
+   *         of {@code str}; {@code false} otherwise. Note also that
+   *         {@code true} will be returned if {@code suffix} is an empty string
+   *         or is equal to {@code str}.
+   * @throws IllegalArgumentException If {@code str} is null.
+   */
+  public static boolean endsWith(final CharSequence str, final char suffix) {
+    Assertions.assertNotNull(str);
+    return str.length() > 0 && str.charAt(str.length() - 1) == suffix;
+  }
+
+  /**
    * Converts the characters in the specified {@link StringBuilder} to "proper
    * case" using case mapping information from the UnicodeData file. "Proper
    * case" is defined as:
@@ -2474,8 +2490,8 @@ public final class Strings {
    *         {@code -1} if there is no such occurrence.
    * @throws IllegalArgumentException If {@code str} is null.
    */
-  public static int indexOfIgnoreCase(final CharSequence str, final char ch) {
-    return indexOfIgnoreCase(str, ch, 0);
+  public static int indexOf(final CharSequence str, final char ch) {
+    return indexOf(str, ch, 0);
   }
 
   /**
@@ -2495,6 +2511,121 @@ public final class Strings {
    * @param fromIndex The index from which to start the search.
    * @return The index of the first occurrence of the specified {@code char}, or
    *         {@code -1} if there is no such occurrence.
+   * @throws IllegalArgumentException If {@code str} is null.
+   */
+  public static int indexOf(final CharSequence str, final char ch, int fromIndex) {
+    if (fromIndex < 0)
+      fromIndex = 0;
+
+    final int len = Assertions.assertNotNull(str).length();
+    if (fromIndex > len)
+      return -1;
+
+    for (int i = fromIndex; i < len; ++i)
+      if (str.charAt(i) == ch)
+        return i;
+
+    return -1;
+  }
+
+  /**
+   * Returns the index within the specified {@link CharSequence str} of the
+   * first occurrence of the specified {@link CharSequence substr}.
+   * <p>
+   * The returned index is the smallest value {@code k} for which:
+   *
+   * <pre>
+   * {@code this.startsWith(str, k)}
+   * </pre>
+   *
+   * If no such value of {@code k} exists, then {@code -1} is returned.
+   *
+   * @param str The {@link CharSequence} in which to search.
+   * @param substr The {@link CharSequence} to search for.
+   * @return The index of the first occurrence of the specified substring, or
+   *         {@code -1} if there is no such occurrence.
+   * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
+   */
+  public static int indexOf(final CharSequence str, final CharSequence substr) {
+    return indexOf(str, substr, 0);
+  }
+
+  /**
+   * Returns the index within the specified {@link CharSequence str} of the
+   * first occurrence of the specified {@link CharSequence substr}.
+   * <p>
+   * The returned index is the smallest value {@code k} for which:
+   *
+   * <pre>
+   * {@code this.startsWith(str, k)}
+   * </pre>
+   *
+   * If no such value of {@code k} exists, then {@code -1} is returned.
+   *
+   * @param str The {@link CharSequence} in which to search.
+   * @param substr The {@link CharSequence} to search for.
+   * @param fromIndex The index from which to start the search.
+   * @return The index of the first occurrence of the specified substring, or
+   *         {@code -1} if there is no such occurrence.
+   * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
+   */
+  public static int indexOf(final CharSequence str, final CharSequence substr, int fromIndex) {
+    if (fromIndex < 0)
+      fromIndex = 0;
+
+    final int len = Assertions.assertNotNull(str).length() - Assertions.assertNotNull(substr).length() + 1;
+    if (fromIndex > len)
+      return -1;
+
+    if (substr.length() == 0)
+      return fromIndex;
+
+    for (int i = fromIndex; i < len; ++i)
+      if (regionMatches(str, false, i, substr, 0, substr.length()))
+        return i;
+
+    return -1;
+  }
+
+  /**
+   * Returns the index within the specified {@link CharSequence str} of the
+   * first occurrence of the specified {@code char} (ignoring case).
+   * <p>
+   * The returned index is the smallest value {@code k} for which:
+   *
+   * <pre>
+   * {@code this.startsWith(str, k)}
+   * </pre>
+   *
+   * If no such value of {@code k} exists, then {@code -1} is returned.
+   *
+   * @param str The {@link CharSequence} in which to search.
+   * @param ch The {@code char} to search for.
+   * @return The index of the first occurrence of the specified {@code char}, or
+   *         {@code -1} if there is no such occurrence (ignoring case).
+   * @throws IllegalArgumentException If {@code str} is null.
+   */
+  public static int indexOfIgnoreCase(final CharSequence str, final char ch) {
+    return indexOfIgnoreCase(str, ch, 0);
+  }
+
+  /**
+   * Returns the index within the specified {@link CharSequence str} of the
+   * first occurrence of the specified {@code char} (ignoring case).
+   * <p>
+   * The returned index is the smallest value {@code k} for which:
+   *
+   * <pre>
+   * {@code this.startsWith(str, k)}
+   * </pre>
+   *
+   * If no such value of {@code k} exists, then {@code -1} is returned.
+   *
+   * @param str The {@link CharSequence} in which to search.
+   * @param ch The {@code char} to search for.
+   * @param fromIndex The index from which to start the search.
+   * @return The index of the first occurrence of the specified {@code char}
+   *         (ignoring case), or {@code -1} if there is no such occurrence.
    * @throws IllegalArgumentException If {@code str} is null.
    */
   public static int indexOfIgnoreCase(final CharSequence str, char ch, int fromIndex) {
@@ -2526,7 +2657,8 @@ public final class Strings {
 
   /**
    * Returns the index within the specified {@link CharSequence str} of the
-   * first occurrence of the specified {@link CharSequence substr}.
+   * first occurrence of the specified {@link CharSequence substr} (ignoring
+   * case).
    * <p>
    * The returned index is the smallest value {@code k} for which:
    *
@@ -2538,8 +2670,8 @@ public final class Strings {
    *
    * @param str The {@link CharSequence} in which to search.
    * @param substr The {@link CharSequence} to search for.
-   * @return The index of the first occurrence of the specified substring, or
-   *         {@code -1} if there is no such occurrence.
+   * @return The index of the first occurrence of the specified substring
+   *         (ignoring case), or {@code -1} if there is no such occurrence.
    * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int indexOfIgnoreCase(final CharSequence str, final CharSequence substr) {
@@ -2548,7 +2680,8 @@ public final class Strings {
 
   /**
    * Returns the index within the specified {@link CharSequence str} of the
-   * first occurrence of the specified {@link CharSequence substr}.
+   * first occurrence of the specified {@link CharSequence substr} (ignoring
+   * case).
    * <p>
    * The returned index is the smallest value {@code k} for which:
    *
@@ -2561,8 +2694,8 @@ public final class Strings {
    * @param str The {@link CharSequence} in which to search.
    * @param substr The {@link CharSequence} to search for.
    * @param fromIndex The index from which to start the search.
-   * @return The index of the first occurrence of the specified substring, or
-   *         {@code -1} if there is no such occurrence.
+   * @return The index of the first occurrence of the specified substring
+   *         (ignoring case), or {@code -1} if there is no such occurrence.
    * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int indexOfIgnoreCase(final CharSequence str, final CharSequence substr, int fromIndex) {

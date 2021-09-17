@@ -23,12 +23,47 @@ import java.text.ParseException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import org.junit.Test;
 
 public class StringsTest {
   private static final String UPPER_CASE = "HELLO WORLD";
   private static final String LOWER_CASE = "hello world";
+
+  private static final Random r = new Random();
+
+  @Test
+  public void testIndexOf1() {
+    for (int i = 0; i < 10000; ++i) {
+      final String str = Strings.getRandomAlphaNumeric(256);
+      final String find = Strings.getRandomAlphaNumeric(1);
+      final int expected = str.indexOf(find);
+      assertEquals(expected, Strings.indexOf(str, find));
+      assertEquals(expected, Strings.indexOf(str, find.charAt(0)));
+    }
+  }
+
+  @Test
+  public void testIndexOf2() {
+    for (int i = 0; i < 10000; ++i) {
+      final String str = Strings.getRandomAlphaNumeric(256);
+      final String find = Strings.getRandomAlphaNumeric(1);
+      final int from = r.nextInt(str.length());
+      final int expected = str.indexOf(find, from);
+      assertEquals(expected, Strings.indexOf(str, find, from));
+      assertEquals(expected, Strings.indexOf(str, find.charAt(0), from));
+    }
+  }
+
+  @Test
+  public void testEndsWith() {
+    for (int i = 0; i < 10000; ++i) {
+      final String str = Strings.getRandomAlphaNumeric(256);
+      final String find = Strings.getRandomAlphaNumeric(1);
+      assertEquals(str.endsWith(find), Strings.endsWith(str, find.charAt(0)));
+    }
+  }
 
   @Test
   public void testLastIndexOf() {
