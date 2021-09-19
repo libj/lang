@@ -794,4 +794,20 @@ public class StringsTest {
       assertSame(b, Strings.intern(new String("hello world 2")));
     }
   }
+
+  @Test
+  public void testSplit() {
+    for (int i = 0; i < 1000000; ++i) {
+      String str = Strings.getRandomAlphaNumeric(5);
+      final String ch = Strings.getRandomAlphaNumeric(1);
+      final char c = ch.charAt(0);
+      final String[] expected = str.split(ch);
+      final String[] actual = Strings.split(str, c);
+      if (!Arrays.equals(expected, actual)) {
+        System.err.println(ch + " " + str + " -> " + Arrays.asList(expected) + " " + Arrays.asList(actual));
+        Strings.split(str, c);
+        assertArrayEquals(ch + " " + str + " -> " + Arrays.asList(expected) + " " + Arrays.asList(actual), expected, actual);
+      }
+    }
+  }
 }

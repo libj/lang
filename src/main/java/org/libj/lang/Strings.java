@@ -2791,6 +2791,61 @@ public final class Strings {
     return intern != null ? intern : str;
   }
 
+  private static String[] split(final CharSequence str, final int len, final char ch, final String previous, final StringBuilder builder, int index, final int depth) {
+    final String[] parts;
+    final char c = str.charAt(index);
+    if (c != ch) {
+      builder.append(c);
+      if (++index == len) {
+        if (index != len || builder.length() > 0) {
+          final String part = builder.toString();
+          parts = new String[depth + 1];
+          parts[depth] = part;
+        }
+        else {
+          parts = new String[previous.length() == 0 ? depth - 1 : depth];
+        }
+      }
+      else {
+        parts = split(str, len, ch, previous, builder, index, depth);
+      }
+    }
+    else {
+      if (++index != len || builder.length() > 0) {
+        final String part = builder.toString();
+        if (index == len)
+          parts = new String[depth + 1];
+        else
+          parts = split(str, len, ch, part, new StringBuilder(), index, depth + 1);
+
+        parts[depth == parts.length ? depth - 1 : depth] = part;
+      }
+      else {
+        if (index == len)
+          parts = new String[previous.length() == 0 ? depth - 1 : depth];
+        else
+          parts = split(str, len, ch, previous, new StringBuilder(), index, depth);
+      }
+    }
+
+    return parts;
+  }
+
+  /**
+   * Splits the provided {@link CharSequence str} around matches of the given
+   * {@code char} literal.
+   *
+   * @param str The {@link CharSequence} to split.
+   * @param ch The {@code char} literal to match.
+   * @return The array of strings computed by splitting this string around
+   *         matches of the given regular expression.
+   * @throws IllegalArgumentException If {@code str} is null.
+   * @see String#split(String)
+   */
+  public static String[] split(final CharSequence str, final char ch) {
+    return split(Assertions.assertNotNull(str), str.length(), ch, "", new StringBuilder(), 0, 0);
+  }
+
   private Strings() {
   }
 }
