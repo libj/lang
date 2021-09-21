@@ -185,14 +185,14 @@ public final class Assertions {
    * }
    * </pre>
    *
-   * @param <T> The type of the reference.
+   * @param <T> The type of the collection reference.
    * @param obj The collection to check for nullity or emptiness.
    * @param message The detail message to be used for the
    *          {@link IllegalArgumentException}.
    * @return {@code obj} if not {@code null} or empty.
    * @throws IllegalArgumentException If {@code obj} is {@code null} or empty.
    */
-  public static <T>Collection<T> assertNotEmpty(final Collection<T> obj, final String message) {
+  public static <T extends Collection<?>>T assertNotEmpty(final T obj, final String message) {
     assertNotNull(obj, message);
     if (obj.size() == 0)
       throw new IllegalArgumentException(message);
@@ -211,7 +211,7 @@ public final class Assertions {
    * }
    * </pre>
    *
-   * @param <T> The type of the reference.
+   * @param <T> The type of the collection reference.
    * @param obj The collection to check for nullity or emptiness.
    * @param format The detail message <a href=
    *          "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
@@ -221,7 +221,7 @@ public final class Assertions {
    * @return {@code obj} if not {@code null} or empty.
    * @throws IllegalArgumentException If {@code obj} is {@code null} or empty.
    */
-  public static <T>Collection<T> assertNotEmpty(final Collection<T> obj, final String format, final Object ... args) {
+  public static <T extends Collection<?>>T assertNotEmpty(final T obj, final String format, final Object ... args) {
     if (assertNotNull(obj, format).size() == 0)
       throw new IllegalArgumentException(String.format(format, args));
 
@@ -239,12 +239,12 @@ public final class Assertions {
    * }
    * </pre>
    *
-   * @param <T> The type of the reference.
+   * @param <T> The type of the collection reference.
    * @param obj The collection to check for nullity or emptiness.
    * @return {@code obj} if not {@code null} or empty.
    * @throws IllegalArgumentException If {@code obj} is {@code null} or empty.
    */
-  public static <T>Collection<T> assertNotEmpty(final Collection<T> obj) {
+  public static <T extends Collection<?>>T assertNotEmpty(final T obj) {
     assertNotNull(obj, "null");
     if (obj.size() == 0)
       throw new IllegalArgumentException("empty");
