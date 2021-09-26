@@ -22,7 +22,6 @@ import java.lang.annotation.Annotation;
  * Thrown to indicate that an illegal annotation was encountered.
  */
 public class IllegalAnnotationException extends RuntimeException {
-  private static final long serialVersionUID = 2242697897127221243L;
   private final Annotation annotation;
 
   /**

@@ -51,7 +51,7 @@ public final class ObjectUtil {
    * @see System#identityHashCode(Object)
    */
   public static String identityString(final Object obj) {
-    return Assertions.assertNotNull(obj).getClass().getName() + "@" + Integer.toHexString(System.identityHashCode(obj));
+    return obj == null ? "null" : obj.getClass().getName() + "@" + Integer.toHexString(System.identityHashCode(obj));
   }
 
   /**
@@ -61,11 +61,10 @@ public final class ObjectUtil {
    * @param obj The object.
    * @return The simple class name of object {@code obj}, concatenated with '@',
    *         and the hexadecimal representation of its identity hash code.
-   * @throws IllegalArgumentException If {@code obj} is null.
    * @see System#identityHashCode(Object)
    */
   public static String simpleIdentityString(final Object obj) {
-    return Assertions.assertNotNull(obj).getClass().getSimpleName() + "@" + Integer.toHexString(System.identityHashCode(obj));
+    return obj == null ? "null" : obj.getClass().getSimpleName() + "@" + Integer.toHexString(System.identityHashCode(obj));
   }
 
   private static final HashMap<Class<?>,Method> classToCloneMethod = new HashMap<>();

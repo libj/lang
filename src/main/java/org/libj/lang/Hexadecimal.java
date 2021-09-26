@@ -22,7 +22,6 @@ import java.util.Arrays;
  * Encodes and decodes Hexadecimal.
  */
 public class Hexadecimal extends DataEncoding<byte[],String> {
-  private static final long serialVersionUID = -8974679223643455922L;
   private static final char[] hexChar = {
     '0', '1', '2', '3',
     '4', '5', '6', '7',

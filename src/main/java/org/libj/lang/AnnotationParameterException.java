@@ -22,7 +22,6 @@ import java.lang.annotation.Annotation;
  * Thrown to indicate an exception in a parameter value of an annotation.
  */
 public class AnnotationParameterException extends RuntimeException {
-  private static final long serialVersionUID = -5403129096514741253L;
   private final Annotation annotation;
 
   /**

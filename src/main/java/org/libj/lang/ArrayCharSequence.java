@@ -22,8 +22,6 @@ import java.io.Serializable;
  * A {@link CharSequence} backed by a {@code String} or {@code char[]}.
  */
 public class ArrayCharSequence implements CharSequence, Serializable {
-  private static final long serialVersionUID = -3119966124596469581L;
-
   private final int offset;
   private final int count;
 

@@ -34,8 +34,6 @@ import java.util.function.UnaryOperator;
  * @param <E> The type of elements in this list.
  */
 public class WrappedArrayList<E> extends AbstractList<E> implements RandomAccess, Serializable, Cloneable {
-  private static final long serialVersionUID = -2190789720213859076L;
-
   protected final E[] array;
 
   /**

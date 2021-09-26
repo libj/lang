@@ -25,8 +25,6 @@ import java.io.Serializable;
  * @param <E> The type parameter representing the encoding class.
  */
 public abstract class DataEncoding<D extends Serializable,E extends Serializable> implements Serializable {
-  private static final long serialVersionUID = -8326150018177745673L;
-
   protected volatile D data;
   protected volatile E encoded;
 

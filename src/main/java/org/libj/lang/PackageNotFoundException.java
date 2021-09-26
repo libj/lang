@@ -22,8 +22,6 @@ package org.libj.lang;
  * found.
  */
 public final class PackageNotFoundException extends ReflectiveOperationException {
-  private static final long serialVersionUID = 4963238462943629433L;
-
   /**
    * Creates a {@link PackageNotFoundException} with no detail message.
    */

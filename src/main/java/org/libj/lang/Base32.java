@@ -24,7 +24,6 @@ import java.util.Arrays;
  * @see <a href="http://www.faqs.org/rfcs/rfc3548.html">RFC3548</a>
  */
 public class Base32 extends DataEncoding<byte[],String> {
-  private static final long serialVersionUID = 3283110401340470031L;
   private static final String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
   private static final int[] lookup = {
     0xFF, 0xFF, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,

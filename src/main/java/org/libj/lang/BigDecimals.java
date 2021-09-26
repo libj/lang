@@ -29,8 +29,6 @@ public final class BigDecimals {
   private static final ConcurrentHashMap<Serializable,BigDecimal> instances = new ConcurrentHashMap<>();
 
   private static class BigDecimalInfinity extends BigDecimal {
-    private static final long serialVersionUID = -6061982086335481343L;
-
     private final int signum;
     private final String str;
 

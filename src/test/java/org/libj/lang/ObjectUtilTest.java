@@ -23,13 +23,6 @@ import org.junit.Test;
 public class ObjectUtilTest {
   @Test
   public void testIdentity() {
-    try {
-      ObjectUtil.identityString(null);
-      fail("Expected IllegalArgumentException");
-    }
-    catch (final IllegalArgumentException e) {
-    }
-
     assertTrue(ObjectUtil.identityString("hello").startsWith(String.class.getName() + "@"));
     assertEquals(ObjectUtil.identityString("hello"), ObjectUtil.identityString("hello"));
     assertNotEquals(ObjectUtil.identityString("foo"), ObjectUtil.identityString("bar"));
