@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
@@ -62,8 +64,8 @@ public final class Throwables {
    *           null.
    */
   public static <T extends Throwable>T addSuppressed(final T target, final Exception[] suppressed) {
-    Assertions.assertNotNull(target);
-    Assertions.assertNotNull(suppressed);
+    assertNotNull(target);
+    assertNotNull(suppressed);
     return addSuppressed(target, suppressed, 0, suppressed.length);
   }
 
@@ -87,7 +89,7 @@ public final class Throwables {
    *           {@code off + len}.
    */
   public static <T extends Throwable>T addSuppressed(final T target, final Exception[] suppressed, final int fromIndex, final int toIndex) {
-    Assertions.assertNotNull(target);
+    assertNotNull(target);
     if (fromIndex == toIndex)
       return target;
 
@@ -113,8 +115,8 @@ public final class Throwables {
    *           null.
    */
   public static <T extends Throwable>T addSuppressed(final T target, final List<Exception> suppressed) {
-    Assertions.assertNotNull(target);
-    Assertions.assertNotNull(suppressed);
+    assertNotNull(target);
+    assertNotNull(suppressed);
     return addSuppressed(target, suppressed, 0, suppressed.size());
   }
 
@@ -138,7 +140,7 @@ public final class Throwables {
    *           {@code off + len}.
    */
   public static <T extends Throwable>T addSuppressed(final T target, final List<Exception> suppressed, final int fromIndex, final int toIndex) {
-    Assertions.assertNotNull(target);
+    assertNotNull(target);
     if (fromIndex == toIndex)
       return target;
 
@@ -164,7 +166,7 @@ public final class Throwables {
    */
   public static String toString(final Throwable t) {
     final StringWriter out = new StringWriter();
-    Assertions.assertNotNull(t).printStackTrace(new PrintWriter(out));
+    assertNotNull(t).printStackTrace(new PrintWriter(out));
     return out.toString();
   }
 
@@ -180,8 +182,8 @@ public final class Throwables {
    * @throws IllegalAnnotationException If {@code from} or {@code to} are null.
    */
   public static <F extends Throwable,T extends F>T copy(final F from, final T to) {
-    Assertions.assertNotNull(from);
-    Assertions.assertNotNull(to);
+    assertNotNull(from);
+    assertNotNull(to);
     to.initCause(from.getCause());
     to.setStackTrace(from.getStackTrace());
     for (final Throwable suppressed : from.getSuppressed())

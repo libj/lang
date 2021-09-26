@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 /**
  * Functions implementing common operations on {@code byte[]} references.
  */
@@ -50,9 +52,9 @@ public final class Bytes {
    * @throws IllegalArgumentException If {@code bytes} or {@code sequence} is null.
    */
   public static int indexOf(final byte[] bytes, final int offset, final byte ... sequence) {
-    Assertions.assertNotNull(bytes);
-    Assertions.assertNotNull(sequence);
-    Assertions.assertRangeArray(offset, bytes.length);
+    assertNotNull(bytes);
+    assertNotNull(sequence);
+    assertRangeArray(offset, bytes.length);
     if (sequence.length == 0 || bytes.length < sequence.length)
       return -1;
 
@@ -77,7 +79,7 @@ public final class Bytes {
    * @throws IllegalArgumentException If {@code bytes} is null.
    */
   public static void replaceAll(final byte[] bytes, final byte target, final byte replacement) {
-    for (int index = 0; (index = Bytes.indexOf(Assertions.assertNotNull(bytes), index + 1, target)) > -1; bytes[index] = replacement);
+    for (int index = 0; (index = Bytes.indexOf(assertNotNull(bytes), index + 1, target)) > -1; bytes[index] = replacement);
   }
 
   /**
@@ -93,8 +95,8 @@ public final class Bytes {
    *           {@code target.length != replacement.length}.
    */
   public static void replaceAll(final byte[] bytes, final byte[] target, final byte[] replacement) {
-    Assertions.assertNotNull(bytes);
-    if (Assertions.assertNotNull(target).length != Assertions.assertNotNull(replacement).length)
+    assertNotNull(bytes);
+    if (assertNotNull(target).length != assertNotNull(replacement).length)
       throw new IllegalArgumentException("target.length != replacement.length");
 
     if (bytes.length < target.length || target.length == 0)
@@ -127,7 +129,7 @@ public final class Bytes {
    * @throws IllegalArgumentException If {@code bytes} is null.
    */
   public static byte[] toBytes(final short value, final byte[] bytes, int offset, final boolean isBigEndian) {
-    Assertions.assertNotNull(bytes);
+    assertNotNull(bytes);
     if (isBigEndian) {
       offset = bytes.length - offset;
       bytes[--offset] = (byte)(value & 0xff);
@@ -162,7 +164,7 @@ public final class Bytes {
    * @throws IllegalArgumentException If {@code bytes} is null.
    */
   public static byte[] toBytes(final char c, final byte[] bytes, int offset, final boolean isBigEndian) {
-    Assertions.assertNotNull(bytes);
+    assertNotNull(bytes);
     if (isBigEndian) {
       offset = bytes.length - offset;
       bytes[--offset] = (byte)(c & 0xff);
@@ -197,7 +199,7 @@ public final class Bytes {
    * @throws IllegalArgumentException If {@code bytes} is null.
    */
   public static byte[] toBytes(final int i, final byte[] bytes, int offset, final boolean isBigEndian) {
-    Assertions.assertNotNull(bytes);
+    assertNotNull(bytes);
     if (isBigEndian) {
       offset = bytes.length - offset;
       bytes[--offset] = (byte)(i & 0xff);
@@ -251,7 +253,7 @@ public final class Bytes {
    * @throws IllegalArgumentException If {@code bytes} is null.
    */
   public static byte[] toBytes(final long l, final byte[] bytes, int offset, final boolean isBigEndian) {
-    Assertions.assertNotNull(bytes);
+    assertNotNull(bytes);
     if (isBigEndian) {
       offset = bytes.length - offset;
       bytes[--offset] = (byte)(l & 0xff);
@@ -354,7 +356,7 @@ public final class Bytes {
    * @throws IllegalArgumentException If {@code src} is null.
    */
   public static int toShort(final byte[] src, int offset, final boolean isBigEndian, final boolean signed) {
-    Assertions.assertNotNull(src);
+    assertNotNull(src);
     int value = 0;
     if (isBigEndian) {
       offset = src.length - offset;
@@ -415,7 +417,7 @@ public final class Bytes {
    * @throws IllegalArgumentException If {@code src} is null.
    */
   public static long toInt(final byte[] src, int offset, final boolean isBigEndian, final boolean signed) {
-    Assertions.assertNotNull(src);
+    assertNotNull(src);
     long value = 0;
     if (isBigEndian) {
       offset = src.length - offset;
@@ -468,7 +470,7 @@ public final class Bytes {
    */
   // FIXME: Support unsigned
   public static long toLong(final byte[] src, int offset, final boolean isBigEndian) {
-    Assertions.assertNotNull(src);
+    assertNotNull(src);
     long value = 0;
     if (isBigEndian) {
       offset = src.length - offset;
@@ -566,7 +568,7 @@ public final class Bytes {
    * @throws IllegalArgumentException If {@code bytes} is null.
    */
   public static short[] toOctal(final byte ... bytes) {
-    Assertions.assertNotNull(bytes);
+    assertNotNull(bytes);
     final short[] octal = new short[bytes.length];
     for (int i = 0; i < bytes.length; ++i)
       octal[i] = toOctal(bytes[i]);
@@ -598,7 +600,7 @@ public final class Bytes {
    * @throws IllegalArgumentException If {@code dest} is null.
    */
   public static int writeBitsB(final byte[] dest, final int offset, byte src, final byte bits) {
-    Assertions.assertNotNull(dest);
+    assertNotNull(dest);
     final int i = offset / 8;
     final int right = offset % 8;
     final int left = 8 - bits;
@@ -641,7 +643,7 @@ public final class Bytes {
    * @throws IllegalArgumentException If {@code dest} or {@code src} is null.
    */
   public static int writeBitsB(final byte[] dest, int offset, final byte[] src, long bits) {
-    Assertions.assertNotNull(dest);
+    assertNotNull(dest);
     final byte remainder = (byte)(1 + (bits - 1) % 8);
     offset = writeBitsB(dest, offset, src[0], remainder);
     bits -= remainder;
@@ -675,7 +677,7 @@ public final class Bytes {
    * @throws IllegalArgumentException If {@code dest} is null.
    */
   public static int writeBitsL(final byte[] dest, final int offset, byte src, final byte bits) {
-    Assertions.assertNotNull(dest);
+    assertNotNull(dest);
     final int i = offset / 8;
     final int r = offset % 8;
     final int left = 8 - bits;
@@ -717,7 +719,7 @@ public final class Bytes {
    * @throws IllegalArgumentException If {@code dest} or {@code src} is null.
    */
   public static int writeBitsL(final byte[] dest, int offset, final byte[] src, int bits) {
-    Assertions.assertNotNull(dest);
+    assertNotNull(dest);
     int i = 0;
     for (; bits > 8; bits -= 8)
       offset = writeBitsL(dest, offset, src[i++], (byte)8);
@@ -742,7 +744,7 @@ public final class Bytes {
    * @throws IllegalArgumentException If {@code src} is null.
    */
   public static byte readBitsFromByte(final byte[] src, final int offset, byte bits) {
-    Assertions.assertNotNull(src);
+    assertNotNull(src);
     final int i = offset / 8;
     final int left = offset % 8;
     bits = (byte)(8 - bits);
@@ -767,7 +769,7 @@ public final class Bytes {
    * @throws IllegalArgumentException If {@code src} is null.
    */
   public static byte[] readBitsFromBytes(final byte[] src, int offset, final long bits) {
-    Assertions.assertNotNull(src);
+    assertNotNull(src);
     if (bits <= 8)
       return new byte[] {readBitsFromByte(src, offset, (byte)bits)};
 

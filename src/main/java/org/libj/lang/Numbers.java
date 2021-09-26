@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
@@ -119,7 +121,7 @@ public final class Numbers {
      * @throws IllegalArgumentException If {@code bigInteger} is negative.
      */
     public static byte[] toUINT(final BigInteger bigInteger) {
-      if (Assertions.assertNotNull(bigInteger).signum() == -1)
+      if (assertNotNull(bigInteger).signum() == -1)
         throw new IllegalArgumentException(bigInteger + " must be positive");
 
       final byte[] bytes = bigInteger.toByteArray();
@@ -602,7 +604,7 @@ public final class Numbers {
     if (s == null)
       return null;
 
-    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseShort0(s, fromIndex, toIndex, 10);
   }
 
@@ -647,7 +649,7 @@ public final class Numbers {
     if (s == null)
       return defaultValue;
 
-    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseShort0(s, fromIndex, toIndex, 10, defaultValue);
   }
 
@@ -693,7 +695,7 @@ public final class Numbers {
     if (cbuf == null)
       return defaultValue;
 
-    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
     return parseShort0(cbuf, fromIndex, toIndex, 10, defaultValue);
   }
 
@@ -738,7 +740,7 @@ public final class Numbers {
     if (s == null)
       return null;
 
-    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseShort0(s, fromIndex, toIndex, radix);
   }
 
@@ -840,7 +842,7 @@ public final class Numbers {
     if (s == null)
       return defaultValue;
 
-    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseShort0(s, fromIndex, toIndex, radix, defaultValue);
   }
 
@@ -897,7 +899,7 @@ public final class Numbers {
     if (cbuf == null)
       return defaultValue;
 
-    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
     return parseShort0(cbuf, fromIndex, toIndex, radix, defaultValue);
   }
 
@@ -941,7 +943,7 @@ public final class Numbers {
     if (s == null)
       return null;
 
-    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseInteger0(s, fromIndex, toIndex, 10);
   }
 
@@ -986,7 +988,7 @@ public final class Numbers {
     if (s == null)
       return defaultValue;
 
-    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseInt0(s, fromIndex, toIndex, 10, defaultValue);
   }
 
@@ -1032,7 +1034,7 @@ public final class Numbers {
     if (cbuf == null)
       return defaultValue;
 
-    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
     return parseInt0(cbuf, fromIndex, toIndex, 10, defaultValue);
   }
 
@@ -1079,7 +1081,7 @@ public final class Numbers {
     if (s == null)
       return defaultValue;
 
-    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseInt0(s, fromIndex, toIndex, radix, defaultValue);
   }
 
@@ -1177,7 +1179,7 @@ public final class Numbers {
     if (cbuf == null)
       return defaultValue;
 
-    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
     return parseInt0(cbuf, fromIndex, toIndex, radix, defaultValue);
   }
 
@@ -1265,7 +1267,7 @@ public final class Numbers {
     if (s == null)
       return null;
 
-    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseInteger0(s, fromIndex, toIndex, radix);
   }
 
@@ -1357,7 +1359,7 @@ public final class Numbers {
     if (cbuf == null)
       return null;
 
-    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
     return parseInteger0(cbuf, fromIndex, toIndex, radix);
   }
 
@@ -1446,7 +1448,7 @@ public final class Numbers {
     if (s == null)
       return null;
 
-    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseLong0(s, fromIndex, toIndex, 10);
   }
 
@@ -1491,7 +1493,7 @@ public final class Numbers {
     if (s == null)
       return defaultValue;
 
-    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseLong0(s, fromIndex, toIndex, 10, defaultValue);
   }
 
@@ -1537,7 +1539,7 @@ public final class Numbers {
     if (cbuf == null)
       return defaultValue;
 
-    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
     return parseLong0(cbuf, fromIndex, toIndex, 10, defaultValue);
   }
 
@@ -1578,7 +1580,7 @@ public final class Numbers {
     if (s == null)
       return null;
 
-    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseLong0(s, fromIndex, toIndex, radix);
   }
 
@@ -1667,7 +1669,7 @@ public final class Numbers {
     if (cbuf == null)
       return null;
 
-    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
     return parseLong0(cbuf, fromIndex, toIndex, radix);
   }
 
@@ -1761,7 +1763,7 @@ public final class Numbers {
     if (s == null)
       return defaultValue;
 
-    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
     return parseLong0(s, fromIndex, toIndex, radix);
   }
 
@@ -1856,7 +1858,7 @@ public final class Numbers {
     if (cbuf == null)
       return defaultValue;
 
-    Assertions.assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
     return parseLong0(cbuf, fromIndex, toIndex, radix);
   }
 
@@ -2583,7 +2585,7 @@ public final class Numbers {
    * @throws IllegalArgumentException If {@code n} is null.
    */
   public static BigDecimal toBigDecimal(final Number n) {
-    Assertions.assertNotNull(n);
+    assertNotNull(n);
     if (n instanceof BigDecimal)
       return (BigDecimal)n;
 
@@ -2617,7 +2619,7 @@ public final class Numbers {
    * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
    */
   public static BigDecimal average(final BigDecimal ... numbers) {
-    BigDecimal sum = Assertions.assertNotNull(numbers)[0];
+    BigDecimal sum = assertNotNull(numbers)[0];
     for (int i = 1; i < numbers.length; ++i)
       sum = sum.add(numbers[i]);
 
@@ -2633,7 +2635,7 @@ public final class Numbers {
    * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
    */
   public static BigDecimal average(final BigInteger ... numbers) {
-    BigDecimal sum = new BigDecimal(Assertions.assertNotNull(numbers)[0]);
+    BigDecimal sum = new BigDecimal(assertNotNull(numbers)[0]);
     for (int i = 1; i < numbers.length; ++i)
       sum = sum.add(new BigDecimal(numbers[i]));
 
@@ -2649,7 +2651,7 @@ public final class Numbers {
    * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
    */
   public static double average(final byte ... numbers) {
-    long sum = Assertions.assertNotNull(numbers)[0];
+    long sum = assertNotNull(numbers)[0];
     for (int i = 1; i < numbers.length; ++i)
       sum += numbers[i];
 
@@ -2665,7 +2667,7 @@ public final class Numbers {
    * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
    */
   public static double average(final short ... numbers) {
-    long sum = Assertions.assertNotNull(numbers)[0];
+    long sum = assertNotNull(numbers)[0];
     for (int i = 1; i < numbers.length; ++i)
       sum += numbers[i];
 
@@ -2681,7 +2683,7 @@ public final class Numbers {
    * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
    */
   public static double average(final int ... numbers) {
-    long sum = Assertions.assertNotNull(numbers)[0];
+    long sum = assertNotNull(numbers)[0];
     for (int i = 1; i < numbers.length; ++i)
       sum += numbers[i];
 
@@ -2697,7 +2699,7 @@ public final class Numbers {
    * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
    */
   public static double average(final long ... numbers) {
-    long sum = Assertions.assertNotNull(numbers)[0];
+    long sum = assertNotNull(numbers)[0];
     for (int i = 1; i < numbers.length; ++i)
       sum += numbers[i];
 
@@ -2713,7 +2715,7 @@ public final class Numbers {
    * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
    */
   public static double average(final float ... numbers) {
-    double sum = Assertions.assertNotNull(numbers)[0];
+    double sum = assertNotNull(numbers)[0];
     for (int i = 1; i < numbers.length; ++i)
       sum += numbers[i];
 
@@ -2729,7 +2731,7 @@ public final class Numbers {
    * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
    */
   public static double average(final double ... numbers) {
-    double sum = Assertions.assertNotNull(numbers)[0];
+    double sum = assertNotNull(numbers)[0];
     for (int i = 1; i < numbers.length; ++i)
       sum += numbers[i];
 

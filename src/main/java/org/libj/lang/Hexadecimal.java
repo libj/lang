@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 import java.util.Arrays;
 
 /**
@@ -50,7 +52,7 @@ public class Hexadecimal extends DataEncoding<byte[],String> {
    * @throws IllegalArgumentException If {@code bytes} is null.
    */
   public static String encode(final byte[] bytes) {
-    return encode(bytes, 0, Assertions.assertNotNull(bytes).length);
+    return encode(bytes, 0, assertNotNull(bytes).length);
   }
 
   /**
@@ -63,7 +65,7 @@ public class Hexadecimal extends DataEncoding<byte[],String> {
    * @throws IllegalArgumentException If {@code bytes} is null.
    */
   public static String encode(final byte[] bytes, final int offset, final int len) {
-    Assertions.assertNotNull(bytes);
+    assertNotNull(bytes);
     final StringBuilder builder = new StringBuilder(len * 2);
     for (int i = offset; i < len + offset; ++i) {
       builder.append(hexChar[(bytes[i] & 0xf0) >>> 4]);
@@ -93,8 +95,8 @@ public class Hexadecimal extends DataEncoding<byte[],String> {
    * @throws IllegalArgumentException If {@code hex} or {@code bytes} is null.
    */
   public static void decode(final String hex, final byte[] bytes, final int offset) {
-    Assertions.assertNotNull(hex);
-    Assertions.assertNotNull(bytes);
+    assertNotNull(hex);
+    assertNotNull(bytes);
     final int length = hex.length();
     if (length == 0)
       return;
@@ -113,7 +115,7 @@ public class Hexadecimal extends DataEncoding<byte[],String> {
    * @throws IllegalArgumentException If {@code hex} is null.
    */
   public static byte[] decode(final String hex) {
-    final int length = Assertions.assertNotNull(hex).length();
+    final int length = assertNotNull(hex).length();
     if (length == 0)
       return new byte[0];
 

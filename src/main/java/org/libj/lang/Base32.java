@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 import java.util.Arrays;
 
 /**
@@ -46,7 +48,7 @@ public class Base32 extends DataEncoding<byte[],String> {
    * @throws IllegalArgumentException If {@code bytes} is null.
    */
   public static String encode(final byte[] bytes) {
-    return encode(bytes, 0, Assertions.assertNotNull(bytes).length);
+    return encode(bytes, 0, assertNotNull(bytes).length);
   }
 
   /**
@@ -59,7 +61,7 @@ public class Base32 extends DataEncoding<byte[],String> {
    * @throws IllegalArgumentException If {@code bytes} is null.
    */
   public static String encode(final byte[] bytes, final int offset, final int len) {
-    final StringBuilder base32 = new StringBuilder((Assertions.assertNotNull(bytes).length + 7) * 8 / 5);
+    final StringBuilder base32 = new StringBuilder((assertNotNull(bytes).length + 7) * 8 / 5);
     for (int i = offset, index = 0, digit, by0, by1; i < len + offset;) {
       by0 = (bytes[i] >= 0) ? bytes[i] : (bytes[i] + 256);
       if (index > 3) {
@@ -91,7 +93,7 @@ public class Base32 extends DataEncoding<byte[],String> {
    * @throws IllegalArgumentException If {@code base32} is null.
    */
   public static byte[] decode(final String base32) {
-    final byte[] bytes = new byte[Assertions.assertNotNull(base32).length() * 5 / 8];
+    final byte[] bytes = new byte[assertNotNull(base32).length() * 5 / 8];
     decode(base32, bytes, 0);
     return bytes;
   }
@@ -108,7 +110,7 @@ public class Base32 extends DataEncoding<byte[],String> {
    * @throws IllegalArgumentException If {@code base32} or {@code bytes} is null.
    */
   public static void decode(final String base32, final byte[] bytes, int offset) {
-    for (int i = 0, len = Assertions.assertNotNull(base32).length(), index = 0, ch, digit; i < len; ++i) {
+    for (int i = 0, len = assertNotNull(base32).length(), index = 0, ch, digit; i < len; ++i) {
       ch = base32.charAt(i) - '0';
       if (ch < 0 || lookup.length < ch)
         continue;

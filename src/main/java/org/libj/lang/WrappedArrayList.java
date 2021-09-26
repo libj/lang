@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 import java.io.Serializable;
 import java.util.AbstractList;
 import java.util.Arrays;
@@ -45,7 +47,7 @@ public class WrappedArrayList<E> extends AbstractList<E> implements RandomAccess
    */
   @SafeVarargs
   public WrappedArrayList(final E ... objs) {
-    array = Assertions.assertNotNull(objs);
+    array = assertNotNull(objs);
   }
 
   @Override
@@ -67,7 +69,7 @@ public class WrappedArrayList<E> extends AbstractList<E> implements RandomAccess
   @SuppressWarnings("unchecked")
   public <T>T[] toArray(final T[] a) {
     final int size = size();
-    if (Assertions.assertNotNull(a).length < size)
+    if (assertNotNull(a).length < size)
       return Arrays.copyOf(this.array, size, (Class<? extends T[]>)a.getClass());
 
     System.arraycopy(this.array, 0, a, 0, size);
@@ -124,7 +126,7 @@ public class WrappedArrayList<E> extends AbstractList<E> implements RandomAccess
    */
   @Override
   public void forEach(final Consumer<? super E> action) {
-    Assertions.assertNotNull(action);
+    assertNotNull(action);
     for (final E e : array)
       action.accept(e);
   }
@@ -136,7 +138,7 @@ public class WrappedArrayList<E> extends AbstractList<E> implements RandomAccess
    */
   @Override
   public void replaceAll(final UnaryOperator<E> operator) {
-    Assertions.assertNotNull(operator);
+    assertNotNull(operator);
     final E[] a = this.array;
     for (int i = 0; i < a.length; ++i)
       a[i] = operator.apply(a[i]);
@@ -149,7 +151,7 @@ public class WrappedArrayList<E> extends AbstractList<E> implements RandomAccess
    */
   @Override
   public void sort(final Comparator<? super E> c) {
-    Arrays.sort(Assertions.assertNotNull(array), c);
+    Arrays.sort(assertNotNull(array), c);
   }
 
   @Override

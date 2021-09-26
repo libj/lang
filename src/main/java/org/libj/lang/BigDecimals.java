@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -116,7 +118,7 @@ public final class BigDecimals {
    * @throws IllegalArgumentException If {@code val} is null.
    */
   public static BigDecimal intern(final String val) {
-    final BigDecimal instance = instances.get(Assertions.assertNotNull(val));
+    final BigDecimal instance = instances.get(assertNotNull(val));
     return instance != null ? instance : init(val, new BigDecimal(val));
   }
 
@@ -130,7 +132,7 @@ public final class BigDecimals {
    * @throws IllegalArgumentException If {@code n} is null.
    */
   public static BigDecimal intern(final BigDecimal n) {
-    final BigDecimal instance = instances.putIfAbsent(Assertions.assertNotNull(n).toString(), n);
+    final BigDecimal instance = instances.putIfAbsent(assertNotNull(n).toString(), n);
     return instance != null ? instance : n;
   }
 
@@ -157,7 +159,7 @@ public final class BigDecimals {
    * @throws IllegalArgumentException If {@code val} is null.
    */
   public static BigDecimal intern(final Long val) {
-    final BigDecimal instance = instances.get(Assertions.assertNotNull(val));
+    final BigDecimal instance = instances.get(assertNotNull(val));
     return instance != null ? instance : init(val, new BigDecimal(val));
   }
 
@@ -184,7 +186,7 @@ public final class BigDecimals {
    * @throws IllegalArgumentException If {@code val} is null.
    */
   public static BigDecimal intern(final Double val) {
-    final BigDecimal instance = instances.get(Assertions.assertNotNull(val));
+    final BigDecimal instance = instances.get(assertNotNull(val));
     return instance != null ? instance : init(val, new BigDecimal(val));
   }
 
@@ -219,8 +221,8 @@ public final class BigDecimals {
    * @throws IllegalArgumentException If {@code v} or {@code rm} is null.
    */
   public static BigDecimal setScale(BigDecimal v, final int newScale, final RoundingMode rm) {
-    Assertions.assertNotNull(v);
-    Assertions.assertNotNull(rm);
+    assertNotNull(v);
+    assertNotNull(rm);
     if (v.scale() <= newScale + 1)
       return v.setScale(newScale, rm);
 

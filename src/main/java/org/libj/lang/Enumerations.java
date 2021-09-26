@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -102,7 +104,7 @@ public final class Enumerations {
    * @throws IllegalArgumentException If {@code enumeration} is null.
    */
   public static int getSize(final Enumeration<?> enumeration) {
-    Assertions.assertNotNull(enumeration);
+    assertNotNull(enumeration);
     int size = 0;
     for (; enumeration.hasMoreElements(); enumeration.nextElement(), ++size);
     return size;

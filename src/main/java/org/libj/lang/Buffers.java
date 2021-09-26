@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 /**
  * This utility class implements functions to {@code #set(...)},
  * {@code #clear(...)}, and {@code #get(...)} bit values from an argument
@@ -58,7 +60,7 @@ public final class Buffers {
    */
   public static byte[] set(byte[] buf, final int bit, final double resize) {
     final int i = bit / Byte.SIZE;
-    if (i >= Assertions.assertNotNull(buf).length) {
+    if (i >= assertNotNull(buf).length) {
       if (resize == 0)
         throw new ArrayIndexOutOfBoundsException(bit);
 
@@ -107,7 +109,7 @@ public final class Buffers {
    */
   public static char[] set(char[] buf, final int bit, final double resize) {
     final int i = bit / Character.SIZE;
-    if (i >= Assertions.assertNotNull(buf).length) {
+    if (i >= assertNotNull(buf).length) {
       if (resize == 0)
         throw new ArrayIndexOutOfBoundsException(bit);
 
@@ -156,7 +158,7 @@ public final class Buffers {
    */
   public static short[] set(short[] buf, final int bit, final double resize) {
     final int i = bit / Short.SIZE;
-    if (i >= Assertions.assertNotNull(buf).length) {
+    if (i >= assertNotNull(buf).length) {
       if (resize == 0)
         throw new ArrayIndexOutOfBoundsException(bit);
 
@@ -205,7 +207,7 @@ public final class Buffers {
    */
   public static int[] set(int[] buf, final int bit, final double resize) {
     final int i = bit / Integer.SIZE;
-    if (i >= Assertions.assertNotNull(buf).length) {
+    if (i >= assertNotNull(buf).length) {
       if (resize == 0)
         throw new ArrayIndexOutOfBoundsException(bit);
 
@@ -254,7 +256,7 @@ public final class Buffers {
    */
   public static long[] set(long[] buf, final int bit, final double resize) {
     final int i = bit / Long.SIZE;
-    if (i >= Assertions.assertNotNull(buf).length) {
+    if (i >= assertNotNull(buf).length) {
       if (resize == 0)
         throw new ArrayIndexOutOfBoundsException(bit);
 
@@ -279,7 +281,7 @@ public final class Buffers {
    */
   public static byte[] clear(final byte[] buf, final int bit) {
     final int i = bit / Byte.SIZE;
-    if (i >= Assertions.assertNotNull(buf).length)
+    if (i >= assertNotNull(buf).length)
       return buf;
 
     buf[bit / Byte.SIZE] &= ~(1 << (bit % Byte.SIZE));
@@ -298,7 +300,7 @@ public final class Buffers {
    */
   public static char[] clear(final char[] buf, final int bit) {
     final int i = bit / Character.SIZE;
-    if (i >= Assertions.assertNotNull(buf).length)
+    if (i >= assertNotNull(buf).length)
       return buf;
 
     buf[bit / Character.SIZE] &= ~(1 << (bit % Character.SIZE));
@@ -317,7 +319,7 @@ public final class Buffers {
    */
   public static short[] clear(final short[] buf, final int bit) {
     final int i = bit / Short.SIZE;
-    if (i >= Assertions.assertNotNull(buf).length)
+    if (i >= assertNotNull(buf).length)
       return buf;
 
     buf[bit / Short.SIZE] &= ~(1 << (bit % Short.SIZE));
@@ -336,7 +338,7 @@ public final class Buffers {
    */
   public static int[] clear(final int[] buf, final int bit) {
     final int i = bit / Integer.SIZE;
-    if (i >= Assertions.assertNotNull(buf).length)
+    if (i >= assertNotNull(buf).length)
       return buf;
 
     buf[bit / Integer.SIZE] &= ~(1 << (bit % Integer.SIZE));
@@ -355,7 +357,7 @@ public final class Buffers {
    */
   public static long[] clear(final long[] buf, final int bit) {
     final int i = bit / Long.SIZE;
-    if (i >= Assertions.assertNotNull(buf).length)
+    if (i >= assertNotNull(buf).length)
       return buf;
 
     buf[bit / Long.SIZE] &= ~(1L << (bit % Long.SIZE));
@@ -375,7 +377,7 @@ public final class Buffers {
    */
   public static boolean get(final byte[] buf, final int bit) {
     final int i = bit / Byte.SIZE;
-    return i < Assertions.assertNotNull(buf).length && ((buf[i] >> (bit % Byte.SIZE)) & 1) != 0;
+    return i < assertNotNull(buf).length && ((buf[i] >> (bit % Byte.SIZE)) & 1) != 0;
   }
 
   /**
@@ -391,7 +393,7 @@ public final class Buffers {
    */
   public static boolean get(final char[] buf, final int bit) {
     final int i = bit / Character.SIZE;
-    return i < Assertions.assertNotNull(buf).length && ((buf[i] >> (bit % Character.SIZE)) & 1) != 0;
+    return i < assertNotNull(buf).length && ((buf[i] >> (bit % Character.SIZE)) & 1) != 0;
   }
 
   /**
@@ -407,7 +409,7 @@ public final class Buffers {
    */
   public static boolean get(final short[] buf, final int bit) {
     final int i = bit / Short.SIZE;
-    return i < Assertions.assertNotNull(buf).length && ((buf[i] >> (bit % Short.SIZE)) & 1) != 0;
+    return i < assertNotNull(buf).length && ((buf[i] >> (bit % Short.SIZE)) & 1) != 0;
   }
 
   /**
@@ -423,7 +425,7 @@ public final class Buffers {
    */
   public static boolean get(final int[] buf, final int bit) {
     final int i = bit / Integer.SIZE;
-    return i < Assertions.assertNotNull(buf).length && ((buf[i] >> (bit % Integer.SIZE)) & 1) != 0;
+    return i < assertNotNull(buf).length && ((buf[i] >> (bit % Integer.SIZE)) & 1) != 0;
   }
 
   /**
@@ -439,7 +441,7 @@ public final class Buffers {
    */
   public static boolean get(final long[] buf, final int bit) {
     final int i = bit / Long.SIZE;
-    return i < Assertions.assertNotNull(buf).length && ((buf[i] >> (bit % Long.SIZE)) & 1) != 0;
+    return i < assertNotNull(buf).length && ((buf[i] >> (bit % Long.SIZE)) & 1) != 0;
   }
 
   /**
@@ -452,7 +454,7 @@ public final class Buffers {
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static int length(final byte[] buf) {
-    if (Assertions.assertNotNull(buf).length == 0)
+    if (assertNotNull(buf).length == 0)
       return 0;
 
     int i = buf.length - 1;
@@ -470,7 +472,7 @@ public final class Buffers {
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static int length(final char[] buf) {
-    if (Assertions.assertNotNull(buf).length == 0)
+    if (assertNotNull(buf).length == 0)
       return 0;
 
     int i = buf.length - 1;
@@ -488,7 +490,7 @@ public final class Buffers {
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static int length(final short[] buf) {
-    if (Assertions.assertNotNull(buf).length == 0)
+    if (assertNotNull(buf).length == 0)
       return 0;
 
     int i = buf.length - 1;
@@ -506,7 +508,7 @@ public final class Buffers {
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static int length(final int[] buf) {
-    if (Assertions.assertNotNull(buf).length == 0)
+    if (assertNotNull(buf).length == 0)
       return 0;
 
     int i = buf.length - 1;
@@ -524,7 +526,7 @@ public final class Buffers {
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static int length(final long[] buf) {
-    if (Assertions.assertNotNull(buf).length == 0)
+    if (assertNotNull(buf).length == 0)
       return 0;
 
     int i = buf.length - 1;
@@ -549,7 +551,7 @@ public final class Buffers {
    */
   public static byte[] trimToLength(final byte[] buf) {
     final int length = length(buf);
-    if (Assertions.assertNotNull(buf).length == length)
+    if (assertNotNull(buf).length == length)
       return buf;
 
     final byte[] trimmed = new byte[length];
@@ -574,7 +576,7 @@ public final class Buffers {
    */
   public static char[] trimToLength(final char[] buf) {
     final int length = length(buf);
-    if (Assertions.assertNotNull(buf).length == length)
+    if (assertNotNull(buf).length == length)
       return buf;
 
     final char[] trimmed = new char[length];
@@ -599,7 +601,7 @@ public final class Buffers {
    */
   public static short[] trimToLength(final short[] buf) {
     final int length = length(buf);
-    if (Assertions.assertNotNull(buf).length == length)
+    if (assertNotNull(buf).length == length)
       return buf;
 
     final short[] trimmed = new short[length];
@@ -624,7 +626,7 @@ public final class Buffers {
    */
   public static int[] trimToLength(final int[] buf) {
     final int length = length(buf);
-    if (Assertions.assertNotNull(buf).length == length)
+    if (assertNotNull(buf).length == length)
       return buf;
 
     final int[] trimmed = new int[length];
@@ -649,7 +651,7 @@ public final class Buffers {
    */
   public static long[] trimToLength(final long[] buf) {
     final int length = length(buf);
-    if (Assertions.assertNotNull(buf).length == length)
+    if (assertNotNull(buf).length == length)
       return buf;
 
     final long[] trimmed = new long[length];
@@ -686,7 +688,7 @@ public final class Buffers {
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static String toString(final byte ... buf) {
-    final byte[] bytes = new byte[Assertions.assertNotNull(buf).length * Byte.SIZE];
+    final byte[] bytes = new byte[assertNotNull(buf).length * Byte.SIZE];
     for (int i = 0; i < buf.length; ++i)
       toUnsignedString(buf[i], bytes, i, Byte.SIZE);
 
@@ -703,7 +705,7 @@ public final class Buffers {
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static String toString(final char ... buf) {
-    final byte[] bytes = new byte[Assertions.assertNotNull(buf).length * Character.SIZE];
+    final byte[] bytes = new byte[assertNotNull(buf).length * Character.SIZE];
     for (int i = 0; i < buf.length; ++i)
       toUnsignedString(buf[i], bytes, i, Character.SIZE);
 
@@ -720,7 +722,7 @@ public final class Buffers {
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static String toString(final short ... buf) {
-    final byte[] bytes = new byte[Assertions.assertNotNull(buf).length * Short.SIZE];
+    final byte[] bytes = new byte[assertNotNull(buf).length * Short.SIZE];
     for (int i = 0; i < buf.length; ++i)
       toUnsignedString(buf[i], bytes, i, Short.SIZE);
 
@@ -737,7 +739,7 @@ public final class Buffers {
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static String toString(final int ... buf) {
-    final byte[] bytes = new byte[Assertions.assertNotNull(buf).length * Integer.SIZE];
+    final byte[] bytes = new byte[assertNotNull(buf).length * Integer.SIZE];
     for (int i = 0; i < buf.length; ++i)
       toUnsignedString(buf[i], bytes, i, Integer.SIZE);
 
@@ -754,7 +756,7 @@ public final class Buffers {
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static String toString(final long ... buf) {
-    final byte[] bytes = new byte[Assertions.assertNotNull(buf).length * Long.SIZE];
+    final byte[] bytes = new byte[assertNotNull(buf).length * Long.SIZE];
     for (int i = 0; i < buf.length; ++i)
       toUnsignedString(buf[i], bytes, i, Long.SIZE);
 

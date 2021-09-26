@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -101,7 +103,7 @@ public final class Resources {
    * @throws IllegalArgumentException If any of the provided arguments is null.
    */
   public static void walk(final ClassLoader classLoader, final String name, final ForEachEntry forEachEntry) throws IOException {
-    traverse(Assertions.assertNotNull(classLoader).getResources(Assertions.assertNotNull(name)), name, true, Assertions.assertNotNull(forEachEntry));
+    traverse(assertNotNull(classLoader).getResources(assertNotNull(name)), name, true, assertNotNull(forEachEntry));
   }
 
   /**
@@ -136,7 +138,7 @@ public final class Resources {
    * @throws IllegalArgumentException If any of the provided arguments is null.
    */
   public static void list(final ClassLoader classLoader, final String name, final ForEachEntry forEachEntry) throws IOException {
-    traverse(Assertions.assertNotNull(classLoader).getResources(Assertions.assertNotNull(name)), name, false, Assertions.assertNotNull(forEachEntry));
+    traverse(assertNotNull(classLoader).getResources(assertNotNull(name)), name, false, assertNotNull(forEachEntry));
   }
 
   /**
@@ -172,9 +174,9 @@ public final class Resources {
    * @throws IllegalArgumentException If any of the provided arguments is null.
    */
   public static void traverse(final Enumeration<URL> resources, final String name, final boolean recursive, final ForEachEntry forEachEntry) throws IOException {
-    Assertions.assertNotNull(resources);
-    Assertions.assertNotNull(name);
-    Assertions.assertNotNull(forEachEntry);
+    assertNotNull(resources);
+    assertNotNull(name);
+    assertNotNull(forEachEntry);
     if (!resources.hasMoreElements())
       return;
 
@@ -249,7 +251,7 @@ public final class Resources {
    * @throws IllegalArgumentException If {@code name} is null.
    */
   public static URL getResourceOrFile(final String name) {
-    final URL resource = Thread.currentThread().getContextClassLoader().getResource(Assertions.assertNotNull(name));
+    final URL resource = Thread.currentThread().getContextClassLoader().getResource(assertNotNull(name));
     if (resource != null)
       return resource;
 
@@ -275,7 +277,7 @@ public final class Resources {
    * @throws IllegalArgumentException If {@code name} is null.
    */
   public static URL getFileOrResource(final String name) {
-    final File file = new File(Assertions.assertNotNull(name));
+    final File file = new File(assertNotNull(name));
     if (file.exists()) {
       try {
         return file.toURI().toURL();

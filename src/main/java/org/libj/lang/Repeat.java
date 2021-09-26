@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,8 +83,8 @@ public final class Repeat {
       if (array == null)
         return null;
 
-      Assertions.assertNotNull(type, "type == null");
-      Assertions.assertNotNull(predicate, "predicate == null");
+      assertNotNull(type, "type == null");
+      assertNotNull(predicate, "predicate == null");
       return null;
     }
   }
@@ -123,8 +125,8 @@ public final class Repeat {
         if (array == null)
           return null;
 
-        Assertions.assertNotNull(type, "type == null");
-        Assertions.assertNotNull(recurser, "recurser == null");
+        assertNotNull(type, "type == null");
+        assertNotNull(recurser, "recurser == null");
         return recurse(container, array, type, recurser, arg, 0, 0);
       }
 

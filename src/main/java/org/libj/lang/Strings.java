@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.text.ParseException;
@@ -204,9 +206,9 @@ public final class Strings {
    *           has {@code key=value} entries that result in a loop.
    */
   public static Map<String,String> interpolate(final Map<String,String> properties, final String prefix, final String suffix) {
-    Assertions.assertNotNull(properties);
-    Assertions.assertNotNull(prefix);
-    Assertions.assertNotNull(suffix);
+    assertNotNull(properties);
+    assertNotNull(prefix);
+    assertNotNull(suffix);
     StringBuilder builder = null;
     for (final Map.Entry<String,String> entry : properties.entrySet()) {
       final String value = entry.getValue();
@@ -255,7 +257,7 @@ public final class Strings {
    *           {@code prefix}, or {@code suffix} is null.
    */
   public static String interpolate(final String text, final Map<String,String> properties, final String prefix, final String suffix) {
-    return interpolateDeep(new StringBuilder(Assertions.assertNotNull(text)), Assertions.assertNotNull(properties), Assertions.assertNotNull(prefix), Assertions.assertNotNull(suffix));
+    return interpolateDeep(new StringBuilder(assertNotNull(text)), assertNotNull(properties), assertNotNull(prefix), assertNotNull(suffix));
   }
 
   /**
@@ -335,8 +337,8 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} or {@code prefix} is null.
    */
   public static boolean startsWith(final CharSequence str, final CharSequence prefix) {
-    Assertions.assertNotNull(str);
-    Assertions.assertNotNull(prefix);
+    assertNotNull(str);
+    assertNotNull(prefix);
     if (prefix.length() == 0)
       return true;
 
@@ -363,8 +365,8 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} or {@code prefix} is null.
    */
   public static boolean startsWithIgnoreCase(final CharSequence str, final CharSequence prefix) {
-    Assertions.assertNotNull(str);
-    Assertions.assertNotNull(prefix);
+    assertNotNull(str);
+    assertNotNull(prefix);
     if (prefix.length() == 0)
       return true;
 
@@ -390,8 +392,8 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} or {@code suffix} is null.
    */
   public static boolean endsWith(final CharSequence str, final CharSequence suffix) {
-    Assertions.assertNotNull(str);
-    Assertions.assertNotNull(suffix);
+    assertNotNull(str);
+    assertNotNull(suffix);
     if (suffix.length() == 0)
       return true;
 
@@ -418,7 +420,7 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} is null.
    */
   public static boolean endsWith(final CharSequence str, final char suffix) {
-    Assertions.assertNotNull(str);
+    assertNotNull(str);
     return str.length() > 0 && str.charAt(str.length() - 1) == suffix;
   }
 
@@ -438,7 +440,7 @@ public final class Strings {
    */
   public static StringBuilder toProperCase(final StringBuilder builder) {
     boolean nextUpper = true;
-    for (int i = 0, len = Assertions.assertNotNull(builder).length(); i < len; ++i) {
+    for (int i = 0, len = assertNotNull(builder).length(); i < len; ++i) {
       final char ch = builder.charAt(i);
       if (Character.isWhitespace(ch)) {
         nextUpper = true;
@@ -467,7 +469,7 @@ public final class Strings {
    * @see Character#toLowerCase(char)
    */
   public static StringBuilder toProperCase(final String str) {
-    return toProperCase(new StringBuilder(Assertions.assertNotNull(str)));
+    return toProperCase(new StringBuilder(assertNotNull(str)));
   }
 
   /**
@@ -481,7 +483,7 @@ public final class Strings {
    * @see Character#toLowerCase(char)
    */
   public static StringBuilder toLowerCase(final StringBuilder builder) {
-    for (int i = 0, len = Assertions.assertNotNull(builder).length(); i < len; ++i)
+    for (int i = 0, len = assertNotNull(builder).length(); i < len; ++i)
       builder.setCharAt(i, Character.toLowerCase(builder.charAt(i)));
 
     return builder;
@@ -498,14 +500,14 @@ public final class Strings {
    * @see Character#toUpperCase(char)
    */
   public static StringBuilder toUpperCase(final StringBuilder builder) {
-    for (int i = 0, len = Assertions.assertNotNull(builder).length(); i < len; ++i)
+    for (int i = 0, len = assertNotNull(builder).length(); i < len; ++i)
       builder.setCharAt(i, Character.toUpperCase(builder.charAt(i)));
 
     return builder;
   }
 
   private static StringBuilder changeCase(final StringBuilder builder, final boolean upper, final int beginIndex, final int endIndex) {
-    if (Assertions.assertNotNull(builder).length() == 0)
+    if (assertNotNull(builder).length() == 0)
       return builder;
 
     if (beginIndex < 0)
@@ -798,7 +800,7 @@ public final class Strings {
    */
   public static String padAll(final String str, final Align align, final int length, final char pad, final boolean truncate) {
     final StringBuilder builder = new StringBuilder();
-    final String[] lines = Assertions.assertNotNull(str).split("[\n\r]");
+    final String[] lines = assertNotNull(str).split("[\n\r]");
     for (int i = 0; i < lines.length; ++i) {
       if (i > 0)
         builder.append('\n');
@@ -818,7 +820,7 @@ public final class Strings {
   }
 
   private static int countPrintable(final CharSequence str, final int index) {
-    final int len = Assertions.assertNotNull(str).length();
+    final int len = assertNotNull(str).length();
     int start = 0;
     char ch, last = '\0';
     boolean esc = false;
@@ -965,10 +967,10 @@ public final class Strings {
       return strings[0];
 
     final String string0 = strings[0];
-    Assertions.assertNotNull(string0);
+    assertNotNull(string0);
     for (int i = 0; i < string0.length(); ++i)
       for (int j = 1; j < strings.length; ++j)
-        if (i == Assertions.assertNotNull(strings[j]).length() || string0.charAt(i) != strings[j].charAt(i))
+        if (i == assertNotNull(strings[j]).length() || string0.charAt(i) != strings[j].charAt(i))
           return string0.substring(0, i);
 
     return string0;
@@ -1062,7 +1064,7 @@ public final class Strings {
    *           {@code str.length() * count > Integer.MAX_VALUE}.
    */
   public static String repeat(final String str, final int count) {
-    Assertions.assertNotNull(str);
+    assertNotNull(str);
     if (count < 0)
       throw new IllegalArgumentException("count (" + count + ") must be greater than or equal to 0");
 
@@ -1109,7 +1111,7 @@ public final class Strings {
    */
   public static byte[] getBytes(final String str, final String charsetName) {
     try {
-      return Assertions.assertNotNull(str).getBytes(charsetName);
+      return assertNotNull(str).getBytes(charsetName);
     }
     catch (final UnsupportedEncodingException e) {
       throw new UnsupportedOperationException(e);
@@ -1213,7 +1215,7 @@ public final class Strings {
   }
 
   private static int lastIndexOf0(final CharSequence str, final char ch, final int fromIndex) {
-    for (int i = Math.min(fromIndex, Assertions.assertNotNull(str).length() - 1); i >= 0; --i)
+    for (int i = Math.min(fromIndex, assertNotNull(str).length() - 1); i >= 0; --i)
       if (str.charAt(i) == ch)
         return i;
 
@@ -1265,8 +1267,8 @@ public final class Strings {
   }
 
   private static int lastIndexOf0(final CharSequence str, final CharSequence substr, final int fromIndex) {
-    final int substrLen = Assertions.assertNotNull(substr).length();
-    for (int i = Math.min(fromIndex, Assertions.assertNotNull(str).length() - 1); i >= 0; --i)
+    final int substrLen = assertNotNull(substr).length();
+    for (int i = Math.min(fromIndex, assertNotNull(str).length() - 1); i >= 0; --i)
       if (regionMatches(str, false, i, substr, 0, substrLen))
         return i;
 
@@ -1294,7 +1296,7 @@ public final class Strings {
    */
   public static int indexOfUnEscaped(final CharSequence str, final char ch, final int fromIndex) {
     boolean escaped = false;
-    for (int i = Math.max(fromIndex, 0), len = Assertions.assertNotNull(str).length(); i < len; ++i) {
+    for (int i = Math.max(fromIndex, 0), len = assertNotNull(str).length(); i < len; ++i) {
       final char c = str.charAt(i);
       if (escaped) {
         if (c == '\\' && ch == '\\')
@@ -1348,10 +1350,10 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int indexOfUnEscaped(final CharSequence str, final CharSequence substr, final int fromIndex) {
-    final int substrLen = Assertions.assertNotNull(substr).length();
+    final int substrLen = assertNotNull(substr).length();
     boolean escaped = false;
     final boolean substrIsBackslash = substr.length() == 1 && substr.charAt(0) == '\\';
-    for (int i = Math.max(fromIndex, 0), len = Assertions.assertNotNull(str).length(); i < len; ++i) {
+    for (int i = Math.max(fromIndex, 0), len = assertNotNull(str).length(); i < len; ++i) {
       final char c = str.charAt(i);
       if (escaped) {
         if (c == '\\' && substrIsBackslash)
@@ -1488,7 +1490,7 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int lastIndexOfUnEscaped(final CharSequence str, final CharSequence substr) {
-    return lastIndexOfUnEscaped(str, substr, Assertions.assertNotNull(str).length() - 1);
+    return lastIndexOfUnEscaped(str, substr, assertNotNull(str).length() - 1);
   }
 
   /**
@@ -1515,7 +1517,7 @@ public final class Strings {
   public static int indexOfUnQuoted(final CharSequence str, final char ch, final int fromIndex) {
     boolean escaped = false;
     boolean quoted = false;
-    for (int i = Math.max(fromIndex, 0), len = Assertions.assertNotNull(str).length(); i < len; ++i) {
+    for (int i = Math.max(fromIndex, 0), len = assertNotNull(str).length(); i < len; ++i) {
       final char c = str.charAt(i);
       if (escaped)
         escaped = false;
@@ -1571,10 +1573,10 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int indexOfUnQuoted(final CharSequence str, final CharSequence substr, final int fromIndex) {
-    final int substrLen = Assertions.assertNotNull(substr).length();
+    final int substrLen = assertNotNull(substr).length();
     boolean escaped = false;
     boolean quoted = false;
-    for (int i = Math.max(fromIndex, 0), len = Assertions.assertNotNull(str).length(); i < len; ++i) {
+    for (int i = Math.max(fromIndex, 0), len = assertNotNull(str).length(); i < len; ++i) {
       final char c = str.charAt(i);
       if (escaped)
         escaped = false;
@@ -1633,7 +1635,7 @@ public final class Strings {
     boolean esacped = false;
     boolean quoted = false;
     char n = '\0';
-    for (int end = Assertions.assertNotNull(str).length() - 1, i = Math.min(fromIndex, end); i >= 0; --i) {
+    for (int end = assertNotNull(str).length() - 1, i = Math.min(fromIndex, end); i >= 0; --i) {
       final char c = str.charAt(i);
       if (c == '\\')
         esacped = true;
@@ -1665,7 +1667,7 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} is null.
    */
   public static int lastIndexOfUnQuoted(final CharSequence str, final char ch) {
-    return lastIndexOfUnQuoted(str, ch, Assertions.assertNotNull(str).length());
+    return lastIndexOfUnQuoted(str, ch, assertNotNull(str).length());
   }
 
   /**
@@ -1690,11 +1692,11 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int lastIndexOfUnQuoted(final CharSequence str, final CharSequence substr, final int fromIndex) {
-    final int substrLen = Assertions.assertNotNull(substr).length();
+    final int substrLen = assertNotNull(substr).length();
     boolean esacped = false;
     boolean quoted = false;
     char n = '\0';
-    for (int end = Assertions.assertNotNull(str).length() - 1, i = Math.min(fromIndex, end); i >= 0; --i) {
+    for (int end = assertNotNull(str).length() - 1, i = Math.min(fromIndex, end); i >= 0; --i) {
       final char c = str.charAt(i);
       if (c == '\\')
         esacped = true;
@@ -1726,7 +1728,7 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int lastIndexOfUnQuoted(final CharSequence str, final CharSequence substr) {
-    return lastIndexOfUnQuoted(str, substr, Assertions.assertNotNull(str).length());
+    return lastIndexOfUnQuoted(str, substr, assertNotNull(str).length());
   }
 
   /**
@@ -1755,7 +1757,7 @@ public final class Strings {
   public static int indexOfUnEnclosed(final CharSequence str, final char ch, final char open, final char close, final int fromIndex) {
     boolean escaped = false;
     boolean enclosed = false;
-    for (int i = Math.max(fromIndex, 0), len = Assertions.assertNotNull(str).length(); i < len; ++i) {
+    for (int i = Math.max(fromIndex, 0), len = assertNotNull(str).length(); i < len; ++i) {
       final char c = str.charAt(i);
       if (escaped)
         escaped = false;
@@ -1819,8 +1821,8 @@ public final class Strings {
   public static int indexOfUnEnclosed(final CharSequence str, final CharSequence substr, final char open, final char close, final int fromIndex) {
     boolean escaped = false;
     boolean enclosed = false;
-    final int substrLen = Assertions.assertNotNull(substr).length();
-    for (int i = Math.max(fromIndex, 0), len = Assertions.assertNotNull(str).length(); i < len; ++i) {
+    final int substrLen = assertNotNull(substr).length();
+    for (int i = Math.max(fromIndex, 0), len = assertNotNull(str).length(); i < len; ++i) {
       final char c = str.charAt(i);
       if (escaped)
         escaped = false;
@@ -1889,7 +1891,7 @@ public final class Strings {
   public static int indexOfScopeClose(final CharSequence str, final char open, final char close, final int fromIndex) {
     boolean escaped = false;
     int scope = 1;
-    for (int i = Math.max(fromIndex, 0), len = Assertions.assertNotNull(str).length(); i < len; ++i) {
+    for (int i = Math.max(fromIndex, 0), len = assertNotNull(str).length(); i < len; ++i) {
       final char c = str.charAt(i);
       if (escaped)
         escaped = false;
@@ -2022,7 +2024,7 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} is null.
    */
   public static String flipFirstCap(final String str) {
-    if (Assertions.assertNotNull(str).length() == 0)
+    if (assertNotNull(str).length() == 0)
       return str;
 
     boolean hasLower = false;
@@ -2113,8 +2115,8 @@ public final class Strings {
 
   @SuppressWarnings("rawtypes")
   private static String derefEL(final Map vars, final String s) {
-    Assertions.assertNotNull(s);
-    Assertions.assertNotNull(vars);
+    assertNotNull(s);
+    assertNotNull(vars);
     if (s.length() < 4)
       return s;
 
@@ -2222,8 +2224,8 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code s} or {@code vars} is null.
    */
   public static String derefEV(final String s, final Map<String,String> vars) throws ParseException {
-    Assertions.assertNotNull(s);
-    Assertions.assertNotNull(vars);
+    assertNotNull(s);
+    assertNotNull(vars);
     if (s.length() < 2)
       return s;
 
@@ -2342,7 +2344,7 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} is null or empty.
    */
   public static boolean isLowerCase(final CharSequence str) {
-    if (Assertions.assertNotNull(str).length() == 0)
+    if (assertNotNull(str).length() == 0)
       throw new IllegalArgumentException("Empty string");
 
     for (int i = 0, len = str.length(); i < len; ++i)
@@ -2363,7 +2365,7 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} is null or empty.
    */
   public static boolean isUpperCase(final CharSequence str) {
-    if (Assertions.assertNotNull(str).length() == 0)
+    if (assertNotNull(str).length() == 0)
       throw new IllegalArgumentException("Empty string");
 
     for (int i = 0, len = str.length(); i < len; ++i)
@@ -2406,7 +2408,7 @@ public final class Strings {
    *           of spaces is negative.
    */
   public static StringBuilder indent(final String str, final int spaces) {
-    return indent(new StringBuilder(Assertions.assertNotNull(str)), spaces);
+    return indent(new StringBuilder(assertNotNull(str)), spaces);
   }
 
   /**
@@ -2447,8 +2449,8 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static boolean regionMatches(final CharSequence str, final boolean ignoreCase, final int strOffset, final CharSequence substr, final int substrOffset, int len) {
-    Assertions.assertNotNull(str);
-    Assertions.assertNotNull(substr);
+    assertNotNull(str);
+    assertNotNull(substr);
     if (str instanceof String && substr instanceof String)
       return ((String)str).regionMatches(ignoreCase, strOffset, (String)substr, substrOffset, len);
 
@@ -2517,7 +2519,7 @@ public final class Strings {
     if (fromIndex < 0)
       fromIndex = 0;
 
-    final int len = Assertions.assertNotNull(str).length();
+    final int len = assertNotNull(str).length();
     if (fromIndex > len)
       return -1;
 
@@ -2573,7 +2575,7 @@ public final class Strings {
     if (fromIndex < 0)
       fromIndex = 0;
 
-    final int len = Assertions.assertNotNull(str).length() - Assertions.assertNotNull(substr).length() + 1;
+    final int len = assertNotNull(str).length() - assertNotNull(substr).length() + 1;
     if (fromIndex > len)
       return -1;
 
@@ -2632,7 +2634,7 @@ public final class Strings {
     if (fromIndex < 0)
       fromIndex = 0;
 
-    final int len = Assertions.assertNotNull(str).length();
+    final int len = assertNotNull(str).length();
     if (fromIndex > len)
       return -1;
 
@@ -2702,7 +2704,7 @@ public final class Strings {
     if (fromIndex < 0)
       fromIndex = 0;
 
-    final int len = Assertions.assertNotNull(str).length() - Assertions.assertNotNull(substr).length() + 1;
+    final int len = assertNotNull(str).length() - assertNotNull(substr).length() + 1;
     if (fromIndex > len)
       return -1;
 
@@ -2791,7 +2793,7 @@ public final class Strings {
     return intern != null ? intern : str;
   }
 
-  private static String[] split(final CharSequence str, final int len, final char ch, final String previous, final StringBuilder builder, int index, final int depth) {
+  private static String[] split(final CharSequence str, final int len, final char ch, final int empties, final StringBuilder builder, int index, final int depth) {
     final String[] parts;
     final char c = str.charAt(index);
     if (c != ch) {
@@ -2803,11 +2805,11 @@ public final class Strings {
           parts[depth] = part;
         }
         else {
-          parts = new String[previous.length() == 0 ? depth - 1 : depth];
+          parts = new String[depth - empties];
         }
       }
       else {
-        parts = split(str, len, ch, previous, builder, index, depth);
+        parts = split(str, len, ch, empties, builder, index, depth);
       }
     }
     else {
@@ -2816,15 +2818,15 @@ public final class Strings {
         if (index == len)
           parts = new String[depth + 1];
         else
-          parts = split(str, len, ch, part, new StringBuilder(), index, depth + 1);
+          parts = split(str, len, ch, part.length() == 0 ? empties + 1 : 0, new StringBuilder(), index, depth + 1);
 
-        parts[depth == parts.length ? depth - 1 : depth] = part;
+        parts[Math.min(parts.length - 1, depth)] = part;
       }
       else {
         if (index == len)
-          parts = new String[previous.length() == 0 ? depth - 1 : depth];
+          parts = new String[depth - empties];
         else
-          parts = split(str, len, ch, previous, new StringBuilder(), index, depth);
+          parts = split(str, len, ch, empties, new StringBuilder(), index, depth);
       }
     }
 
@@ -2843,7 +2845,7 @@ public final class Strings {
    * @see String#split(String)
    */
   public static String[] split(final CharSequence str, final char ch) {
-    return split(Assertions.assertNotNull(str), str.length(), ch, "", new StringBuilder(), 0, 0);
+    return split(assertNotNull(str), str.length(), ch, 0, new StringBuilder(), 0, 0);
   }
 
   private Strings() {

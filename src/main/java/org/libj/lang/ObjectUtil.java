@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -81,7 +83,7 @@ public final class ObjectUtil {
    */
   @SuppressWarnings("unchecked")
   public static <T extends Cloneable>T clone(final T obj) {
-    final Class<?> cls = Assertions.assertNotNull(obj).getClass();
+    final Class<?> cls = assertNotNull(obj).getClass();
     Method cloneMethod = classToCloneMethod.get(cls);
     if (cloneMethod == null) {
       try {

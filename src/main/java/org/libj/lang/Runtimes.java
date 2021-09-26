@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 import java.util.function.Consumer;
 
 /**
@@ -49,7 +51,7 @@ public final class Runtimes {
    * @throws IllegalAnnotationException If {@code closeable} is null.
    */
   public static void closeOnExit(final AutoCloseable closeable, final Consumer<Exception> onException) {
-    Assertions.assertNotNull(closeable);
+    assertNotNull(closeable);
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
       try {
         closeable.close();

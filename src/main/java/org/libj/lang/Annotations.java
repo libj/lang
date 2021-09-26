@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -55,7 +57,7 @@ public final class Annotations {
    * @throws IllegalArgumentException If {@code annotation} is null.
    */
   public static Map<String,Object> getAttributes(final Annotation annotation, final boolean removeDefaults) {
-    final Class<? extends Annotation> annotationType = Assertions.assertNotNull(annotation).annotationType();
+    final Class<? extends Annotation> annotationType = assertNotNull(annotation).annotationType();
     final HashMap<String,Object> attributes = new HashMap<>();
     try {
       for (final Method method : annotationType.getDeclaredMethods()) {
@@ -145,7 +147,7 @@ public final class Annotations {
    * @throws IllegalArgumentException If {@code annotation} is null.
    */
   public static String toSortedString(final Annotation annotation, final Comparator<String> comparator, final boolean removeDefaults) {
-    final String str = Assertions.assertNotNull(annotation).toString();
+    final String str = assertNotNull(annotation).toString();
     if (str.indexOf('(') < 0)
       return str;
 

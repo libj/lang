@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 import java.lang.reflect.Array;
 import java.util.List;
 
@@ -66,7 +68,7 @@ public final class Enums {
    * @throws IllegalArgumentException If {@code type} or {@code names} is null.
    */
   public static <T extends Enum<T>>T[] valueOf(final Class<T> type, final String ... names) {
-    return recurseValueOf(Assertions.assertNotNull(type), 0, 0, Assertions.assertNotNull(names));
+    return recurseValueOf(assertNotNull(type), 0, 0, assertNotNull(names));
   }
 
   /**
@@ -91,7 +93,7 @@ public final class Enums {
    *           or if the specified class object does not represent an enum type.
    */
   public static <T extends Enum<T>>T[] valueOf(final Class<T> type, final List<String> names) {
-    return valueOf(type, Assertions.assertNotNull(names).toArray(new String[names.size()]));
+    return valueOf(type, assertNotNull(names).toArray(new String[names.size()]));
   }
 
   /**
@@ -115,8 +117,8 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>byte toggle(byte mask, final E ... enums) {
-      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
-        mask ^= 1 << Assertions.assertNotNull(enums[i]).ordinal();
+      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i)
+        mask ^= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -135,8 +137,8 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>short toggle(short mask, final E ... enums) {
-      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
-        mask ^= 1 << Assertions.assertNotNull(enums[i]).ordinal();
+      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i)
+        mask ^= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -155,8 +157,8 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>int toggle(int mask, final E ... enums) {
-      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
-        mask ^= 1 << Assertions.assertNotNull(enums[i]).ordinal();
+      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i)
+        mask ^= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -175,8 +177,8 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>long toggle(long mask, final E ... enums) {
-      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
-        mask ^= 1 << Assertions.assertNotNull(enums[i]).ordinal();
+      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i)
+        mask ^= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -195,8 +197,8 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>byte set(byte mask, final E ... enums) {
-      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
-        mask |= 1 << Assertions.assertNotNull(enums[i]).ordinal();
+      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i)
+        mask |= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -215,8 +217,8 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>short set(short mask, final E ... enums) {
-      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
-        mask |= 1 << Assertions.assertNotNull(enums[i]).ordinal();
+      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i)
+        mask |= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -235,8 +237,8 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>int set(int mask, final E ... enums) {
-      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
-        mask |= 1 << Assertions.assertNotNull(enums[i]).ordinal();
+      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i)
+        mask |= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -255,8 +257,8 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>long set(long mask, final E ... enums) {
-      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
-        mask |= 1 << Assertions.assertNotNull(enums[i]).ordinal();
+      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i)
+        mask |= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -275,8 +277,8 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>byte unset(byte mask, final E ... enums) {
-      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
-        mask &= 1 << Assertions.assertNotNull(enums[i]).ordinal();
+      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i)
+        mask &= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -295,8 +297,8 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>short unset(short mask, final E ... enums) {
-      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
-        mask &= 1 << Assertions.assertNotNull(enums[i]).ordinal();
+      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i)
+        mask &= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -315,8 +317,8 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>int unset(int mask, final E ... enums) {
-      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
-        mask &= 1 << Assertions.assertNotNull(enums[i]).ordinal();
+      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i)
+        mask &= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -335,8 +337,8 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>long unset(long mask, final E ... enums) {
-      for (int i = 0, len = Assertions.assertNotNull(enums).length; i < len; ++i)
-        mask &= 1 << Assertions.assertNotNull(enums[i]).ordinal();
+      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i)
+        mask &= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;
     }
@@ -415,7 +417,7 @@ public final class Enums {
      * @throws IllegalArgumentException If {@link Enum enm} is null.
      */
     public static boolean check(final byte mask, final Enum<?> enm) {
-      return check(mask, Assertions.assertNotNull(enm).ordinal());
+      return check(mask, assertNotNull(enm).ordinal());
     }
 
     /**
@@ -432,7 +434,7 @@ public final class Enums {
      * @throws IllegalArgumentException If {@link Enum enm} is null.
      */
     public static boolean check(final short mask, final Enum<?> enm) {
-      return check(mask, Assertions.assertNotNull(enm).ordinal());
+      return check(mask, assertNotNull(enm).ordinal());
     }
 
     /**
@@ -449,7 +451,7 @@ public final class Enums {
      * @throws IllegalArgumentException If {@link Enum enm} is null.
      */
     public static boolean check(final int mask, final Enum<?> enm) {
-      return check(mask, Assertions.assertNotNull(enm).ordinal());
+      return check(mask, assertNotNull(enm).ordinal());
     }
 
     /**
@@ -466,7 +468,7 @@ public final class Enums {
      * @throws IllegalArgumentException If {@link Enum enm} is null.
      */
     public static boolean check(final long mask, final Enum<?> enm) {
-      return check(mask, Assertions.assertNotNull(enm).ordinal());
+      return check(mask, assertNotNull(enm).ordinal());
     }
 
     /**
@@ -488,7 +490,7 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>E[] toArray(final byte mask, final E ... values) {
-      return toArray(Assertions.assertNotNull(values), mask, Byte.SIZE, 0, 0);
+      return toArray(assertNotNull(values), mask, Byte.SIZE, 0, 0);
     }
 
     /**
@@ -510,7 +512,7 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>E[] toArray(final short mask, final E ... values) {
-      return toArray(Assertions.assertNotNull(values), mask, Short.SIZE, 0, 0);
+      return toArray(assertNotNull(values), mask, Short.SIZE, 0, 0);
     }
 
     /**
@@ -532,7 +534,7 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>E[] toArray(final int mask, final E ... values) {
-      return toArray(Assertions.assertNotNull(values), mask, Integer.SIZE, 0, 0);
+      return toArray(assertNotNull(values), mask, Integer.SIZE, 0, 0);
     }
 
     /**
@@ -554,7 +556,7 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>E[] toArray(final long mask, final E ... values) {
-      return toArray(Assertions.assertNotNull(values), mask, 0, 0);
+      return toArray(assertNotNull(values), mask, 0, 0);
     }
 
     @SuppressWarnings("unchecked")

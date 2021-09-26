@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 import java.util.Enumeration;
 import java.util.Iterator;
 
@@ -23,7 +25,7 @@ public class EnumerationIterator<E> implements Iterator<E> {
   private final Enumeration<E> enumeration;
 
   public EnumerationIterator(final Enumeration<E> enumeration) {
-    this.enumeration = Assertions.assertNotNull(enumeration);
+    this.enumeration = assertNotNull(enumeration);
   }
 
   @Override

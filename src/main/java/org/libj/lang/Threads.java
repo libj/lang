@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.lang.management.ManagementFactory;
@@ -52,7 +54,7 @@ public final class Threads {
    * @throws IllegalArgumentException If {@code s} is null.
    */
   public static void printThreadTrace(final PrintWriter s) {
-    printThreadTrace(Assertions.assertNotNull(s)::println);
+    printThreadTrace(assertNotNull(s)::println);
   }
 
   /**
@@ -63,7 +65,7 @@ public final class Threads {
    * @throws IllegalArgumentException If {@code s} is null.
    */
   public static void printThreadTrace(final PrintStream s) {
-    printThreadTrace(Assertions.assertNotNull(s)::println);
+    printThreadTrace(assertNotNull(s)::println);
   }
 
   /**
@@ -74,7 +76,7 @@ public final class Threads {
    * @throws IllegalAnnotationException If {@code s} is null.
    */
   public static void printThreadTrace(final Consumer<String> s) {
-    Assertions.assertNotNull(s);
+    assertNotNull(s);
     final Map<Thread,StackTraceElement[]> stackTraces = Thread.getAllStackTraces();
     final Map<Long,Thread> tidToThread = new HashMap<>(stackTraces.size());
     for (final Thread thread : stackTraces.keySet())
@@ -228,9 +230,9 @@ public final class Threads {
    *           null, or if {@code timeout} is negative.
    */
   public static Runnable interruptAfterTimeout(final Runnable runnable, final long timeout, final TimeUnit unit) {
-    Assertions.assertNotNull(runnable);
-    Assertions.assertNotNegative(timeout);
-    Assertions.assertNotNull(unit);
+    assertNotNull(runnable);
+    assertNotNegative(timeout);
+    assertNotNull(unit);
     return () -> {
       reaper().add(Thread.currentThread(), System.currentTimeMillis() + TimeUnit.MILLISECONDS.convert(timeout, unit));
       runnable.run();
@@ -255,9 +257,9 @@ public final class Threads {
    *           null, or if {@code timeout} is negative.
    */
   public static <V>Callable<V> interruptAfterTimeout(final Callable<V> callable, final long timeout, final TimeUnit unit) {
-    Assertions.assertNotNull(callable);
-    Assertions.assertNotNegative(timeout);
-    Assertions.assertNotNull(unit);
+    assertNotNull(callable);
+    assertNotNegative(timeout);
+    assertNotNull(unit);
     return () -> {
       reaper().add(Thread.currentThread(), System.currentTimeMillis() + TimeUnit.MILLISECONDS.convert(timeout, unit));
       return callable.call();

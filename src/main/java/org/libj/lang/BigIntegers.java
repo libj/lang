@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 import java.math.BigInteger;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -52,7 +54,7 @@ public final class BigIntegers {
    * @throws IllegalArgumentException If {@code val} is null.
    */
   public static BigInteger intern(final String val) {
-    final BigInteger intern = instances.get(Assertions.assertNotNull(val));
+    final BigInteger intern = instances.get(assertNotNull(val));
     return intern != null ? intern : init(val, new BigInteger(val));
   }
 
@@ -66,7 +68,7 @@ public final class BigIntegers {
    * @throws IllegalArgumentException If {@code n} is null.
    */
   public static BigInteger intern(final BigInteger n) {
-    final BigInteger instance = instances.putIfAbsent(Assertions.assertNotNull(n).toString(), n);
+    final BigInteger instance = instances.putIfAbsent(assertNotNull(n).toString(), n);
     return instance != null ? instance : n;
   }
 

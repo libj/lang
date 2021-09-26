@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 import java.io.Serializable;
 
 /**
@@ -39,8 +41,8 @@ public class ArrayCharSequence implements CharSequence, Serializable {
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public ArrayCharSequence(final char[] buf) {
-    this(buf, null, 0, Assertions.assertNotNull(buf).length);
-    Assertions.assertBoundsOffsetCount("length", buf.length, "offset", offset, "count", count);
+    this(buf, null, 0, assertNotNull(buf).length);
+    assertBoundsOffsetCount("length", buf.length, "offset", offset, "count", count);
   }
 
   /**
@@ -71,7 +73,7 @@ public class ArrayCharSequence implements CharSequence, Serializable {
    */
   public ArrayCharSequence(final char[] buf, final int offset, final int count) {
     this(buf, null, offset, count);
-    Assertions.assertBoundsOffsetCount("length", Assertions.assertNotNull(buf).length, "offset", offset, "count", count);
+    assertBoundsOffsetCount("length", assertNotNull(buf).length, "offset", offset, "count", count);
   }
 
   private ArrayCharSequence(final char[] buf, final String str, final int offset, final int count) {
@@ -89,8 +91,8 @@ public class ArrayCharSequence implements CharSequence, Serializable {
    * @throws IllegalArgumentException If {@code str} is null.
    */
   public ArrayCharSequence(final String str) {
-    this(null, str, 0, Assertions.assertNotNull(str).length());
-    Assertions.assertBoundsOffsetCount("length", str.length(), "offset", offset, "count", count);
+    this(null, str, 0, assertNotNull(str).length());
+    assertBoundsOffsetCount("length", str.length(), "offset", offset, "count", count);
   }
 
   /**
@@ -121,7 +123,7 @@ public class ArrayCharSequence implements CharSequence, Serializable {
    */
   public ArrayCharSequence(final String str, final int offset, final int count) {
     this(null, str, offset, count);
-    Assertions.assertBoundsOffsetCount("length", Assertions.assertNotNull(str).length(), "offset", offset, "count", count);
+    assertBoundsOffsetCount("length", assertNotNull(str).length(), "offset", offset, "count", count);
   }
 
   @Override
@@ -139,7 +141,7 @@ public class ArrayCharSequence implements CharSequence, Serializable {
     if (start == 0 && end == count)
       return this;
 
-    Assertions.assertRangeArray(start, end, count);
+    assertRangeArray(start, end, count);
     return new ArrayCharSequence(buf, str, offset + start, end - start);
   }
 

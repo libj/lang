@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Function;
@@ -45,7 +47,7 @@ public final class Identifiers {
    *      3.8 Identifiers</a>
    */
   public static boolean isValid(final String identifier, final boolean qualified) {
-    return (qualified ? qualifiedJavaIdentifierPattern : unqualifiedJavaIdentifierPattern).matcher(Assertions.assertNotNull(identifier)).matches();
+    return (qualified ? qualifiedJavaIdentifierPattern : unqualifiedJavaIdentifierPattern).matcher(assertNotNull(identifier)).matches();
   }
 
   /**
@@ -120,7 +122,7 @@ public final class Identifiers {
    *      Keywords</a>
    */
   public static boolean isReservedWord(final String word) {
-    return Arrays.binarySearch(reservedWords, Assertions.assertNotNull(word)) >= 0;
+    return Arrays.binarySearch(reservedWords, assertNotNull(word)) >= 0;
   }
 
   private static String transformNotReserved(final char prefix, final char suffix, final Map<Character,String> substitutes, final Function<Character,String> function, final StringBuilder builder) {
@@ -162,7 +164,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toIdentifier(final String string, final char prefix, final char substitute, final Map<Character,String> substitutes) {
-    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toIdentifier0(string, prefix, substitute, substitutes, null));
+    return assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toIdentifier0(string, prefix, substitute, substitutes, null));
   }
 
   /**
@@ -183,7 +185,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toIdentifier(final String string, final Map<Character,String> substitutes) {
-    if (Assertions.assertNotNull(string).length() == 0)
+    if (assertNotNull(string).length() == 0)
       return string;
 
     final char prefix = '_';
@@ -210,7 +212,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toIdentifier(final String string, final char prefix, final Map<Character,String> substitutes) {
-    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toIdentifier0(string, prefix, '\0', substitutes, null));
+    return assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toIdentifier0(string, prefix, '\0', substitutes, null));
   }
 
   /**
@@ -231,7 +233,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toIdentifier(final String string, final char prefix, final Function<Character,String> substitutes) {
-    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, substitutes, toIdentifier0(string, prefix, '\0', null, substitutes));
+    return assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, substitutes, toIdentifier0(string, prefix, '\0', null, substitutes));
   }
 
   /**
@@ -251,7 +253,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toIdentifier(final String string, final char prefix, final char substitute) {
-    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toIdentifier0(string, prefix, substitute, null, null));
+    return assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toIdentifier0(string, prefix, substitute, null, null));
   }
 
   /**
@@ -270,7 +272,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toIdentifier(final String string, final char prefix) {
-    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toIdentifier0(string, prefix, '\0', null, null));
+    return assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toIdentifier0(string, prefix, '\0', null, null));
   }
 
   /**
@@ -289,7 +291,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toIdentifier(final String string, final Function<Character,String> substitutes) {
-    if (Assertions.assertNotNull(string).length() == 0)
+    if (assertNotNull(string).length() == 0)
       return string;
 
     final char prefix = '_';
@@ -310,7 +312,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toIdentifier(final String string) {
-    if (Assertions.assertNotNull(string).length() == 0)
+    if (assertNotNull(string).length() == 0)
       return string;
 
     final char prefix = '_';
@@ -393,7 +395,7 @@ public final class Identifiers {
    *      Package Names</a>
    */
   public static String toPackageCase(final String string, final Function<Character,String> substitutes) {
-    if (Assertions.assertNotNull(string).length() == 0)
+    if (assertNotNull(string).length() == 0)
       return string;
 
     final char prefix = '_';
@@ -427,7 +429,7 @@ public final class Identifiers {
    *      Package Names</a>
    */
   public static String toPackageCase(final String string) {
-    if (Assertions.assertNotNull(string).length() == 0)
+    if (assertNotNull(string).length() == 0)
       return string;
 
     final char prefix = '_';
@@ -459,7 +461,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toCamelCase(final String string, final char prefix, final char substitute, final Map<Character,String> substitutes) {
-    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toCamelCase0(string, prefix, substitute, substitutes, null));
+    return assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toCamelCase0(string, prefix, substitute, substitutes, null));
   }
 
   /**
@@ -482,7 +484,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toCamelCase(final String string, final char prefix, final Map<Character,String> substitutes) {
-    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toCamelCase0(string, prefix, '\0', substitutes, null));
+    return assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toCamelCase0(string, prefix, '\0', substitutes, null));
   }
 
   /**
@@ -502,7 +504,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toCamelCase(final String string, final char prefix, final char substitute) {
-    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toCamelCase0(string, prefix, substitute, null, null));
+    return assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toCamelCase0(string, prefix, substitute, null, null));
   }
 
   /**
@@ -523,7 +525,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toCamelCase(final String string, final char prefix, final Function<Character,String> substitutes) {
-    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, substitutes, toCamelCase0(string, prefix, '\0', null, substitutes));
+    return assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, substitutes, toCamelCase0(string, prefix, '\0', null, substitutes));
   }
 
   /**
@@ -542,7 +544,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toCamelCase(final String string, final char prefix) {
-    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toCamelCase0(string, prefix, '\0', null, null));
+    return assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toCamelCase0(string, prefix, '\0', null, null));
   }
 
   /**
@@ -561,7 +563,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toCamelCase(final String string, final Function<Character,String> substitutes) {
-    if (Assertions.assertNotNull(string).length() == 0)
+    if (assertNotNull(string).length() == 0)
       return string;
 
     final char prefix = 'x';
@@ -582,7 +584,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toCamelCase(final String string) {
-    if (Assertions.assertNotNull(string).length() == 0)
+    if (assertNotNull(string).length() == 0)
       return string;
 
     final char prefix = 'x';
@@ -607,7 +609,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toCamelCase(final String string, final Map<Character,String> substitutes) {
-    if (Assertions.assertNotNull(string).length() == 0)
+    if (assertNotNull(string).length() == 0)
       return string;
 
     final char prefix = 'x';
@@ -687,7 +689,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toInstanceCase(final String string, final char prefix, final char substitute, final Map<Character,String> substitutes) {
-    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toInstanceCase0(string, prefix, substitute, substitutes, null));
+    return assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toInstanceCase0(string, prefix, substitute, substitutes, null));
   }
 
   /**
@@ -711,7 +713,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toInstanceCase(final String string, final char prefix, final Map<Character,String> substitutes) {
-    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toInstanceCase0(string, prefix, '\0', substitutes, null));
+    return assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', substitutes, null, toInstanceCase0(string, prefix, '\0', substitutes, null));
   }
 
   /**
@@ -735,7 +737,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toInstanceCase(final String string, final char prefix, final Function<Character,String> substitutes) {
-    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, substitutes, toInstanceCase0(string, prefix, '\0', null, substitutes));
+    return assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, substitutes, toInstanceCase0(string, prefix, '\0', null, substitutes));
   }
 
   /**
@@ -757,7 +759,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toInstanceCase(final String string, final char prefix, final char substitute) {
-    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toInstanceCase0(string, prefix, substitute, null, null));
+    return assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toInstanceCase0(string, prefix, substitute, null, null));
   }
 
   /**
@@ -777,7 +779,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toInstanceCase(final String string, final char prefix) {
-    return Assertions.assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toInstanceCase0(string, prefix, '\0', null, null));
+    return assertNotNull(string).length() == 0 ? string : transformNotReserved(prefix, '\0', null, null, toInstanceCase0(string, prefix, '\0', null, null));
   }
 
   /**
@@ -845,7 +847,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toInstanceCase(final String string) {
-    if (Assertions.assertNotNull(string).length() == 0)
+    if (assertNotNull(string).length() == 0)
       return string;
 
     final char prefix = '_';
@@ -934,7 +936,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toClassCase(final String string, final char prefix, final char substitute, final Map<Character,String> substitutes) {
-    return Assertions.assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, prefix, substitute, substitutes, null));
+    return assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, prefix, substitute, substitutes, null));
   }
 
   /**
@@ -957,7 +959,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toClassCase(final String string, final char prefix, final Map<Character,String> substitutes) {
-    return Assertions.assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, prefix, '\0', substitutes, null));
+    return assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, prefix, '\0', substitutes, null));
   }
 
   /**
@@ -980,7 +982,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toClassCase(final String string, final char prefix, final Function<? super Character,String> substitutes) {
-    return Assertions.assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, prefix, '\0', null, substitutes));
+    return assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, prefix, '\0', null, substitutes));
   }
 
   /**
@@ -1001,7 +1003,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toClassCase(final String string, final char prefix, final char substitute) {
-    return Assertions.assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, prefix, substitute, null, null));
+    return assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, prefix, substitute, null, null));
   }
 
   /**
@@ -1020,7 +1022,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toClassCase(final String string, final char prefix) {
-    return Assertions.assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, prefix, '\0', null, null));
+    return assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, prefix, '\0', null, null));
   }
 
   /**
@@ -1041,7 +1043,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toClassCase(final String string, final Map<Character,String> substitutes) {
-    return Assertions.assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, 'X', '\0', substitutes, null));
+    return assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, 'X', '\0', substitutes, null));
   }
 
   /**
@@ -1060,7 +1062,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toClassCase(final String string, final Function<? super Character,String> substitutes) {
-    return Assertions.assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, 'X', '\0', null, substitutes));
+    return assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, 'X', '\0', null, substitutes));
   }
 
   /**
@@ -1077,7 +1079,7 @@ public final class Identifiers {
    *      Identifiers</a>
    */
   public static String toClassCase(final String string) {
-    return Assertions.assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, 'X', '\0', null, null));
+    return assertNotNull(string).length() == 0 ? string : toClassCase(toCamelCase0(string, 'X', '\0', null, null));
   }
 
   private Identifiers() {

@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
@@ -216,7 +218,7 @@ public final class Classes {
    * @throws IllegalArgumentException If {@code cls} is null.
    */
   public static String getCompositeName(final Class<?> cls) {
-    final String pkg = Assertions.assertNotNull(cls).getPackage().getName();
+    final String pkg = assertNotNull(cls).getPackage().getName();
     return pkg.length() == 0 ? cls.getName() : cls.getName().substring(pkg.length() + 1);
   }
 
@@ -242,7 +244,7 @@ public final class Classes {
    * @throws IllegalArgumentException If {@code cls} is null.
    */
   public static String getCanonicalCompositeName(final Class<?> cls) {
-    if (Assertions.assertNotNull(cls).isPrimitive())
+    if (assertNotNull(cls).isPrimitive())
       return cls.getCanonicalName();
 
     final String pkg = cls.getPackage().getName();
@@ -270,7 +272,7 @@ public final class Classes {
    * @throws IllegalArgumentException If {@code cls} is null.
    */
   public static Type[] getSuperclassGenericTypes(final Class<?> cls) {
-    return Assertions.assertNotNull(cls).getGenericSuperclass() instanceof ParameterizedType ? ((ParameterizedType)cls.getGenericSuperclass()).getActualTypeArguments() : null;
+    return assertNotNull(cls).getGenericSuperclass() instanceof ParameterizedType ? ((ParameterizedType)cls.getGenericSuperclass()).getActualTypeArguments() : null;
   }
 
   private static <T>T visitSuperclass(final Class<?> cls, final Queue<? super Class<?>> queue, final Set<? super Class<?>> visited, final Function<? super Class<?>,T> function) {
@@ -302,7 +304,7 @@ public final class Classes {
    * @throws IllegalArgumentException If {@code cls} null.
    */
   public static <T>T walkClassHierarchy(Class<?> cls, final Function<? super Class<?>,T> function) {
-    Assertions.assertNotNull(cls);
+    assertNotNull(cls);
     final Set<Class<?>> visited = new LinkedHashSet<>();
     final Queue<Class<?>> queue = new LinkedList<>();
     T t;
@@ -347,7 +349,7 @@ public final class Classes {
    * @throws IllegalArgumentException If {@code cls} null.
    */
   public static Set<Class<?>> getClassHierarchy(Class<?> cls, final Predicate<? super Class<?>> forEach) {
-    Assertions.assertNotNull(cls);
+    assertNotNull(cls);
     final Set<Class<?>> visited = new LinkedHashSet<>();
     final Queue<Class<?>> queue = new LinkedList<>();
     if (!visitSuperclass(cls, queue, visited, forEach))
@@ -403,8 +405,8 @@ public final class Classes {
    *           interface type.
    */
   public static Type[] getGenericInterfaceTypeArguments(final Class<?> cls, final Class<?> interfaceType) {
-    Assertions.assertNotNull(cls);
-    Assertions.assertNotNull(interfaceType);
+    assertNotNull(cls);
+    assertNotNull(interfaceType);
     if (!interfaceType.isInterface())
       throw new IllegalArgumentException(interfaceType.getName() + " is not an interface type");
 
@@ -431,7 +433,7 @@ public final class Classes {
    * @throws IllegalArgumentException If {@code cls} or {@code function} is null.
    */
   public static <T>T resolveGenericTypes(final Class<?> cls, final BiFunction<Class<?>,Type[],T> function) {
-    return resolveGenericTypes(Assertions.assertNotNull(cls), null, new HashSet<>(8), Assertions.assertNotNull(function));
+    return resolveGenericTypes(assertNotNull(cls), null, new HashSet<>(8), assertNotNull(function));
   }
 
   private static <T>T resolveGenericTypes(final Class<?> cls, final Object[][] args, final Set<Class<?>> visited, final BiFunction<Class<?>,Type[],T> function) {
@@ -507,7 +509,7 @@ public final class Classes {
    * @throws IllegalArgumentException If {@code method} is null.
    */
   public static Class<?>[] getGenericParameters(final Method method) {
-    return getGenericParameters(Assertions.assertNotNull(method).getGenericReturnType());
+    return getGenericParameters(assertNotNull(method).getGenericReturnType());
   }
 
   private static final Class<?>[] emptyClasses = {};
@@ -521,7 +523,7 @@ public final class Classes {
    * @throws IllegalArgumentException If {@code field} is null.
    */
   public static Class<?>[] getGenericParameters(final Field field) {
-    return getGenericParameters(Assertions.assertNotNull(field).getGenericType());
+    return getGenericParameters(assertNotNull(field).getGenericType());
   }
 
   public static Class<?>[] getGenericParameters(final Type genericType) {
@@ -594,7 +596,7 @@ public final class Classes {
    *           denies access to the package of this class.
    */
   public static Field getField(final Class<?> cls, final String name) {
-    return Classes.getField(Assertions.assertNotNull(cls), Assertions.assertNotNull(name), false);
+    return Classes.getField(assertNotNull(cls), assertNotNull(name), false);
   }
 
   /**
@@ -627,7 +629,7 @@ public final class Classes {
    *           denies access to the package of this class.
    */
   public static Field getDeclaredField(final Class<?> cls, final String name) {
-    return Classes.getField(Assertions.assertNotNull(cls), Assertions.assertNotNull(name), true);
+    return Classes.getField(assertNotNull(cls), assertNotNull(name), true);
   }
 
   /**
@@ -660,8 +662,8 @@ public final class Classes {
    *           denies access to the package of this class.
    */
   public static Field getDeclaredFieldDeep(Class<?> cls, final String name) {
-    Assertions.assertNotNull(cls);
-    Assertions.assertNotNull(name);
+    assertNotNull(cls);
+    assertNotNull(name);
     Field field;
     do
       field = getField(cls, name, true);
@@ -695,7 +697,7 @@ public final class Classes {
    */
   @SuppressWarnings("unchecked")
   public static <T>Constructor<T> getConstructor(final Class<T> cls, final Class<?> ... parameterTypes) {
-    final Constructor<?>[] constructors = Assertions.assertNotNull(cls).getConstructors();
+    final Constructor<?>[] constructors = assertNotNull(cls).getConstructors();
     for (final Constructor<?> constructor : constructors)
       if (parameterTypes == null || parameterTypes.length == 0 ? constructor.getParameterCount() == 0 : parameterTypes.length == constructor.getParameterCount() && Arrays.equals(constructor.getParameterTypes(), parameterTypes))
         return (Constructor<T>)constructor;
@@ -731,7 +733,7 @@ public final class Classes {
    */
   @SuppressWarnings("unchecked")
   public static <T>Constructor<T> getCompatibleConstructor(final Class<T> cls, final Class<?> ... parameterTypes) {
-    final Constructor<?>[] constructors = Assertions.assertNotNull(cls).getConstructors();
+    final Constructor<?>[] constructors = assertNotNull(cls).getConstructors();
     for (final Constructor<?> constructor : constructors)
       if (isCompatible(constructor.getParameterTypes(), parameterTypes))
         return (Constructor<T>)constructor;
@@ -769,7 +771,7 @@ public final class Classes {
    */
   @SuppressWarnings("unchecked")
   public static <T>Constructor<T> getDeclaredConstructor(final Class<T> cls, final Class<?> ... parameterTypes) {
-    final Constructor<?>[] constructors = Assertions.assertNotNull(cls).getDeclaredConstructors();
+    final Constructor<?>[] constructors = assertNotNull(cls).getDeclaredConstructors();
     for (final Constructor<?> constructor : constructors)
       if (parameterTypes == null || parameterTypes.length == 0 ? constructor.getParameterCount() == 0 : parameterTypes.length == constructor.getParameterCount() && Arrays.equals(constructor.getParameterTypes(), parameterTypes))
         return (Constructor<T>)constructor;
@@ -792,12 +794,12 @@ public final class Classes {
    */
   @SuppressWarnings("unchecked")
   public static <T>T setAnnotationValue(final Annotation annotation, final String key, final T newValue) {
-    Assertions.assertNotNull(annotation);
-    Assertions.assertNotNull(key);
-    Assertions.assertNotNull(newValue);
+    assertNotNull(annotation);
+    assertNotNull(key);
+    assertNotNull(newValue);
     final Object handler = Proxy.getInvocationHandler(annotation);
-    Assertions.assertNotNull(key);
-    Assertions.assertNotNull(newValue);
+    assertNotNull(key);
+    assertNotNull(newValue);
     final Field field;
     final Map<String,Object> memberValues;
     try {
@@ -809,7 +811,7 @@ public final class Classes {
       throw new IllegalStateException(e);
     }
 
-    final T oldValue = Assertions.assertNotNull((T)memberValues.get(key), key + " is not a valid key");
+    final T oldValue = assertNotNull((T)memberValues.get(key), key + " is not a valid key");
     if (newValue.getClass() != oldValue.getClass())
       throw new IllegalArgumentException(newValue.getClass().getName() + " does not match the required type " + oldValue.getClass().getName());
 
@@ -883,7 +885,7 @@ public final class Classes {
    * @throws IllegalArgumentException If {@code cls} is null.
    */
   public static Field[] getDeclaredFieldsDeep(final Class<?> cls) {
-    return Repeat.Recursive.inverted(Assertions.assertNotNull(cls), cls.getDeclaredFields(), Field.class, declaredFieldRecurser, null);
+    return Repeat.Recursive.inverted(assertNotNull(cls), cls.getDeclaredFields(), Field.class, declaredFieldRecurser, null);
   }
 
   /**
@@ -912,7 +914,7 @@ public final class Classes {
    * @throws IllegalArgumentException If {@code cls} or {@code predicate} is null.
    */
   public static Field[] getDeclaredFieldsDeep(final Class<?> cls, final Predicate<Field> predicate) {
-    return Repeat.Recursive.inverted(Assertions.assertNotNull(cls), cls.getDeclaredFields(), Field.class, declaredFieldWithPredicateRecurser, Assertions.assertNotNull(predicate));
+    return Repeat.Recursive.inverted(assertNotNull(cls), cls.getDeclaredFields(), Field.class, declaredFieldWithPredicateRecurser, assertNotNull(predicate));
   }
 
   /**
@@ -940,7 +942,7 @@ public final class Classes {
    *           null.
    */
   public static Field[] getDeclaredFieldsWithAnnotation(final Class<?> cls, final Class<? extends Annotation> annotationType) {
-    return Repeat.Recursive.ordered(Assertions.assertNotNull(cls).getDeclaredFields(), Field.class, declaredFieldWithAnnotationFilter, Assertions.assertNotNull(annotationType));
+    return Repeat.Recursive.ordered(assertNotNull(cls).getDeclaredFields(), Field.class, declaredFieldWithAnnotationFilter, assertNotNull(annotationType));
   }
 
   /**
@@ -969,7 +971,7 @@ public final class Classes {
    *           null.
    */
   public static Field[] getDeclaredFieldsWithAnnotationDeep(final Class<?> cls, final Class<? extends Annotation> annotationType) {
-    return Repeat.Recursive.inverted(Assertions.assertNotNull(cls), cls.getDeclaredFields(), Field.class, declaredFieldWithAnnotationRecurser, Assertions.assertNotNull(annotationType));
+    return Repeat.Recursive.inverted(assertNotNull(cls), cls.getDeclaredFields(), Field.class, declaredFieldWithAnnotationRecurser, assertNotNull(annotationType));
   }
 
   /**
@@ -1002,7 +1004,7 @@ public final class Classes {
    * @throws IllegalArgumentException If {@code cls} or {@code name} is null.
    */
   public static Method getMethod(final Class<?> cls, final String name, final Class<?> ... parameterTypes) {
-    for (final Method method : Assertions.assertNotNull(cls).getMethods())
+    for (final Method method : assertNotNull(cls).getMethods())
       if (name.equals(method.getName()) && (parameterTypes == null || parameterTypes.length == 0 ? method.getParameterCount() == 0 : parameterTypes.length == method.getParameterCount() && Arrays.equals(method.getParameterTypes(), parameterTypes)))
         return method;
 
@@ -1035,7 +1037,7 @@ public final class Classes {
    * @throws IllegalArgumentException If {@code target} is null.
    */
   public static boolean isInstance(final Class<?> target, final Object obj) {
-    return obj != null && isAssignableFrom(Assertions.assertNotNull(target), obj.getClass(), true);
+    return obj != null && isAssignableFrom(assertNotNull(target), obj.getClass(), true);
   }
 
   /**
@@ -1089,8 +1091,8 @@ public final class Classes {
    * @throws IllegalArgumentException If {@code target} or {@code cls} is null.
    */
   public static boolean isAssignableFrom(Class<?> target, Class<?> cls, final boolean canWrap) {
-    Assertions.assertNotNull(target);
-    Assertions.assertNotNull(cls);
+    assertNotNull(target);
+    assertNotNull(cls);
     if (target.isArray()) {
       if (!cls.isArray())
         return false;
@@ -1146,9 +1148,9 @@ public final class Classes {
    *           {@code parameterTypes} is null.
    */
   public static Method getCompatibleMethod(final Class<?> cls, final String name, final Class<?> ... parameterTypes) {
-    Assertions.assertNotNull(cls);
-    Assertions.assertNotNull(name);
-    Assertions.assertNotNull(parameterTypes);
+    assertNotNull(cls);
+    assertNotNull(name);
+    assertNotNull(parameterTypes);
     for (final Method method : cls.getMethods())
       if (name.equals(method.getName()) && isCompatible(method.getParameterTypes(), parameterTypes))
         return method;
@@ -1189,9 +1191,9 @@ public final class Classes {
    * @throws IllegalArgumentException If {@code cls} or {@code name} is null.
    */
   public static Method getDeclaredMethod(final Class<?> cls, final String name, final Class<?> ... parameterTypes) {
-    Assertions.assertNotNull(cls);
-    Assertions.assertNotNull(name);
-    Assertions.assertNotNull(parameterTypes);
+    assertNotNull(cls);
+    assertNotNull(name);
+    assertNotNull(parameterTypes);
     for (final Method method : cls.getDeclaredMethods())
       if (name.equals(method.getName()) && (parameterTypes == null || parameterTypes.length == 0 ? method.getParameterCount() == 0 : Arrays.equals(method.getParameterTypes(), parameterTypes)))
         return method;
@@ -1231,8 +1233,8 @@ public final class Classes {
    * @throws IllegalArgumentException If {@code cls} or {@code name} is null.
    */
   public static Method getDeclaredMethodDeep(Class<?> cls, final String name, final Class<?> ... parameterTypes) {
-    Assertions.assertNotNull(cls);
-    Assertions.assertNotNull(name);
+    assertNotNull(cls);
+    assertNotNull(name);
     Method method;
     do
       method = getDeclaredMethod(cls, name, parameterTypes);
@@ -1260,7 +1262,7 @@ public final class Classes {
    * @throws IllegalArgumentException If {@code cls} is null.
    */
   public static Method[] getDeclaredMethodsDeep(final Class<?> cls) {
-    return Repeat.Recursive.inverted(Assertions.assertNotNull(cls), cls.getDeclaredMethods(), Method.class, declaredMethodRecurser, null);
+    return Repeat.Recursive.inverted(assertNotNull(cls), cls.getDeclaredMethods(), Method.class, declaredMethodRecurser, null);
   }
 
   /**
@@ -1286,7 +1288,7 @@ public final class Classes {
    * @throws IllegalArgumentException If {@code cls} or {@code predicate} is null.
    */
   public static Method[] getDeclaredMethodsDeep(final Class<?> cls, final Predicate<Method> predicate) {
-    return Repeat.Recursive.inverted(Assertions.assertNotNull(cls), cls.getDeclaredMethods(), Method.class, declaredMethodWithPredicateRecurser, Assertions.assertNotNull(predicate));
+    return Repeat.Recursive.inverted(assertNotNull(cls), cls.getDeclaredMethods(), Method.class, declaredMethodWithPredicateRecurser, assertNotNull(predicate));
   }
 
   /**
@@ -1315,7 +1317,7 @@ public final class Classes {
    *           null.
    */
   public static Method[] getDeclaredMethodsWithAnnotation(final Class<?> cls, final Class<? extends Annotation> annotationType) {
-    return Repeat.Recursive.ordered(Assertions.assertNotNull(cls).getDeclaredMethods(), Method.class, declaredMethodWithAnnotationFilter, Assertions.assertNotNull(annotationType));
+    return Repeat.Recursive.ordered(assertNotNull(cls).getDeclaredMethods(), Method.class, declaredMethodWithAnnotationFilter, assertNotNull(annotationType));
   }
 
   /**
@@ -1342,7 +1344,7 @@ public final class Classes {
    *           null.
    */
   public static Method[] getDeclaredMethodsWithAnnotationDeep(final Class<?> cls, final Class<? extends Annotation> annotationType) {
-    return Repeat.Recursive.inverted(Assertions.assertNotNull(cls), cls.getDeclaredMethods(), Method.class, declaredMethodWithAnnotationRecurser, Assertions.assertNotNull(annotationType));
+    return Repeat.Recursive.inverted(assertNotNull(cls), cls.getDeclaredMethods(), Method.class, declaredMethodWithAnnotationRecurser, assertNotNull(annotationType));
   }
 
   /**
@@ -1372,7 +1374,7 @@ public final class Classes {
    */
   @SuppressWarnings("unchecked")
   public static Class<?>[] getDeclaredClassesWithAnnotation(final Class<?> cls, final Class<? extends Annotation> annotationType) {
-    return Repeat.Recursive.ordered(Assertions.assertNotNull(cls).getDeclaredClasses(), (Class<Class<?>>)Class.class.getClass(), classWithAnnotationFilter, Assertions.assertNotNull(annotationType));
+    return Repeat.Recursive.ordered(assertNotNull(cls).getDeclaredClasses(), (Class<Class<?>>)Class.class.getClass(), classWithAnnotationFilter, assertNotNull(annotationType));
   }
 
   /**
@@ -1400,7 +1402,7 @@ public final class Classes {
    */
   @SuppressWarnings("unchecked")
   public static Class<?>[] getDeclaredClassesWithAnnotationDeep(final Class<?> cls, final Class<? extends Annotation> annotationType) {
-    return Repeat.Recursive.inverted(Assertions.assertNotNull(cls), cls.getDeclaredClasses(), (Class<Class<?>>)Class.class.getClass(), classWithAnnotationRecurser, Assertions.assertNotNull(annotationType));
+    return Repeat.Recursive.inverted(assertNotNull(cls), cls.getDeclaredClasses(), (Class<Class<?>>)Class.class.getClass(), classWithAnnotationRecurser, assertNotNull(annotationType));
   }
 
   /**
@@ -1422,8 +1424,8 @@ public final class Classes {
    *           is null.
    */
   public static <A extends Annotation>A getAnnotationDeep(final Class<?> cls, final Class<A> annotationClass) {
-    Class<?> parent = Assertions.assertNotNull(cls);
-    Assertions.assertNotNull(annotationClass);
+    Class<?> parent = assertNotNull(cls);
+    assertNotNull(annotationClass);
     A annotation;
     do {
       annotation = parent.getAnnotation(annotationClass);
@@ -1456,8 +1458,8 @@ public final class Classes {
    *           is null.
    */
   public static boolean isAnnotationPresentDeep(final Class<?> cls, final Class<? extends Annotation> annotationClass) {
-    Class<?> parent = Assertions.assertNotNull(cls);
-    Assertions.assertNotNull(annotationClass);
+    Class<?> parent = assertNotNull(cls);
+    assertNotNull(annotationClass);
     do {
       if (parent.isAnnotationPresent(annotationClass))
         return true;
@@ -1479,7 +1481,7 @@ public final class Classes {
    * @throws IllegalArgumentException If {@code cls} is null.
    */
   public static Class<?>[] getAllInterfaces(Class<?> cls) {
-    Assertions.assertNotNull(cls);
+    assertNotNull(cls);
     Class<?>[] thisInterfaces = null;
     LinkedHashSet<Class<?>> allInterfaces = null;
     do {
@@ -1508,8 +1510,8 @@ public final class Classes {
    *           null.
    */
   private static void getAllInterfaces(final Class<?> iface, final LinkedHashSet<Class<?>> allInterfaces) {
-    Assertions.assertNotNull(iface);
-    Assertions.assertNotNull(allInterfaces);
+    assertNotNull(iface);
+    assertNotNull(allInterfaces);
     if (allInterfaces.contains(iface))
       return;
 
@@ -1531,7 +1533,7 @@ public final class Classes {
    * @throws IllegalArgumentException If {@code cls} is null.
    */
   public static Type[] getAllGenericInterfaces(Class<?> cls) {
-    Assertions.assertNotNull(cls);
+    assertNotNull(cls);
     Class<?>[] thisInterfaces = null;
     Type[] thisGenericInterfaces = null;
     LinkedHashSet<Class<?>> allInterfaces = null;
@@ -1575,9 +1577,9 @@ public final class Classes {
    *           {@code allGenericInterfaces} is null.
    */
   private static void getAllGenericInterfaces(final Class<?> iface, final LinkedHashSet<Class<?>> allInterfaces, final LinkedHashSet<Type> allGenericInterfaces) {
-    Assertions.assertNotNull(iface);
-    Assertions.assertNotNull(allInterfaces);
-    Assertions.assertNotNull(allGenericInterfaces);
+    assertNotNull(iface);
+    assertNotNull(allInterfaces);
+    assertNotNull(allGenericInterfaces);
     if (allInterfaces.contains(iface))
       return;
 
@@ -1597,7 +1599,7 @@ public final class Classes {
    *           {@code classes} parameter is 0.
    */
   public static Class<?> getGreatestCommonSuperclass(final Class<?> ... classes) {
-    if (Assertions.assertNotNull(classes).length == 0)
+    if (assertNotNull(classes).length == 0)
       throw new IllegalArgumentException("Number of arguments must be greater than 0");
 
     if (classes.length == 1)
@@ -1624,7 +1626,7 @@ public final class Classes {
    */
   @SafeVarargs
   public static <T>Class<?> getGreatestCommonSuperclass(final T ... objects) {
-    if (Assertions.assertNotNull(objects).length == 0)
+    if (assertNotNull(objects).length == 0)
       throw new IllegalArgumentException("Number of arguments must be greater than 0");
 
     return getGreatestCommonSuperclass0(objects);
@@ -1644,15 +1646,15 @@ public final class Classes {
    *           {@code objects} collection is 0.
    */
   public static <T>Class<?> getGreatestCommonSuperclass(final Collection<T> objects) {
-    if (Assertions.assertNotNull(objects).size() == 0)
+    if (assertNotNull(objects).size() == 0)
       throw new IllegalArgumentException("Collection size must be greater than 0");
 
     return getGreatestCommonSuperclass0(objects.toArray());
   }
 
   private static Class<?> getGreatestCommonSuperclass(Class<?> c1, Class<?> c2) {
-    Assertions.assertNotNull(c1);
-    Assertions.assertNotNull(c2);
+    assertNotNull(c1);
+    assertNotNull(c2);
     final Class<?> c0 = c2;
     do {
       do
@@ -1776,8 +1778,8 @@ public final class Classes {
    */
   @SuppressWarnings("unchecked")
   public static <T>T newInstance(Class<T> type, final Object ... parameters) throws IllegalAccessException, InstantiationException, InvocationTargetException {
-    Assertions.assertNotNull(type);
-    Assertions.assertNotNull(parameters);
+    assertNotNull(type);
+    assertNotNull(parameters);
     if (type.isPrimitive())
       type = (Class<T>)toWrapper(type);
 
@@ -2058,7 +2060,7 @@ public final class Classes {
    * @see #getInternalName(Class)
    */
   public static String getInternalName(final Class<?> ... classes) {
-    Assertions.assertNotNull(classes);
+    assertNotNull(classes);
     final StringBuilder builder = new StringBuilder();
     for (final Class<?> cls : classes)
       builder.append(getInternalName(cls));
@@ -2093,7 +2095,7 @@ public final class Classes {
    * @throws IllegalArgumentException If {@code cls} is null.
    */
   public static String getInternalName(final Class<?> cls) {
-    if (Assertions.assertNotNull(cls).isArray())
+    if (assertNotNull(cls).isArray())
       return "[" + getInternalName(cls.getComponentType());
 
     for (int i = 0; i < primitiveClasses.length; ++i)

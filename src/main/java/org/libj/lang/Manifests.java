@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,7 +45,7 @@ public final class Manifests {
    * @throws IllegalArgumentException If {@code cls} is null.
    */
   public static Manifest getManifest(final Class<?> cls) throws IOException {
-    final CodeSource codeSource = Assertions.assertNotNull(cls).getProtectionDomain().getCodeSource();
+    final CodeSource codeSource = assertNotNull(cls).getProtectionDomain().getCodeSource();
     if (codeSource == null)
       return null;
 
@@ -74,7 +76,7 @@ public final class Manifests {
    * @throws IllegalArgumentException If {@code cls} is null.
    */
   public static Manifest[] getManifests(final Class<?> cls) throws IOException {
-    final String name = Assertions.assertNotNull(cls).getName().replace('.', '/').concat(".class");
+    final String name = assertNotNull(cls).getName().replace('.', '/').concat(".class");
     return getManifests(cls.getClassLoader().getResources(name), name.length(), 0);
   }
 

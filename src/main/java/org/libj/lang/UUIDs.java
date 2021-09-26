@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 import java.util.UUID;
 
 /**
@@ -32,7 +34,7 @@ public final class UUIDs {
    * @throws IllegalAnnotationException If {@code uuid} is null.
    */
   public static String toString32(final UUID uuid) {
-    final String str = Assertions.assertNotNull(uuid).toString();
+    final String str = assertNotNull(uuid).toString();
     return str.substring(0, 8) + str.substring(9, 13) + str.substring(14, 18) + str.substring(19, 23) + str.substring(24, 36);
   }
 

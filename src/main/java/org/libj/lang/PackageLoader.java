@@ -16,6 +16,8 @@
 
 package org.libj.lang;
 
+import static org.libj.lang.Assertions.*;
+
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -103,7 +105,7 @@ public class PackageLoader {
    * @see Class#forName(String,boolean,ClassLoader)
    */
   public Set<Class<?>> loadPackage(final Package pkg) throws IOException, PackageNotFoundException {
-    return loadPackage(Assertions.assertNotNull(pkg).getName(), true, true);
+    return loadPackage(assertNotNull(pkg).getName(), true, true);
   }
 
   /**
@@ -126,7 +128,7 @@ public class PackageLoader {
    * @see Class#forName(String,boolean,ClassLoader)
    */
   public void loadPackage(final Package pkg, final Predicate<? super Class<?>> initialize) throws IOException, PackageNotFoundException {
-    loadPackage(Assertions.assertNotNull(pkg).getName(), true, false, initialize, classLoader);
+    loadPackage(assertNotNull(pkg).getName(), true, false, initialize, classLoader);
   }
 
   /**
@@ -150,7 +152,7 @@ public class PackageLoader {
    * @see Class#forName(String,boolean,ClassLoader)
    */
   public Set<Class<?>> loadPackage(final Package pkg, final boolean initialize) throws IOException, PackageNotFoundException {
-    return loadPackage(Assertions.assertNotNull(pkg).getName(), true, initialize);
+    return loadPackage(assertNotNull(pkg).getName(), true, initialize);
   }
 
   /**
@@ -177,7 +179,7 @@ public class PackageLoader {
    * @see Class#forName(String,boolean,ClassLoader)
    */
   public Set<Class<?>> loadPackage(final Package pkg, final boolean includeSubPackages, final boolean initialize) throws IOException, PackageNotFoundException {
-    return loadPackage(Assertions.assertNotNull(pkg).getName(), includeSubPackages, initialize);
+    return loadPackage(assertNotNull(pkg).getName(), includeSubPackages, initialize);
   }
 
   /**
@@ -314,7 +316,7 @@ public class PackageLoader {
 
   private static void loadPackage(final String packageName, final boolean includeSubPackages, final boolean initialize, final Predicate<? super Class<?>> predicate, final ClassLoader classLoader) throws IOException, PackageNotFoundException {
     final ClassLoader loader = classLoader != null ? classLoader : bootLoaderProxy;
-    final String resourceName = Assertions.assertNotNull(packageName).replace('.', '/');
+    final String resourceName = assertNotNull(packageName).replace('.', '/');
     final Enumeration<URL> resources = loader.getResources(resourceName);
     if (!resources.hasMoreElements())
       throw new PackageNotFoundException(packageName.length() > 0 ? packageName : "<default>");
