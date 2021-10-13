@@ -23,7 +23,7 @@ import java.util.Collection;
  */
 public final class Assertions {
   /**
-   * Checks that the specified object reference is not {@code null}. This method
+   * Checks that the specified object reference is not null. This method
    * is designed primarily for doing parameter validation in methods and
    * constructors, as demonstrated below:
    *
@@ -37,8 +37,8 @@ public final class Assertions {
    * @param obj The object reference to check for nullity.
    * @param message The detail message to be used for the
    *          {@link IllegalArgumentException}.
-   * @return {@code obj} if not {@code null}.
-   * @throws IllegalArgumentException If {@code obj} is {@code null}
+   * @return {@code obj} if not null.
+   * @throws IllegalArgumentException If {@code obj} is null.
    */
   public static <T>T assertNotNull(final T obj, final String message) {
     if (obj == null)
@@ -48,7 +48,7 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified object reference is not {@code null}. This method
+   * Checks that the specified object reference is not null. This method
    * is designed primarily for doing parameter validation in methods and
    * constructors, as demonstrated below:
    *
@@ -65,8 +65,8 @@ public final class Assertions {
    *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format
    *          string to be passed to {@link String#format(String,Object...)}.
-   * @return {@code obj} if not {@code null}.
-   * @throws IllegalArgumentException If {@code obj} is {@code null}
+   * @return {@code obj} if not null.
+   * @throws IllegalArgumentException If {@code obj} is null.
    */
   public static <T>T assertNotNull(final T obj, final String format, final Object ... args) {
     if (obj == null)
@@ -76,7 +76,7 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified object reference is not {@code null}. This method
+   * Checks that the specified object reference is not null. This method
    * is designed primarily for doing parameter validation in methods and
    * constructors, as demonstrated below:
    *
@@ -88,11 +88,92 @@ public final class Assertions {
    *
    * @param <T> The type of the reference.
    * @param obj The object reference to check for nullity.
-   * @return {@code obj} if not {@code null}.
-   * @throws IllegalArgumentException If {@code obj} is {@code null}
+   * @return {@code obj} if not null.
+   * @throws IllegalArgumentException If {@code obj} is null.
    */
   public static <T>T assertNotNull(final T obj) {
     return assertNotNull(obj, "null");
+  }
+
+  /**
+   * Checks that the specified array reference is not null, and that none of its
+   * member references is null. This method is designed primarily for doing
+   * parameter validation in methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(Bar[] bar) {
+   *   this.bar = Arguments.assertNonNull(bar);
+   * }
+   * </pre>
+   *
+   * @param <T> The component type of the reference.
+   * @param obj The array reference to check for nullity.
+   * @param message The detail message to be used for the
+   *          {@link IllegalArgumentException}.
+   * @return {@code obj} if not null.
+   * @throws IllegalArgumentException If {@code obj} is null.
+   */
+  public static <T>T[] assertNotNullArray(final T[] obj, final String message) {
+    if (obj == null)
+      throw new IllegalArgumentException(message);
+
+    for (int i = 0; i < obj.length; ++i)
+      if (obj[i] == null)
+        throw new IllegalArgumentException(message + " at index " + i);
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified array reference is not null, and that none of its
+   * member references is null. This method is designed primarily for doing
+   * parameter validation in methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(Bar[] bar) {
+   *   this.bar = Arguments.assertNonNull(bar);
+   * }
+   * </pre>
+   *
+   * @param <T> The component type of the reference.
+   * @param obj The array reference to check for nullity.
+   * @param format The detail message <a href=
+   *          "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format
+   *          string to be passed to {@link String#format(String,Object...)}.
+   * @return {@code obj} if not null.
+   * @throws IllegalArgumentException If {@code obj} is null.
+   */
+  public static <T>T[] assertNotNullArray(final T[] obj, final String format, final Object ... args) {
+    if (obj == null)
+      throw new IllegalArgumentException(String.format(format, args));
+
+    for (int i = 0; i < obj.length; ++i)
+      if (obj[i] == null)
+        throw new IllegalArgumentException(String.format(format, args) + " at index " + i);
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified array reference is not null, and that none of its
+   * member references is null. This method is designed primarily for doing
+   * parameter validation in methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(Bar[] bar) {
+   *   this.bar = Arguments.assertNonNull(bar);
+   * }
+   * </pre>
+   *
+   * @param <T> The component type of the reference.
+   * @param obj The array reference to check for nullity.
+   * @return {@code obj} if not null.
+   * @throws IllegalArgumentException If {@code obj} is null.
+   */
+  public static <T>T[] assertNotNullArray(final T[] obj) {
+    return assertNotNullArray(obj, "null");
   }
 
   /**
@@ -110,8 +191,8 @@ public final class Assertions {
    * @param obj The array to check for nullity or emptiness.
    * @param message The detail message to be used for the
    *          {@link IllegalArgumentException}.
-   * @return {@code obj} if not {@code null} or empty.
-   * @throws IllegalArgumentException If {@code obj} is {@code null} or empty.
+   * @return {@code obj} if not null or empty.
+   * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
   public static <T>T[] assertNotEmpty(final T[] obj, final String message) {
     assertNotNull(obj, message);
@@ -139,8 +220,8 @@ public final class Assertions {
    *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format
    *          string to be passed to {@link String#format(String,Object...)}.
-   * @return {@code obj} if not {@code null} or empty.
-   * @throws IllegalArgumentException If {@code obj} is {@code null} or empty.
+   * @return {@code obj} if not null or empty.
+   * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
   public static <T>T[] assertNotEmpty(final T[] obj, final String format, final Object ... args) {
     assertNotNull(obj, format);
@@ -163,8 +244,8 @@ public final class Assertions {
    *
    * @param <T> The type of the reference.
    * @param obj The array to check for nullity or emptiness.
-   * @return {@code obj} if not {@code null} or empty.
-   * @throws IllegalArgumentException If {@code obj} is {@code null} or empty.
+   * @return {@code obj} if not null or empty.
+   * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
   public static <T>T[] assertNotEmpty(final T[] obj) {
     assertNotNull(obj, "null");
@@ -189,8 +270,8 @@ public final class Assertions {
    * @param obj The collection to check for nullity or emptiness.
    * @param message The detail message to be used for the
    *          {@link IllegalArgumentException}.
-   * @return {@code obj} if not {@code null} or empty.
-   * @throws IllegalArgumentException If {@code obj} is {@code null} or empty.
+   * @return {@code obj} if not null or empty.
+   * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
   public static <T extends Collection<?>>T assertNotEmpty(final T obj, final String message) {
     assertNotNull(obj, message);
@@ -218,8 +299,8 @@ public final class Assertions {
    *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format
    *          string to be passed to {@link String#format(String,Object...)}.
-   * @return {@code obj} if not {@code null} or empty.
-   * @throws IllegalArgumentException If {@code obj} is {@code null} or empty.
+   * @return {@code obj} if not null or empty.
+   * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
   public static <T extends Collection<?>>T assertNotEmpty(final T obj, final String format, final Object ... args) {
     if (assertNotNull(obj, format).size() == 0)
@@ -241,8 +322,8 @@ public final class Assertions {
    *
    * @param <T> The type of the collection reference.
    * @param obj The collection to check for nullity or emptiness.
-   * @return {@code obj} if not {@code null} or empty.
-   * @throws IllegalArgumentException If {@code obj} is {@code null} or empty.
+   * @return {@code obj} if not null or empty.
+   * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
   public static <T extends Collection<?>>T assertNotEmpty(final T obj) {
     assertNotNull(obj, "null");
