@@ -812,4 +812,64 @@ public class StringsTest {
       }
     }
   }
+
+  @Test
+  public void testStartsWithIgnoreCase() {
+    try {
+      Strings.startsWithIgnoreCase(null, "");
+      fail("Expected IllegalArgumentException");
+    }
+    catch (final IllegalArgumentException e) {
+    }
+
+    try {
+      Strings.startsWithIgnoreCase("", null);
+      fail("Expected IllegalArgumentException");
+    }
+    catch (final IllegalArgumentException e) {
+    }
+
+    assertTrue(Strings.startsWithIgnoreCase("", ""));
+
+    for (int i = 0; i < 100000; ++i) {
+      final char ch = (char)('a' + i / 26);
+      assertFalse(Strings.startsWithIgnoreCase(Strings.repeat(ch, i % 100), Strings.repeat(ch, i % 100 + 1)));
+    }
+
+    for (int i = 0; i < 100000; ++i) {
+      final char ch = (char)('a' + i / 26);
+      final char expected = r.nextBoolean() ? Character.toUpperCase(ch) : ch;
+      assertTrue(expected + " != " + ch, Strings.startsWithIgnoreCase(Strings.repeat(expected, i % 100 + 1), Strings.repeat(ch, i % 100)));
+    }
+  }
+
+  @Test
+  public void testEndsWithIgnoreCase() {
+    try {
+      Strings.endsWithIgnoreCase(null, "");
+      fail("Expected IllegalArgumentException");
+    }
+    catch (final IllegalArgumentException e) {
+    }
+
+    try {
+      Strings.endsWithIgnoreCase("", null);
+      fail("Expected IllegalArgumentException");
+    }
+    catch (final IllegalArgumentException e) {
+    }
+
+    assertTrue(Strings.endsWithIgnoreCase("", ""));
+
+    for (int i = 0; i < 100000; ++i) {
+      final char ch = (char)('a' + i / 26);
+      assertFalse(Strings.endsWithIgnoreCase(Strings.repeat(ch, i % 100), Strings.repeat(ch, i % 100 + 1)));
+    }
+
+    for (int i = 0; i < 100000; ++i) {
+      final char ch = (char)('a' + i / 26);
+      final char expected = r.nextBoolean() ? Character.toUpperCase(ch) : ch;
+      assertTrue(expected + " != " + ch, Strings.endsWithIgnoreCase(Strings.repeat(expected, i % 100 + 1), Strings.repeat(ch, i % 100)));
+    }
+  }
 }

@@ -374,9 +374,12 @@ public final class Strings {
     if (str.length() < prefix.length())
       return false;
 
-    for (int i = 0; i < prefix.length(); ++i)
-      if (Character.toLowerCase(str.charAt(i)) != Character.toLowerCase(prefix.charAt(i)))
+    for (int i = 0; i < prefix.length(); ++i) {
+      final char a = str.charAt(i);
+      final char b = prefix.charAt(i);
+      if (Character.toUpperCase(a) != Character.toUpperCase(b) && Character.toLowerCase(a) != Character.toLowerCase(b))
         return false;
+    }
 
     return true;
   }
@@ -431,9 +434,12 @@ public final class Strings {
       return false;
 
     final int offset = str.length() - suffix.length();
-    for (int i = suffix.length() - 1; i >= 0; --i)
-      if (Character.toLowerCase(str.charAt(offset + i)) != Character.toLowerCase(suffix.charAt(i)))
+    for (int i = suffix.length() - 1; i >= 0; --i) {
+      final char a = str.charAt(offset + i);
+      final char b = suffix.charAt(i);
+      if (Character.toUpperCase(a) != Character.toUpperCase(b) && Character.toLowerCase(a) != Character.toLowerCase(b))
         return false;
+    }
 
     return true;
   }
