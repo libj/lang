@@ -410,6 +410,35 @@ public final class Strings {
   }
 
   /**
+   * Tests if the specified {@link CharSequence} ends with the specified suffix,
+   * ignoring case.
+   *
+   * @param str The {@link CharSequence}.
+   * @param suffix The suffix.
+   * @return {@code true} if the {@code suffix} character sequence is a suffix
+   *         of {@code str}, ignoring case; {@code false} otherwise. Note also
+   *         that {@code true} will be returned if {@code suffix} is an empty
+   *         string or is equal to {@code str}.
+   * @throws IllegalArgumentException If {@code str} or {@code suffix} is null.
+   */
+  public static boolean endsWithIgnoreCase(final CharSequence str, final CharSequence suffix) {
+    assertNotNull(str);
+    assertNotNull(suffix);
+    if (suffix.length() == 0)
+      return true;
+
+    if (str.length() < suffix.length())
+      return false;
+
+    final int offset = str.length() - suffix.length();
+    for (int i = suffix.length() - 1; i >= 0; --i)
+      if (Character.toLowerCase(str.charAt(offset + i)) != Character.toLowerCase(suffix.charAt(i)))
+        return false;
+
+    return true;
+  }
+
+  /**
    * Tests if the specified {@link CharSequence} ends with the specified suffix.
    *
    * @param str The {@link CharSequence}.
