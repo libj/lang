@@ -2881,7 +2881,8 @@ public final class Strings {
    * @see String#split(String)
    */
   public static String[] split(final CharSequence str, final char ch) {
-    return split(assertNotNull(str), str.length(), ch, 0, new StringBuilder(), 0, 0);
+    final int len = assertNotNull(str).length();
+    return len == 0 ? EMPTY_ARRAY : split(str, len, ch, 0, new StringBuilder(), 0, 0);
   }
 
   private Strings() {

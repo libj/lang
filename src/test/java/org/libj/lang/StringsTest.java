@@ -797,6 +797,15 @@ public class StringsTest {
 
   @Test
   public void testSplit() {
+    try {
+      Strings.split(null, ' ');
+      fail("Expected IllegalArgumentException");
+    }
+    catch (final IllegalArgumentException e) {
+    }
+
+    assertEquals(0, Strings.split("", ' ').length);
+
 //    final String ch = "W";
 //    final String str = "WigWW";
     for (int i = 0; i < 1000000; ++i) {
