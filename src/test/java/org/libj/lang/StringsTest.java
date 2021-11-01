@@ -784,6 +784,7 @@ public class StringsTest {
 
   @Test
   public void testIntern() {
+    assertNull(Strings.intern(null));
     final String a = "hello world 1";
     final String b = "hello world 2";
     assertSame(a, Strings.intern(a));

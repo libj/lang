@@ -2825,6 +2825,9 @@ public final class Strings {
    *         guaranteed to be from a pool of unique strings.
    */
   public static String intern(final String str) {
+    if (str == null)
+      return null;
+
     final String intern = interns.putIfAbsent(str, str);
     return intern != null ? intern : str;
   }
