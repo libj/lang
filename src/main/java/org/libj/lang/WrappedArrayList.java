@@ -158,4 +158,26 @@ public class WrappedArrayList<E> extends AbstractList<E> implements RandomAccess
   public WrappedArrayList<E> clone() {
     return new WrappedArrayList<>(array.clone());
   }
+
+  @Override
+  public boolean equals(final Object obj) {
+    if (obj == this)
+      return true;
+
+    if (!(obj instanceof WrappedArrayList))
+      return false;
+
+    final WrappedArrayList<?> that = (WrappedArrayList<?>)obj;
+    return Arrays.equals(array, that.array);
+  }
+
+  @Override
+  public int hashCode() {
+    return Arrays.hashCode(array);
+  }
+
+  @Override
+  public String toString() {
+    return Arrays.toString(array);
+  }
 }
