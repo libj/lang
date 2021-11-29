@@ -3172,6 +3172,47 @@ public final class Numbers {
     return a < 0 ? -1 : a > 0 ? 1 : 0;
   }
 
+  /**
+   * Returns a {@link Number} of type {@code N} whose value is {@code a +
+   * b}.
+   *
+   * @param <N> The type parameter for the numbers to be added.
+   * @param a The first {@code N} to be added.
+   * @param b The second {@code N} to be added.
+   * @return A {@link Number} of type {@code N} whose value is {@code a + b}.
+   * @throws UnsupportedOperationException If the {@link Number} sub-type is not
+   *           supported.
+   */
+  @SuppressWarnings("unchecked")
+  public static <N extends Number>N add(final N a, final N b) {
+    assertNotNull(a);
+    if (a instanceof BigDecimal)
+      return (N)((BigDecimal)a).add((BigDecimal)b);
+
+    if (a instanceof BigInteger)
+      return (N)((BigInteger)a).add((BigInteger)b);
+
+    if (a instanceof Byte)
+      return (N)(Integer)((Byte)a + (Byte)b);
+
+    if (a instanceof Short)
+      return (N)(Integer)((Short)a + (Short)b);
+
+    if (a instanceof Integer)
+      return (N)(Integer)((Integer)a + (Integer)b);
+
+    if (a instanceof Long)
+      return (N)(Long)((Long)a + (Long)b);
+
+    if (a instanceof Float)
+      return (N)(Float)((Float)a + (Float)b);
+
+    if (a instanceof Double)
+      return (N)(Double)((Double)a + (Double)b);
+
+    throw new UnsupportedOperationException("Unsupported type: " + a.getClass().getName());
+  }
+
   private Numbers() {
   }
 }
