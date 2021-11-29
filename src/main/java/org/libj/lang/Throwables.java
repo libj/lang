@@ -40,6 +40,8 @@ public final class Throwables {
    * @param target The target exception.
    * @param suppressed The suppressed exception.
    * @return The exception based on the method's logic, described above.
+   * @throws IllegalArgumentException If {@code target} or {@code suppressed} is
+   *           null.
    */
   public static <T extends Throwable>T addSuppressed(final T target, final T suppressed) {
     if (suppressed == null)
@@ -48,6 +50,8 @@ public final class Throwables {
     if (target == null)
       return suppressed;
 
+    assertNotNull(target);
+    assertNotNull(suppressed);
     target.addSuppressed(suppressed);
     return target;
   }
@@ -66,7 +70,7 @@ public final class Throwables {
   public static <T extends Throwable>T addSuppressed(final T target, final Exception[] suppressed) {
     assertNotNull(target);
     assertNotNull(suppressed);
-    return addSuppressed(target, suppressed, 0, suppressed.length);
+    return addSuppressed0(target, suppressed, 0, suppressed.length);
   }
 
   /**
@@ -83,16 +87,22 @@ public final class Throwables {
    *          {@code suppressed}. If {@code toIndex > fromIndex}, the exceptions
    *          in {@code suppressed} will be traversed in regular order.
    * @return The exception based on the method's logic, described above.
-   * @throws IllegalArgumentException If {@code target} is null.
+   * @throws IllegalArgumentException If {@code target} or {@code suppressed} is
+   *           null.
    * @throws IndexOutOfBoundsException If {@code off} is negative, {@code len}
    *           is negative, or {@code suppressed.length} is less than
    *           {@code off + len}.
    */
   public static <T extends Throwable>T addSuppressed(final T target, final Exception[] suppressed, final int fromIndex, final int toIndex) {
-    assertNotNull(target);
     if (fromIndex == toIndex)
       return target;
 
+    assertNotNull(target);
+    assertNotNull(suppressed);
+    return addSuppressed0(target, suppressed, fromIndex, toIndex);
+  }
+
+  private static <T extends Throwable>T addSuppressed0(final T target, final Exception[] suppressed, final int fromIndex, final int toIndex) {
     if (fromIndex < toIndex)
       for (int i = fromIndex; i < toIndex; ++i)
         target.addSuppressed(suppressed[i]);
@@ -117,7 +127,7 @@ public final class Throwables {
   public static <T extends Throwable>T addSuppressed(final T target, final List<Exception> suppressed) {
     assertNotNull(target);
     assertNotNull(suppressed);
-    return addSuppressed(target, suppressed, 0, suppressed.size());
+    return addSuppressed0(target, suppressed, 0, suppressed.size());
   }
 
   /**
@@ -134,16 +144,22 @@ public final class Throwables {
    *          {@code suppressed}. If {@code toIndex > fromIndex}, the exceptions
    *          in {@code suppressed} will be traversed in regular order.
    * @return The exception based on the method's logic, described above.
-   * @throws IllegalArgumentException If {@code target} is null.
+   * @throws IllegalArgumentException If {@code target} or {@code suppressed} is
+   *           null.
    * @throws IndexOutOfBoundsException If {@code off} is negative, {@code len}
    *           is negative, or {@code suppressed.length} is less than
    *           {@code off + len}.
    */
   public static <T extends Throwable>T addSuppressed(final T target, final List<Exception> suppressed, final int fromIndex, final int toIndex) {
-    assertNotNull(target);
     if (fromIndex == toIndex)
       return target;
 
+    assertNotNull(target);
+    assertNotNull(suppressed);
+    return addSuppressed0(target, suppressed, fromIndex, toIndex);
+  }
+
+  private static <T extends Throwable>T addSuppressed0(final T target, final List<Exception> suppressed, final int fromIndex, final int toIndex) {
     if (fromIndex < toIndex)
       for (int i = fromIndex; i < toIndex; ++i)
         target.addSuppressed(suppressed.get(i));
@@ -179,7 +195,7 @@ public final class Throwables {
    * @param from The {@link Throwable} to copy from.
    * @param to The {@link Throwable} to copy to.
    * @return The {@link Throwable} being copied to.
-   * @throws IllegalAnnotationException If {@code from} or {@code to} are null.
+   * @throws IllegalAnnotationException If {@code from} or {@code to} is null.
    */
   public static <F extends Throwable,T extends F>T copy(final F from, final T to) {
     assertNotNull(from);
