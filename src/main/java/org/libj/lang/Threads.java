@@ -34,21 +34,18 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 
 /**
- * Utility functions that provide common operations pertaining to
- * {@link Thread}.
+ * Utility functions that provide common operations pertaining to {@link Thread}.
  */
 public final class Threads {
   /**
-   * Prints all threads and the full stack trace of code running on each thread
-   * to the standard error stream.
+   * Prints all threads and the full stack trace of code running on each thread to the standard error stream.
    */
   public static void printThreadTrace() {
     printThreadTrace(System.err);
   }
 
   /**
-   * Prints all threads and the full stack trace of code running on each thread
-   * to the specified print writer.
+   * Prints all threads and the full stack trace of code running on each thread to the specified print writer.
    *
    * @param s {@link PrintWriter} to use for output.
    * @throws IllegalArgumentException If {@code s} is null.
@@ -58,8 +55,7 @@ public final class Threads {
   }
 
   /**
-   * Prints all threads and the full stack trace of code running on each thread
-   * to the specified print stream.
+   * Prints all threads and the full stack trace of code running on each thread to the specified print stream.
    *
    * @param s {@link PrintStream} to use for output.
    * @throws IllegalArgumentException If {@code s} is null.
@@ -69,8 +65,7 @@ public final class Threads {
   }
 
   /**
-   * Prints all threads and the full stack trace of code running on each thread
-   * to the specified string consumer.
+   * Prints all threads and the full stack trace of code running on each thread to the specified string consumer.
    *
    * @param s {@link Consumer Consumer&lt;String&gt;} to use for output.
    * @throws IllegalAnnotationException If {@code s} is null.
@@ -85,12 +80,15 @@ public final class Threads {
     final StringBuilder builder = new StringBuilder();
     final ThreadInfo[] threadInfos = ManagementFactory.getThreadMXBean().dumpAllThreads(true, true);
     for (int i = 0; i < threadInfos.length; ++i) {
-      if (i > 0)
+      if (builder.length() > 0)
         builder.append("\n\n");
 
       final ThreadInfo threadInfo = threadInfos[i];
-      builder.append('"').append(threadInfo.getThreadName()).append("\" #").append(threadInfo.getThreadId());
       final Thread thread = tidToThread.get(threadInfo.getThreadId());
+      if (thread == null)
+        continue;
+
+      builder.append('"').append(threadInfo.getThreadName()).append("\" #").append(threadInfo.getThreadId());
       if (thread.isDaemon())
         builder.append(" daemon");
 
@@ -214,20 +212,15 @@ public final class Threads {
   }
 
   /**
-   * Returns a new {@link Runnable} instance that wraps the provided
-   * {@code runnable}, and is scheduled to be {@linkplain Thread#interrupt()
-   * interrupted} once the provided {@code timeout} of {@link TimeUnit unit}
-   * expires.
+   * Returns a new {@link Runnable} instance that wraps the provided {@code runnable}, and is scheduled to be
+   * {@linkplain Thread#interrupt() interrupted} once the provided {@code timeout} of {@link TimeUnit unit} expires.
    *
    * @param runnable The {@link Runnable} to be wrapped.
    * @param timeout The maximum time to wait.
    * @param unit The {@link TimeUnit} of the {@code timeout} argument.
-   * @return A new {@link Runnable} instance wrapping the provided
-   *         {@code runnable} that is scheduled to be
-   *         {@linkplain Thread#interrupt() interrupted} once the provided
-   *         {@code timeout} of {@link TimeUnit unit} expires.
-   * @throws IllegalArgumentException If {@code runnable} or {@code unit} is
-   *           null, or if {@code timeout} is negative.
+   * @return A new {@link Runnable} instance wrapping the provided {@code runnable} that is scheduled to be
+   *         {@linkplain Thread#interrupt() interrupted} once the provided {@code timeout} of {@link TimeUnit unit} expires.
+   * @throws IllegalArgumentException If {@code runnable} or {@code unit} is null, or if {@code timeout} is negative.
    */
   public static Runnable interruptAfterTimeout(final Runnable runnable, final long timeout, final TimeUnit unit) {
     assertNotNull(runnable);
@@ -240,21 +233,16 @@ public final class Threads {
   }
 
   /**
-   * Returns a new {@link Callable} instance that wraps the provided
-   * {@code callable}, and is scheduled to be {@linkplain Thread#interrupt()
-   * interrupted} once the provided {@code timeout} of {@link TimeUnit unit}
-   * expires.
+   * Returns a new {@link Callable} instance that wraps the provided {@code callable}, and is scheduled to be
+   * {@linkplain Thread#interrupt() interrupted} once the provided {@code timeout} of {@link TimeUnit unit} expires.
    *
    * @param <V> The type parameter of the {@code callable} argument.
    * @param callable The {@link Callable} to be wrapped.
    * @param timeout The maximum time to wait.
    * @param unit The {@link TimeUnit} of the {@code timeout} argument.
-   * @return A new {@link Callable} instance wrapping the provided
-   *         {@code callable} that is scheduled to be
-   *         {@linkplain Thread#interrupt() interrupted} once the provided
-   *         {@code timeout} of {@link TimeUnit unit} expires.
-   * @throws IllegalArgumentException If {@code callable} or {@code unit} is
-   *           null, or if {@code timeout} is negative.
+   * @return A new {@link Callable} instance wrapping the provided {@code callable} that is scheduled to be
+   *         {@linkplain Thread#interrupt() interrupted} once the provided {@code timeout} of {@link TimeUnit unit} expires.
+   * @throws IllegalArgumentException If {@code callable} or {@code unit} is null, or if {@code timeout} is negative.
    */
   public static <V>Callable<V> interruptAfterTimeout(final Callable<V> callable, final long timeout, final TimeUnit unit) {
     assertNotNull(callable);
@@ -269,8 +257,8 @@ public final class Threads {
   /**
    * Checks the interrupted flag of the current thread.
    *
-   * @implNote If the current thread's interrupt flag is set, this method clears
-   *           the flag before throwing an {@link InterruptedException}.
+   * @implNote If the current thread's interrupt flag is set, this method clears the flag before throwing an
+   *           {@link InterruptedException}.
    * @throws InterruptedException If the current thread's interrupt flag is set.
    */
   public static void checkInterrupted() throws InterruptedException {
