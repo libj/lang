@@ -109,7 +109,6 @@ public class WrappedArrayList<E> extends AbstractList<E> implements RandomAccess
   }
 
   @Override
-  @SuppressWarnings("unlikely-arg-type")
   public boolean contains(final Object o) {
     return indexOf(o) != -1;
   }

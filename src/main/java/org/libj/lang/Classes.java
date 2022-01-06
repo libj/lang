@@ -699,7 +699,7 @@ public final class Classes {
   public static <T>Constructor<T> getConstructor(final Class<T> cls, final Class<?> ... parameterTypes) {
     final Constructor<?>[] constructors = assertNotNull(cls).getConstructors();
     for (final Constructor<?> constructor : constructors)
-      if (parameterTypes == null || parameterTypes.length == 0 ? constructor.getParameterCount() == 0 : parameterTypes.length == constructor.getParameterCount() && Arrays.equals(constructor.getParameterTypes(), parameterTypes))
+      if (isMatch(constructor, parameterTypes))
         return (Constructor<T>)constructor;
 
     return null;
@@ -773,10 +773,14 @@ public final class Classes {
   public static <T>Constructor<T> getDeclaredConstructor(final Class<T> cls, final Class<?> ... parameterTypes) {
     final Constructor<?>[] constructors = assertNotNull(cls).getDeclaredConstructors();
     for (final Constructor<?> constructor : constructors)
-      if (parameterTypes == null || parameterTypes.length == 0 ? constructor.getParameterCount() == 0 : parameterTypes.length == constructor.getParameterCount() && Arrays.equals(constructor.getParameterTypes(), parameterTypes))
+      if (isMatch(constructor, parameterTypes))
         return (Constructor<T>)constructor;
 
     return null;
+  }
+
+  private static boolean isMatch(final Constructor<?> constructor, final Class<?>[] parameterTypes) {
+    return parameterTypes == null || parameterTypes.length == 0 ? constructor.getParameterCount() == 0 : parameterTypes.length == constructor.getParameterCount() && Arrays.equals(constructor.getParameterTypes(), parameterTypes);
   }
 
   /**
@@ -1195,7 +1199,7 @@ public final class Classes {
     assertNotNull(name);
     assertNotNull(parameterTypes);
     for (final Method method : cls.getDeclaredMethods())
-      if (name.equals(method.getName()) && (parameterTypes == null || parameterTypes.length == 0 ? method.getParameterCount() == 0 : Arrays.equals(method.getParameterTypes(), parameterTypes)))
+      if (name.equals(method.getName()) && (parameterTypes.length == 0 ? method.getParameterCount() == 0 : Arrays.equals(method.getParameterTypes(), parameterTypes)))
         return method;
 
     return null;
@@ -1482,7 +1486,7 @@ public final class Classes {
    */
   public static Class<?>[] getAllInterfaces(Class<?> cls) {
     assertNotNull(cls);
-    Class<?>[] thisInterfaces = null;
+    Class<?>[] thisInterfaces;
     LinkedHashSet<Class<?>> allInterfaces = null;
     do {
       thisInterfaces = cls.getInterfaces();
@@ -1811,13 +1815,13 @@ public final class Classes {
       return (T)constructor.newInstance(parameters);
     }
 
-    final String types = Arrays.stream(parameterTypes).map(p -> p.getName()).collect(Collectors.joining(","));
+    final String types = Arrays.stream(parameterTypes).map(Class::getName).collect(Collectors.joining(","));
     final StringBuilder message = new StringBuilder();
-    message.append(type.getName() + " does not define <init>(" + types + ")");
+    message.append(type.getName()).append(" does not define <init>(").append(types).append(")");
     if (parameterTypes.length == 1 && parameterTypes[0] == String.class)
-      message.append(", valueOf(" + types + "), or fromString(" + types + ")");
+      message.append(", valueOf(").append(types).append("), or fromString(").append(types).append(")");
     else
-      message.append(" or valueOf(" + types + ")");
+      message.append(" or valueOf(").append(types).append(")");
 
     throw new IllegalArgumentException(message.toString());
   }
@@ -1967,7 +1971,7 @@ public final class Classes {
     for (int i = 0; i < methods.length; ++i)
       methodLineNumbers[i] = new Object[] {methods[i], null};
 
-    final boolean[] success = {true};
+    final boolean[] success = {false};
     try {
       final ClassPool pool = ClassPool.getDefault();
       Class<?> cls, last = null;

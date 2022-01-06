@@ -42,8 +42,7 @@ public final class Strings {
     if (length == 0)
       return "";
 
-    if (length < 0)
-      throw new IllegalArgumentException("Length must be non-negative: " + length);
+    assertNotNegative(length, "Length must be non-negative: %d", length);
 
     final char[] array = new char[length];
     for (int i = 0; i < length; ++i)
@@ -1073,8 +1072,7 @@ public final class Strings {
    *           {@code str.length() * count > Integer.MAX_VALUE}.
    */
   public static String repeat(final char ch, final int count) {
-    if (count < 0)
-      throw new IllegalArgumentException("count (" + count + ") must be greater than or equal to 0");
+    assertNotNegative(count, "count (%d) must be greater than or equal to 0", count);
 
     if (count == 0)
       return "";
@@ -1101,8 +1099,7 @@ public final class Strings {
    */
   public static String repeat(final String str, final int count) {
     assertNotNull(str);
-    if (count < 0)
-      throw new IllegalArgumentException("count (" + count + ") must be greater than or equal to 0");
+    assertNotNegative(count, "count (%d) must be greater than or equal to 0", count);
 
     if (count == 0 || str.length() == 0)
       return "";
@@ -2380,8 +2377,7 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} is null or empty.
    */
   public static boolean isLowerCase(final CharSequence str) {
-    if (assertNotNull(str).length() == 0)
-      throw new IllegalArgumentException("Empty string");
+    assertNotEmpty(str, "Empty");
 
     for (int i = 0, len = str.length(); i < len; ++i)
       if (!Character.isLowerCase(str.charAt(i)))
@@ -2401,8 +2397,7 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} is null or empty.
    */
   public static boolean isUpperCase(final CharSequence str) {
-    if (assertNotNull(str).length() == 0)
-      throw new IllegalArgumentException("Empty string");
+    assertNotEmpty(str, "Empty");
 
     for (int i = 0, len = str.length(); i < len; ++i)
       if (!Character.isUpperCase(str.charAt(i)))
