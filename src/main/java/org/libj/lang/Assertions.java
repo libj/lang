@@ -965,6 +965,145 @@ public final class Assertions {
   }
 
   /**
+   * Checks that the provided value is finite. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(float bar) {
+   *   this.bar = Assertions.assertFinite(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as finite.
+   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if finite.
+   * @throws IllegalArgumentException If {@code value} represents infinity or {@code NaN}.
+   */
+  public static float assertFinite(final float value, final String message) {
+    if (!Float.isFinite(value))
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is finite. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(float bar) {
+   *   this.bar = Assertions.assertFinite(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as finite.
+   * @param format The detail message
+   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
+   *          {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format string to be passed to
+   *          {@link String#format(String,Object...)}.
+   * @return {@code value} if finite.
+   * @throws IllegalArgumentException If {@code value} is represents infinity or {@code NaN}.
+   */
+  public static float assertFinite(final float value, final String format, final Object ... args) {
+    if (!Float.isFinite(value))
+      throw new IllegalArgumentException(String.format(format, args));
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is finite. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(float bar) {
+   *   this.bar = Assertions.assertFinite(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as finite.
+   * @return {@code value} if finite.
+   * @throws IllegalArgumentException If {@code value} is represents infinity or {@code NaN}.
+   */
+  public static float assertFinite(final float value) {
+    if (!Float.isFinite(value))
+      throw new IllegalArgumentException(value + " is not finite");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is finite. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(double bar) {
+   *   this.bar = Assertions.assertFinite(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as finite.
+   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if finite.
+   * @throws IllegalArgumentException If {@code value} represents infinity or {@code NaN}.
+   */
+  public static double assertFinite(final double value, final String message) {
+    if (!Double.isFinite(value))
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is finite. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(double bar) {
+   *   this.bar = Assertions.assertFinite(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as finite.
+   * @param format The detail message
+   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
+   *          {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format string to be passed to
+   *          {@link String#format(String,Object...)}.
+   * @return {@code value} if finite.
+   * @throws IllegalArgumentException If {@code value} is represents infinity or {@code NaN}.
+   */
+  public static double assertFinite(final double value, final String format, final Object ... args) {
+    if (!Double.isFinite(value))
+      throw new IllegalArgumentException(String.format(format, args));
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is finite. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(double bar) {
+   *   this.bar = Assertions.assertFinite(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as finite.
+   * @return {@code value} if finite.
+   * @throws IllegalArgumentException If {@code value} is represents infinity or {@code NaN}.
+   */
+  public static double assertFinite(final double value) {
+    if (!Double.isFinite(value))
+      throw new IllegalArgumentException(value + " is not finite");
+
+    return value;
+  }
+
+
+  /**
    * Checks that the provided value is positive. This method is designed primarily for doing parameter validation in methods and
    * constructors, as demonstrated below:
    *
@@ -1655,70 +1794,415 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the provided value is finite. This method is designed primarily for doing parameter validation in methods and
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
    * constructors, as demonstrated below:
    *
    * <pre>
-   * public Foo(float bar) {
-   *   this.bar = Assertions.assertFinite(bar);
+   * public Foo(byte bar) {
+   *   this.bar = Assertions.assertNotZero(bar);
    * }
    * </pre>
    *
-   * @param value The value to assert as finite.
+   * @param value The value to assert as not zero.
    * @param message The detail message to be used for the {@link IllegalArgumentException}.
-   * @return {@code value} if finite.
-   * @throws IllegalArgumentException If {@code value} represents infinity or {@code NaN}.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
    */
-  public static float assertFinite(final float value, final String message) {
-    if (!Float.isFinite(value))
+  public static byte assertNotZero(final byte value, final String message) {
+    if (value == 0)
       throw new IllegalArgumentException(message);
 
     return value;
   }
 
   /**
-   * Checks that the provided value is finite. This method is designed primarily for doing parameter validation in methods and
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
    * constructors, as demonstrated below:
    *
    * <pre>
-   * public Foo(float bar) {
-   *   this.bar = Assertions.assertFinite(bar);
+   * public Foo(byte bar) {
+   *   this.bar = Assertions.assertNotZero(bar);
    * }
    * </pre>
    *
-   * @param value The value to assert as finite.
+   * @param value The value to assert as not zero.
    * @param format The detail message
    *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
    *          {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
-   * @return {@code value} if finite.
-   * @throws IllegalArgumentException If {@code value} is represents infinity or {@code NaN}.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
    */
-  public static float assertFinite(final float value, final String format, final Object ... args) {
-    if (!Float.isFinite(value))
+  public static byte assertNotZero(final byte value, final String format, final Object ... args) {
+    if (value == 0)
       throw new IllegalArgumentException(String.format(format, args));
 
     return value;
   }
 
   /**
-   * Checks that the provided value is finite. This method is designed primarily for doing parameter validation in methods and
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(byte bar) {
+   *   this.bar = Assertions.assertNotZero(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not zero.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
+   */
+  public static byte assertNotZero(final byte value) {
+    if (value == 0)
+      throw new IllegalArgumentException(value + " is zero");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(short bar) {
+   *   this.bar = Assertions.assertNotZero(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not zero.
+   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
+   */
+  public static short assertNotZero(final short value, final String message) {
+    if (value == 0)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(short bar) {
+   *   this.bar = Assertions.assertNotZero(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not zero.
+   * @param format The detail message
+   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
+   *          {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format string to be passed to
+   *          {@link String#format(String,Object...)}.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
+   */
+  public static short assertNotZero(final short value, final String format, final Object ... args) {
+    if (value == 0)
+      throw new IllegalArgumentException(String.format(format, args));
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(short bar) {
+   *   this.bar = Assertions.assertNotZero(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not zero.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
+   */
+  public static short assertNotZero(final short value) {
+    if (value == 0)
+      throw new IllegalArgumentException(value + " is zero");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(int bar) {
+   *   this.bar = Assertions.assertNotZero(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not zero.
+   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
+   */
+  public static int assertNotZero(final int value, final String message) {
+    if (value == 0)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(int bar) {
+   *   this.bar = Assertions.assertNotZero(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not zero.
+   * @param format The detail message
+   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
+   *          {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format string to be passed to
+   *          {@link String#format(String,Object...)}.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
+   */
+  public static int assertNotZero(final int value, final String format, final Object ... args) {
+    if (value == 0)
+      throw new IllegalArgumentException(String.format(format, args));
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(int bar) {
+   *   this.bar = Assertions.assertNotZero(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not zero.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
+   */
+  public static int assertNotZero(final int value) {
+    if (value == 0)
+      throw new IllegalArgumentException(value + " is zero");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(long bar) {
+   *   this.bar = Assertions.assertNotZero(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not zero.
+   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
+   */
+  public static long assertNotZero(final long value, final String message) {
+    if (value == 0)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(long bar) {
+   *   this.bar = Assertions.assertNotZero(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not zero.
+   * @param format The detail message
+   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
+   *          {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format string to be passed to
+   *          {@link String#format(String,Object...)}.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
+   */
+  public static long assertNotZero(final long value, final String format, final Object ... args) {
+    if (value == 0)
+      throw new IllegalArgumentException(String.format(format, args));
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(long bar) {
+   *   this.bar = Assertions.assertNotZero(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not zero.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
+   */
+  public static long assertNotZero(final long value) {
+    if (value == 0)
+      throw new IllegalArgumentException(value + " is zero");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
    * constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(float bar) {
-   *   this.bar = Assertions.assertFinite(bar);
+   *   this.bar = Assertions.assertNotZero(bar);
    * }
    * </pre>
    *
-   * @param value The value to assert as finite.
-   * @return {@code value} if finite.
-   * @throws IllegalArgumentException If {@code value} is represents infinity or {@code NaN}.
+   * @param value The value to assert as not zero.
+   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
    */
-  public static float assertFinite(final float value) {
-    if (!Float.isFinite(value))
-      throw new IllegalArgumentException(value + " is not finite");
+  public static float assertNotZero(final float value, final String message) {
+    if (value == 0)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(float bar) {
+   *   this.bar = Assertions.assertNotZero(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not zero.
+   * @param format The detail message
+   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
+   *          {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format string to be passed to
+   *          {@link String#format(String,Object...)}.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
+   */
+  public static float assertNotZero(final float value, final String format, final Object ... args) {
+    if (value == 0)
+      throw new IllegalArgumentException(String.format(format, args));
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(float bar) {
+   *   this.bar = Assertions.assertNotZero(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not zero.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
+   */
+  public static float assertNotZero(final float value) {
+    if (value == 0)
+      throw new IllegalArgumentException(value + " is zero");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(double bar) {
+   *   this.bar = Assertions.assertNotZero(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not zero.
+   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
+   */
+  public static double assertNotZero(final double value, final String message) {
+    if (value == 0)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(double bar) {
+   *   this.bar = Assertions.assertNotZero(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not zero.
+   * @param format The detail message
+   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
+   *          {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format string to be passed to
+   *          {@link String#format(String,Object...)}.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
+   */
+  public static double assertNotZero(final double value, final String format, final Object ... args) {
+    if (value == 0)
+      throw new IllegalArgumentException(String.format(format, args));
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(double bar) {
+   *   this.bar = Assertions.assertNotZero(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not zero.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
+   */
+  public static double assertNotZero(final double value) {
+    if (value == 0)
+      throw new IllegalArgumentException(value + " is zero");
 
     return value;
   }
@@ -1791,76 +2275,6 @@ public final class Assertions {
 
     return value;
   }
-
-  /**
-   * Checks that the provided value is finite. This method is designed primarily for doing parameter validation in methods and
-   * constructors, as demonstrated below:
-   *
-   * <pre>
-   * public Foo(double bar) {
-   *   this.bar = Assertions.assertFinite(bar);
-   * }
-   * </pre>
-   *
-   * @param value The value to assert as finite.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
-   * @return {@code value} if finite.
-   * @throws IllegalArgumentException If {@code value} represents infinity or {@code NaN}.
-   */
-  public static double assertFinite(final double value, final String message) {
-    if (!Double.isFinite(value))
-      throw new IllegalArgumentException(message);
-
-    return value;
-  }
-
-  /**
-   * Checks that the provided value is finite. This method is designed primarily for doing parameter validation in methods and
-   * constructors, as demonstrated below:
-   *
-   * <pre>
-   * public Foo(double bar) {
-   *   this.bar = Assertions.assertFinite(bar);
-   * }
-   * </pre>
-   *
-   * @param value The value to assert as finite.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
-   * @param args Arguments referenced by the format specifiers in the format string to be passed to
-   *          {@link String#format(String,Object...)}.
-   * @return {@code value} if finite.
-   * @throws IllegalArgumentException If {@code value} is represents infinity or {@code NaN}.
-   */
-  public static double assertFinite(final double value, final String format, final Object ... args) {
-    if (!Double.isFinite(value))
-      throw new IllegalArgumentException(String.format(format, args));
-
-    return value;
-  }
-
-  /**
-   * Checks that the provided value is finite. This method is designed primarily for doing parameter validation in methods and
-   * constructors, as demonstrated below:
-   *
-   * <pre>
-   * public Foo(double bar) {
-   *   this.bar = Assertions.assertFinite(bar);
-   * }
-   * </pre>
-   *
-   * @param value The value to assert as finite.
-   * @return {@code value} if finite.
-   * @throws IllegalArgumentException If {@code value} is represents infinity or {@code NaN}.
-   */
-  public static double assertFinite(final double value) {
-    if (!Double.isFinite(value))
-      throw new IllegalArgumentException(value + " is not finite");
-
-    return value;
-  }
-
   /**
    * Checks that the provided value is finite and not negative. This method is designed primarily for doing parameter validation in
    * methods and constructors, as demonstrated below:
