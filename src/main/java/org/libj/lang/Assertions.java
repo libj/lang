@@ -23,6 +23,75 @@ import java.util.Collection;
  */
 public final class Assertions {
   /**
+   * Checks that the specified object reference is null. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(Bar bar) {
+   *   this.bar = Assertions.assertNull(bar);
+   * }
+   * </pre>
+   *
+   * @param <T> The type of the reference.
+   * @param obj The object reference to check for nullity.
+   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @return {@code obj} if null.
+   * @throws IllegalArgumentException If {@code obj} is not null.
+   */
+  public static <T>T assertNull(final T obj, final String message) {
+    if (obj != null)
+      throw new IllegalArgumentException(message);
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified object reference is null. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(Bar bar) {
+   *   this.bar = Assertions.assertNull(bar);
+   * }
+   * </pre>
+   *
+   * @param <T> The type of the reference.
+   * @param obj The object reference to check for nullity.
+   * @param format The detail message
+   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
+   *          {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format string to be passed to
+   *          {@link String#format(String,Object...)}.
+   * @return {@code obj} if null.
+   * @throws IllegalArgumentException If {@code obj} is not null.
+   */
+  public static <T>T assertNull(final T obj, final String format, final Object ... args) {
+    if (obj != null)
+      throw new IllegalArgumentException(String.format(format, args));
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified object reference is null. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(Bar bar) {
+   *   this.bar = Assertions.assertNull(bar);
+   * }
+   * </pre>
+   *
+   * @param <T> The type of the reference.
+   * @param obj The object reference to check for nullity.
+   * @return {@code obj} if null.
+   * @throws IllegalArgumentException If {@code obj} is not null.
+   */
+  public static <T>T assertNull(final T obj) {
+    return assertNull(obj, "not null");
+  }
+
+  /**
    * Checks that the specified object reference is not null. This method is designed primarily for doing parameter validation in
    * methods and constructors, as demonstrated below:
    *
