@@ -1923,8 +1923,7 @@ public final class Strings {
    */
   public static int indexOfScopeClose(final CharSequence str, final char open, final char close, final int fromIndex) {
     boolean escaped = false;
-    int scope = 1;
-    for (int i = Math.max(fromIndex, 0), len = assertNotNull(str).length(); i < len; ++i) {
+    for (int i = Math.max(fromIndex, 0), len = assertNotNull(str).length(), scope = 1; i < len; ++i) {
       final char c = str.charAt(i);
       if (escaped)
         escaped = false;

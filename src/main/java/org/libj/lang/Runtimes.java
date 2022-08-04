@@ -47,17 +47,22 @@ public final class Runtimes {
    */
   public static void closeOnExit(final AutoCloseable closeable, final Consumer<Exception> onException) {
     assertNotNull(closeable);
-    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-      try {
-        closeable.close();
+    Runtime.getRuntime().addShutdownHook(new Thread() {
+      @Override
+      public void run() {
+        try {
+          closeable.close();
+        }
+        catch (final Exception e) {
+          if (onException != null)
+            onException.accept(e);
+          else if (e instanceof RuntimeException)
+            throw (RuntimeException)e;
+          else
+            throw new RuntimeException(e);
+        }
       }
-      catch (final Exception e) {
-        if (onException != null)
-          onException.accept(e);
-        else
-          throw new RuntimeException(e);
-      }
-    }));
+    });
   }
 
   /**
@@ -82,17 +87,22 @@ public final class Runtimes {
    */
   public static void closeOnExit(final Closeable closeable, final Consumer<Exception> onException) {
     assertNotNull(closeable);
-    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-      try {
-        closeable.close();
+    Runtime.getRuntime().addShutdownHook(new Thread() {
+      @Override
+      public void run() {
+        try {
+          closeable.close();
+        }
+        catch (final Exception e) {
+          if (onException != null)
+            onException.accept(e);
+          else if (e instanceof RuntimeException)
+            throw (RuntimeException)e;
+          else
+            throw new RuntimeException(e);
+        }
       }
-      catch (final Exception e) {
-        if (onException != null)
-          onException.accept(e);
-        else
-          throw new RuntimeException(e);
-      }
-    }));
+    });
   }
 
   private Runtimes() {
