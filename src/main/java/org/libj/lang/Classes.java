@@ -57,19 +57,17 @@ import javassist.CtClass;
 import javassist.CtMethod;
 
 /**
- * Utility providing implementations of methods missing from the API of
- * {@link Class}.
+ * Utility providing implementations of methods missing from the API of {@link Class}.
  */
 public final class Classes {
   private static final Logger logger = LoggerFactory.getLogger(Classes.class);
+  private static final Type[] EMPTY_TYPES = {};
 
   /**
    * Returns the name of the declaring class of the specified class name.
    * <ul>
-   * <li>If the specified class name represents an inner class, the name of the
-   * declaring class will be returned.</li>
-   * <li>If the specified class name represents a regular class, the specified
-   * class name will be returned.
+   * <li>If the specified class name represents an inner class, the name of the declaring class will be returned.</li>
+   * <li>If the specified class name represents a regular class, the specified class name will be returned.
    * </ul>
    * <blockquote>
    * <table>
@@ -84,13 +82,10 @@ public final class Classes {
    * </table>
    * </blockquote>
    *
-   * @param className The class name for which to return the name of the
-   *          declaring class.
+   * @param className The class name for which to return the name of the declaring class.
    * @return The name of the declaring class of the specified class name.
-   * @throws IllegalArgumentException If {@code className} is null, or if
-   *           {@code className} is not a valid <a href=
-   *           "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.8">Java
-   *           Identifier</a>.
+   * @throws IllegalArgumentException If {@code className} is null, or if {@code className} is not a valid
+   *           <a href= "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.8">Java Identifier</a>.
    */
   public static String getDeclaringClassName(final String className) {
     if (!Identifiers.isValid(className))
@@ -104,12 +99,10 @@ public final class Classes {
   /**
    * Returns the name of the root declaring class for the specified class name.
    * <ul>
-   * <li>If the specified class name represents an inner class of an inner class
-   * of an inner class, the name of the root declaring class will be returned
-   * (i.e. the name of the class corresponding to the name of the {@code .java}
-   * file in which the inner class is defined).</li>
-   * <li>If the specified class name represents a regular class, the specified
-   * class name will be returned.
+   * <li>If the specified class name represents an inner class of an inner class of an inner class, the name of the root declaring
+   * class will be returned (i.e. the name of the class corresponding to the name of the {@code .java} file in which the inner class
+   * is defined).</li>
+   * <li>If the specified class name represents a regular class, the specified class name will be returned.
    * </ul>
    * <blockquote>
    * <table>
@@ -124,13 +117,10 @@ public final class Classes {
    * </table>
    * </blockquote>
    *
-   * @param className The class name for which to return the name of the root
-   *          declaring class.
+   * @param className The class name for which to return the name of the root declaring class.
    * @return The name of the root declaring class for the specified class name.
-   * @throws IllegalArgumentException If {@code className} is null, or if
-   *           {@code className} is not a valid <a href=
-   *           "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.8">Java
-   *           Identifier</a>.
+   * @throws IllegalArgumentException If {@code className} is null, or if {@code className} is not a valid
+   *           <a href= "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.8">Java Identifier</a>.
    */
   public static String getRootDeclaringClassName(final String className) {
     if (!Identifiers.isValid(className))
@@ -151,8 +141,7 @@ public final class Classes {
   }
 
   /**
-   * Returns the canonical name of the specified class name, as defined by the Java
-   * Language Specification.
+   * Returns the canonical name of the specified class name, as defined by the Java Language Specification.
    * <blockquote>
    * <table>
    * <caption>Examples</caption>
@@ -168,13 +157,10 @@ public final class Classes {
    *
    * @param className The class name.
    * @return The canonical name of the underlying specified class name.
-   * @throws IllegalArgumentException If {@code className} is null, or if
-   *           {@code className} is not a valid <a href=
-   *           "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.8">Java
-   *           Identifier</a>.
-   * @see <a href=
-   *      "https://docs.oracle.com/javase/specs/jls/se7/html/jls-6.html#jls-6.7">6.7.
-   *      Fully Qualified Names and Canonical Names</a>
+   * @throws IllegalArgumentException If {@code className} is null, or if {@code className} is not a valid
+   *           <a href= "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.8">Java Identifier</a>.
+   * @see <a href= "https://docs.oracle.com/javase/specs/jls/se7/html/jls-6.html#jls-6.7">6.7. Fully Qualified Names and Canonical
+   *      Names</a>
    */
   public static String toCanonicalClassName(final String className) {
     if (!Identifiers.isValid(className))
@@ -197,24 +183,19 @@ public final class Classes {
   }
 
   /**
-   * Returns the "Composite Name" of the class or interface represented by
-   * {@code cls}.
+   * Returns the "Composite Name" of the class or interface represented by {@code cls}.
    * <p>
-   * The "Composite Name" is the fully qualified name of a class
-   * ({@link Class#getName()} with its package name
+   * The "Composite Name" is the fully qualified name of a class ({@link Class#getName()} with its package name
    * ({@link Class#getPackage()}.getName()) removed.
    * <p>
    * For example:
    * <ol>
-   * <li>The "Composite Name" of {@code java.lang.String} is
-   * {@link String}.</li>
-   * <li>The "Composite Name" of {@code java.lang.Map.Entry} is
-   * {@code Map$Entry}.</li>
+   * <li>The "Composite Name" of {@code java.lang.String} is {@link String}.</li>
+   * <li>The "Composite Name" of {@code java.lang.Map.Entry} is {@code Map$Entry}.</li>
    * </ol>
    *
    * @param cls The class or interface.
-   * @return The "Composite Name" of the class or interface represented by
-   *         {@code cls}.
+   * @return The "Composite Name" of the class or interface represented by {@code cls}.
    * @throws IllegalArgumentException If {@code cls} is null.
    */
   public static String getCompositeName(final Class<?> cls) {
@@ -223,24 +204,19 @@ public final class Classes {
   }
 
   /**
-   * Returns the canonical "Composite Name" of the class or interface
-   * represented by {@code cls}.
+   * Returns the canonical "Composite Name" of the class or interface represented by {@code cls}.
    * <p>
-   * The canonical "Composite Name" is the fully qualified name of a class
-   * ({@link Class#getCanonicalName()} with its package name
+   * The canonical "Composite Name" is the fully qualified name of a class ({@link Class#getCanonicalName()} with its package name
    * ({@link Class#getPackage()}.getName()) removed.
    * <p>
    * For example:
    * <ol>
-   * <li>The canonical "Composite Name" of {@code java.lang.String} is
-   * {@link String}.</li>
-   * <li>The canonical "Composite Name" of {@code java.lang.Map.Entry} is
-   * {@code Map.Entry}.</li>
+   * <li>The canonical "Composite Name" of {@code java.lang.String} is {@link String}.</li>
+   * <li>The canonical "Composite Name" of {@code java.lang.Map.Entry} is {@code Map.Entry}.</li>
    * </ol>
    *
    * @param cls The class or interface.
-   * @return The canonical "Composite Name" of the class or interface
-   *         represented by {@code cls}.
+   * @return The canonical "Composite Name" of the class or interface represented by {@code cls}.
    * @throws IllegalArgumentException If {@code cls} is null.
    */
   public static String getCanonicalCompositeName(final Class<?> cls) {
@@ -252,23 +228,17 @@ public final class Classes {
   }
 
   /**
-   * Returns the {@link Class} array most accurately reflecting the actual type
-   * parameters used in the source code for the generic superclass of the
-   * specified {@link Class}, or {@code null} if no generic superclass exist.
+   * Returns the {@link Class} array most accurately reflecting the actual type parameters used in the source code for the generic
+   * superclass of the specified {@link Class}, or {@code null} if no generic superclass exist.
    *
    * @param cls The {@link Class}.
-   * @return The {@link Class} array most accurately reflecting the actual type
-   *         parameters used in the source code for the generic superclass of
-   *         the specified {@link Class}, or {@code null} if no generic
-   *         superclass exist.
-   * @throws GenericSignatureFormatError If the generic class signature does not
-   *           conform to the format specified in <cite>The Java&trade; Virtual
-   *           Machine Specification</cite>.
-   * @throws TypeNotPresentException If the generic superclass refers to a
-   *           non-existent type declaration.
-   * @throws MalformedParameterizedTypeException If the generic superclass
-   *           refers to a parameterized type that cannot be instantiated for
-   *           any reason.
+   * @return The {@link Class} array most accurately reflecting the actual type parameters used in the source code for the generic
+   *         superclass of the specified {@link Class}, or {@code null} if no generic superclass exist.
+   * @throws GenericSignatureFormatError If the generic class signature does not conform to the format specified in <cite>The
+   *           Java&trade; Virtual Machine Specification</cite>.
+   * @throws TypeNotPresentException If the generic superclass refers to a non-existent type declaration.
+   * @throws MalformedParameterizedTypeException If the generic superclass refers to a parameterized type that cannot be
+   *           instantiated for any reason.
    * @throws IllegalArgumentException If {@code cls} is null.
    */
   public static Type[] getSuperclassGenericTypes(final Class<?> cls) {
@@ -288,18 +258,15 @@ public final class Classes {
   }
 
   /**
-   * Traverses and the class hierarchy of the specified {@link Class} in Breadth
-   * First Search order, calling the provided {@code function} for each
-   * superclass and superinterface in the hierarchy, and returns the first
-   * non-null value returned from the {@code function}.
+   * Traverses and the class hierarchy of the specified {@link Class} in Breadth First Search order, calling the provided
+   * {@code function} for each superclass and superinterface in the hierarchy, and returns the first non-null value returned from
+   * the {@code function}.
    *
-   * @param <T> The type parameter of the object returned by the provided
-   *          {@code function}.
+   * @param <T> The type parameter of the object returned by the provided {@code function}.
    * @param cls The {@link Class}.
-   * @param function If not null, the {@link Function} to be called for each
-   *          visited superclass and superinterface. If the {@link Function}
-   *          returns a non-null value, traversal will terminate, and the method
-   *          will return the value returned by the {@code function}.
+   * @param function If not null, the {@link Function} to be called for each visited superclass and superinterface. If the
+   *          {@link Function} returns a non-null value, traversal will terminate, and the method will return the value returned by
+   *          the {@code function}.
    * @return The first non-null value returned from the {@code function}.
    * @throws IllegalArgumentException If {@code cls} null.
    */
@@ -335,16 +302,13 @@ public final class Classes {
   }
 
   /**
-   * Traverses and returns the class hierarchy of the specified {@link Class}.
-   * This method visits the superclasses and superinterfaces with Breadth First
-   * Search.
+   * Traverses and returns the class hierarchy of the specified {@link Class}. This method visits the superclasses and
+   * superinterfaces with Breadth First Search.
    *
    * @param cls The {@link Class}.
-   * @param forEach If not null, the {@link Predicate} to be called for each
-   *          visited superclass and superinterface. If the {@link Predicate}
-   *          returns {@code false}, traversal will terminate, and the method
-   *          will return the set of classes that had been visited before
-   *          termination.
+   * @param forEach If not null, the {@link Predicate} to be called for each visited superclass and superinterface. If the
+   *          {@link Predicate} returns {@code false}, traversal will terminate, and the method will return the set of classes that
+   *          had been visited before termination.
    * @return The class hierarchy of the specified {@link Class}.
    * @throws IllegalArgumentException If {@code cls} null.
    */
@@ -368,9 +332,8 @@ public final class Classes {
   }
 
   /**
-   * Traverses and returns the class hierarchy of the specified {@link Class}.
-   * This method visits the superclasses and superinterfaces with Breadth First
-   * Search.
+   * Traverses and returns the class hierarchy of the specified {@link Class}. This method visits the superclasses and
+   * superinterfaces with Breadth First Search.
    *
    * @param cls The {@link Class}.
    * @return The class hierarchy of the specified {@link Class}.
@@ -381,28 +344,20 @@ public final class Classes {
   }
 
   /**
-   * Finds the specified {@code interfaceType} in the class hierarchy of the
-   * provided {@code cls}, and returns an array of {@link Type} objects
-   * representing the actual type arguments to the generic type.
+   * Finds the specified {@code interfaceType} in the class hierarchy of the provided {@code cls}, and returns an array of
+   * {@link Type} objects representing the actual type arguments to the generic type.
    * <p>
-   * Note that in some cases, the returned array be empty. This can occur if
-   * this type represents a non-parameterized type nested within a parameterized
-   * type.
+   * Note that in some cases, the returned array be empty. This can occur if this type represents a non-parameterized type nested
+   * within a parameterized type.
    *
-   * @param cls The {@link Class} in which to find the specified
-   *          {@code interfaceType}.
-   * @param interfaceType The interface {@link Class} to find in the provided
-   *          {@code cls}.
-   * @return An array of {@link Type} objects representing the actual type
-   *         arguments to this type.
-   * @throws TypeNotPresentException If any of the actual type arguments refers
-   *           to a non-existent type declaration.
-   * @throws MalformedParameterizedTypeException If any of the actual type
-   *           parameters refer to a parameterized type that cannot be
+   * @param cls The {@link Class} in which to find the specified {@code interfaceType}.
+   * @param interfaceType The interface {@link Class} to find in the provided {@code cls}.
+   * @return An array of {@link Type} objects representing the actual type arguments to this type.
+   * @throws TypeNotPresentException If any of the actual type arguments refers to a non-existent type declaration.
+   * @throws MalformedParameterizedTypeException If any of the actual type parameters refer to a parameterized type that cannot be
    *           instantiated for any reason.
-   * @throws IllegalArgumentException If {@code interfaceType} or {@code cls} is
-   *           null, or if {@code interfaceType} is not a {@link Class} of an
-   *           interface type.
+   * @throws IllegalArgumentException If {@code interfaceType} or {@code cls} is null, or if {@code interfaceType} is not a
+   *           {@link Class} of an interface type.
    */
   public static Type[] getGenericInterfaceTypeArguments(final Class<?> cls, final Class<?> interfaceType) {
     assertNotNull(cls);
@@ -411,24 +366,18 @@ public final class Classes {
       throw new IllegalArgumentException(interfaceType.getName() + " is not an interface type");
 
     final Type[] types = resolveGenericTypes(cls, null, new HashSet<>(), (c, t) -> c == interfaceType ? t : null);
-    return types != null ? types : new Type[0];
+    return types != null ? types : EMPTY_TYPES;
   }
 
   /**
-   * Traverses the class hierarchy of the specified {@link Class} in Depth First
-   * Search order, invoking the provided {@code function} for each superclasses
-   * and superinterface in the class hierarchy with resolved generic type
-   * arguments, and returns the first non-null value returned from the
-   * {@code function}.
+   * Traverses the class hierarchy of the specified {@link Class} in Depth First Search order, invoking the provided
+   * {@code function} for each superclasses and superinterface in the class hierarchy with resolved generic type arguments, and
+   * returns the first non-null value returned from the {@code function}.
    *
-   * @param <T> The type parameter of the object returned by the provided
-   *          {@code function}.
-   * @param cls The {@link Class} whose superclasses and superinterface are to
-   *          be resolved.
-   * @param function The {@link BiFunction} to be invoked for each superclasses
-   *          and superinterface of the specified {@link Class}, whereby a
-   *          return of {@code false} will terminate subsequent traversal of the
-   *          class hierarchy.
+   * @param <T> The type parameter of the object returned by the provided {@code function}.
+   * @param cls The {@link Class} whose superclasses and superinterface are to be resolved.
+   * @param function The {@link BiFunction} to be invoked for each superclasses and superinterface of the specified {@link Class},
+   *          whereby a return of {@code false} will terminate subsequent traversal of the class hierarchy.
    * @return The first non-null value returned from the {@code function}.
    * @throws IllegalArgumentException If {@code cls} or {@code function} is null.
    */
@@ -439,8 +388,11 @@ public final class Classes {
   private static <T>T resolveGenericTypes(final Class<?> cls, final Object[][] args, final Set<Class<?>> visited, final BiFunction<Class<?>,Type[],T> function) {
     final Class<?> superclass = cls.getSuperclass();
     T result;
-    if (superclass != null && cls.getGenericSuperclass() instanceof ParameterizedType && (result = resolveGenericTypes(superclass, (ParameterizedType)cls.getGenericSuperclass(), args, visited, function)) != null)
-      return result;
+    final boolean resolvedSuperclass;
+    if (resolvedSuperclass = (superclass != null && cls.getGenericSuperclass() instanceof ParameterizedType)) {
+      if ((result = resolveGenericTypes(superclass, (ParameterizedType)cls.getGenericSuperclass(), args, visited, function)) != null)
+        return result;
+    }
 
     final Class<?>[] superInterfaces = cls.getInterfaces();
     final Type[] genericSuperInterfaces = cls.getGenericInterfaces();
@@ -454,22 +406,15 @@ public final class Classes {
         return result;
     }
 
-    return null;
+    return resolvedSuperclass || superclass == null ? null : resolveGenericTypes(superclass, args, visited, function);
   }
 
   private static <T>T resolveGenericTypes(final Class<?> superClass, final ParameterizedType superType, final Object[][] args, final Set<Class<?>> visited, final BiFunction<Class<?>,Type[],T> function) {
     final TypeVariable<?>[] typeVariables = superClass.getTypeParameters();
     final Type[] typeArguments = superType.getActualTypeArguments();
     final Object[][] nextArgs = recurseArgs(typeVariables, typeArguments, args, 0, 0);
-    T result = function.apply(superClass, typeArguments);
-    if (result != null)
-      return result;
-
-    result = resolveGenericTypes(superClass, nextArgs, visited, function);
-    if (result != null)
-      return result;
-
-    return null;
+    final T result = function.apply(superClass, typeArguments);
+    return result != null ? result : resolveGenericTypes(superClass, nextArgs, visited, function);
   }
 
   private static Object[][] recurseArgs(final TypeVariable<?>[] typeVariables, final Type[] typeArguments, final Object[][] args, final int index, final int depth) {
@@ -500,9 +445,8 @@ public final class Classes {
   }
 
   /**
-   * Returns the array of generic parameter classes for the return type of the
-   * specified method. If the field is not a parameterized type, this method
-   * will return an empty array.
+   * Returns the array of generic parameter classes for the return type of the specified method. If the field is not a parameterized
+   * type, this method will return an empty array.
    *
    * @param method The {@link Method}
    * @return The array of generic parameter classes for the specified method.
@@ -515,8 +459,8 @@ public final class Classes {
   private static final Class<?>[] emptyClasses = {};
 
   /**
-   * Returns the array of generic parameter classes for the specified field. If the
-   * field is not a parameterized type, this method will return an empty array.
+   * Returns the array of generic parameter classes for the specified field. If the field is not a parameterized type, this method
+   * will return an empty array.
    *
    * @param field The {@link Field}
    * @return The array of generic parameter classes for the specified field.
@@ -557,109 +501,89 @@ public final class Classes {
   }
 
   /**
-   * Returns a {@link Field} object that reflects the specified public member
-   * field of the class or interface represented by {@code cls} (including
-   * inherited fields). The {@code name} parameter is a {@link String}
-   * specifying the simple name of the desired field.
+   * Returns a {@link Field} object that reflects the specified public member field of the class or interface represented by
+   * {@code cls} (including inherited fields). The {@code name} parameter is a {@link String} specifying the simple name of the
+   * desired field.
    * <p>
-   * The field to be reflected is determined by the algorithm that follows. Let
-   * C be the class or interface represented by this object:
+   * The field to be reflected is determined by the algorithm that follows. Let C be the class or interface represented by this
+   * object:
    * <ol>
-   * <li>If C declares a public field with the name specified, that is the field
-   * to be reflected.</li>
-   * <li>If no field was found in step 1 above, this algorithm is applied
-   * recursively to each direct superinterface of C. The direct superinterfaces
-   * are searched in the order they were declared.</li>
-   * <li>If no field was found in steps 1 and 2 above, and C has a superclass S,
-   * then this algorithm is invoked recursively upon S. If C has no superclass,
-   * then this method returns {@code null}.</li>
+   * <li>If C declares a public field with the name specified, that is the field to be reflected.</li>
+   * <li>If no field was found in step 1 above, this algorithm is applied recursively to each direct superinterface of C. The direct
+   * superinterfaces are searched in the order they were declared.</li>
+   * <li>If no field was found in steps 1 and 2 above, and C has a superclass S, then this algorithm is invoked recursively upon S.
+   * If C has no superclass, then this method returns {@code null}.</li>
    * </ol>
    * <p>
-   * If this {@link Class} object represents an array type, then this method
-   * does not find the {@code length} field of the array type.
+   * If this {@link Class} object represents an array type, then this method does not find the {@code length} field of the array
+   * type.
    * <p>
-   * This method differentiates itself from {@link Class#getField(String)} by
-   * returning {@code null} when a field is not found, instead of throwing
-   * {@link NoSuchFieldException}.
+   * This method differentiates itself from {@link Class#getField(String)} by returning {@code null} when a field is not found,
+   * instead of throwing {@link NoSuchFieldException}.
    *
    * @param cls The class in which to find the public field.
    * @param name The field name.
-   * @return A {@link Field} object that reflects the specified public member
-   *         field of the class or interface represented by {@code cls}
-   *         (including inherited fields). The {@code name} parameter is a
-   *         {@link String} specifying the simple name of the desired field.
+   * @return A {@link Field} object that reflects the specified public member field of the class or interface represented by
+   *         {@code cls} (including inherited fields). The {@code name} parameter is a {@link String} specifying the simple name of
+   *         the desired field.
    * @throws IllegalArgumentException If {@code cls} or {@code name} is null.
-   * @throws SecurityException If a security manager, <i>s</i>, is present and
-   *           the caller's class loader is not the same as or an ancestor of
-   *           the class loader for the current class and invocation of
-   *           {@link SecurityManager#checkPackageAccess s.checkPackageAccess()}
-   *           denies access to the package of this class.
+   * @throws SecurityException If a security manager, <i>s</i>, is present and the caller's class loader is not the same as or an
+   *           ancestor of the class loader for the current class and invocation of {@link SecurityManager#checkPackageAccess
+   *           s.checkPackageAccess()} denies access to the package of this class.
    */
   public static Field getField(final Class<?> cls, final String name) {
     return Classes.getField(assertNotNull(cls), assertNotNull(name), false);
   }
 
   /**
-   * Returns a {@link Field} object that reflects the specified declared member
-   * field of the class or interface represented by {@code cls} (excluding
-   * inherited fields). The {@code name} parameter is a {@link String}
-   * specifying the simple name of the desired field.
+   * Returns a {@link Field} object that reflects the specified declared member field of the class or interface represented by
+   * {@code cls} (excluding inherited fields). The {@code name} parameter is a {@link String} specifying the simple name of the
+   * desired field.
    * <p>
-   * Declared fields include public, protected, default (package) access, and
-   * private visibility.
+   * Declared fields include public, protected, default (package) access, and private visibility.
    * <p>
-   * If this {@link Class} object represents an array type, then this method
-   * does not find the {@code length} field of the array type.
+   * If this {@link Class} object represents an array type, then this method does not find the {@code length} field of the array
+   * type.
    * <p>
-   * This method differentiates itself from
-   * {@link Class#getDeclaredField(String)} by returning {@code null} when a
-   * field is not found, instead of throwing {@link NoSuchFieldException}.
+   * This method differentiates itself from {@link Class#getDeclaredField(String)} by returning {@code null} when a field is not
+   * found, instead of throwing {@link NoSuchFieldException}.
    *
    * @param cls The class in which to find the declared field.
    * @param name The field name.
-   * @return A {@link Field} object that reflects the specified public member
-   *         field of the class or interface represented by {@code cls}
-   *         (excluding inherited fields). The {@code name} parameter is a
-   *         {@link String} specifying the simple name of the desired field.
+   * @return A {@link Field} object that reflects the specified public member field of the class or interface represented by
+   *         {@code cls} (excluding inherited fields). The {@code name} parameter is a {@link String} specifying the simple name of
+   *         the desired field.
    * @throws IllegalArgumentException If {@code cls} or {@code name} is null.
-   * @throws SecurityException If a security manager, <i>s</i>, is present and
-   *           the caller's class loader is not the same as or an ancestor of
-   *           the class loader for the current class and invocation of
-   *           {@link SecurityManager#checkPackageAccess s.checkPackageAccess()}
-   *           denies access to the package of this class.
+   * @throws SecurityException If a security manager, <i>s</i>, is present and the caller's class loader is not the same as or an
+   *           ancestor of the class loader for the current class and invocation of {@link SecurityManager#checkPackageAccess
+   *           s.checkPackageAccess()} denies access to the package of this class.
    */
   public static Field getDeclaredField(final Class<?> cls, final String name) {
     return Classes.getField(assertNotNull(cls), assertNotNull(name), true);
   }
 
   /**
-   * Returns a {@link Field} object that reflects the specified declared member
-   * field of the class or interface represented by {@code cls} (including
-   * inherited fields). The {@code name} parameter is a {@link String}
-   * specifying the simple name of the desired field.
+   * Returns a {@link Field} object that reflects the specified declared member field of the class or interface represented by
+   * {@code cls} (including inherited fields). The {@code name} parameter is a {@link String} specifying the simple name of the
+   * desired field.
    * <p>
-   * Declared fields include public, protected, default (package) access, and
-   * private visibility.
+   * Declared fields include public, protected, default (package) access, and private visibility.
    * <p>
-   * If this {@link Class} object represents an array type, then this method
-   * does not find the {@code length} field of the array type.
+   * If this {@link Class} object represents an array type, then this method does not find the {@code length} field of the array
+   * type.
    * <p>
-   * This method differentiates itself from
-   * {@link Class#getDeclaredField(String)} by returning {@code null} when a
-   * field is not found, instead of throwing {@link NoSuchFieldException}.
+   * This method differentiates itself from {@link Class#getDeclaredField(String)} by returning {@code null} when a field is not
+   * found, instead of throwing {@link NoSuchFieldException}.
    *
    * @param cls The class in which to find the declared field.
    * @param name The field name.
-   * @return A {@link Field} object that reflects the specified public member
-   *         field of the class or interface represented by {@code cls}
-   *         (including inherited fields). The {@code name} parameter is a
-   *         {@link String} specifying the simple name of the desired field.
+   * @return A {@link Field} object that reflects the specified public member field of the class or interface represented by
+   *         {@code cls} (including inherited fields). The {@code name} parameter is a {@link String} specifying the simple name of
+   *         the desired field.
    * @throws IllegalArgumentException If {@code cls} or {@code name} is null.
-   * @throws SecurityException If a security manager, <i>s</i>, is present and
-   *           the caller's class loader is not the same as or an ancestor of
-   *           the class loader for the current class and invocation of
-   *           {@link SecurityManager#checkPackageAccess s.checkPackageAccess()}
-   *           denies access to the package of this class.
+   * @throws SecurityException If a security manager, <i>s</i>, is present and the caller's class loader is not the same as or an
+   *           ancestor of the class loader for the current class and invocation of {@link SecurityManager#checkPackageAccess
+   *           s.checkPackageAccess()} denies access to the package of this class.
    */
   public static Field getDeclaredFieldDeep(Class<?> cls, final String name) {
     assertNotNull(cls);
@@ -672,27 +596,21 @@ public final class Classes {
   }
 
   /**
-   * Returns a {@link Constructor} object that reflects the specified public
-   * constructor signature of the class represented by {@code cls} (including
-   * inherited constructors), or {@code null} if the constructor is not found.
+   * Returns a {@link Constructor} object that reflects the specified public constructor signature of the class represented by
+   * {@code cls} (including inherited constructors), or {@code null} if the constructor is not found.
    * <p>
-   * The {@code parameterTypes} parameter is an array of {@link Class} objects
-   * that identify the constructor's formal parameter types, in declared order.
-   * If {@code cls} represents an inner class declared in a non-static context,
-   * the formal parameter types include the explicit enclosing instance as the
-   * first parameter.
+   * The {@code parameterTypes} parameter is an array of {@link Class} objects that identify the constructor's formal parameter
+   * types, in declared order. If {@code cls} represents an inner class declared in a non-static context, the formal parameter types
+   * include the explicit enclosing instance as the first parameter.
    * <p>
-   * This method differentiates itself from
-   * {@link Class#getConstructor(Class...)} by returning {@code null} when a
-   * method is not found, instead of throwing {@link NoSuchMethodException}.
+   * This method differentiates itself from {@link Class#getConstructor(Class...)} by returning {@code null} when a method is not
+   * found, instead of throwing {@link NoSuchMethodException}.
    *
    * @param <T> The class in which the constructor is declared.
    * @param cls The class in which to find the public constructor.
    * @param parameterTypes The parameter array.
-   * @return A {@link Constructor} object that reflects the specified public
-   *         constructor signature of the class represented by {@code cls}
-   *         (including inherited constructors), or {@code null} if the
-   *         constructor is not found.
+   * @return A {@link Constructor} object that reflects the specified public constructor signature of the class represented by
+   *         {@code cls} (including inherited constructors), or {@code null} if the constructor is not found.
    * @throws IllegalArgumentException If {@code cls} is null.
    */
   @SuppressWarnings("unchecked")
@@ -706,30 +624,23 @@ public final class Classes {
   }
 
   /**
-   * Returns a {@link Constructor} object that reflects the specified public
-   * constructor signature of the class represented by {@code cls} (including
-   * inherited constructors), or {@code null} if the constructor is not found.
+   * Returns a {@link Constructor} object that reflects the specified public constructor signature of the class represented by
+   * {@code cls} (including inherited constructors), or {@code null} if the constructor is not found.
    * <p>
-   * The {@code parameterTypes} parameter is an array of {@link Class} objects
-   * that identify the constructor's compatible parameter types, in declared
-   * order.
+   * The {@code parameterTypes} parameter is an array of {@link Class} objects that identify the constructor's compatible parameter
+   * types, in declared order.
    * <p>
-   * A parameter type {@code p} is compatible with a {@link Class} that is the
-   * same or is the superclass of {@code p}.
+   * A parameter type {@code p} is compatible with a {@link Class} that is the same or is the superclass of {@code p}.
    * <p>
-   * If {@code cls} represents an inner class declared in a non-static context,
-   * the formal parameter types include the explicit enclosing instance as the
-   * first parameter.
+   * If {@code cls} represents an inner class declared in a non-static context, the formal parameter types include the explicit
+   * enclosing instance as the first parameter.
    *
    * @param <T> The class in which the constructor is declared.
    * @param cls The class in which to find the public constructor.
    * @param parameterTypes The parameter array.
-   * @return A {@link Constructor} object that reflects the specified public
-   *         constructor signature of the class represented by {@code cls}
-   *         (including inherited constructors), or {@code null} if the
-   *         constructor is not found.
-   * @throws IllegalArgumentException If {@code cls} or {@code parameterTypes} is
-   *           null.
+   * @return A {@link Constructor} object that reflects the specified public constructor signature of the class represented by
+   *         {@code cls} (including inherited constructors), or {@code null} if the constructor is not found.
+   * @throws IllegalArgumentException If {@code cls} or {@code parameterTypes} is null.
    */
   @SuppressWarnings("unchecked")
   public static <T>Constructor<T> getCompatibleConstructor(final Class<T> cls, final Class<?> ... parameterTypes) {
@@ -742,31 +653,23 @@ public final class Classes {
   }
 
   /**
-   * Returns a {@link Constructor} object that reflects the specified declared
-   * constructor signature of the class represented by {@code cls} (excluding
-   * inherited constructors), or {@code null} if the constructor is not found.
+   * Returns a {@link Constructor} object that reflects the specified declared constructor signature of the class represented by
+   * {@code cls} (excluding inherited constructors), or {@code null} if the constructor is not found.
    * <p>
-   * Declared constructors include public, protected, default (package) access,
-   * and private visibility.
+   * Declared constructors include public, protected, default (package) access, and private visibility.
    * <p>
-   * The {@code parameterTypes} parameter is an array of {@link Class} objects
-   * that identify the constructor's formal parameter types, in declared order.
-   * If {@code cls} represents an inner class declared in a non-static context,
-   * the formal parameter types include the explicit enclosing instance as the
-   * first parameter.
+   * The {@code parameterTypes} parameter is an array of {@link Class} objects that identify the constructor's formal parameter
+   * types, in declared order. If {@code cls} represents an inner class declared in a non-static context, the formal parameter types
+   * include the explicit enclosing instance as the first parameter.
    * <p>
-   * This method differentiates itself from
-   * {@link Class#getDeclaredConstructor(Class...)} by returning {@code null}
-   * when a method is not found, instead of throwing
-   * {@link NoSuchMethodException}.
+   * This method differentiates itself from {@link Class#getDeclaredConstructor(Class...)} by returning {@code null} when a method
+   * is not found, instead of throwing {@link NoSuchMethodException}.
    *
    * @param <T> The class in which the constructor is declared.
    * @param cls The class in which to find the declared constructor.
    * @param parameterTypes The parameter array.
-   * @return A {@link Constructor} object that reflects the specified declared
-   *         constructor signature of the class represented by {@code cls}
-   *         (excluding inherited constructors), or {@code null} if the
-   *         constructor is not found.
+   * @return A {@link Constructor} object that reflects the specified declared constructor signature of the class represented by
+   *         {@code cls} (excluding inherited constructors), or {@code null} if the constructor is not found.
    * @throws IllegalArgumentException If {@code cls} is null.
    */
   @SuppressWarnings("unchecked")
@@ -784,17 +687,15 @@ public final class Classes {
   }
 
   /**
-   * Changes the annotation value for {@code key} in {@code annotation} to
-   * {@code newValue}, and returns the previous value.
+   * Changes the annotation value for {@code key} in {@code annotation} to {@code newValue}, and returns the previous value.
    *
    * @param <T> Type parameter of the value.
    * @param annotation The annotation.
    * @param key The key.
    * @param newValue The new value.
    * @return The previous value assigned to {@code key}.
-   * @throws IllegalArgumentException If {@code annotation}, {@code key} or
-   *           {@code newValue} is null, or if {@code newValue} does not match
-   *           the required type of the value for {@code key}.
+   * @throws IllegalArgumentException If {@code annotation}, {@code key} or {@code newValue} is null, or if {@code newValue} does
+   *           not match the required type of the value for {@code key}.
    */
   @SuppressWarnings("unchecked")
   public static <T>T setAnnotationValue(final Annotation annotation, final String key, final T newValue) {
@@ -867,25 +768,19 @@ public final class Classes {
   private static final BiPredicate<Class<?>,Class<? extends Annotation>> classWithAnnotationFilter = (m, a) -> m.getAnnotation(a) != null;
 
   /**
-   * Returns an array of Field objects declared in {@code cls} (including
-   * inherited fields).
+   * Returns an array of Field objects declared in {@code cls} (including inherited fields).
    * <p>
-   * Declared fields include public, protected, default (package) access, and
-   * private visibility.
+   * Declared fields include public, protected, default (package) access, and private visibility.
    * <p>
-   * If {@code cls} represents a class or interface with no declared fields,
-   * then this method returns an array of length 0.
+   * If {@code cls} represents a class or interface with no declared fields, then this method returns an array of length 0.
    * <p>
-   * If {@code cls} represents an array type, a primitive type, or void, then
-   * this method returns an array of length 0.
+   * If {@code cls} represents an array type, a primitive type, or void, then this method returns an array of length 0.
    * <p>
-   * The elements in the returned array are sorted reflecting the inheritance
-   * graph of {@code cls}, whereby inherited fields are first, and member fields
-   * are last.
+   * The elements in the returned array are sorted reflecting the inheritance graph of {@code cls}, whereby inherited fields are
+   * first, and member fields are last.
    *
    * @param cls The class in which to find declared fields.
-   * @return An array of Field objects declared in {@code cls} (including
-   *         inherited fields).
+   * @return An array of Field objects declared in {@code cls} (including inherited fields).
    * @throws IllegalArgumentException If {@code cls} is null.
    */
   public static Field[] getDeclaredFieldsDeep(final Class<?> cls) {
@@ -893,28 +788,21 @@ public final class Classes {
   }
 
   /**
-   * Returns an array of Field objects declared in {@code cls} (including
-   * inherited fields), for which the provided {@link Predicate} returns
-   * {@code true}.
+   * Returns an array of Field objects declared in {@code cls} (including inherited fields), for which the provided
+   * {@link Predicate} returns {@code true}.
    * <p>
-   * Declared fields include public, protected, default (package) access, and
-   * private visibility.
+   * Declared fields include public, protected, default (package) access, and private visibility.
    * <p>
-   * If {@code cls} represents a class or interface with no declared fields,
-   * then this method returns an array of length 0.
+   * If {@code cls} represents a class or interface with no declared fields, then this method returns an array of length 0.
    * <p>
-   * If {@code cls} represents an array type, a primitive type, or void, then
-   * this method returns an array of length 0.
+   * If {@code cls} represents an array type, a primitive type, or void, then this method returns an array of length 0.
    * <p>
-   * The elements in the returned array are sorted reflecting the inheritance
-   * graph of {@code cls}, whereby inherited fields are first, and member fields
-   * are last.
+   * The elements in the returned array are sorted reflecting the inheritance graph of {@code cls}, whereby inherited fields are
+   * first, and member fields are last.
    *
    * @param cls The class in which to find declared fields.
-   * @param predicate The {@link Predicate} used to decide whether the field
-   *          should be included in the returned array.
-   * @return An array of Field objects declared in {@code cls} (including
-   *         inherited fields).
+   * @param predicate The {@link Predicate} used to decide whether the field should be included in the returned array.
+   * @return An array of Field objects declared in {@code cls} (including inherited fields).
    * @throws IllegalArgumentException If {@code cls} or {@code predicate} is null.
    */
   public static Field[] getDeclaredFieldsDeep(final Class<?> cls, final Predicate<Field> predicate) {
@@ -922,89 +810,69 @@ public final class Classes {
   }
 
   /**
-   * Returns an array of Field objects declared in {@code cls} (excluding
-   * inherited fields) that have an annotation of {@code annotationType}.
+   * Returns an array of Field objects declared in {@code cls} (excluding inherited fields) that have an annotation of
+   * {@code annotationType}.
    * <p>
-   * Declared fields include public, protected, default (package) access, and
-   * private visibility.
+   * Declared fields include public, protected, default (package) access, and private visibility.
    * <p>
-   * If {@code cls} represents a class or interface with no declared fields,
-   * then this method returns an array of length 0.
+   * If {@code cls} represents a class or interface with no declared fields, then this method returns an array of length 0.
    * <p>
-   * If {@code cls} represents an array type, a primitive type, or void, then
-   * this method returns an array of length 0.
+   * If {@code cls} represents an array type, a primitive type, or void, then this method returns an array of length 0.
    * <p>
-   * The elements in the returned array are not sorted and are not in any
-   * particular order.
+   * The elements in the returned array are not sorted and are not in any particular order.
    *
    * @param cls The class in which to find declared fields.
    * @param annotationType The type of the annotation to match.
-   * @return An array of Field objects declared in {@code cls} (excluding
-   *         inherited fields) that have an annotation of
+   * @return An array of Field objects declared in {@code cls} (excluding inherited fields) that have an annotation of
    *         {@code annotationType}.
-   * @throws IllegalArgumentException If {@code cls} or {@code annotationType} is
-   *           null.
+   * @throws IllegalArgumentException If {@code cls} or {@code annotationType} is null.
    */
   public static Field[] getDeclaredFieldsWithAnnotation(final Class<?> cls, final Class<? extends Annotation> annotationType) {
     return Repeat.Recursive.ordered(assertNotNull(cls).getDeclaredFields(), Field.class, declaredFieldWithAnnotationFilter, assertNotNull(annotationType));
   }
 
   /**
-   * Returns an array of Field objects declared in {@code cls} (including
-   * inherited fields) that have an annotation of {@code annotationType}.
+   * Returns an array of Field objects declared in {@code cls} (including inherited fields) that have an annotation of
+   * {@code annotationType}.
    * <p>
-   * Declared fields include public, protected, default (package) access, and
-   * private visibility.
+   * Declared fields include public, protected, default (package) access, and private visibility.
    * <p>
-   * If {@code cls} represents a class or interface with no declared fields,
-   * then this method returns an array of length 0.
+   * If {@code cls} represents a class or interface with no declared fields, then this method returns an array of length 0.
    * <p>
-   * If {@code cls} represents an array type, a primitive type, or void, then
-   * this method returns an array of length 0.
+   * If {@code cls} represents an array type, a primitive type, or void, then this method returns an array of length 0.
    * <p>
-   * The elements in the returned array are sorted reflecting the inheritance
-   * graph of {@code cls}, whereby inherited fields are first, and member fields
-   * are last.
+   * The elements in the returned array are sorted reflecting the inheritance graph of {@code cls}, whereby inherited fields are
+   * first, and member fields are last.
    *
    * @param cls The class in which to find declared fields.
    * @param annotationType The type of the annotation to match.
-   * @return An array of Field objects declared in {@code cls} (including
-   *         inherited fields) that have an annotation of
+   * @return An array of Field objects declared in {@code cls} (including inherited fields) that have an annotation of
    *         {@code annotationType}.
-   * @throws IllegalArgumentException If {@code cls} or {@code annotationType} is
-   *           null.
+   * @throws IllegalArgumentException If {@code cls} or {@code annotationType} is null.
    */
   public static Field[] getDeclaredFieldsWithAnnotationDeep(final Class<?> cls, final Class<? extends Annotation> annotationType) {
     return Repeat.Recursive.inverted(assertNotNull(cls), cls.getDeclaredFields(), Field.class, declaredFieldWithAnnotationRecurser, assertNotNull(annotationType));
   }
 
   /**
-   * Returns a {@link Method} object that reflects the specified public method
-   * signature of the class or interface represented by {@code cls} (including
-   * inherited methods), or {@code null} if the method is not found.
+   * Returns a {@link Method} object that reflects the specified public method signature of the class or interface represented by
+   * {@code cls} (including inherited methods), or {@code null} if the method is not found.
    * <p>
-   * The {@code name} parameter is a {@code String} that specifies the simple
-   * name of the desired method, and the {@code parameterTypes} parameter is an
-   * array of {@link Class} objects that identify the method's formal parameter
-   * types, in declared order. If more than one method with the same parameter
-   * types is declared in a class, and one of these methods has a return type
-   * that is more specific than any of the others, that method is returned;
-   * otherwise one of the methods is chosen arbitrarily. If the name is
-   * {@code "<init>"} or {@code "<clinit>"} this method returns {@code null}. If
-   * this Class object represents an array type, then this method does not find
-   * the {@code clone()} method.
+   * The {@code name} parameter is a {@code String} that specifies the simple name of the desired method, and the
+   * {@code parameterTypes} parameter is an array of {@link Class} objects that identify the method's formal parameter types, in
+   * declared order. If more than one method with the same parameter types is declared in a class, and one of these methods has a
+   * return type that is more specific than any of the others, that method is returned; otherwise one of the methods is chosen
+   * arbitrarily. If the name is {@code "<init>"} or {@code "<clinit>"} this method returns {@code null}. If this Class object
+   * represents an array type, then this method does not find the {@code clone()} method.
    * <p>
-   * This method differentiates itself from
-   * {@link Class#getDeclaredMethod(String,Class...)} by returning {@code null}
-   * when a method is not found, instead of throwing
-   * {@link NoSuchMethodException}.
+   * This method differentiates itself from {@link Class#getDeclaredMethod(String,Class...)} by returning {@code null} when a method
+   * is not found, instead of throwing {@link NoSuchMethodException}.
    *
    * @param cls The class in which to find the declared method.
    * @param name The simple name of the method.
    * @param parameterTypes The parameter array.
-   * @return A {@link Method} object that reflects the specified declared method
-   *         of the class or interface represented by {@code cls} (excluding
-   *         inherited methods), or {@code null} if the method is not found.
+   * @return A {@link Method} object that reflects the specified declared method of the class or interface represented by
+   *         {@code cls} (excluding inherited methods), or {@code null} if the method is not found.
    * @throws IllegalArgumentException If {@code cls} or {@code name} is null.
    */
   public static Method getMethod(final Class<?> cls, final String name, final Class<?> ... parameterTypes) {
@@ -1027,17 +895,15 @@ public final class Classes {
   }
 
   /**
-   * Determines if the specified {@code Object obj} is assignment-compatible
-   * with the class or interface represented by {@code target}.
+   * Determines if the specified {@code Object obj} is assignment-compatible with the class or interface represented by
+   * {@code target}.
    * <p>
-   * This method differentiates itself from {@link Class#isInstance(Object)} by
-   * supporting primitive types.
+   * This method differentiates itself from {@link Class#isInstance(Object)} by supporting primitive types.
    *
    * @param target The target class.
    * @param obj The object to check.
-   * @return Whether the specified {@code Object obj} is assignment-compatible
-   *         with the class or interface represented by {@code target}, or
-   *         {@code null} if {@code obj} is null.
+   * @return Whether the specified {@code Object obj} is assignment-compatible with the class or interface represented by
+   *         {@code target}, or {@code null} if {@code obj} is null.
    * @throws IllegalArgumentException If {@code target} is null.
    */
   public static boolean isInstance(final Class<?> target, final Object obj) {
@@ -1045,28 +911,25 @@ public final class Classes {
   }
 
   /**
-   * Determines if the class or interface represented by {@code target} is
-   * either the same as, or is a superclass or superinterface of, the class or
-   * interface represented by the specified {@code cls} parameter.
+   * Determines if the class or interface represented by {@code target} is either the same as, or is a superclass or superinterface
+   * of, the class or interface represented by the specified {@code cls} parameter.
    * <p>
-   * This method differentiates itself from
-   * {@link Class#isAssignableFrom(Class)} by wrapping primitive types. This
-   * method is also able to properly ascertain whether the {@code cls} class is
-   * assignment compatible with the {@code target} class, in case the two
-   * classes represent arrays.
+   * This method differentiates itself from {@link Class#isAssignableFrom(Class)} by wrapping primitive types. This method is also
+   * able to properly ascertain whether the {@code cls} class is assignment compatible with the {@code target} class, in case the
+   * two classes represent arrays.
    * <p>
    * Calling this method is the equivalent of:
    *
    * <pre>
-   * {@code isAssignableFrom(target,cls,true)}
+   * {@code
+   * isAssignableFrom(target, cls, true)
+   * }
    * </pre>
    *
    * @param target The target class.
    * @param cls The argument class.
-   * @return Whether the class or interface represented by {@code target} is
-   *         either the same as, or is a superclass or superinterface of, the
-   *         class or interface represented by the specified {@code cls}
-   *         parameter.
+   * @return Whether the class or interface represented by {@code target} is either the same as, or is a superclass or
+   *         superinterface of, the class or interface represented by the specified {@code cls} parameter.
    * @throws IllegalArgumentException If {@code target} or {@code cls} is null.
    */
   public static boolean isAssignableFrom(final Class<?> target, final Class<?> cls) {
@@ -1074,24 +937,18 @@ public final class Classes {
   }
 
   /**
-   * Determines if the class or interface represented by {@code target} is
-   * either the same as, or is a superclass or superinterface of, the class or
-   * interface represented by the specified {@code cls} parameter.
+   * Determines if the class or interface represented by {@code target} is either the same as, or is a superclass or superinterface
+   * of, the class or interface represented by the specified {@code cls} parameter.
    * <p>
-   * This method differentiates itself from
-   * {@link Class#isAssignableFrom(Class)} by conditionally wrapping primitive
-   * types, if {@code canWrap == true}. This method is also able to properly
-   * ascertain whether the {@code cls} class is assignment compatible with the
-   * {@code target} class, in case the two classes represent arrays.
+   * This method differentiates itself from {@link Class#isAssignableFrom(Class)} by conditionally wrapping primitive types, if
+   * {@code canWrap == true}. This method is also able to properly ascertain whether the {@code cls} class is assignment compatible
+   * with the {@code target} class, in case the two classes represent arrays.
    *
    * @param target The target class.
    * @param cls The argument class.
-   * @param canWrap If {@code true}, this method will check compatibility of the
-   *          wrapped form of a primitive type.
-   * @return Whether the class or interface represented by {@code target} is
-   *         either the same as, or is a superclass or superinterface of, the
-   *         class or interface represented by the specified {@code cls}
-   *         parameter.
+   * @param canWrap If {@code true}, this method will check compatibility of the wrapped form of a primitive type.
+   * @return Whether the class or interface represented by {@code target} is either the same as, or is a superclass or
+   *         superinterface of, the class or interface represented by the specified {@code cls} parameter.
    * @throws IllegalArgumentException If {@code target} or {@code cls} is null.
    */
   public static boolean isAssignableFrom(Class<?> target, Class<?> cls, final boolean canWrap) {
@@ -1122,34 +979,26 @@ public final class Classes {
   }
 
   /**
-   * Returns a {@link Method} object that reflects the specified public method
-   * signature of the class or interface represented by {@code cls} (including
-   * inherited methods), or {@code null} if the method is not found.
+   * Returns a {@link Method} object that reflects the specified public method signature of the class or interface represented by
+   * {@code cls} (including inherited methods), or {@code null} if the method is not found.
    * <p>
-   * The {@code name} parameter is a {@code String} that specifies the simple
-   * name of the desired method, and the {@code parameterTypes} parameter is an
-   * array of {@link Class} objects that identify the method's compatible
-   * parameter types, in declared order.
+   * The {@code name} parameter is a {@code String} that specifies the simple name of the desired method, and the
+   * {@code parameterTypes} parameter is an array of {@link Class} objects that identify the method's compatible parameter types, in
+   * declared order.
    * <p>
-   * A parameter type {@code p} is compatible with a {@link Class} that is the
-   * same or is the superclass of {@code p}.
+   * A parameter type {@code p} is compatible with a {@link Class} that is the same or is the superclass of {@code p}.
    * <p>
-   * If more than one method with the same parameter types is declared in a
-   * class, and one of these methods has a return type that is more specific
-   * than any of the others, that method is returned; otherwise one of the
-   * methods is chosen arbitrarily. If the name is {@code "<init>"} or
-   * {@code "<clinit>"} this method returns {@code null}. If this Class object
-   * represents an array type, then this method does not find the
-   * {@code clone()} method.
+   * If more than one method with the same parameter types is declared in a class, and one of these methods has a return type that
+   * is more specific than any of the others, that method is returned; otherwise one of the methods is chosen arbitrarily. If the
+   * name is {@code "<init>"} or {@code "<clinit>"} this method returns {@code null}. If this Class object represents an array type,
+   * then this method does not find the {@code clone()} method.
    *
    * @param cls The class in which to find the declared method.
    * @param name The simple name of the method.
    * @param parameterTypes The parameter array.
-   * @return A {@link Method} object that reflects the specified declared method
-   *         of the class or interface represented by {@code cls} (excluding
-   *         inherited methods), or {@code null} if the method is not found.
-   * @throws IllegalArgumentException If {@code cls}, {@code name} or
-   *           {@code parameterTypes} is null.
+   * @return A {@link Method} object that reflects the specified declared method of the class or interface represented by
+   *         {@code cls} (excluding inherited methods), or {@code null} if the method is not found.
+   * @throws IllegalArgumentException If {@code cls}, {@code name} or {@code parameterTypes} is null.
    */
   public static Method getCompatibleMethod(final Class<?> cls, final String name, final Class<?> ... parameterTypes) {
     assertNotNull(cls);
@@ -1163,35 +1012,26 @@ public final class Classes {
   }
 
   /**
-   * Returns a {@link Method} object that reflects the specified declared method
-   * of the class or interface represented by {@code cls} (excluding inherited
-   * methods), or {@code null} if the method is not found.
+   * Returns a {@link Method} object that reflects the specified declared method of the class or interface represented by
+   * {@code cls} (excluding inherited methods), or {@code null} if the method is not found.
    * <p>
-   * Declared methods include public, protected, default (package) access, and
-   * private visibility.
+   * Declared methods include public, protected, default (package) access, and private visibility.
    * <p>
-   * The {@code name} parameter is a {@code String} that specifies the simple
-   * name of the desired method, and the {@code parameterTypes} parameter is an
-   * array of {@link Class} objects that identify the method's formal parameter
-   * types, in declared order. If more than one method with the same parameter
-   * types is declared in a class, and one of these methods has a return type
-   * that is more specific than any of the others, that method is returned;
-   * otherwise one of the methods is chosen arbitrarily. If the name is
-   * {@code "<init>"} or {@code "<clinit>"} this method returns {@code null}. If
-   * this Class object represents an array type, then this method does not find
-   * the {@code clone()} method.
+   * The {@code name} parameter is a {@code String} that specifies the simple name of the desired method, and the
+   * {@code parameterTypes} parameter is an array of {@link Class} objects that identify the method's formal parameter types, in
+   * declared order. If more than one method with the same parameter types is declared in a class, and one of these methods has a
+   * return type that is more specific than any of the others, that method is returned; otherwise one of the methods is chosen
+   * arbitrarily. If the name is {@code "<init>"} or {@code "<clinit>"} this method returns {@code null}. If this Class object
+   * represents an array type, then this method does not find the {@code clone()} method.
    * <p>
-   * This method differentiates itself from
-   * {@link Class#getDeclaredMethod(String,Class...)} by returning {@code null}
-   * when a method is not found, instead of throwing
-   * {@link NoSuchMethodException}.
+   * This method differentiates itself from {@link Class#getDeclaredMethod(String,Class...)} by returning {@code null} when a method
+   * is not found, instead of throwing {@link NoSuchMethodException}.
    *
    * @param cls The class in which to find the declared method.
    * @param name The simple name of the method.
    * @param parameterTypes The parameter array.
-   * @return A {@link Method} object that reflects the specified declared method
-   *         of the class or interface represented by {@code cls} (excluding
-   *         inherited methods), or {@code null} if the method is not found.
+   * @return A {@link Method} object that reflects the specified declared method of the class or interface represented by
+   *         {@code cls} (excluding inherited methods), or {@code null} if the method is not found.
    * @throws IllegalArgumentException If {@code cls} or {@code name} is null.
    */
   public static Method getDeclaredMethod(final Class<?> cls, final String name, final Class<?> ... parameterTypes) {
@@ -1206,34 +1046,25 @@ public final class Classes {
   }
 
   /**
-   * Returns a {@link Method} object that reflects the specified declared method
-   * of the class or interface represented by {@code cls} (including inherited
-   * methods), or {@code null} if the method is not found.
+   * Returns a {@link Method} object that reflects the specified declared method of the class or interface represented by
+   * {@code cls} (including inherited methods), or {@code null} if the method is not found.
    * <p>
-   * Declared methods include public, protected, default (package) access, and
-   * private visibility.
+   * Declared methods include public, protected, default (package) access, and private visibility.
    * <p>
-   * The {@code name} parameter is a {@code String} that specifies the simple
-   * name of the desired method, and the {@code parameterTypes} parameter is an
-   * array of {@link Class} objects that identify the method's formal parameter
-   * types, in declared order. If more than one method with the same parameter
-   * types is declared in a class, and one of these methods has a return type
-   * that is more specific than any of the others, that method is returned;
-   * otherwise one of the methods is chosen arbitrarily. If the name is
-   * {@code "<init>"} or {@code "<clinit>"} this method returns {@code null}. If
-   * this Class object represents an array type, then this method does not find
-   * the {@code clone()} method.
+   * The {@code name} parameter is a {@code String} that specifies the simple name of the desired method, and the
+   * {@code parameterTypes} parameter is an array of {@link Class} objects that identify the method's formal parameter types, in
+   * declared order. If more than one method with the same parameter types is declared in a class, and one of these methods has a
+   * return type that is more specific than any of the others, that method is returned; otherwise one of the methods is chosen
+   * arbitrarily. If the name is {@code "<init>"} or {@code "<clinit>"} this method returns {@code null}. If this Class object
+   * represents an array type, then this method does not find the {@code clone()} method.
    *
-   * @implNote This method differentiates itself from
-   *           {@link Class#getDeclaredMethod(String,Class...)} by returning
-   *           {@code null} when a method is not found, instead of throwing
-   *           {@link NoSuchMethodException}.
+   * @implNote This method differentiates itself from {@link Class#getDeclaredMethod(String,Class...)} by returning {@code null}
+   *           when a method is not found, instead of throwing {@link NoSuchMethodException}.
    * @param cls The class in which to find the declared method.
    * @param name The simple name of the method.
    * @param parameterTypes The parameter array.
-   * @return A {@link Method} object that reflects the specified declared method
-   *         of the class or interface represented by {@code cls} (including
-   *         inherited methods), or {@code null} if the method is not found.
+   * @return A {@link Method} object that reflects the specified declared method of the class or interface represented by
+   *         {@code cls} (including inherited methods), or {@code null} if the method is not found.
    * @throws IllegalArgumentException If {@code cls} or {@code name} is null.
    */
   public static Method getDeclaredMethodDeep(Class<?> cls, final String name, final Class<?> ... parameterTypes) {
@@ -1247,22 +1078,17 @@ public final class Classes {
   }
 
   /**
-   * Returns an array of {@link Method} objects declared in {@code cls}
-   * (including inherited methods).
+   * Returns an array of {@link Method} objects declared in {@code cls} (including inherited methods).
    * <p>
-   * Declared methods include public, protected, default (package) access, and
-   * private visibility.
+   * Declared methods include public, protected, default (package) access, and private visibility.
    * <p>
-   * If {@code cls} represents an array type, a primitive type, or void, then
-   * this method returns an array of length 0.
+   * If {@code cls} represents an array type, a primitive type, or void, then this method returns an array of length 0.
    * <p>
-   * The elements in the returned array are sorted reflecting the inheritance
-   * graph of {@code cls}, whereby inherited methods are first, and member
-   * methods are last.
+   * The elements in the returned array are sorted reflecting the inheritance graph of {@code cls}, whereby inherited methods are
+   * first, and member methods are last.
    *
    * @param cls The class in which to find declared methods.
-   * @return An array of {@link Method} objects declared in {@code cls}
-   *         (including inherited methods).
+   * @return An array of {@link Method} objects declared in {@code cls} (including inherited methods).
    * @throws IllegalArgumentException If {@code cls} is null.
    */
   public static Method[] getDeclaredMethodsDeep(final Class<?> cls) {
@@ -1270,25 +1096,19 @@ public final class Classes {
   }
 
   /**
-   * Returns an array of {@link Method} objects declared in {@code cls}
-   * (including inherited methods), for which the provided {@link Predicate}
-   * returns {@code true}.
+   * Returns an array of {@link Method} objects declared in {@code cls} (including inherited methods), for which the provided
+   * {@link Predicate} returns {@code true}.
    * <p>
-   * Declared methods include public, protected, default (package) access, and
-   * private visibility.
+   * Declared methods include public, protected, default (package) access, and private visibility.
    * <p>
-   * If {@code cls} represents an array type, a primitive type, or void, then
-   * this method returns an array of length 0.
+   * If {@code cls} represents an array type, a primitive type, or void, then this method returns an array of length 0.
    * <p>
-   * The elements in the returned array are sorted reflecting the inheritance
-   * graph of {@code cls}, whereby inherited methods are first, and member
-   * methods are last.
+   * The elements in the returned array are sorted reflecting the inheritance graph of {@code cls}, whereby inherited methods are
+   * first, and member methods are last.
    *
    * @param cls The class in which to find declared methods.
-   * @param predicate The {@link Predicate} used to decide whether the method
-   *          should be included in the returned array.
-   * @return An array of {@link Method} objects declared in {@code cls}
-   *         (including inherited methods).
+   * @param predicate The {@link Predicate} used to decide whether the method should be included in the returned array.
+   * @return An array of {@link Method} objects declared in {@code cls} (including inherited methods).
    * @throws IllegalArgumentException If {@code cls} or {@code predicate} is null.
    */
   public static Method[] getDeclaredMethodsDeep(final Class<?> cls, final Predicate<Method> predicate) {
@@ -1296,85 +1116,65 @@ public final class Classes {
   }
 
   /**
-   * Returns an array of {@link Method} objects declared in {@code cls}
-   * (excluding inherited methods) that have an annotation of
+   * Returns an array of {@link Method} objects declared in {@code cls} (excluding inherited methods) that have an annotation of
    * {@code annotationType}.
    * <p>
-   * Declared methods include public, protected, default (package) access, and
-   * private visibility.
+   * Declared methods include public, protected, default (package) access, and private visibility.
    * <p>
-   * If {@code cls} represents a class or interface with no declared methods,
-   * then this method returns an array of length 0.
+   * If {@code cls} represents a class or interface with no declared methods, then this method returns an array of length 0.
    * <p>
-   * If {@code cls} represents an array type, a primitive type, or void, then
-   * this method returns an array of length 0.
+   * If {@code cls} represents an array type, a primitive type, or void, then this method returns an array of length 0.
    * <p>
-   * The elements in the returned array are not sorted and are not in any
-   * particular order.
+   * The elements in the returned array are not sorted and are not in any particular order.
    *
    * @param cls The class in which to find declared methods.
    * @param annotationType The type of the annotation to match.
-   * @return An array of {@link Method} objects declared in {@code cls}
-   *         (excluding inherited methods) that have an annotation of
+   * @return An array of {@link Method} objects declared in {@code cls} (excluding inherited methods) that have an annotation of
    *         {@code annotationType}.
-   * @throws IllegalArgumentException If {@code cls} or {@code annotationType} is
-   *           null.
+   * @throws IllegalArgumentException If {@code cls} or {@code annotationType} is null.
    */
   public static Method[] getDeclaredMethodsWithAnnotation(final Class<?> cls, final Class<? extends Annotation> annotationType) {
     return Repeat.Recursive.ordered(assertNotNull(cls).getDeclaredMethods(), Method.class, declaredMethodWithAnnotationFilter, assertNotNull(annotationType));
   }
 
   /**
-   * Returns an array of {@link Method} objects declared in {@code cls}
-   * (including inherited methods) that have an annotation of
+   * Returns an array of {@link Method} objects declared in {@code cls} (including inherited methods) that have an annotation of
    * {@code annotationType}.
    * <p>
-   * Declared methods include public, protected, default (package) access, and
-   * private visibility.
+   * Declared methods include public, protected, default (package) access, and private visibility.
    * <p>
-   * If {@code cls} represents an array type, a primitive type, or void, then
-   * this method returns an array of length 0.
+   * If {@code cls} represents an array type, a primitive type, or void, then this method returns an array of length 0.
    * <p>
-   * The elements in the returned array are sorted reflecting the inheritance
-   * graph of {@code cls}, whereby inherited methods are first, and member
-   * methods are last.
+   * The elements in the returned array are sorted reflecting the inheritance graph of {@code cls}, whereby inherited methods are
+   * first, and member methods are last.
    *
    * @param cls The class in which to find declared methods.
    * @param annotationType The type of the annotation to match.
-   * @return An array of {@link Method} objects declared in {@code cls}
-   *         (including inherited methods) that have an annotation of
+   * @return An array of {@link Method} objects declared in {@code cls} (including inherited methods) that have an annotation of
    *         {@code annotationType}.
-   * @throws IllegalArgumentException If {@code cls} or {@code annotationType} is
-   *           null.
+   * @throws IllegalArgumentException If {@code cls} or {@code annotationType} is null.
    */
   public static Method[] getDeclaredMethodsWithAnnotationDeep(final Class<?> cls, final Class<? extends Annotation> annotationType) {
     return Repeat.Recursive.inverted(assertNotNull(cls), cls.getDeclaredMethods(), Method.class, declaredMethodWithAnnotationRecurser, assertNotNull(annotationType));
   }
 
   /**
-   * Returns an array of {@link Class} objects declared in {@code cls}
-   * (excluding inherited classes) that have an annotation of
+   * Returns an array of {@link Class} objects declared in {@code cls} (excluding inherited classes) that have an annotation of
    * {@code annotationType}.
    * <p>
-   * Declared classes include public, protected, default (package) access, and
-   * private visibility.
+   * Declared classes include public, protected, default (package) access, and private visibility.
    * <p>
-   * If {@code cls} represents a class or interface with no declared classes,
-   * then this method returns an array of length 0.
+   * If {@code cls} represents a class or interface with no declared classes, then this method returns an array of length 0.
    * <p>
-   * If {@code cls} represents an array type, a primitive type, or void, then
-   * this method returns an array of length 0.
+   * If {@code cls} represents an array type, a primitive type, or void, then this method returns an array of length 0.
    * <p>
-   * The elements in the returned array are not sorted and are not in any
-   * particular order.
+   * The elements in the returned array are not sorted and are not in any particular order.
    *
    * @param cls The class in which to find declared methods.
    * @param annotationType The type of the annotation to match.
-   * @return An array of {@link Class} objects declared in {@code cls}
-   *         (excluding inherited classes) that have an annotation of
+   * @return An array of {@link Class} objects declared in {@code cls} (excluding inherited classes) that have an annotation of
    *         {@code annotationType}.
-   * @throws IllegalArgumentException If {@code cls} or {@code annotationType} is
-   *           null.
+   * @throws IllegalArgumentException If {@code cls} or {@code annotationType} is null.
    */
   @SuppressWarnings("unchecked")
   public static Class<?>[] getDeclaredClassesWithAnnotation(final Class<?> cls, final Class<? extends Annotation> annotationType) {
@@ -1382,27 +1182,21 @@ public final class Classes {
   }
 
   /**
-   * Returns an array of {@link Class} objects declared in {@code cls}
-   * (including inherited classes) that have an annotation of
+   * Returns an array of {@link Class} objects declared in {@code cls} (including inherited classes) that have an annotation of
    * {@code annotationType}.
    * <p>
-   * Declared classes include public, protected, default (package) access, and
-   * private visibility.
+   * Declared classes include public, protected, default (package) access, and private visibility.
    * <p>
-   * If {@code cls} represents an array type, a primitive type, or void, then
-   * this method returns an array of length 0.
+   * If {@code cls} represents an array type, a primitive type, or void, then this method returns an array of length 0.
    * <p>
-   * The elements in the returned array are sorted reflecting the inheritance
-   * graph of {@code cls}, whereby inherited classes are first, and member
-   * classes are last.
+   * The elements in the returned array are sorted reflecting the inheritance graph of {@code cls}, whereby inherited classes are
+   * first, and member classes are last.
    *
    * @param cls The class in which to find declared methods.
    * @param annotationType The type of the annotation to match.
-   * @return An array of {@link Class} objects declared in {@code cls}
-   *         (including inherited classes) that have an annotation of
+   * @return An array of {@link Class} objects declared in {@code cls} (including inherited classes) that have an annotation of
    *         {@code annotationType}.
-   * @throws IllegalArgumentException If {@code cls} or {@code annotationType} is
-   *           null.
+   * @throws IllegalArgumentException If {@code cls} or {@code annotationType} is null.
    */
   @SuppressWarnings("unchecked")
   public static Class<?>[] getDeclaredClassesWithAnnotationDeep(final Class<?> cls, final Class<? extends Annotation> annotationType) {
@@ -1410,22 +1204,16 @@ public final class Classes {
   }
 
   /**
-   * Returns the annotation for the specified {@code annotationClass} on the
-   * provided class if such an annotation is <i>present</i>, else null.
+   * Returns the annotation for the specified {@code annotationClass} on the provided class if such an annotation is <i>present</i>,
+   * else null.
    *
-   * @implNote This method differentiates itself from
-   *           {@link Class#getAnnotation(Class)} by continuing to look at each
-   *           superclass of the provided class if the specified annotation
-   *           cannot be found.
+   * @implNote This method differentiates itself from {@link Class#getAnnotation(Class)} by continuing to look at each superclass of
+   *           the provided class if the specified annotation cannot be found.
    * @param <A> The type of the annotation to query for and return if present.
-   * @param cls The {@link Class} on which to look for the specified annotation
-   *          type.
-   * @param annotationClass The {@link Class} object corresponding to the
-   *          annotation type.
-   * @return The annotation for the specified annotation type on the provided
-   *         class if present, else null.
-   * @throws IllegalArgumentException If {@code cls} or {@code annotationClass}
-   *           is null.
+   * @param cls The {@link Class} on which to look for the specified annotation type.
+   * @param annotationClass The {@link Class} object corresponding to the annotation type.
+   * @return The annotation for the specified annotation type on the provided class if present, else null.
+   * @throws IllegalArgumentException If {@code cls} or {@code annotationClass} is null.
    */
   public static <A extends Annotation>A getAnnotationDeep(final Class<?> cls, final Class<A> annotationClass) {
     Class<?> parent = assertNotNull(cls);
@@ -1441,25 +1229,18 @@ public final class Classes {
   }
 
   /**
-   * Returns {@code true} if an annotation for the specified type is
-   * <i>present</i> on the provided class, else {@code false}. This method is
-   * designed primarily for convenient access to marker annotations.
+   * Returns {@code true} if an annotation for the specified type is <i>present</i> on the provided class, else {@code false}. This
+   * method is designed primarily for convenient access to marker annotations.
    * <p>
-   * The truth value returned by this method is equivalent to:
-   * {@code Classes.getAnnotationDeep(cls,annotationClass) != null}
+   * The truth value returned by this method is equivalent to: {@code Classes.getAnnotationDeep(cls,annotationClass) != null}
    * <p>
    * The body of the default method is specified to be the code above.
    * <p>
    *
-   *
-   * @param cls The {@link Class} on which to look for the specified annotation
-   *          type.
-   * @param annotationClass The {@link Class} object corresponding to the
-   *          annotation type.
-   * @return {@code true} if an annotation for the specified annotation type is
-   *         present on this element, else {@code false}.
-   * @throws IllegalArgumentException If {@code cls} or {@code annotationClass}
-   *           is null.
+   * @param cls The {@link Class} on which to look for the specified annotation type.
+   * @param annotationClass The {@link Class} object corresponding to the annotation type.
+   * @return {@code true} if an annotation for the specified annotation type is present on this element, else {@code false}.
+   * @throws IllegalArgumentException If {@code cls} or {@code annotationClass} is null.
    */
   public static boolean isAnnotationPresentDeep(final Class<?> cls, final Class<? extends Annotation> annotationClass) {
     Class<?> parent = assertNotNull(cls);
@@ -1473,15 +1254,12 @@ public final class Classes {
   }
 
   /**
-   * Returns all interfaces implemented by the class or interface represented by
-   * the specified class. This method differentiates itself from
-   * {@link Class#getInterfaces()} by returning <i>all</i> interfaces (full
-   * depth and breadth) instead of just the interfaces <i>directly</i>
-   * implemented by the class.
+   * Returns all interfaces implemented by the class or interface represented by the specified class. This method differentiates
+   * itself from {@link Class#getInterfaces()} by returning <i>all</i> interfaces (full depth and breadth) instead of just the
+   * interfaces <i>directly</i> implemented by the class.
    *
    * @param cls The class.
-   * @return All interfaces implemented by the class or interface represented by
-   *         the specified class.
+   * @return All interfaces implemented by the class or interface represented by the specified class.
    * @throws IllegalArgumentException If {@code cls} is null.
    */
   public static Class<?>[] getAllInterfaces(Class<?> cls) {
@@ -1504,14 +1282,11 @@ public final class Classes {
   }
 
   /**
-   * Adds all interfaces extended by the specified {@code iface} interface
-   * {@link Class}.
+   * Adds all interfaces extended by the specified {@code iface} interface {@link Class}.
    *
    * @param iface The interface {@link Class}.
-   * @param allInterfaces The set into which all extended interfaces are to be
-   *          added.
-   * @throws IllegalArgumentException If {@code iface} or {@code allInterfaces} is
-   *           null.
+   * @param allInterfaces The set into which all extended interfaces are to be added.
+   * @throws IllegalArgumentException If {@code iface} or {@code allInterfaces} is null.
    */
   private static void getAllInterfaces(final Class<?> iface, final LinkedHashSet<Class<?>> allInterfaces) {
     assertNotNull(iface);
@@ -1525,15 +1300,12 @@ public final class Classes {
   }
 
   /**
-   * Returns all generic interfaces implemented by the class or interface
-   * represented by the specified class. This method differentiates itself from
-   * {@link Class#getGenericInterfaces()} by returning <i>all</i> generic
-   * interfaces (full depth and breadth) instead of just the interfaces
-   * <i>directly</i> implemented by the class.
+   * Returns all generic interfaces implemented by the class or interface represented by the specified class. This method
+   * differentiates itself from {@link Class#getGenericInterfaces()} by returning <i>all</i> generic interfaces (full depth and
+   * breadth) instead of just the interfaces <i>directly</i> implemented by the class.
    *
    * @param cls The class.
-   * @return All generic interfaces implemented by the class or interface
-   *         represented by the specified class.
+   * @return All generic interfaces implemented by the class or interface represented by the specified class.
    * @throws IllegalArgumentException If {@code cls} is null.
    */
   public static Type[] getAllGenericInterfaces(Class<?> cls) {
@@ -1565,20 +1337,16 @@ public final class Classes {
         getAllGenericInterfaces(iface, allInterfaces, allGenericInterfaces);
     }
     while ((cls = cls.getSuperclass()) != null);
-    return allGenericInterfaces == null ? new Type[0] : allGenericInterfaces.toArray(new Type[allGenericInterfaces.size()]);
+    return allGenericInterfaces == null ? EMPTY_TYPES : allGenericInterfaces.toArray(new Type[allGenericInterfaces.size()]);
   }
 
   /**
-   * Adds all generic interfaces extended by the specified {@code iface}
-   * interface {@link Class}.
+   * Adds all generic interfaces extended by the specified {@code iface} interface {@link Class}.
    *
    * @param iface The interface {@link Class}.
-   * @param allInterfaces The set into which all extended interfaces are to be
-   *          added.
-   * @param allGenericInterfaces The set into which all extended generic
-   *          interfaces are to be added.
-   * @throws IllegalArgumentException If {@code iface}, {@code allInterfaces} or
-   *           {@code allGenericInterfaces} is null.
+   * @param allInterfaces The set into which all extended interfaces are to be added.
+   * @param allGenericInterfaces The set into which all extended generic interfaces are to be added.
+   * @throws IllegalArgumentException If {@code iface}, {@code allInterfaces} or {@code allGenericInterfaces} is null.
    */
   private static void getAllGenericInterfaces(final Class<?> iface, final LinkedHashSet<Class<?>> allInterfaces, final LinkedHashSet<Type> allGenericInterfaces) {
     assertNotNull(iface);
@@ -1598,9 +1366,8 @@ public final class Classes {
    *
    * @param classes The array of classes.
    * @return The greatest common superclass of the specified array of classes.
-   * @throws IllegalArgumentException If {@code classes} or a member of
-   *           {@code classes} is null, or if the number of arguments in the
-   *           {@code classes} parameter is 0.
+   * @throws IllegalArgumentException If {@code classes} or a member of {@code classes} is null, or if the number of arguments in
+   *           the {@code classes} parameter is 0.
    */
   public static Class<?> getGreatestCommonSuperclass(final Class<?> ... classes) {
     if (assertNotNull(classes).length == 0)
@@ -1617,16 +1384,13 @@ public final class Classes {
   }
 
   /**
-   * Returns the greatest common superclass of the classes of the specified
-   * array of objects.
+   * Returns the greatest common superclass of the classes of the specified array of objects.
    *
    * @param <T> The type parameter of the specified array of objects.
    * @param objects The array of objects.
-   * @return The greatest common superclass of the classes of the specified
-   *         array of objects.
-   * @throws IllegalArgumentException If {@code objects}, or a member of
-   *           {@code objects} is null, or if the number of arguments in the
-   *           {@code objects} parameter is 0.
+   * @return The greatest common superclass of the classes of the specified array of objects.
+   * @throws IllegalArgumentException If {@code objects}, or a member of {@code objects} is null, or if the number of arguments in
+   *           the {@code objects} parameter is 0.
    */
   @SafeVarargs
   public static <T>Class<?> getGreatestCommonSuperclass(final T ... objects) {
@@ -1637,17 +1401,13 @@ public final class Classes {
   }
 
   /**
-   * Returns the greatest common superclass of the classes of the specified
-   * {@link Collection} of objects.
+   * Returns the greatest common superclass of the classes of the specified {@link Collection} of objects.
    *
-   * @param <T> The type parameter of the specified {@link Collection} of
-   *          objects.
+   * @param <T> The type parameter of the specified {@link Collection} of objects.
    * @param objects The array of objects.
-   * @return The greatest common superclass of the classes of the specified
-   *         {@link Collection} of objects.
-   * @throws IllegalArgumentException If {@code objects}, or an element of
-   *           {@code objects} is null, or if the number of elements in the
-   *           {@code objects} collection is 0.
+   * @return The greatest common superclass of the classes of the specified {@link Collection} of objects.
+   * @throws IllegalArgumentException If {@code objects}, or an element of {@code objects} is null, or if the number of elements in
+   *           the {@code objects} collection is 0.
    */
   public static <T>Class<?> getGreatestCommonSuperclass(final Collection<T> objects) {
     if (assertNotNull(objects).size() == 0)
@@ -1693,10 +1453,8 @@ public final class Classes {
   /**
    * Returns the current execution stack as an array of classes.
    * <p>
-   * The length of the array is the number of methods on the execution stack.
-   * The element at index {@code 0} is the class of the currently executing
-   * method, the element at index {@code 1} is the class of that method's
-   * caller, and so on.
+   * The length of the array is the number of methods on the execution stack. The element at index {@code 0} is the class of the
+   * currently executing method, the element at index {@code 1} is the class of that method's caller, and so on.
    *
    * @return The current execution stack as an array of classes.
    */
@@ -1710,14 +1468,12 @@ public final class Classes {
   }
 
   /**
-   * Returns the boxed {@link Class} for the specified {@code primitiveType}
-   * class. If the specified class does not represent a primitive type, the same
-   * class is returned.
+   * Returns the boxed {@link Class} for the specified {@code primitiveType} class. If the specified class does not represent a
+   * primitive type, the same class is returned.
    *
    * @param primitiveType The {@link Class} representing a primitive type.
-   * @return The boxed {@link Class} for the specified {@code primitiveType}
-   *         class. If the specified class does not represent a primitive type,
-   *         the same class is returned.
+   * @return The boxed {@link Class} for the specified {@code primitiveType} class. If the specified class does not represent a
+   *         primitive type, the same class is returned.
    */
   public static Class<?> toWrapper(final Class<?> primitiveType) {
     if (!primitiveType.isPrimitive())
@@ -1758,27 +1514,20 @@ public final class Classes {
   /**
    * Creates an instance of the specified class with the provided parameters.
    * <p>
-   * The specified type must define either {@code fromString(String)} if the
-   * provided parameter object is a {@link String}, {@code valueOf(...)}, or
-   * {@code <init>(...)}.
+   * The specified type must define either {@code fromString(String)} if the provided parameter object is a {@link String},
+   * {@code valueOf(...)}, or {@code <init>(...)}.
    *
    * @param <T> The type parameter for the instance that is to be created.
    * @param type The class of the instance that is to be created.
    * @param parameters The parameters.
-   * @return An instance of the specified class with the value of the provided
-   *         string
-   * @throws IllegalAccessException If this Constructor object is enforcing Java
-   *           language access control and the underlying constructor is
-   *           inaccessible.
-   * @throws InstantiationException If the class that declares the underlying
-   *           constructor represents an abstract class.
-   * @throws InvocationTargetException If the underlying constructor throws an
-   *           exception.
-   * @throws IllegalArgumentException If the specified {@code type} or
-   *           {@code parameters} is null, or if the specified string is empty,
-   *           or if an instance of the specific class type does not define
-   *           {@code <init>(T)}, {@code fromString(String)} if the provided
-   *           object is a {@link String}, or {@code valueOf(T)}.
+   * @return An instance of the specified class with the value of the provided string
+   * @throws IllegalAccessException If this Constructor object is enforcing Java language access control and the underlying
+   *           constructor is inaccessible.
+   * @throws InstantiationException If the class that declares the underlying constructor represents an abstract class.
+   * @throws InvocationTargetException If the underlying constructor throws an exception.
+   * @throws IllegalArgumentException If the specified {@code type} or {@code parameters} is null, or if the specified string is
+   *           empty, or if an instance of the specific class type does not define {@code <init>(T)}, {@code fromString(String)} if
+   *           the provided object is a {@link String}, or {@code valueOf(T)}.
    */
   @SuppressWarnings("unchecked")
   public static <T>T newInstance(Class<T> type, final Object ... parameters) throws IllegalAccessException, InstantiationException, InvocationTargetException {
@@ -1827,24 +1576,22 @@ public final class Classes {
   }
 
   /**
-   * Returns the {@link Class} object associated with the class or interface
-   * with the given string name.
+   * Returns the {@link Class} object associated with the class or interface with the given string name.
    * <p>
    * Invoking this method is equivalent to:
    *
    * <pre>
-   *  {@code Classes.forNameOrNull(className, true, currentLoader)}
+   *  {@code
+   * Classes.forNameOrNull(className, true, currentLoader)
+   * }
    * </pre>
    *
-   * where {@code currentLoader} denotes the defining class loader of the
-   * current class.
+   * where {@code currentLoader} denotes the defining class loader of the current class.
    *
    * @param className the fully qualified name of the desired class.
-   * @return The {@link Class} object for the class with the specified name, or
-   *         {@code null} if the class cannot be located.
+   * @return The {@link Class} object for the class with the specified name, or {@code null} if the class cannot be located.
    * @exception LinkageError If the linkage fails.
-   * @exception ExceptionInInitializerError If the initialization provoked by
-   *              this method fails.
+   * @exception ExceptionInInitializerError If the initialization provoked by this method fails.
    * @see java.lang.Class#forName(String)
    */
   public static Class<?> forNameOrNull(final String className) {
@@ -1857,29 +1604,21 @@ public final class Classes {
   }
 
   /**
-   * Returns the {@link Class} object associated with the class or interface
-   * with the given string name, using the given class loader. Given the fully
-   * qualified name for a class or interface (in the same format returned by
-   * {@code getName}) this method attempts to locate, load, and link the class
-   * or interface. The specified class loader is used to load the class or
-   * interface. If the parameter {@code loader} is null, the class is loaded
-   * through the bootstrap class loader. The class is initialized only if the
-   * {@code initialize} parameter is {@code true} and if it has not been
-   * initialized earlier.
+   * Returns the {@link Class} object associated with the class or interface with the given string name, using the given class
+   * loader. Given the fully qualified name for a class or interface (in the same format returned by {@code getName}) this method
+   * attempts to locate, load, and link the class or interface. The specified class loader is used to load the class or interface.
+   * If the parameter {@code loader} is null, the class is loaded through the bootstrap class loader. The class is initialized only
+   * if the {@code initialize} parameter is {@code true} and if it has not been initialized earlier.
    *
    * @param name Fully qualified name of the desired class.
    * @param initialize If {@code true} the class will be initialized.
    * @param loader Class loader from which the class must be loaded.
-   * @return The {@link Class} object representing the desired class, or
-   *         {@code null} if the class cannot be located by the specified class
-   *         loader.
+   * @return The {@link Class} object representing the desired class, or {@code null} if the class cannot be located by the
+   *         specified class loader.
    * @exception LinkageError If the linkage fails.
-   * @exception ExceptionInInitializerError If the initialization provoked by
-   *              this method fails.
-   * @exception SecurityException If a security manager is present, and the
-   *              {@code loader} is {@code null}, and the caller's class loader
-   *              is not {@code null}, and the caller does not have the
-   *              {@link RuntimePermission}{@code ("getClassLoader")}.
+   * @exception ExceptionInInitializerError If the initialization provoked by this method fails.
+   * @exception SecurityException If a security manager is present, and the {@code loader} is {@code null}, and the caller's class
+   *              loader is not {@code null}, and the caller does not have the {@link RuntimePermission}{@code ("getClassLoader")}.
    * @see java.lang.Class#forName(String,boolean,ClassLoader)
    */
   public static Class<?> forNameOrNull(final String name, final boolean initialize, final ClassLoader loader) {
@@ -1924,29 +1663,22 @@ public final class Classes {
   private static Boolean hasJavaAssist;
 
   /**
-   * Sorts the provided {@link Method} array in order of the declaration of the
-   * methods in their defining class. The {@code methods} array is expected to
-   * contain methods that belong to:
+   * Sorts the provided {@link Method} array in order of the declaration of the methods in their defining class. The {@code methods}
+   * array is expected to contain methods that belong to:
    * <ul>
    * <li>A single class.</li>
    * <li>Classes in an inheritance hierarchy.</li>
    * </ul>
-   * If the {@code methods} array contains {@link Method}s that belong to
-   * classes in an inheritance hierarchy, the methods defined in classes at the
-   * top of the hierarchy (super-classes) are ordered before those that belong
-   * to sub-classes.
+   * If the {@code methods} array contains {@link Method}s that belong to classes in an inheritance hierarchy, the methods defined
+   * in classes at the top of the hierarchy (super-classes) are ordered before those that belong to sub-classes.
    *
-   * @implNote This function utilizes bytecode introspection via
-   *           <a href="https://www.javassist.org/">Javassist</a> to determine
-   *           the declarative order of the provided methods. Javassist is
-   *           declared as {@code <scope>provided</scope>} in this Maven module,
-   *           and therefore must be provided explicitly. This function will
-   *           return {@code false} if Javassist is not present on the system
-   *           classpath.
+   * @implNote This function utilizes bytecode introspection via <a href="https://www.javassist.org/">Javassist</a> to determine the
+   *           declarative order of the provided methods. Javassist is declared as {@code <scope>provided</scope>} in this Maven
+   *           module, and therefore must be provided explicitly. This function will return {@code false} if Javassist is not
+   *           present on the system classpath.
    * @param methods The {@code Method} array to be sorted.
-   * @return {@code true} if Javassist is present on the system classpath and
-   *         line number information is available in the bytecode of the
-   *         {@code methods}, otherwise {@code false}.
+   * @return {@code true} if Javassist is present on the system classpath and line number information is available in the bytecode
+   *         of the {@code methods}, otherwise {@code false}.
    */
   public static boolean sortDeclarativeOrder(final Method[] methods) {
     if (hasJavaAssist == null)
@@ -2036,10 +1768,9 @@ public final class Classes {
   }
 
   /**
-   * Returns the internal name representation of the provided class name. The
-   * internal name of a class is its fully qualified name (as returned by
-   * {@link Class#getName()}, where {@code '.'} are replaced by {@code '/'}).
-   * This method should only be used for an object or array type.
+   * Returns the internal name representation of the provided class name. The internal name of a class is its fully qualified name
+   * (as returned by {@link Class#getName()}, where {@code '.'} are replaced by {@code '/'}). This method should only be used for an
+   * object or array type.
    *
    * @param className The class name for which to return the internal name.
    * @return The internal name representation of the provided class name.
@@ -2052,15 +1783,11 @@ public final class Classes {
   private static final String[] primitiveInternalNames = {"Z", "B", "C", "D", "F", "I", "J", "S", "V"};
 
   /**
-   * Returns a string containing the internal names of the given classes,
-   * appended sans delimiter.
+   * Returns a string containing the internal names of the given classes, appended sans delimiter.
    *
-   * @param classes The classes for which to return a string containing the
-   *          internal names.
-   * @return A string containing the internal names of the given classes,
-   *         appended sans delimiter.
-   * @throws IllegalArgumentException If {@code classes} or any member of
-   *           {@code classes} is null.
+   * @param classes The classes for which to return a string containing the internal names.
+   * @return A string containing the internal names of the given classes, appended sans delimiter.
+   * @throws IllegalArgumentException If {@code classes} or any member of {@code classes} is null.
    * @see #getInternalName(Class)
    */
   public static String getInternalName(final Class<?> ... classes) {
@@ -2088,11 +1815,9 @@ public final class Classes {
    * {@code Z} = {@code boolean}
    * </pre>
    *
-   * The internal name of a class or interface is represented by its fully
-   * qualified name, with an 'L' prefix and a ';' suffix. The dots {@code '.'}
-   * in the fully qualified class name are replaced by {@code '/'} (for inner
-   * classes, the {@code '.'} separating the outer class name from the inner
-   * class name is replaced by a {@code '$'}).
+   * The internal name of a class or interface is represented by its fully qualified name, with an 'L' prefix and a ';' suffix. The
+   * dots {@code '.'} in the fully qualified class name are replaced by {@code '/'} (for inner classes, the {@code '.'} separating
+   * the outer class name from the inner class name is replaced by a {@code '$'}).
    *
    * @param cls The class for which to return the internal name.
    * @return The internal name of the given class.
