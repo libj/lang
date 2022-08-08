@@ -62,7 +62,7 @@ public class Base32 extends DataEncoding<byte[],String> {
    */
   public static String encode(final byte[] bytes, final int offset, final int len) {
     final StringBuilder base32 = new StringBuilder((assertNotNull(bytes).length + 7) * 8 / 5);
-    for (int i = offset, index = 0, digit, by0, by1; i < len + offset;) {
+    for (int i = offset, index = 0, digit, by0, by1; i < len + offset;) { // [N]
       by0 = (bytes[i] >= 0) ? bytes[i] : (bytes[i] + 256);
       if (index > 3) {
         by1 = i + 1 < bytes.length ? bytes[i + 1] < 0 ? bytes[i + 1] + 256 : bytes[i + 1] : 0;
@@ -104,13 +104,12 @@ public class Base32 extends DataEncoding<byte[],String> {
    * @param base32 The base32 string.
    * @param bytes The {@code bytes} array.
    * @param offset The offset into the {@code bytes} array.
-   * @throws ArrayIndexOutOfBoundsException If the size of {@code bytes} is not
-   *           big enough, or if {@code offset} causes the index to go out of
-   *           bounds.
+   * @throws ArrayIndexOutOfBoundsException If the size of {@code bytes} is not big enough, or if {@code offset} causes the index to
+   *           go out of bounds.
    * @throws IllegalArgumentException If {@code base32} or {@code bytes} is null.
    */
   public static void decode(final String base32, final byte[] bytes, int offset) {
-    for (int i = 0, len = assertNotNull(base32).length(), index = 0, ch, digit; i < len; ++i) {
+    for (int i = 0, len = assertNotNull(base32).length(), index = 0, ch, digit; i < len; ++i) { // [N]
       ch = base32.charAt(i) - '0';
       if (ch < 0 || lookup.length < ch)
         continue;
@@ -151,8 +150,7 @@ public class Base32 extends DataEncoding<byte[],String> {
   }
 
   /**
-   * Create a new {@link Base32} object with the provided base32-encoded string
-   * value.
+   * Create a new {@link Base32} object with the provided base32-encoded string value.
    *
    * @param base32 The base32-encoded string value.
    */

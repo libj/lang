@@ -87,7 +87,7 @@ public class RepeatTest {
   public void testDeepRecursive() {
     final Field[] fields = getFieldsDeep(H.class);
     assertEquals(fieldNames.length, fields.length);
-    for (int i = 0; i < fields.length; ++i)
+    for (int i = 0; i < fields.length; ++i) // [A]
       assertEquals(fieldNames[i], fields[i].getName());
   }
 
@@ -98,7 +98,7 @@ public class RepeatTest {
     Integer[] array = null;
     final long start = System.currentTimeMillis();
     final long mem = Runtime.getRuntime().freeMemory();
-    for (int i = 0; i < 10000000; ++i)
+    for (int i = 0; i < 10000000; ++i) // [N]
       array = Repeat.<Integer,Object>iterative(values1, Integer.class, filter, null);
 
     logger.info("iterative: " + (System.currentTimeMillis() - start) + "ms " + (mem - Runtime.getRuntime().freeMemory()) + " bytes");
@@ -115,7 +115,7 @@ public class RepeatTest {
     Integer[] array = null;
     final long start = System.currentTimeMillis();
     final long mem = Runtime.getRuntime().freeMemory();
-    for (int i = 0; i < 10000000; ++i)
+    for (int i = 0; i < 10000000; ++i) // [N]
       array = Repeat.Recursive.<Integer,Object>ordered(values1, Integer.class, filter, null);
 
     logger.info("recursive: " + (System.currentTimeMillis() - start) + "ms " + (mem - Runtime.getRuntime().freeMemory()) + " bytes");

@@ -43,12 +43,12 @@ public final class ObjectUtil {
   }
 
   /**
-   * Returns the class name of object {@code obj}, concatenated with '@', and
-   * the hexadecimal representation of its identity hash code.
+   * Returns the class name of object {@code obj}, concatenated with '@', and the hexadecimal representation of its identity hash
+   * code.
    *
    * @param obj The object.
-   * @return The class name of object {@code obj}, concatenated with '@', and
-   *         the hexadecimal representation of its identity hash code.
+   * @return The class name of object {@code obj}, concatenated with '@', and the hexadecimal representation of its identity hash
+   *         code.
    * @throws IllegalArgumentException If {@code obj} is null.
    * @see System#identityHashCode(Object)
    */
@@ -57,12 +57,12 @@ public final class ObjectUtil {
   }
 
   /**
-   * Returns the simple class name of object {@code obj}, concatenated with '@',
-   * and the hexadecimal representation of its identity hash code.
+   * Returns the simple class name of object {@code obj}, concatenated with '@', and the hexadecimal representation of its identity
+   * hash code.
    *
    * @param obj The object.
-   * @return The simple class name of object {@code obj}, concatenated with '@',
-   *         and the hexadecimal representation of its identity hash code.
+   * @return The simple class name of object {@code obj}, concatenated with '@', and the hexadecimal representation of its identity
+   *         hash code.
    * @see System#identityHashCode(Object)
    */
   public static String simpleIdentityString(final Object obj) {
@@ -72,13 +72,11 @@ public final class ObjectUtil {
   private static final HashMap<Class<?>,Method> classToCloneMethod = new HashMap<>();
 
   /**
-   * Returns a clone of the specified object that implements the
-   * {@link Cloneable} interface.
+   * Returns a clone of the specified object that implements the {@link Cloneable} interface.
    *
    * @param <T> The type of the specified object.
    * @param obj The object to be cloned.
-   * @return A clone of the specified object that implements the
-   *         {@link Cloneable} interface.
+   * @return A clone of the specified object that implements the {@link Cloneable} interface.
    * @throws IllegalArgumentException If {@code obj} is null.
    */
   @SuppressWarnings("unchecked")
@@ -112,23 +110,17 @@ public final class ObjectUtil {
   }
 
   /**
-   * Returns {@code true} if the arguments are equal to each other and
-   * {@code false} otherwise. Consequently, if both arguments are {@code null},
-   * {@code true} is returned and if exactly one argument is {@code null},
-   * {@code false} is returned. Otherwise, equality is determined by using the
-   * {@link Object#equals equals} method of the first argument.
+   * Returns {@code true} if the arguments are equal to each other and {@code false} otherwise. Consequently, if both arguments are
+   * {@code null}, {@code true} is returned and if exactly one argument is {@code null}, {@code false} is returned. Otherwise,
+   * equality is determined by using the {@link Object#equals equals} method of the first argument.
    * <p>
-   * This method differentiates itself from
-   * {@link Objects#equals(Object,Object)} by recursively invoking this same
-   * method when evaluating equality of arrays and {@link Iterable}s. This
-   * effectively merges the functionality of
-   * {@link Objects#equals(Object,Object)} and
-   * {@link Arrays#equals(Object[],Object[])} into one method.
+   * This method differentiates itself from {@link Objects#equals(Object,Object)} by recursively invoking this same method when
+   * evaluating equality of arrays and {@link Iterable}s. This effectively merges the functionality of
+   * {@link Objects#equals(Object,Object)} and {@link Arrays#equals(Object[],Object[])} into one method.
    *
    * @param o1 An object to be equated to {@code o2}.
    * @param o2 An object to be equated to {@code o1}.
-   * @return {@code true} if the arguments are equal to each other and
-   *         {@code false} otherwise.
+   * @return {@code true} if the arguments are equal to each other and {@code false} otherwise.
    * @see Objects#equals(Object,Object)
    * @see Arrays#equals(Object[],Object[])
    */
@@ -200,7 +192,7 @@ public final class ObjectUtil {
     if (a2.length != length)
       return false;
 
-    for (int i = 0; i < length; i++)
+    for (int i = 0; i < length; i++) // [N]
       if (!ObjectUtil.equals(a1[i], a2[i]))
         return false;
 
@@ -208,18 +200,14 @@ public final class ObjectUtil {
   }
 
   /**
-   * Returns the hash code of a non-{@code null} argument and 0 for a
-   * {@code null} argument.
+   * Returns the hash code of a non-{@code null} argument and 0 for a {@code null} argument.
    * <p>
-   * This method differentiates itself from {@link Objects#hashCode(Object)} by
-   * recursively invoking this same method when computing the hash code of
-   * arrays and {@link Iterable}s. This effectively merges the functionality of
-   * {@link Objects#hashCode(Object)} and {@link Arrays#hashCode(Object[])} into
-   * one method.
+   * This method differentiates itself from {@link Objects#hashCode(Object)} by recursively invoking this same method when computing
+   * the hash code of arrays and {@link Iterable}s. This effectively merges the functionality of {@link Objects#hashCode(Object)}
+   * and {@link Arrays#hashCode(Object[])} into one method.
    *
    * @param obj An object
-   * @return The hash code of a non-{@code null} argument and 0 for a
-   *         {@code null} argument.
+   * @return The hash code of a non-{@code null} argument and 0 for a {@code null} argument.
    * @see Objects#hashCode(Object)
    * @see Arrays#hashCode(Object[])
    */
@@ -271,7 +259,7 @@ public final class ObjectUtil {
       return Arrays.hashCode((double[])obj);
 
     int result = 1;
-    for (final Object element : (Object[])obj)
+    for (final Object element : (Object[])obj) // [A]
       result = 31 * result + (element == null ? 0 : ObjectUtil.hashCode(element));
 
     return result;
@@ -281,10 +269,8 @@ public final class ObjectUtil {
    * Returns the result of calling {@code toString} for a non-{@code
    * null} argument and {@code "null"} for a {@code null} argument.
    * <p>
-   * This method differentiates itself from {@link Objects#toString(Object)} by
-   * detecting array arguments and invoking the relevant
-   * {@link Arrays#toString(Object[])} method. This effectively merges the
-   * functionality of {@link Objects#toString(Object)} and
+   * This method differentiates itself from {@link Objects#toString(Object)} by detecting array arguments and invoking the relevant
+   * {@link Arrays#toString(Object[])} method. This effectively merges the functionality of {@link Objects#toString(Object)} and
    * {@link Arrays#toString(Object[])} into one method.
    *
    * @param obj An object.
@@ -329,7 +315,7 @@ public final class ObjectUtil {
     final StringBuilder builder = new StringBuilder();
     builder.append('[');
     final Object[] array = (Object[])obj;
-    for (int i = 0; i < array.length; ++i) {
+    for (int i = 0; i < array.length; ++i) { // [A]
       if (i > 0)
         builder.append(", ");
 

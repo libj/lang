@@ -44,7 +44,7 @@ public class BuffersTest {
   @Test
   public void testByteOne() {
     byte[] buf = {0};
-    for (int i = 0; i < Byte.SIZE; ++i) {
+    for (int i = 0; i < Byte.SIZE; ++i) { // [N]
       assertClear(buf, i);
       buf = Buffers.set(buf, i, -1);
       assertSet(buf, i);
@@ -56,7 +56,7 @@ public class BuffersTest {
   @Test
   public void testLongOne() {
     long[] buf = {0};
-    for (int i = 0; i < Long.SIZE; ++i) {
+    for (int i = 0; i < Long.SIZE; ++i) { // [N]
       assertClear(buf, i);
       buf = Buffers.set(buf, i, -1);
       assertSet(buf, i);
@@ -69,8 +69,8 @@ public class BuffersTest {
   public void testByteMany() {
     final int length = Byte.SIZE;
     byte[] buf = {};
-    for (int i = 0; i < Byte.SIZE * length; i += 2) {
-      for (int j = Byte.SIZE * length - 2; j >= 1; j -= 2) {
+    for (int i = 0; i < Byte.SIZE * length; i += 2) { // [N]
+      for (int j = Byte.SIZE * length - 2; j >= 1; j -= 2) { // [N]
         buf = Buffers.set(buf, i, -2.1);
         buf = Buffers.set(buf, j, -2.1);
         assertSet(buf, i);
@@ -87,8 +87,8 @@ public class BuffersTest {
   public void testLongMany() {
     final int length = Long.SIZE;
     byte[] buf = {};
-    for (int i = 0; i < Long.SIZE * length; i += 2) {
-      for (int j = Long.SIZE * length - 2; j >= 1; j -= 2) {
+    for (int i = 0; i < Long.SIZE * length; i += 2) { // [N]
+      for (int j = Long.SIZE * length - 2; j >= 1; j -= 2) { // [N]
         buf = Buffers.set(buf, i, -2.1);
         buf = Buffers.set(buf, j, -2.1);
         assertSet(buf, i);

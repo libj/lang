@@ -23,7 +23,7 @@ import org.junit.Test;
 public class Base32Test {
   @Test
   public void test() {
-    for (int i = 0; i < 1000; ++i) {
+    for (int i = 0; i < 1000; ++i) { // [N]
       final byte[] arg = Strings.getRandomAlphaNumeric((int)(Math.random() * i)).getBytes();
       final String encoded = Base32.encode(arg);
       final byte[] decoded = Base32.decode(encoded);

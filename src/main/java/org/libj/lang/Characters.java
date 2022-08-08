@@ -20,8 +20,7 @@ import java.awt.event.KeyEvent;
 import java.util.Arrays;
 
 /**
- * Utility functions for operations pertaining to {@code char} and
- * {@link Character}.
+ * Utility functions for operations pertaining to {@code char} and {@link Character}.
  */
 public final class Characters {
   private static final char[] escapableChars = {'"', '\'', '0', '1', '2', '3', '4', '5', '6', '7', '\\', 'b', 'f', 'n', 'r', 't'};
@@ -29,7 +28,7 @@ public final class Characters {
   private static final String[] asciiCharToString = new String[128];
 
   static {
-    for (int i = 0; i < 128; ++i)
+    for (int i = 0; i < 128; ++i) // [N]
       asciiCharToString[i] = String.valueOf((char)i);
   }
 
@@ -38,8 +37,7 @@ public final class Characters {
   }
 
   /**
-   * Returns the escaped representation of the specified character.
-   * <blockquote>
+   * Returns the escaped representation of the specified character.<blockquote>
    * <table>
    * <caption>Escape Sequences</caption>
    * <tr><td><b>Escape Sequence</b></td><td><b>Description</b></td></tr>
@@ -62,15 +60,13 @@ public final class Characters {
    * </table>
    * </blockquote>
    *
-   * @implSpec This method only supports single-character escape sequences, and
-   *           therefore does not handle 2-digit or 3-digit octal escape
-   *           sequences, or 4-hex-digit unicode sequences.
+   * @implSpec This method only supports single-character escape sequences, and therefore does not handle 2-digit or 3-digit octal
+   *           escape sequences, or 4-hex-digit unicode sequences.
    * @param ch The character to escape.
    * @return The escaped character.
    * @throws IllegalArgumentException If the specified character is not escapable.
-   * @see <a href=
-   *      "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.10.6">Escape
-   *      Sequences for Character and String Literals</a>
+   * @see <a href= "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.10.6">Escape Sequences for Character and
+   *      String Literals</a>
    */
   public static char escape(final char ch) {
     final int i = Arrays.binarySearch(escapableChars, ch);
@@ -81,8 +77,7 @@ public final class Characters {
   }
 
   /**
-   * Tests whether the specified character is escapable.
-   * <blockquote>
+   * Tests whether the specified character is escapable.<blockquote>
    * <table>
    * <caption>Escape Sequences</caption>
    * <tr><td><b>Escape Sequence</b></td><td><b>Description</b></td></tr>
@@ -105,14 +100,12 @@ public final class Characters {
    * </table>
    * </blockquote>
    *
-   * @implSpec This method only supports single-character escape sequences, and
-   *           therefore does not handle 2-digit or 3-digit octal escape
-   *           sequences, or 4-hex-digit unicode sequences.
+   * @implSpec This method only supports single-character escape sequences, and therefore does not handle 2-digit or 3-digit octal
+   *           escape sequences, or 4-hex-digit unicode sequences.
    * @param ch The character to test.
    * @return {@code true} if the specified character is escapable.
-   * @see <a href=
-   *      "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.10.6">Escape
-   *      Sequences for Character and String Literals</a>
+   * @see <a href= "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.10.6">Escape Sequences for Character and
+   *      String Literals</a>
    */
   public static boolean isEscapable(final char ch) {
     return Arrays.binarySearch(escapableChars, ch) > -1;
@@ -130,14 +123,11 @@ public final class Characters {
   }
 
   /**
-   * Converts the provided string to a new character array, or returns
-   * {@code null} if {@code str} is null.
+   * Converts the provided string to a new character array, or returns {@code null} if {@code str} is null.
    *
    * @param str The string to convert to a new character array.
-   * @return A newly allocated character array whose length is the length of the
-   *         provided string and whose contents are initialized to contain the
-   *         character sequence represented by the provided string, or returns
-   *         {@code null} if {@code str} is null.
+   * @return A newly allocated character array whose length is the length of the provided string and whose contents are initialized
+   *         to contain the character sequence represented by the provided string, or returns {@code null} if {@code str} is null.
    */
   public static char[] valueOf(final String str) {
     return str == null ? null : str.toCharArray();

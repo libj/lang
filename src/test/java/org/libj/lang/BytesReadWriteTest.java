@@ -109,7 +109,7 @@ public class BytesReadWriteTest {
   @Test
   public void test() {
     String string = "≠≈∧∨∩∪";
-    for (int i = 0; i < 23; ++i) {
+    for (int i = 0; i < 23; ++i) { // [N]
       if (debug)
         System.out.println(i);
 

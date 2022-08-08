@@ -30,7 +30,7 @@ public class BytesTest {
 
   public static String toBinaryString(final long value, final int typeSize) {
     String byteValueString = "";
-    for (int i = 0; i <= typeSize - 1; ++i) {
+    for (int i = 0; i <= typeSize - 1; ++i) { // [N]
       final int mask = 1 << i;
       byteValueString = ((mask & value) > 0 ? "1" : "0") + byteValueString;
     }
@@ -144,7 +144,7 @@ public class BytesTest {
 
   @Test
   public void testToOctal() {
-    for (byte i = Byte.MIN_VALUE; i < Byte.MAX_VALUE; ++i)
+    for (byte i = Byte.MIN_VALUE; i < Byte.MAX_VALUE; ++i) // [N]
       assertEquals(Integer.toString(i, 8), String.valueOf(Bytes.toOctal(i)));
   }
 

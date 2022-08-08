@@ -94,7 +94,7 @@ public class ThreadsTest {
   @Test
   public void testInterruptAfterTimeout() throws InterruptedException {
     final CountDownLatch latch = new CountDownLatch(numTests);
-    for (int i = 0; i < numTests; ++i)
+    for (int i = 0; i < numTests; ++i) // [N]
       new Thread(newRandomRunnable(latch)).start();
 
     latch.await();

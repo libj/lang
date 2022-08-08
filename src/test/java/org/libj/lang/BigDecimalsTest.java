@@ -33,7 +33,7 @@ public class BigDecimalsTest {
     assertSame(a, BigDecimals.intern(a));
     assertSame(b, BigDecimals.intern(b));
 
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < 100; ++i) { // [N]
       assertSame(a, BigDecimals.intern(new BigDecimal("589.21")));
       assertSame(b, BigDecimals.intern(new BigDecimal("12.2414")));
     }
@@ -41,9 +41,9 @@ public class BigDecimalsTest {
 
   @Test
   public void testInternString() {
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < 100; ++i) { // [N]
       new Thread(() -> {
-        for (int j = 0; j < 1000; ++j) {
+        for (int j = 0; j < 1000; ++j) { // [N]
           BigDecimals.intern(String.valueOf(j));
         }
       }).start();
@@ -52,9 +52,9 @@ public class BigDecimalsTest {
 
   @Test
   public void testInternlong() {
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < 100; ++i) { // [N]
       new Thread(() -> {
-        for (long j = 0; j < 1000; ++j) {
+        for (long j = 0; j < 1000; ++j) { // [N]
           BigDecimals.intern(j);
         }
       }).start();
@@ -63,9 +63,9 @@ public class BigDecimalsTest {
 
   @Test
   public void testInternLong() {
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < 100; ++i) { // [N]
       new Thread(() -> {
-        for (Long j = 0L; j < 1000; ++j) {
+        for (Long j = 0L; j < 1000; ++j) { // [N]
           BigDecimals.intern(j);
         }
       }).start();
@@ -74,9 +74,9 @@ public class BigDecimalsTest {
 
   @Test
   public void testInterndouble() {
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < 100; ++i) { // [N]
       new Thread(() -> {
-        for (double j = 0; j < 1000; ++j) {
+        for (double j = 0; j < 1000; ++j) { // [N]
           BigDecimals.intern(j);
         }
       }).start();
@@ -85,9 +85,9 @@ public class BigDecimalsTest {
 
   @Test
   public void testInternDouble() {
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < 100; ++i) { // [N]
       new Thread(() -> {
-        for (Double j = 0D; j < 1000; ++j) {
+        for (Double j = 0D; j < 1000; ++j) { // [N]
           BigDecimals.intern(j);
         }
       }).start();

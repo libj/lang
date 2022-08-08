@@ -35,7 +35,7 @@ public class StringsTest {
 
   @Test
   public void testIndexOf1() {
-    for (int i = 0; i < 10000; ++i) {
+    for (int i = 0; i < 10000; ++i) { // [N]
       final String str = Strings.getRandomAlphaNumeric(256);
       final String find = Strings.getRandomAlphaNumeric(1);
       final int expected = str.indexOf(find);
@@ -46,7 +46,7 @@ public class StringsTest {
 
   @Test
   public void testIndexOf2() {
-    for (int i = 0; i < 10000; ++i) {
+    for (int i = 0; i < 10000; ++i) { // [N]
       final String str = Strings.getRandomAlphaNumeric(256);
       final String find = Strings.getRandomAlphaNumeric(1);
       final int from = r.nextInt(str.length());
@@ -58,7 +58,7 @@ public class StringsTest {
 
   @Test
   public void testEndsWith() {
-    for (int i = 0; i < 10000; ++i) {
+    for (int i = 0; i < 10000; ++i) { // [N]
       final String str = Strings.getRandomAlphaNumeric(256);
       final String find = Strings.getRandomAlphaNumeric(1);
       assertEquals(str.endsWith(find), Strings.endsWith(str, find.charAt(0)));
@@ -100,7 +100,7 @@ public class StringsTest {
     catch (final IllegalArgumentException e) {
     }
 
-    for (int len = 0; len < 100; ++len) {
+    for (int len = 0; len < 100; ++len) { // [N]
       final String random = Strings.getRandomAlpha(len);
       assertEquals(random.length(), len);
       assertTrue(random, random.matches("^[a-zA-Z]*$"));
@@ -116,7 +116,7 @@ public class StringsTest {
     catch (final IllegalArgumentException e) {
     }
 
-    for (int len = 0; len < 100; ++len) {
+    for (int len = 0; len < 100; ++len) { // [N]
       final String random = Strings.getRandomAlphaNumeric(len);
       assertEquals(random.length(), len);
       assertTrue(random, random.matches("^[0-9a-zA-Z]*$"));
@@ -132,7 +132,7 @@ public class StringsTest {
     catch (final IllegalArgumentException e) {
     }
 
-    for (int len = 0; len < 100; ++len) {
+    for (int len = 0; len < 100; ++len) { // [N]
       final String random = Strings.getRandomNumeric(len);
       assertEquals(random.length(), len);
       assertTrue(random, random.matches("^[0-9]*$"));
@@ -790,7 +790,7 @@ public class StringsTest {
     assertSame(a, Strings.intern(a));
     assertSame(b, Strings.intern(b));
 
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < 100; ++i) { // [N]
       assertSame(a, Strings.intern(new String("hello world 1")));
       assertSame(b, Strings.intern(new String("hello world 2")));
     }
@@ -809,7 +809,7 @@ public class StringsTest {
 
 //    final String ch = "W";
 //    final String str = "WigWW";
-    for (int i = 0; i < 1000000; ++i) {
+    for (int i = 0; i < 1000000; ++i) { // [N]
       String str = Strings.getRandomAlphaNumeric(5);
       final String ch = Strings.getRandomAlphaNumeric(1);
       final char c = ch.charAt(0);
@@ -841,12 +841,12 @@ public class StringsTest {
 
     assertTrue(Strings.startsWithIgnoreCase("", ""));
 
-    for (int i = 0; i < 100000; ++i) {
+    for (int i = 0; i < 100000; ++i) { // [N]
       final char ch = (char)('a' + i / 26);
       assertFalse(Strings.startsWithIgnoreCase(Strings.repeat(ch, i % 100), Strings.repeat(ch, i % 100 + 1)));
     }
 
-    for (int i = 0; i < 100000; ++i) {
+    for (int i = 0; i < 100000; ++i) { // [N]
       final char ch = (char)('a' + i / 26);
       final char expected = r.nextBoolean() ? Character.toUpperCase(ch) : ch;
       assertTrue(expected + " != " + ch, Strings.startsWithIgnoreCase(Strings.repeat(expected, i % 100 + 1), Strings.repeat(ch, i % 100)));
@@ -871,12 +871,12 @@ public class StringsTest {
 
     assertTrue(Strings.endsWithIgnoreCase("", ""));
 
-    for (int i = 0; i < 100000; ++i) {
+    for (int i = 0; i < 100000; ++i) { // [N]
       final char ch = (char)('a' + i / 26);
       assertFalse(Strings.endsWithIgnoreCase(Strings.repeat(ch, i % 100), Strings.repeat(ch, i % 100 + 1)));
     }
 
-    for (int i = 0; i < 100000; ++i) {
+    for (int i = 0; i < 100000; ++i) { // [N]
       final char ch = (char)('a' + i / 26);
       final char expected = r.nextBoolean() ? Character.toUpperCase(ch) : ch;
       assertTrue(expected + " != " + ch, Strings.endsWithIgnoreCase(Strings.repeat(expected, i % 100 + 1), Strings.repeat(ch, i % 100)));

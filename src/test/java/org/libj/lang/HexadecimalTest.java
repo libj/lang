@@ -28,7 +28,7 @@ public class HexadecimalTest {
   }
 
   private static void testHexToBytesOffset(final String hex) {
-    for (int i = 0; i < 1000; ++i) {
+    for (int i = 0; i < 1000; ++i) { // [N]
       final int len = hex.length() / 2;
       final byte[] bytes = new byte[len + (int)(Math.random() * len)];
       final int offset = (int)((bytes.length - len) * Math.random());

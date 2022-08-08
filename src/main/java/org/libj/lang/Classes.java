@@ -92,7 +92,7 @@ public final class Classes {
       throw new IllegalArgumentException("Not a valid java identifier: " + className);
 
     int index = className.length() - 1;
-    for (char ch; (index = className.lastIndexOf('$', index - 1)) > 1 && ((ch = className.charAt(index - 1)) == '.' || ch == '$'););
+    for (char ch; (index = className.lastIndexOf('$', index - 1)) > 1 && ((ch = className.charAt(index - 1)) == '.' || ch == '$');); // [N]
     return index <= 0 ? className : className.substring(0, index);
   }
 
@@ -170,7 +170,7 @@ public final class Classes {
     builder.append(className.charAt(0));
     builder.append(className.charAt(1));
     char last = '\0';
-    for (int i = 2; i < className.length() - 1; ++i) {
+    for (int i = 2; i < className.length() - 1; ++i) { // [N]
       final char ch = className.charAt(i);
       builder.append(last != '.' && last != '$' && ch == '$' ? '.' : ch);
       last = ch;
@@ -282,7 +282,7 @@ public final class Classes {
       if ((t = visitSuperclass(cls.getSuperclass(), queue, visited, function)) != null)
         return t;
 
-      for (final Class<?> superInterface : cls.getInterfaces())
+      for (final Class<?> superInterface : cls.getInterfaces()) // [A]
         if ((t = visitSuperclass(superInterface, queue, visited, function)) != null)
           return t;
     }
@@ -323,7 +323,7 @@ public final class Classes {
       if (!visitSuperclass(cls.getSuperclass(), queue, visited, forEach))
         return visited;
 
-      for (final Class<?> superInterface : cls.getInterfaces())
+      for (final Class<?> superInterface : cls.getInterfaces()) // [A]
         if (!visitSuperclass(superInterface, queue, visited, forEach))
           return visited;
     }
@@ -389,14 +389,12 @@ public final class Classes {
     final Class<?> superclass = cls.getSuperclass();
     T result;
     final boolean resolvedSuperclass;
-    if (resolvedSuperclass = (superclass != null && cls.getGenericSuperclass() instanceof ParameterizedType)) {
-      if ((result = resolveGenericTypes(superclass, (ParameterizedType)cls.getGenericSuperclass(), args, visited, function)) != null)
-        return result;
-    }
+    if ((resolvedSuperclass = (superclass != null && cls.getGenericSuperclass() instanceof ParameterizedType)) && (result = resolveGenericTypes(superclass, (ParameterizedType)cls.getGenericSuperclass(), args, visited, function)) != null)
+      return result;
 
     final Class<?>[] superInterfaces = cls.getInterfaces();
     final Type[] genericSuperInterfaces = cls.getGenericInterfaces();
-    for (int i = 0; i < genericSuperInterfaces.length; ++i) {
+    for (int i = 0; i < genericSuperInterfaces.length; ++i) { // [A]
       final Class<?> superInterface = superInterfaces[i];
       if (!visited.add(superInterface))
         continue;
@@ -431,7 +429,7 @@ public final class Classes {
 
     final String localName = typeArguments[index].getTypeName();
     if (args != null) {
-      for (final Object[] arg : args) {
+      for (final Object[] arg : args) { // [A]
         if (localName.equals(arg[0])) {
           typeArguments[index] = (Class<?>)arg[1];
           nextArgs = recurseArgs(typeVariables, typeArguments, args, index + 1, depth + 1);
@@ -476,7 +474,7 @@ public final class Classes {
 
     final Type[] types = ((ParameterizedType)genericType).getActualTypeArguments();
     final Class<?>[] classes = new Class[types.length];
-    for (int i = 0; i < classes.length; ++i) {
+    for (int i = 0; i < classes.length; ++i) { // [A]
       final Type type = types[i];
       if (type instanceof Class)
         classes[i] = (Class<?>)type;
@@ -493,7 +491,7 @@ public final class Classes {
 
   private static Field getField(final Class<?> cls, final String fieldName, final boolean declared) {
     final Field[] fields = declared ? cls.getDeclaredFields() : cls.getFields();
-    for (final Field field : fields)
+    for (final Field field : fields) // [A]
       if (fieldName.equals(field.getName()))
         return field;
 
@@ -531,6 +529,7 @@ public final class Classes {
    *           ancestor of the class loader for the current class and invocation of {@link SecurityManager#checkPackageAccess
    *           s.checkPackageAccess()} denies access to the package of this class.
    */
+  @SuppressWarnings("javadoc")
   public static Field getField(final Class<?> cls, final String name) {
     return Classes.getField(assertNotNull(cls), assertNotNull(name), false);
   }
@@ -558,6 +557,7 @@ public final class Classes {
    *           ancestor of the class loader for the current class and invocation of {@link SecurityManager#checkPackageAccess
    *           s.checkPackageAccess()} denies access to the package of this class.
    */
+  @SuppressWarnings("javadoc")
   public static Field getDeclaredField(final Class<?> cls, final String name) {
     return Classes.getField(assertNotNull(cls), assertNotNull(name), true);
   }
@@ -585,6 +585,7 @@ public final class Classes {
    *           ancestor of the class loader for the current class and invocation of {@link SecurityManager#checkPackageAccess
    *           s.checkPackageAccess()} denies access to the package of this class.
    */
+  @SuppressWarnings("javadoc")
   public static Field getDeclaredFieldDeep(Class<?> cls, final String name) {
     assertNotNull(cls);
     assertNotNull(name);
@@ -616,7 +617,7 @@ public final class Classes {
   @SuppressWarnings("unchecked")
   public static <T>Constructor<T> getConstructor(final Class<T> cls, final Class<?> ... parameterTypes) {
     final Constructor<?>[] constructors = assertNotNull(cls).getConstructors();
-    for (final Constructor<?> constructor : constructors)
+    for (final Constructor<?> constructor : constructors) // [A]
       if (isMatch(constructor, parameterTypes))
         return (Constructor<T>)constructor;
 
@@ -645,7 +646,7 @@ public final class Classes {
   @SuppressWarnings("unchecked")
   public static <T>Constructor<T> getCompatibleConstructor(final Class<T> cls, final Class<?> ... parameterTypes) {
     final Constructor<?>[] constructors = assertNotNull(cls).getConstructors();
-    for (final Constructor<?> constructor : constructors)
+    for (final Constructor<?> constructor : constructors) // [A]
       if (isCompatible(constructor.getParameterTypes(), parameterTypes))
         return (Constructor<T>)constructor;
 
@@ -675,7 +676,7 @@ public final class Classes {
   @SuppressWarnings("unchecked")
   public static <T>Constructor<T> getDeclaredConstructor(final Class<T> cls, final Class<?> ... parameterTypes) {
     final Constructor<?>[] constructors = assertNotNull(cls).getDeclaredConstructors();
-    for (final Constructor<?> constructor : constructors)
+    for (final Constructor<?> constructor : constructors) // [A]
       if (isMatch(constructor, parameterTypes))
         return (Constructor<T>)constructor;
 
@@ -876,7 +877,7 @@ public final class Classes {
    * @throws IllegalArgumentException If {@code cls} or {@code name} is null.
    */
   public static Method getMethod(final Class<?> cls, final String name, final Class<?> ... parameterTypes) {
-    for (final Method method : assertNotNull(cls).getMethods())
+    for (final Method method : assertNotNull(cls).getMethods()) // [A]
       if (name.equals(method.getName()) && (parameterTypes == null || parameterTypes.length == 0 ? method.getParameterCount() == 0 : parameterTypes.length == method.getParameterCount() && Arrays.equals(method.getParameterTypes(), parameterTypes)))
         return method;
 
@@ -887,7 +888,7 @@ public final class Classes {
     if (parameterTypes.length != args.length)
       return false;
 
-    for (int i = 0, len = parameterTypes.length; i < len; ++i)
+    for (int i = 0, len = parameterTypes.length; i < len; ++i) // [A]
       if (args[i] != null && !isAssignableFrom(parameterTypes[i], args[i], true))
         return false;
 
@@ -1004,7 +1005,7 @@ public final class Classes {
     assertNotNull(cls);
     assertNotNull(name);
     assertNotNull(parameterTypes);
-    for (final Method method : cls.getMethods())
+    for (final Method method : cls.getMethods()) // [A]
       if (name.equals(method.getName()) && isCompatible(method.getParameterTypes(), parameterTypes))
         return method;
 
@@ -1038,7 +1039,7 @@ public final class Classes {
     assertNotNull(cls);
     assertNotNull(name);
     assertNotNull(parameterTypes);
-    for (final Method method : cls.getDeclaredMethods())
+    for (final Method method : cls.getDeclaredMethods()) // [A]
       if (name.equals(method.getName()) && (parameterTypes.length == 0 ? method.getParameterCount() == 0 : Arrays.equals(method.getParameterTypes(), parameterTypes)))
         return method;
 
@@ -1274,7 +1275,7 @@ public final class Classes {
       if (allInterfaces == null)
         allInterfaces = new LinkedHashSet<>(4);
 
-      for (final Class<?> iface : thisInterfaces)
+      for (final Class<?> iface : thisInterfaces) // [A]
         getAllInterfaces(iface, allInterfaces);
     }
     while ((cls = cls.getSuperclass()) != null);
@@ -1295,7 +1296,7 @@ public final class Classes {
       return;
 
     allInterfaces.add(iface);
-    for (final Class<?> extended : iface.getInterfaces())
+    for (final Class<?> extended : iface.getInterfaces()) // [A]
       getAllInterfaces(extended, allInterfaces);
   }
 
@@ -1333,7 +1334,7 @@ public final class Classes {
           allGenericInterfaces = new LinkedHashSet<>(2);
       }
 
-      for (final Class<?> iface : thisInterfaces)
+      for (final Class<?> iface : thisInterfaces) // [A]
         getAllGenericInterfaces(iface, allInterfaces, allGenericInterfaces);
     }
     while ((cls = cls.getSuperclass()) != null);
@@ -1357,7 +1358,7 @@ public final class Classes {
 
     allInterfaces.add(iface);
     Collections.addAll(allGenericInterfaces, iface.getGenericInterfaces());
-    for (final Class<?> extended : iface.getInterfaces())
+    for (final Class<?> extended : iface.getInterfaces()) // [A]
       getAllGenericInterfaces(extended, allInterfaces, allGenericInterfaces);
   }
 
@@ -1377,7 +1378,7 @@ public final class Classes {
       return classes[0];
 
     Class<?> gcc = getGreatestCommonSuperclass(classes[0], classes[1]);
-    for (int i = 2; i < classes.length && gcc != null; ++i)
+    for (int i = 2; i < classes.length && gcc != null; ++i) // [A]
       gcc = getGreatestCommonSuperclass(gcc, classes[i]);
 
     return gcc;
@@ -1437,12 +1438,13 @@ public final class Classes {
       return objects[0].getClass();
 
     Class<?> gcc = getGreatestCommonSuperclass(objects[0].getClass(), objects[1].getClass());
-    for (int i = 2; i < objects.length && gcc != null; ++i)
+    for (int i = 2; i < objects.length && gcc != null; ++i) // [A]
       gcc = getGreatestCommonSuperclass(gcc, objects[i].getClass());
 
     return gcc;
   }
 
+  @SuppressWarnings({"deprecation", "removal"})
   private static class CallingClass extends SecurityManager {
     @Override
     public Class<?>[] getClassContext() {
@@ -1461,7 +1463,7 @@ public final class Classes {
   public static Class<?>[] getExecutionStack() {
     final Class<?>[] context = new CallingClass().getClassContext();
     final Class<?>[] executionStack = new Class[context.length - 3];
-    for (int i = 3; i < context.length; ++i)
+    for (int i = 3; i < context.length; ++i) // [A]
       executionStack[i - 3] = context[i];
 
     return executionStack;
@@ -1541,7 +1543,7 @@ public final class Classes {
       return (T)(executable instanceof Constructor ? ((Constructor<?>)executable).newInstance(parameters) : ((Method)executable).invoke(null, parameters));
 
     final Class<?>[] parameterTypes = new Class[parameters.length];
-    for (int i = 0, len = parameters.length; i < len; ++i)
+    for (int i = 0, len = parameters.length; i < len; ++i) // [A]
       parameterTypes[i] = parameters[i] == null ? null : parameters[i].getClass();
 
     if (parameterTypes.length == 1 && parameterTypes[0] == String.class) {
@@ -1642,7 +1644,7 @@ public final class Classes {
     builder.append('.');
     builder.append(method.getName());
     final int i = builder.length();
-    for (final Class<?> parameterType : method.getParameterTypes())
+    for (final Class<?> parameterType : method.getParameterTypes()) // [A]
       builder.append(',').append(getName(parameterType));
 
     if (builder.length() > i)
@@ -1695,23 +1697,23 @@ public final class Classes {
 
     // Create a map of the method signature to the index of the method in the methods array
     final HashMap<String,Integer> methodSigToIndex = new HashMap<>(methods.length);
-    for (int i = 0; i < methods.length; ++i)
+    for (int i = 0; i < methods.length; ++i) // [A]
       methodSigToIndex.put(getSignature(methods[i]), i);
 
     // Create a composite set connecting the method to its line number
     final Object[][] methodLineNumbers = new Object[methods.length][2];
-    for (int i = 0; i < methods.length; ++i)
+    for (int i = 0; i < methods.length; ++i) // [A]
       methodLineNumbers[i] = new Object[] {methods[i], null};
 
     final boolean[] success = {false};
     try {
       final ClassPool pool = ClassPool.getDefault();
       Class<?> cls, last = null;
-      for (int i = 0; i < methodLineNumbers.length; ++i, last = cls) {
+      for (int i = 0; i < methodLineNumbers.length; ++i, last = cls) { // [A]
         cls = methods[i].getDeclaringClass();
         if (cls != last) {
           final CtClass ctClass = pool.get(cls.getName());
-          for (final CtMethod ctMethod : ctClass.getDeclaredMethods()) {
+          for (final CtMethod ctMethod : ctClass.getDeclaredMethods()) { // [A]
             final Integer index = methodSigToIndex.get(getSignature(ctMethod));
             if (index != null) {
               final int lineNumber = ctMethod.getMethodInfo().getLineNumber(0);
@@ -1743,7 +1745,7 @@ public final class Classes {
         return Integer.compare((Integer)a[1], (Integer)b[1]);
       });
 
-      for (int i = 0; i < methods.length; ++i)
+      for (int i = 0; i < methods.length; ++i) // [A]
         methods[i] = (Method)methodLineNumbers[i][0];
 
       return success[0];
@@ -1793,7 +1795,7 @@ public final class Classes {
   public static String getInternalName(final Class<?> ... classes) {
     assertNotNull(classes);
     final StringBuilder builder = new StringBuilder();
-    for (final Class<?> cls : classes)
+    for (final Class<?> cls : classes) // [A]
       builder.append(getInternalName(cls));
 
     return builder.toString();
@@ -1827,7 +1829,7 @@ public final class Classes {
     if (assertNotNull(cls).isArray())
       return "[" + getInternalName(cls.getComponentType());
 
-    for (int i = 0; i < primitiveClasses.length; ++i)
+    for (int i = 0; i < primitiveClasses.length; ++i) // [A]
       if (primitiveClasses[i] == cls)
         return primitiveInternalNames[i];
 

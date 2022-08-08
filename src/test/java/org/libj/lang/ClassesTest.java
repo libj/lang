@@ -73,14 +73,14 @@ public class ClassesTest {
     catch (final IllegalArgumentException e) {
     }
 
-    for (final Map.Entry<Class<?>[],Class<?>> entry : classes.entrySet())
+    for (final Map.Entry<Class<?>[],Class<?>> entry : classes.entrySet()) // [S]
       assertSame(entry.getValue(), Classes.getGreatestCommonSuperclass(entry.getKey()));
   }
 
   @Test
   public void testGetExecutionStack() {
     final Class<?>[] classes = Classes.getExecutionStack();
-    for (final Class<?> cls : classes)
+    for (final Class<?> cls : classes) // [A]
       logger.info(cls.getName());
   }
 
@@ -342,7 +342,7 @@ public class ClassesTest {
   }
 
   private static <T>Collection<T> asCollection(final Collection<T> c, final T[] a, final int fromIndex, final int toIndex) {
-    for (int i = fromIndex; i < toIndex; ++i)
+    for (int i = fromIndex; i < toIndex; ++i) // [N]
       c.add(a[i]);
 
     return c;
@@ -361,7 +361,7 @@ public class ClassesTest {
     Arrays.sort(expecteds, comparator);
     assertEquals(Arrays.toString(ifaces), Arrays.toString(expecteds));
     final List<Class<?>> list = Arrays.asList(ifaces);
-    for (final Class<?> expected : expecteds)
+    for (final Class<?> expected : expecteds) // [A]
       assertTrue(list.contains(expected));
   }
 

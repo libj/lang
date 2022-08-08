@@ -74,12 +74,12 @@ public final class Threads {
     assertNotNull(s);
     final Map<Thread,StackTraceElement[]> stackTraces = Thread.getAllStackTraces();
     final Map<Long,Thread> tidToThread = new HashMap<>(stackTraces.size());
-    for (final Thread thread : stackTraces.keySet())
+    for (final Thread thread : stackTraces.keySet()) // [S]
       tidToThread.put(thread.getId(), thread);
 
     final StringBuilder builder = new StringBuilder();
     final ThreadInfo[] threadInfos = ManagementFactory.getThreadMXBean().dumpAllThreads(true, true);
-    for (int i = 0; i < threadInfos.length; ++i) {
+    for (int i = 0; i < threadInfos.length; ++i) { // [A]
       if (builder.length() > 0)
         builder.append("\n\n");
 
@@ -94,7 +94,7 @@ public final class Threads {
 
       builder.append(" prio=").append(thread.getPriority());
       builder.append("\n   java.lang.Thread.State: ").append(threadInfo.getThreadState());
-      for (final StackTraceElement stackTraceElement : threadInfo.getStackTrace())
+      for (final StackTraceElement stackTraceElement : threadInfo.getStackTrace()) // [A]
         builder.append("\n  at ").append(stackTraceElement);
     }
 

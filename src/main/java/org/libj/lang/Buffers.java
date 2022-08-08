@@ -19,33 +19,33 @@ package org.libj.lang;
 import static org.libj.lang.Assertions.*;
 
 /**
- * This utility class implements functions to {@code #set(...)},
- * {@code #clear(...)}, and {@code #get(...)} bit values from an argument
- * {@code byte[]}.
+ * This utility class implements functions to {@code #set(...)}, {@code #clear(...)}, and {@code #get(...)} bit values from an
+ * argument {@code byte[]}.
  */
 public final class Buffers {
   /**
-   * Sets the bit at the specified index in {@code buf} to {@code 1}. If the bit
-   * index is greater than the number of bits in the {@code buf} array, the
-   * array will be resized based on the {@code resize} argument.
+   * Sets the bit at the specified index in {@code buf} to {@code 1}. If the bit index is greater than the number of bits in the
+   * {@code buf} array, the array will be resized based on the {@code resize} argument.
    * <p>
    * The {@code resize} argument behaves by the following rules:
    * <ul>
-   * <li>If {@code resize == 0}, do not resize the array. An
-   * {@link ArrayIndexOutOfBoundsException} will be thrown.</li>
-   * <li>If {@code resize > 0}, set the size of the array to the value of the
-   * index of the byte that {@code bit} belongs to, plus 1, multiplied by
-   * {@code resize}:
+   * <li>If {@code resize == 0}, do not resize the array. An {@link ArrayIndexOutOfBoundsException} will be thrown.</li>
+   * <li>If {@code resize > 0}, set the size of the array to the value of the index of the byte that {@code bit} belongs to, plus 1,
+   * multiplied by {@code resize}:
    *
    * <pre>
-   * {@code (int)(((bit / 8) + 1) * resize)}
+   * {@code
+   * (int)(((bit / 8) + 1) * resize)
+   * }
    * </pre>
    *
-   * <li>If {@code resize < 0}, set the size of the array to the value of the
-   * index of the byte that {@code bit} belongs to, minus {@code (int)resize}:
+   * <li>If {@code resize < 0}, set the size of the array to the value of the index of the byte that {@code bit} belongs to, minus
+   * {@code (int)resize}:
    *
    * <pre>
-   * {@code (bit / 8) - (int)resize}
+   * {@code
+   * (bit / 8) - (int)resize
+   * }
    * </pre>
    * </ul>
    *
@@ -53,9 +53,8 @@ public final class Buffers {
    * @param bit The index of the bit to be set.
    * @param resize The resize factor.
    * @return The provided {@code byte[]} buffer.
-   * @throws ArrayIndexOutOfBoundsException If the specified index is negative,
-   *           or if {@code resize == 0}. and the bit index is greater than the
-   *           number of bits in the {@code buf} array.
+   * @throws ArrayIndexOutOfBoundsException If the specified index is negative, or if {@code resize == 0}. and the bit index is
+   *           greater than the number of bits in the {@code buf} array.
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static byte[] set(byte[] buf, final int bit, final double resize) {
@@ -74,27 +73,28 @@ public final class Buffers {
   }
 
   /**
-   * Sets the bit at the specified index in {@code buf} to {@code 1}. If the bit
-   * index is greater than the number of bits in the {@code buf} array, the
-   * array will be resized based on the {@code resize} argument.
+   * Sets the bit at the specified index in {@code buf} to {@code 1}. If the bit index is greater than the number of bits in the
+   * {@code buf} array, the array will be resized based on the {@code resize} argument.
    * <p>
    * The {@code resize} argument behaves by the following rules:
    * <ul>
-   * <li>If {@code resize == 0}, do not resize the array. An
-   * {@link ArrayIndexOutOfBoundsException} will be thrown.</li>
-   * <li>If {@code resize > 0}, set the size of the array to the value of the
-   * index of the char that {@code bit} belongs to, plus 1, multiplied by
-   * {@code resize}:
+   * <li>If {@code resize == 0}, do not resize the array. An {@link ArrayIndexOutOfBoundsException} will be thrown.</li>
+   * <li>If {@code resize > 0}, set the size of the array to the value of the index of the char that {@code bit} belongs to, plus 1,
+   * multiplied by {@code resize}:
    *
    * <pre>
-   * {@code (int)(((bit / 8) + 1) * resize)}
+   * {@code
+   * (int)(((bit / 8) + 1) * resize)
+   * }
    * </pre>
    *
-   * <li>If {@code resize < 0}, set the size of the array to the value of the
-   * index of the char that {@code bit} belongs to, minus {@code (int)resize}:
+   * <li>If {@code resize < 0}, set the size of the array to the value of the index of the char that {@code bit} belongs to, minus
+   * {@code (int)resize}:
    *
    * <pre>
-   * {@code (bit / 8) - (int)resize}
+   * {@code
+   * (bit / 8) - (int)resize
+   * }
    * </pre>
    * </ul>
    *
@@ -102,9 +102,8 @@ public final class Buffers {
    * @param bit The index of the bit to be set.
    * @param resize The resize factor.
    * @return The provided {@code char[]} buffer.
-   * @throws ArrayIndexOutOfBoundsException If the specified index is negative,
-   *           or if {@code resize == 0}. and the bit index is greater than the
-   *           number of bits in the {@code buf} array.
+   * @throws ArrayIndexOutOfBoundsException If the specified index is negative, or if {@code resize == 0}. and the bit index is
+   *           greater than the number of bits in the {@code buf} array.
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static char[] set(char[] buf, final int bit, final double resize) {
@@ -123,27 +122,28 @@ public final class Buffers {
   }
 
   /**
-   * Sets the bit at the specified index in {@code buf} to {@code 1}. If the bit
-   * index is greater than the number of bits in the {@code buf} array, the
-   * array will be resized based on the {@code resize} argument.
+   * Sets the bit at the specified index in {@code buf} to {@code 1}. If the bit index is greater than the number of bits in the
+   * {@code buf} array, the array will be resized based on the {@code resize} argument.
    * <p>
    * The {@code resize} argument behaves by the following rules:
    * <ul>
-   * <li>If {@code resize == 0}, do not resize the array. An
-   * {@link ArrayIndexOutOfBoundsException} will be thrown.</li>
-   * <li>If {@code resize > 0}, set the size of the array to the value of the
-   * index of the short that {@code bit} belongs to, plus 1, multiplied by
-   * {@code resize}:
+   * <li>If {@code resize == 0}, do not resize the array. An {@link ArrayIndexOutOfBoundsException} will be thrown.</li>
+   * <li>If {@code resize > 0}, set the size of the array to the value of the index of the short that {@code bit} belongs to, plus
+   * 1, multiplied by {@code resize}:
    *
    * <pre>
-   * {@code (int)(((bit / 8) + 1) * resize)}
+   * {@code
+   * (int)(((bit / 8) + 1) * resize)
+   * }
    * </pre>
    *
-   * <li>If {@code resize < 0}, set the size of the array to the value of the
-   * index of the short that {@code bit} belongs to, minus {@code (int)resize}:
+   * <li>If {@code resize < 0}, set the size of the array to the value of the index of the short that {@code bit} belongs to, minus
+   * {@code (int)resize}:
    *
    * <pre>
-   * {@code (bit / 8) - (int)resize}
+   * {@code
+   * (bit / 8) - (int)resize
+   * }
    * </pre>
    * </ul>
    *
@@ -151,9 +151,8 @@ public final class Buffers {
    * @param bit The index of the bit to be set.
    * @param resize The resize factor.
    * @return The provided {@code short[]} buffer.
-   * @throws ArrayIndexOutOfBoundsException If the specified index is negative,
-   *           or if {@code resize == 0}. and the bit index is greater than the
-   *           number of bits in the {@code buf} array.
+   * @throws ArrayIndexOutOfBoundsException If the specified index is negative, or if {@code resize == 0}. and the bit index is
+   *           greater than the number of bits in the {@code buf} array.
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static short[] set(short[] buf, final int bit, final double resize) {
@@ -172,27 +171,28 @@ public final class Buffers {
   }
 
   /**
-   * Sets the bit at the specified index in {@code buf} to {@code 1}. If the bit
-   * index is greater than the number of bits in the {@code buf} array, the
-   * array will be resized based on the {@code resize} argument.
+   * Sets the bit at the specified index in {@code buf} to {@code 1}. If the bit index is greater than the number of bits in the
+   * {@code buf} array, the array will be resized based on the {@code resize} argument.
    * <p>
    * The {@code resize} argument behaves by the following rules:
    * <ul>
-   * <li>If {@code resize == 0}, do not resize the array. An
-   * {@link ArrayIndexOutOfBoundsException} will be thrown.</li>
-   * <li>If {@code resize > 0}, set the size of the array to the value of the
-   * index of the int that {@code bit} belongs to, plus 1, multiplied by
-   * {@code resize}:
+   * <li>If {@code resize == 0}, do not resize the array. An {@link ArrayIndexOutOfBoundsException} will be thrown.</li>
+   * <li>If {@code resize > 0}, set the size of the array to the value of the index of the int that {@code bit} belongs to, plus 1,
+   * multiplied by {@code resize}:
    *
    * <pre>
-   * {@code (int)(((bit / 8) + 1) * resize)}
+   * {@code
+   * (int)(((bit / 8) + 1) * resize)
+   * }
    * </pre>
    *
-   * <li>If {@code resize < 0}, set the size of the array to the value of the
-   * index of the int that {@code bit} belongs to, minus {@code (int)resize}:
+   * <li>If {@code resize < 0}, set the size of the array to the value of the index of the int that {@code bit} belongs to, minus
+   * {@code (int)resize}:
    *
    * <pre>
-   * {@code (bit / 8) - (int)resize}
+   * {@code
+   * (bit / 8) - (int)resize
+   * }
    * </pre>
    * </ul>
    *
@@ -200,9 +200,8 @@ public final class Buffers {
    * @param bit The index of the bit to be set.
    * @param resize The resize factor.
    * @return The provided {@code int[]} buffer.
-   * @throws ArrayIndexOutOfBoundsException If the specified index is negative,
-   *           or if {@code resize == 0}. and the bit index is greater than the
-   *           number of bits in the {@code buf} array.
+   * @throws ArrayIndexOutOfBoundsException If the specified index is negative, or if {@code resize == 0}. and the bit index is
+   *           greater than the number of bits in the {@code buf} array.
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static int[] set(int[] buf, final int bit, final double resize) {
@@ -221,27 +220,28 @@ public final class Buffers {
   }
 
   /**
-   * Sets the bit at the specified index in {@code buf} to {@code 1}. If the bit
-   * index is greater than the number of bits in the {@code buf} array, the
-   * array will be resized based on the {@code resize} argument.
+   * Sets the bit at the specified index in {@code buf} to {@code 1}. If the bit index is greater than the number of bits in the
+   * {@code buf} array, the array will be resized based on the {@code resize} argument.
    * <p>
    * The {@code resize} argument behaves by the following rules:
    * <ul>
-   * <li>If {@code resize == 0}, do not resize the array. An
-   * {@link ArrayIndexOutOfBoundsException} will be thrown.</li>
-   * <li>If {@code resize > 0}, set the size of the array to the value of the
-   * index of the long that {@code bit} belongs to, plus 1, multiplied by
-   * {@code resize}:
+   * <li>If {@code resize == 0}, do not resize the array. An {@link ArrayIndexOutOfBoundsException} will be thrown.</li>
+   * <li>If {@code resize > 0}, set the size of the array to the value of the index of the long that {@code bit} belongs to, plus 1,
+   * multiplied by {@code resize}:
    *
    * <pre>
-   * {@code (int)(((bit / 64) + 1) * resize)}
+   * {@code
+   * (int)(((bit / 64) + 1) * resize)
+   * }
    * </pre>
    *
-   * <li>If {@code resize < 0}, set the size of the array to the value of the
-   * index of the long that {@code bit} belongs to, minus {@code (int)resize}:
+   * <li>If {@code resize < 0}, set the size of the array to the value of the index of the long that {@code bit} belongs to, minus
+   * {@code (int)resize}:
    *
    * <pre>
-   * {@code (bit / 64) - (int)resize}
+   * {@code
+   * (bit / 64) - (int)resize
+   * }
    * </pre>
    * </ul>
    *
@@ -249,9 +249,8 @@ public final class Buffers {
    * @param bit The index of the bit to be set.
    * @param resize The resize factor.
    * @return The provided {@code long[]} buffer.
-   * @throws ArrayIndexOutOfBoundsException If the specified index is negative,
-   *           or if {@code resize == 0}. and the bit index is greater than the
-   *           number of bits in the {@code buf} array.
+   * @throws ArrayIndexOutOfBoundsException If the specified index is negative, or if {@code resize == 0}. and the bit index is
+   *           greater than the number of bits in the {@code buf} array.
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static long[] set(long[] buf, final int bit, final double resize) {
@@ -270,8 +269,7 @@ public final class Buffers {
   }
 
   /**
-   * Sets the bit in {@code buf} specified by the {@code bit} index to
-   * {@code false}.
+   * Sets the bit in {@code buf} specified by the {@code bit} index to {@code false}.
    *
    * @param buf The {@code byte[]} buffer in which to clear the bit.
    * @param bit The index of the bit to be cleared.
@@ -289,8 +287,7 @@ public final class Buffers {
   }
 
   /**
-   * Sets the bit in {@code buf} specified by the {@code bit} index to
-   * {@code false}.
+   * Sets the bit in {@code buf} specified by the {@code bit} index to {@code false}.
    *
    * @param buf The {@code char[]} buffer in which to clear the bit.
    * @param bit The index of the bit to be cleared.
@@ -308,8 +305,7 @@ public final class Buffers {
   }
 
   /**
-   * Sets the bit in {@code buf} specified by the {@code bit} index to
-   * {@code false}.
+   * Sets the bit in {@code buf} specified by the {@code bit} index to {@code false}.
    *
    * @param buf The {@code short[]} buffer in which to clear the bit.
    * @param bit The index of the bit to be cleared.
@@ -327,8 +323,7 @@ public final class Buffers {
   }
 
   /**
-   * Sets the bit in {@code buf} specified by the {@code bit} index to
-   * {@code false}.
+   * Sets the bit in {@code buf} specified by the {@code bit} index to {@code false}.
    *
    * @param buf The {@code int[]} buffer in which to clear the bit.
    * @param bit The index of the bit to be cleared.
@@ -346,8 +341,7 @@ public final class Buffers {
   }
 
   /**
-   * Sets the bit in {@code buf} specified by the {@code bit} index to
-   * {@code false}.
+   * Sets the bit in {@code buf} specified by the {@code bit} index to {@code false}.
    *
    * @param buf The {@code long[]} buffer in which to clear the bit.
    * @param bit The index of the bit to be cleared.
@@ -365,9 +359,8 @@ public final class Buffers {
   }
 
   /**
-   * Returns the value of the bit at the specified index. The value is
-   * {@code true} if the bit with the index {@code bit} is currently set in
-   * {@code buf}, otherwise the result is {@code false}.
+   * Returns the value of the bit at the specified index. The value is {@code true} if the bit with the index {@code bit} is
+   * currently set in {@code buf}, otherwise the result is {@code false}.
    *
    * @param buf The {@code byte[]} buffer.
    * @param bit The bit index.
@@ -381,9 +374,8 @@ public final class Buffers {
   }
 
   /**
-   * Returns the value of the bit at the specified index. The value is
-   * {@code true} if the bit with the index {@code bit} is currently set in
-   * {@code buf}, otherwise the result is {@code false}.
+   * Returns the value of the bit at the specified index. The value is {@code true} if the bit with the index {@code bit} is
+   * currently set in {@code buf}, otherwise the result is {@code false}.
    *
    * @param buf The {@code char[]} buffer.
    * @param bit The bit index.
@@ -397,9 +389,8 @@ public final class Buffers {
   }
 
   /**
-   * Returns the value of the bit at the specified index. The value is
-   * {@code true} if the bit with the index {@code bit} is currently set in
-   * {@code buf}, otherwise the result is {@code false}.
+   * Returns the value of the bit at the specified index. The value is {@code true} if the bit with the index {@code bit} is
+   * currently set in {@code buf}, otherwise the result is {@code false}.
    *
    * @param buf The {@code short[]} buffer.
    * @param bit The bit index.
@@ -413,9 +404,8 @@ public final class Buffers {
   }
 
   /**
-   * Returns the value of the bit at the specified index. The value is
-   * {@code true} if the bit with the index {@code bit} is currently set in
-   * {@code buf}, otherwise the result is {@code false}.
+   * Returns the value of the bit at the specified index. The value is {@code true} if the bit with the index {@code bit} is
+   * currently set in {@code buf}, otherwise the result is {@code false}.
    *
    * @param buf The {@code int[]} buffer.
    * @param bit The bit index.
@@ -429,9 +419,8 @@ public final class Buffers {
   }
 
   /**
-   * Returns the value of the bit at the specified index. The value is
-   * {@code true} if the bit with the index {@code bit} is currently set in
-   * {@code buf}, otherwise the result is {@code false}.
+   * Returns the value of the bit at the specified index. The value is {@code true} if the bit with the index {@code bit} is
+   * currently set in {@code buf}, otherwise the result is {@code false}.
    *
    * @param buf The {@code long[]} buffer.
    * @param bit The bit index.
@@ -445,9 +434,8 @@ public final class Buffers {
   }
 
   /**
-   * Returns the "logical size" of {@code buf}: the index of the byte with the
-   * highest set bit in {@code buf}, plus one. Returns zero if {@code buf}
-   * contains no set bits.
+   * Returns the "logical size" of {@code buf}: the index of the byte with the highest set bit in {@code buf}, plus one. Returns
+   * zero if {@code buf} contains no set bits.
    *
    * @param buf The {@code byte[]} buffer.
    * @return The logical size of the {@code buf}.
@@ -463,9 +451,8 @@ public final class Buffers {
   }
 
   /**
-   * Returns the "logical size" of {@code buf}: the index of the char with the
-   * highest set bit in {@code buf}, plus one. Returns zero if {@code buf}
-   * contains no set bits.
+   * Returns the "logical size" of {@code buf}: the index of the char with the highest set bit in {@code buf}, plus one. Returns
+   * zero if {@code buf} contains no set bits.
    *
    * @param buf The {@code char[]} buffer.
    * @return The logical size of the {@code buf}.
@@ -481,9 +468,8 @@ public final class Buffers {
   }
 
   /**
-   * Returns the "logical size" of {@code buf}: the index of the short with the
-   * highest set bit in {@code buf}, plus one. Returns zero if {@code buf}
-   * contains no set bits.
+   * Returns the "logical size" of {@code buf}: the index of the short with the highest set bit in {@code buf}, plus one. Returns
+   * zero if {@code buf} contains no set bits.
    *
    * @param buf The {@code short[]} buffer.
    * @return The logical size of the {@code buf}.
@@ -499,9 +485,8 @@ public final class Buffers {
   }
 
   /**
-   * Returns the "logical size" of {@code buf}: the index of the int with the
-   * highest set bit in {@code buf}, plus one. Returns zero if {@code buf}
-   * contains no set bits.
+   * Returns the "logical size" of {@code buf}: the index of the int with the highest set bit in {@code buf}, plus one. Returns zero
+   * if {@code buf} contains no set bits.
    *
    * @param buf The {@code int[]} buffer.
    * @return The logical size of the {@code buf}.
@@ -517,9 +502,8 @@ public final class Buffers {
   }
 
   /**
-   * Returns the "logical size" of {@code buf}: the index of the long with the
-   * highest set bit in {@code buf}, plus one. Returns zero if {@code buf}
-   * contains no set bits.
+   * Returns the "logical size" of {@code buf}: the index of the long with the highest set bit in {@code buf}, plus one. Returns
+   * zero if {@code buf} contains no set bits.
    *
    * @param buf The {@code long[]} buffer.
    * @return The logical size of the {@code buf}.
@@ -535,13 +519,10 @@ public final class Buffers {
   }
 
   /**
-   * Returns a trimmed byte array of {@code buf}: the length of a trimmed byte
-   * array is its "logical size".
+   * Returns a trimmed byte array of {@code buf}: the length of a trimmed byte array is its "logical size".
    * <ul>
-   * <li>If the length of {@code buf} is its "logical size", the reference to
-   * {@code buf} is returned.</li>
-   * <li>If the length of {@code buf} is greater than its "logical size", a
-   * reference to a new byte array is returned.</li>
+   * <li>If the length of {@code buf} is its "logical size", the reference to {@code buf} is returned.</li>
+   * <li>If the length of {@code buf} is greater than its "logical size", a reference to a new byte array is returned.</li>
    * </ul>
    *
    * @param buf The {@code byte[]} buffer.
@@ -560,13 +541,10 @@ public final class Buffers {
   }
 
   /**
-   * Returns a trimmed char array of {@code buf}: the length of a trimmed char
-   * array is its "logical size".
+   * Returns a trimmed char array of {@code buf}: the length of a trimmed char array is its "logical size".
    * <ul>
-   * <li>If the length of {@code buf} is its "logical size", the reference to
-   * {@code buf} is returned.</li>
-   * <li>If the length of {@code buf} is greater than its "logical size", a
-   * reference to a new char array is returned.</li>
+   * <li>If the length of {@code buf} is its "logical size", the reference to {@code buf} is returned.</li>
+   * <li>If the length of {@code buf} is greater than its "logical size", a reference to a new char array is returned.</li>
    * </ul>
    *
    * @param buf The {@code char[]} buffer.
@@ -585,13 +563,10 @@ public final class Buffers {
   }
 
   /**
-   * Returns a trimmed short array of {@code buf}: the length of a trimmed short
-   * array is its "logical size".
+   * Returns a trimmed short array of {@code buf}: the length of a trimmed short array is its "logical size".
    * <ul>
-   * <li>If the length of {@code buf} is its "logical size", the reference to
-   * {@code buf} is returned.</li>
-   * <li>If the length of {@code buf} is greater than its "logical size", a
-   * reference to a new short array is returned.</li>
+   * <li>If the length of {@code buf} is its "logical size", the reference to {@code buf} is returned.</li>
+   * <li>If the length of {@code buf} is greater than its "logical size", a reference to a new short array is returned.</li>
    * </ul>
    *
    * @param buf The {@code short[]} buffer.
@@ -610,13 +585,10 @@ public final class Buffers {
   }
 
   /**
-   * Returns a trimmed int array of {@code buf}: the length of a trimmed int
-   * array is its "logical size".
+   * Returns a trimmed int array of {@code buf}: the length of a trimmed int array is its "logical size".
    * <ul>
-   * <li>If the length of {@code buf} is its "logical size", the reference to
-   * {@code buf} is returned.</li>
-   * <li>If the length of {@code buf} is greater than its "logical size", a
-   * reference to a new int array is returned.</li>
+   * <li>If the length of {@code buf} is its "logical size", the reference to {@code buf} is returned.</li>
+   * <li>If the length of {@code buf} is greater than its "logical size", a reference to a new int array is returned.</li>
    * </ul>
    *
    * @param buf The {@code int[]} buffer.
@@ -635,13 +607,10 @@ public final class Buffers {
   }
 
   /**
-   * Returns a trimmed long array of {@code buf}: the length of a trimmed long
-   * array is its "logical size".
+   * Returns a trimmed long array of {@code buf}: the length of a trimmed long array is its "logical size".
    * <ul>
-   * <li>If the length of {@code buf} is its "logical size", the reference to
-   * {@code buf} is returned.</li>
-   * <li>If the length of {@code buf} is greater than its "logical size", a
-   * reference to a new long array is returned.</li>
+   * <li>If the length of {@code buf} is its "logical size", the reference to {@code buf} is returned.</li>
+   * <li>If the length of {@code buf} is greater than its "logical size", a reference to a new long array is returned.</li>
    * </ul>
    *
    * @param buf The {@code long[]} buffer.
@@ -679,85 +648,75 @@ public final class Buffers {
   }
 
   /**
-   * Returns a string representing the big-endian binary representation of the
-   * specified byte values.
+   * Returns a string representing the big-endian binary representation of the specified byte values.
    *
    * @param buf The byte values.
-   * @return A string representing the big-endian binary representation of the
-   *         specified byte values.
+   * @return A string representing the big-endian binary representation of the specified byte values.
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static String toString(final byte ... buf) {
     final byte[] bytes = new byte[assertNotNull(buf).length * Byte.SIZE];
-    for (int i = 0; i < buf.length; ++i)
+    for (int i = 0; i < buf.length; ++i) // [A]
       toUnsignedString(buf[i], bytes, i, Byte.SIZE);
 
     return new String(bytes);
   }
 
   /**
-   * Returns a string representing the big-endian binary representation of the
-   * specified char values.
+   * Returns a string representing the big-endian binary representation of the specified char values.
    *
    * @param buf The char values.
-   * @return A string representing the big-endian binary representation of the
-   *         specified char values.
+   * @return A string representing the big-endian binary representation of the specified char values.
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static String toString(final char ... buf) {
     final byte[] bytes = new byte[assertNotNull(buf).length * Character.SIZE];
-    for (int i = 0; i < buf.length; ++i)
+    for (int i = 0; i < buf.length; ++i) // [A]
       toUnsignedString(buf[i], bytes, i, Character.SIZE);
 
     return new String(bytes);
   }
 
   /**
-   * Returns a string representing the big-endian binary representation of the
-   * specified short values.
+   * Returns a string representing the big-endian binary representation of the specified short values.
    *
    * @param buf The short values.
-   * @return A string representing the big-endian binary representation of the
-   *         specified short values.
+   * @return A string representing the big-endian binary representation of the specified short values.
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static String toString(final short ... buf) {
     final byte[] bytes = new byte[assertNotNull(buf).length * Short.SIZE];
-    for (int i = 0; i < buf.length; ++i)
+    for (int i = 0; i < buf.length; ++i) // [A]
       toUnsignedString(buf[i], bytes, i, Short.SIZE);
 
     return new String(bytes);
   }
 
   /**
-   * Returns a string representing the big-endian binary representation of the
-   * specified int values.
+   * Returns a string representing the big-endian binary representation of the specified int values.
    *
    * @param buf The int values.
-   * @return A string representing the big-endian binary representation of the
-   *         specified int values.
+   * @return A string representing the big-endian binary representation of the specified int values.
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static String toString(final int ... buf) {
     final byte[] bytes = new byte[assertNotNull(buf).length * Integer.SIZE];
-    for (int i = 0; i < buf.length; ++i)
+    for (int i = 0; i < buf.length; ++i) // [A]
       toUnsignedString(buf[i], bytes, i, Integer.SIZE);
 
     return new String(bytes);
   }
 
   /**
-   * Returns a string representing the big-endian binary representation of the
-   * specified long values.
+   * Returns a string representing the big-endian binary representation of the specified long values.
    *
    * @param buf The long values.
-   * @return A string representing the big-endian binary representation of the
-   *         specified long values.
+   * @return A string representing the big-endian binary representation of the specified long values.
    * @throws IllegalArgumentException If {@code buf} is null.
    */
   public static String toString(final long ... buf) {
     final byte[] bytes = new byte[assertNotNull(buf).length * Long.SIZE];
-    for (int i = 0; i < buf.length; ++i)
+    for (int i = 0; i < buf.length; ++i) // [A]
       toUnsignedString(buf[i], bytes, i, Long.SIZE);
 
     return new String(bytes);

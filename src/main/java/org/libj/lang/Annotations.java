@@ -33,12 +33,10 @@ import java.util.TreeMap;
  */
 public final class Annotations {
   /**
-   * Returns a map of name-value pairs representing the attributes in the
-   * specified annotation.
+   * Returns a map of name-value pairs representing the attributes in the specified annotation.
    *
    * @param annotation The {@link Annotation} whose attributes to get.
-   * @return A map of name-value pairs representing the attributes in the
-   *         specified annotation.
+   * @return A map of name-value pairs representing the attributes in the specified annotation.
    * @throws IllegalArgumentException If {@code annotation} is null.
    */
   public static Map<String,Object> getAttributes(final Annotation annotation) {
@@ -46,21 +44,18 @@ public final class Annotations {
   }
 
   /**
-   * Returns a map of name-value pairs representing the attributes in the
-   * specified annotation.
+   * Returns a map of name-value pairs representing the attributes in the specified annotation.
    *
    * @param annotation The {@link Annotation} whose attributes to get.
-   * @param removeDefaults Whether fields whose values are equal to the
-   *          {@code annotation}'s defaults should be omitted.
-   * @return A map of name-value pairs representing the attributes in the
-   *         specified annotation.
+   * @param removeDefaults Whether fields whose values are equal to the {@code annotation}'s defaults should be omitted.
+   * @return A map of name-value pairs representing the attributes in the specified annotation.
    * @throws IllegalArgumentException If {@code annotation} is null.
    */
   public static Map<String,Object> getAttributes(final Annotation annotation, final boolean removeDefaults) {
     final Class<? extends Annotation> annotationType = assertNotNull(annotation).annotationType();
     final HashMap<String,Object> attributes = new HashMap<>();
     try {
-      for (final Method method : annotationType.getDeclaredMethods()) {
+      for (final Method method : annotationType.getDeclaredMethods()) { // [A]
         final Object value = method.invoke(annotation);
         if (!removeDefaults || !Objects.equals(method.getDefaultValue(), value))
           attributes.put(method.getName(), value);
@@ -80,18 +75,18 @@ public final class Annotations {
   }
 
   /**
-   * Returns a {@link #toString()} representation of {@code annotation}, with
-   * its property names sorted alphabetically.
+   * Returns a {@link #toString()} representation of {@code annotation}, with its property names sorted alphabetically.
    * <p>
    * This method is equivalent to calling:
    *
    * <pre>
-   * {@code toSortedString(annotation, null)}
+   * {@code
+   * toSortedString(annotation, null)
+   * }
    * </pre>
    *
    * @param annotation The {@link Annotation}.
-   * @return A {@link #toString()} representation of {@code annotation}, with
-   *         its property names sorted by {@code comparator}.
+   * @return A {@link #toString()} representation of {@code annotation}, with its property names sorted by {@code comparator}.
    * @throws IllegalArgumentException If {@code annotation} is null.
    */
   public static String toSortedString(final Annotation annotation) {
@@ -99,20 +94,19 @@ public final class Annotations {
   }
 
   /**
-   * Returns a {@link #toString()} representation of {@code annotation}, with
-   * its property names sorted alphabetically.
+   * Returns a {@link #toString()} representation of {@code annotation}, with its property names sorted alphabetically.
    * <p>
    * This method is equivalent to calling:
    *
    * <pre>
-   * {@code toSortedString(annotation, null)}
+   * {@code
+   * toSortedString(annotation, null)
+   * }
    * </pre>
    *
    * @param annotation The {@link Annotation}.
-   * @param removeDefaults Whether fields whose values are equal to the
-   *          {@code annotation}'s defaults should be omitted.
-   * @return A {@link #toString()} representation of {@code annotation}, with
-   *         its property names sorted by {@code comparator}.
+   * @param removeDefaults Whether fields whose values are equal to the {@code annotation}'s defaults should be omitted.
+   * @return A {@link #toString()} representation of {@code annotation}, with its property names sorted by {@code comparator}.
    * @throws IllegalArgumentException If {@code annotation} is null.
    */
   public static String toSortedString(final Annotation annotation, final boolean removeDefaults) {
@@ -120,13 +114,11 @@ public final class Annotations {
   }
 
   /**
-   * Returns a {@link #toString()} representation of {@code annotation}, with
-   * its property names sorted by {@code comparator}.
+   * Returns a {@link #toString()} representation of {@code annotation}, with its property names sorted by {@code comparator}.
    *
    * @param annotation The {@link Annotation}.
    * @param comparator The {@link Comparator}.
-   * @return A {@link #toString()} representation of {@code annotation}, with
-   *         its property names sorted by {@code comparator}.
+   * @return A {@link #toString()} representation of {@code annotation}, with its property names sorted by {@code comparator}.
    * @throws IllegalArgumentException If {@code annotation} is null.
    */
   public static String toSortedString(final Annotation annotation, final Comparator<String> comparator) {
@@ -134,16 +126,13 @@ public final class Annotations {
   }
 
   /**
-   * Returns a {@link #toString()} representation of {@code annotation}, with
-   * its property names sorted by {@code comparator}. If {@code comparator} is
-   * null, sorting will be done according to the natural ordering of the keys.
+   * Returns a {@link #toString()} representation of {@code annotation}, with its property names sorted by {@code comparator}. If
+   * {@code comparator} is null, sorting will be done according to the natural ordering of the keys.
    *
    * @param annotation The {@link Annotation}.
    * @param comparator The {@link Comparator}.
-   * @param removeDefaults Whether fields whose values are equal to the
-   *          {@code annotation}'s defaults should be omitted.
-   * @return A {@link #toString()} representation of {@code annotation}, with
-   *         its property names sorted by {@code comparator}.
+   * @param removeDefaults Whether fields whose values are equal to the {@code annotation}'s defaults should be omitted.
+   * @return A {@link #toString()} representation of {@code annotation}, with its property names sorted by {@code comparator}.
    * @throws IllegalArgumentException If {@code annotation} is null.
    */
   public static String toSortedString(final Annotation annotation, final Comparator<String> comparator, final boolean removeDefaults) {
@@ -156,7 +145,7 @@ public final class Annotations {
 
     final StringBuilder builder = new StringBuilder("@").append(annotation.annotationType().getName()).append('(');
     final Iterator<Map.Entry<String,Object>> iterator = attributes.entrySet().iterator();
-    for (int i = 0; iterator.hasNext(); ++i) {
+    for (int i = 0; iterator.hasNext(); ++i) { // [I]
       if (i > 0)
         builder.append(", ");
 
@@ -179,7 +168,7 @@ public final class Annotations {
       builder.append('{');
       if (value.getClass().getComponentType() == byte.class) {
         final byte[] array = (byte[])value;
-        for (int i = 0; i < array.length; ++i) {
+        for (int i = 0; i < array.length; ++i) { // [A]
           if (i > 0)
             builder.append(", ");
 
@@ -188,7 +177,7 @@ public final class Annotations {
       }
       else if (value.getClass().getComponentType() == char.class) {
         final char[] array = (char[])value;
-        for (int i = 0; i < array.length; ++i) {
+        for (int i = 0; i < array.length; ++i) { // [A]
           if (i > 0)
             builder.append(", ");
 
@@ -197,7 +186,7 @@ public final class Annotations {
       }
       else if (value.getClass().getComponentType() == short.class) {
         final short[] array = (short[])value;
-        for (int i = 0; i < array.length; ++i) {
+        for (int i = 0; i < array.length; ++i) { // [A]
           if (i > 0)
             builder.append(", ");
 
@@ -206,7 +195,7 @@ public final class Annotations {
       }
       else if (value.getClass().getComponentType() == int.class) {
         final int[] array = (int[])value;
-        for (int i = 0; i < array.length; ++i) {
+        for (int i = 0; i < array.length; ++i) { // [A]
           if (i > 0)
             builder.append(", ");
 
@@ -215,7 +204,7 @@ public final class Annotations {
       }
       else if (value.getClass().getComponentType() == long.class) {
         final long[] array = (long[])value;
-        for (int i = 0; i < array.length; ++i) {
+        for (int i = 0; i < array.length; ++i) { // [A]
           if (i > 0)
             builder.append(", ");
 
@@ -224,7 +213,7 @@ public final class Annotations {
       }
       else if (value.getClass().getComponentType() == double.class) {
         final double[] array = (double[])value;
-        for (int i = 0; i < array.length; ++i) {
+        for (int i = 0; i < array.length; ++i) { // [A]
           if (i > 0)
             builder.append(", ");
 
@@ -233,7 +222,7 @@ public final class Annotations {
       }
       else if (value.getClass().getComponentType() == float.class) {
         final float[] array = (float[])value;
-        for (int i = 0; i < array.length; ++i) {
+        for (int i = 0; i < array.length; ++i) { // [A]
           if (i > 0)
             builder.append(", ");
 
@@ -242,7 +231,7 @@ public final class Annotations {
       }
       else if (value.getClass().getComponentType() == boolean.class) {
         final boolean[] array = (boolean[])value;
-        for (int i = 0; i < array.length; ++i) {
+        for (int i = 0; i < array.length; ++i) { // [A]
           if (i > 0)
             builder.append(", ");
 
@@ -251,7 +240,7 @@ public final class Annotations {
       }
       else {
         final Object[] array = (Object[])value;
-        for (int i = 0; i < array.length; ++i) {
+        for (int i = 0; i < array.length; ++i) { // [A]
           if (i > 0)
             builder.append(", ");
 

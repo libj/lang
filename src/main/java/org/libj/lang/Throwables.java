@@ -31,17 +31,15 @@ public final class Throwables {
    * <ol>
    * <li>If {@code suppressed} is null, {@code target} is returned.</li>
    * <li>If {@code target} is null, {@code suppressed} is returned.</li>
-   * <li>If neither {@code target} nor {@code suppressed} is null,
-   * {@code suppressed} is added to {@code target} as a suppressed exception,
-   * and {@code target} is returned.</li>
+   * <li>If neither {@code target} nor {@code suppressed} is null, {@code suppressed} is added to {@code target} as a suppressed
+   * exception, and {@code target} is returned.</li>
    * </ol>
    *
    * @param <T> The type parameter of the exception.
    * @param target The target exception.
    * @param suppressed The suppressed exception.
    * @return The exception based on the method's logic, described above.
-   * @throws IllegalArgumentException If {@code target} or {@code suppressed} is
-   *           null.
+   * @throws IllegalArgumentException If {@code target} or {@code suppressed} is null.
    */
   public static <T extends Throwable>T addSuppressed(final T target, final T suppressed) {
     if (suppressed == null)
@@ -57,15 +55,13 @@ public final class Throwables {
   }
 
   /**
-   * Adds each of the specified {@code suppressed} exceptions to the
-   * {@code target}.
+   * Adds each of the specified {@code suppressed} exceptions to the {@code target}.
    *
    * @param <T> The type parameter of the exception.
    * @param target The target exception.
    * @param suppressed The suppressed exceptions.
    * @return The exception based on the method's logic, described above.
-   * @throws IllegalArgumentException If {@code target} or {@code suppressed} is
-   *           null.
+   * @throws IllegalArgumentException If {@code target} or {@code suppressed} is null.
    */
   public static <T extends Throwable>T addSuppressed(final T target, final Exception[] suppressed) {
     assertNotNull(target);
@@ -74,24 +70,19 @@ public final class Throwables {
   }
 
   /**
-   * Adds each of the specified {@code suppressed} exceptions to the
-   * {@code target}.
+   * Adds each of the specified {@code suppressed} exceptions to the {@code target}.
    *
    * @param <T> The type parameter of the exception.
    * @param target The target exception.
    * @param suppressed The suppressed exceptions.
-   * @param fromIndex The index (inclusive) of the first element in
-   *          {@code suppressed}. If {@code fromIndex > toIndex}, the exceptions
-   *          in {@code suppressed} will be traversed in reverse order.
-   * @param toIndex The index (exclusive) of the last element in
-   *          {@code suppressed}. If {@code toIndex > fromIndex}, the exceptions
+   * @param fromIndex The index (inclusive) of the first element in {@code suppressed}. If {@code fromIndex > toIndex}, the
+   *          exceptions in {@code suppressed} will be traversed in reverse order.
+   * @param toIndex The index (exclusive) of the last element in {@code suppressed}. If {@code toIndex > fromIndex}, the exceptions
    *          in {@code suppressed} will be traversed in regular order.
    * @return The exception based on the method's logic, described above.
-   * @throws IllegalArgumentException If {@code target} or {@code suppressed} is
-   *           null.
-   * @throws IndexOutOfBoundsException If {@code off} is negative, {@code len}
-   *           is negative, or {@code suppressed.length} is less than
-   *           {@code off + len}.
+   * @throws IllegalArgumentException If {@code target} or {@code suppressed} is null.
+   * @throws IndexOutOfBoundsException If {@code off} is negative, {@code len} is negative, or {@code suppressed.length} is less
+   *           than {@code off + len}.
    */
   public static <T extends Throwable>T addSuppressed(final T target, final Exception[] suppressed, final int fromIndex, final int toIndex) {
     if (fromIndex == toIndex)
@@ -104,25 +95,23 @@ public final class Throwables {
 
   private static <T extends Throwable>T addSuppressed0(final T target, final Exception[] suppressed, final int fromIndex, final int toIndex) {
     if (fromIndex < toIndex)
-      for (int i = fromIndex; i < toIndex; ++i)
+      for (int i = fromIndex; i < toIndex; ++i) // [N]
         target.addSuppressed(suppressed[i]);
     else
-      for (int i = fromIndex; i > toIndex; --i)
+      for (int i = fromIndex; i > toIndex; --i) // [N]
         target.addSuppressed(suppressed[i]);
 
     return target;
   }
 
   /**
-   * Adds each of the specified {@code suppressed} exceptions to the
-   * {@code target}.
+   * Adds each of the specified {@code suppressed} exceptions to the {@code target}.
    *
    * @param <T> The type parameter of the exception.
    * @param target The target exception.
    * @param suppressed The suppressed exceptions.
    * @return The exception based on the method's logic, described above.
-   * @throws IllegalArgumentException If {@code target} or {@code suppressed} is
-   *           null.
+   * @throws IllegalArgumentException If {@code target} or {@code suppressed} is null.
    */
   public static <T extends Throwable>T addSuppressed(final T target, final List<Exception> suppressed) {
     assertNotNull(target);
@@ -131,24 +120,19 @@ public final class Throwables {
   }
 
   /**
-   * Adds each of the specified {@code suppressed} exceptions to the
-   * {@code target}.
+   * Adds each of the specified {@code suppressed} exceptions to the {@code target}.
    *
    * @param <T> The type parameter of the exception.
    * @param target The target exception.
    * @param suppressed The suppressed exceptions.
-   * @param fromIndex The index (inclusive) of the first element in
-   *          {@code suppressed}. If {@code fromIndex > toIndex}, the exceptions
-   *          in {@code suppressed} will be traversed in reverse order.
-   * @param toIndex The index (exclusive) of the last element in
-   *          {@code suppressed}. If {@code toIndex > fromIndex}, the exceptions
+   * @param fromIndex The index (inclusive) of the first element in {@code suppressed}. If {@code fromIndex > toIndex}, the
+   *          exceptions in {@code suppressed} will be traversed in reverse order.
+   * @param toIndex The index (exclusive) of the last element in {@code suppressed}. If {@code toIndex > fromIndex}, the exceptions
    *          in {@code suppressed} will be traversed in regular order.
    * @return The exception based on the method's logic, described above.
-   * @throws IllegalArgumentException If {@code target} or {@code suppressed} is
-   *           null.
-   * @throws IndexOutOfBoundsException If {@code off} is negative, {@code len}
-   *           is negative, or {@code suppressed.length} is less than
-   *           {@code off + len}.
+   * @throws IllegalArgumentException If {@code target} or {@code suppressed} is null.
+   * @throws IndexOutOfBoundsException If {@code off} is negative, {@code len} is negative, or {@code suppressed.length} is less
+   *           than {@code off + len}.
    */
   public static <T extends Throwable>T addSuppressed(final T target, final List<Exception> suppressed, final int fromIndex, final int toIndex) {
     if (fromIndex == toIndex)
@@ -161,22 +145,20 @@ public final class Throwables {
 
   private static <T extends Throwable>T addSuppressed0(final T target, final List<Exception> suppressed, final int fromIndex, final int toIndex) {
     if (fromIndex < toIndex)
-      for (int i = fromIndex; i < toIndex; ++i)
+      for (int i = fromIndex; i < toIndex; ++i) // [N]
         target.addSuppressed(suppressed.get(i));
     else
-      for (int i = fromIndex; i > toIndex; --i)
+      for (int i = fromIndex; i > toIndex; --i) // [N]
         target.addSuppressed(suppressed.get(i));
 
     return target;
   }
 
   /**
-   * Returns the string representation of the specified {@link Throwable
-   * throwable} and its backtrace.
+   * Returns the string representation of the specified {@link Throwable throwable} and its backtrace.
    *
    * @param t The throwable.
-   * @return The string representation of the specified {@link Throwable
-   *         throwable} and its backtrace.
+   * @return The string representation of the specified {@link Throwable throwable} and its backtrace.
    * @throws IllegalAnnotationException If {@code t} is null.
    * @see Throwable#printStackTrace(java.io.PrintStream)
    */
@@ -187,8 +169,7 @@ public final class Throwables {
   }
 
   /**
-   * Copies the cause, stack trace elements, and suppressed exceptions from the
-   * first specified {@link Throwable}, to the second.
+   * Copies the cause, stack trace elements, and suppressed exceptions from the first specified {@link Throwable}, to the second.
    *
    * @param <F> The type parameter of the {@code from} {@link Throwable}.
    * @param <T> The type parameter of the {@code to} {@link Throwable}.
@@ -202,7 +183,7 @@ public final class Throwables {
     assertNotNull(to);
     to.initCause(from.getCause());
     to.setStackTrace(from.getStackTrace());
-    for (final Throwable suppressed : from.getSuppressed())
+    for (final Throwable suppressed : from.getSuppressed()) // [A]
       to.addSuppressed(suppressed);
 
     return to;

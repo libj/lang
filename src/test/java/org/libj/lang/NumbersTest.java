@@ -36,7 +36,7 @@ public class NumbersTest {
 
     @Test
     public void testToUINT8() {
-      for (int i = 0; i < numTests; ++i) {
+      for (int i = 0; i < numTests; ++i) { // [N]
         final short signed = (short)(Math.abs((short)random.nextInt()) & 0xff);
         final byte unsigned = toUINT8(signed);
         assertEquals(signed, (short)Byte.toUnsignedInt(unsigned));
@@ -45,7 +45,7 @@ public class NumbersTest {
 
     @Test
     public void testToUINT16() {
-      for (int i = 0; i < numTests; ++i) {
+      for (int i = 0; i < numTests; ++i) { // [N]
         final int signed = Math.abs(random.nextInt()) & 0xffff;
         final short unsigned = toUINT16(signed);
         assertEquals(signed, Short.toUnsignedInt(unsigned));
@@ -54,7 +54,7 @@ public class NumbersTest {
 
     @Test
     public void testToUINT32() {
-      for (int i = 0; i < numTests; ++i) {
+      for (int i = 0; i < numTests; ++i) { // [N]
         final long signed = Math.abs(random.nextLong()) & 0xffffffffL;
         final int unsigned = toUINT32(signed);
         assertEquals(signed, Integer.toUnsignedLong(unsigned));
@@ -63,7 +63,7 @@ public class NumbersTest {
 
     @Test
     public void testToUINT64() {
-      for (int i = 0; i < numTests; ++i) {
+      for (int i = 0; i < numTests; ++i) { // [N]
         final BigInteger signed = BigIntegers.valueOf(1, random.nextLong());
         final long unsigned = toUINT64(signed);
         assertEquals(signed, toUnsignedBigInteger(unsigned));
@@ -72,7 +72,7 @@ public class NumbersTest {
 
     @Test
     public void testToUINT() {
-      for (int i = 0; i < numTests; ++i) {
+      for (int i = 0; i < numTests; ++i) { // [N]
         final BigInteger signed = new BigInteger(Strings.getRandomNumeric(Math.abs(random.nextInt()) % 100 + 1));
         final byte[] unsigned = toUINT(signed);
         assertEquals(signed, toUnsignedBigInteger(unsigned));
@@ -89,7 +89,7 @@ public class NumbersTest {
 
     private static byte[] randomBytes(final int length) {
       final byte[] bytes = new byte[length];
-      for (int i = 0; i < bytes.length; ++i)
+      for (int i = 0; i < bytes.length; ++i) // [A]
         bytes[i] = randomByte();
 
       return bytes;
@@ -101,7 +101,7 @@ public class NumbersTest {
 
     private static short[] randomShorts(final int length) {
       final short[] shorts = new short[length];
-      for (int i = 0; i < shorts.length; ++i)
+      for (int i = 0; i < shorts.length; ++i) // [A]
         shorts[i] = randomShort();
 
       return shorts;
@@ -113,7 +113,7 @@ public class NumbersTest {
 
     private static int[] randomInts(final int length) {
       final int[] ints = new int[length];
-      for (int i = 0; i < ints.length; ++i)
+      for (int i = 0; i < ints.length; ++i) // [A]
         ints[i] = randomInt();
 
       return ints;
@@ -125,7 +125,7 @@ public class NumbersTest {
 
     private static float[] randomFloats(final int length) {
       final float[] floats = new float[length];
-      for (int i = 0; i < floats.length; ++i)
+      for (int i = 0; i < floats.length; ++i) // [A]
         floats[i] = randomFloat();
 
       return floats;
@@ -133,43 +133,43 @@ public class NumbersTest {
 
     @Test
     public void testLongOfInts() {
-      for (int i = 0; i < 10000; ++i) {
+      for (int i = 0; i < 10000; ++i) { // [N]
         final int[] expected = randomInts(2);
         final long encoded = Numbers.Composite.encode(expected[0], expected[1]);
-        for (int j = 0; j < expected.length; ++j)
+        for (int j = 0; j < expected.length; ++j) // [A]
           assertEquals("Index: " + j + ", Value: " + expected[j], expected[j], Numbers.Composite.decodeInt(encoded, j));
       }
     }
 
     @Test
     public void testLongOfShorts() {
-      for (int i = 0; i < 10000; ++i) {
+      for (int i = 0; i < 10000; ++i) { // [N]
         final short[] expected = randomShorts(4);
         final long encoded1 = Numbers.Composite.encode(expected[0], expected[1], expected[2], expected[3]);
         final long encoded2 = Numbers.Composite.encode(Numbers.Composite.encode(expected[0], expected[1]), Numbers.Composite.encode(expected[2], expected[3]));
         assertEquals(encoded1, encoded2);
-        for (int j = 0; j < expected.length; ++j)
+        for (int j = 0; j < expected.length; ++j) // [A]
           assertEquals("Index: " + j + ", Value: " + expected[j], expected[j], Numbers.Composite.decodeShort(encoded1, j));
       }
     }
 
     @Test
     public void testLongOfBytes() {
-      for (int i = 0; i < 10000; ++i) {
+      for (int i = 0; i < 10000; ++i) { // [N]
         final byte[] expected = randomBytes(8);
         final long encoded1 = Numbers.Composite.encode(expected[0], expected[1], expected[2], expected[3], expected[4], expected[5], expected[6], expected[7]);
         final long encoded2 = Numbers.Composite.encode(Numbers.Composite.encode(expected[0], expected[1], expected[2], expected[3]), Numbers.Composite.encode(expected[4], expected[5], expected[6], expected[7]));
         final long encoded3 = Numbers.Composite.encode(Numbers.Composite.encode(expected[0], expected[1]), Numbers.Composite.encode(expected[2], expected[3]), Numbers.Composite.encode(expected[4], expected[5]), Numbers.Composite.encode(expected[6], expected[7]));
         assertEquals(encoded1, encoded2);
         assertEquals(encoded2, encoded3);
-        for (int j = 0; j < expected.length; ++j)
+        for (int j = 0; j < expected.length; ++j) // [A]
           assertEquals("Index: " + j + ", Value: " + expected[j], expected[j], Numbers.Composite.decodeByte(encoded1, j));
       }
     }
 
     @Test
     public void testLongOfIntFloat() {
-      for (int i = 0; i < 10000; ++i) {
+      for (int i = 0; i < 10000; ++i) { // [N]
         final int expectedInt = randomInt();
         final float expectedFloat = randomFloat();
         final long encoded = Numbers.Composite.encode(expectedInt, expectedFloat);
@@ -180,17 +180,17 @@ public class NumbersTest {
 
     @Test
     public void testLongOfFloats() {
-      for (int i = 0; i < 10000; ++i) {
+      for (int i = 0; i < 10000; ++i) { // [N]
         final float[] expected = randomFloats(2);
         final long encoded = Numbers.Composite.encode(expected[0], expected[1]);
-        for (int j = 0; j < expected.length; ++j)
+        for (int j = 0; j < expected.length; ++j) // [A]
           assertEquals("Index: " + j + ", Value: " + expected[j], expected[j], Numbers.Composite.decodeFloat(encoded, j), epsilon);
       }
     }
 
     @Test
     public void testLongOfFloatInt() {
-      for (int i = 0; i < 10000; ++i) {
+      for (int i = 0; i < 10000; ++i) { // [N]
         final float expectedFloat = randomFloat();
         final int expectedInt = randomInt();
         final long encoded = Numbers.Composite.encode(expectedFloat, expectedInt);
@@ -201,30 +201,30 @@ public class NumbersTest {
 
     @Test
     public void testIntOfShorts() {
-      for (int i = 0; i < 10000; ++i) {
+      for (int i = 0; i < 10000; ++i) { // [N]
         final short[] expected = randomShorts(2);
         final int encoded = Numbers.Composite.encode(expected[0], expected[1]);
-        for (int j = 0; j < expected.length; ++j)
+        for (int j = 0; j < expected.length; ++j) // [A]
           assertEquals("Index: " + j + ", Value: " + expected[j], expected[j], Numbers.Composite.decodeShort(encoded, j));
       }
     }
 
     @Test
     public void testIntOfBytes() {
-      for (int i = 0; i < 10000; ++i) {
+      for (int i = 0; i < 10000; ++i) { // [N]
         final byte[] expected = randomBytes(4);
         final int encoded = Numbers.Composite.encode(expected[0], expected[1], expected[2], expected[3]);
-        for (int j = 0; j < expected.length; ++j)
+        for (int j = 0; j < expected.length; ++j) // [A]
           assertEquals("Index: " + j + ", Value: " + expected[j], expected[j], Numbers.Composite.decodeByte(encoded, j));
       }
     }
 
     @Test
     public void testShortOfBytes() {
-      for (int i = 0; i < 10000; ++i) {
+      for (int i = 0; i < 10000; ++i) { // [N]
         final byte[] expected = randomBytes(2);
         final short encoded = Numbers.Composite.encode(expected[0], expected[1]);
-        for (int j = 0; j < expected.length; ++j)
+        for (int j = 0; j < expected.length; ++j) // [A]
           assertEquals("Index: " + j + ", Value: " + expected[j], expected[j], Numbers.Composite.decodeByte(encoded, j));
       }
     }
@@ -321,13 +321,13 @@ public class NumbersTest {
 
   private static final byte countTrailingZeroes(final String str) {
     byte count = 0;
-    for (final int len = str.length(); count < len && str.charAt(len - 1 - count) == '0'; ++count);
+    for (final int len = str.length(); count < len && str.charAt(len - 1 - count) == '0'; ++count); // [X]
     return count;
   }
 
   @Test
   public void testTrailingZeroesByte() {
-    for (int i = 0; i < 100000; ++i) {
+    for (int i = 0; i < 100000; ++i) { // [N]
       final byte n = i == 0 ? 0 : (byte)random.nextInt();
       final String str = String.valueOf(n);
       assertEquals(str, countTrailingZeroes(str), Numbers.trailingZeroes(n));
@@ -336,7 +336,7 @@ public class NumbersTest {
 
   @Test
   public void testTrailingZeroesShort() {
-    for (int i = 0; i < 100000; ++i) {
+    for (int i = 0; i < 100000; ++i) { // [N]
       final short n = i == 0 ? 0 : (short)random.nextInt();
       final String str = String.valueOf(n);
       assertEquals(str, countTrailingZeroes(str), Numbers.trailingZeroes(n));
@@ -345,7 +345,7 @@ public class NumbersTest {
 
   @Test
   public void testTrailingZeroesInt() {
-    for (int i = 0; i < 100000; ++i) {
+    for (int i = 0; i < 100000; ++i) { // [N]
       final int n = i == 0 ? 0 : random.nextInt();
       final String str = String.valueOf(n);
       assertEquals(str, countTrailingZeroes(str), Numbers.trailingZeroes(n));
@@ -354,7 +354,7 @@ public class NumbersTest {
 
   @Test
   public void testTrailingZeroesLong() {
-    for (int i = 0; i < 100000; ++i) {
+    for (int i = 0; i < 100000; ++i) { // [N]
       final long n = i == 0 ? 0 : random.nextLong();
       final String str = String.valueOf(n);
       assertEquals(str, countTrailingZeroes(str), Numbers.trailingZeroes(n));
@@ -397,7 +397,7 @@ public class NumbersTest {
 
   @SuppressWarnings("unchecked")
   private static <T extends Number>void testParse(final Function<? super String,T> function, final T ... numbers) {
-    for (final T number : numbers) {
+    for (final T number : numbers) { // [A]
       final String str = String.valueOf(number);
       assertEquals(number, function.apply(str));
     }
@@ -405,7 +405,7 @@ public class NumbersTest {
 
   @SuppressWarnings("unchecked")
   private static <T extends Number>void testParseRadix(final BiFunction<? super String,? super Integer,T> function, final int radix, final T ... numbers) {
-    for (final T number : numbers) {
+    for (final T number : numbers) { // [A]
       final String str = Long.toString(number.longValue(), radix);
       assertEquals(number, function.apply(str, radix));
     }
@@ -422,11 +422,11 @@ public class NumbersTest {
 
     testParse(Numbers::parseInteger, -323, 3923, -7932, 38229, -732938, 83928384, -382983985);
 
-    for (byte r = Character.MIN_RADIX; r <= Character.MAX_RADIX; ++r)
+    for (byte r = Character.MIN_RADIX; r <= Character.MAX_RADIX; ++r) // [N]
       testParseRadix(Numbers::parseInteger, r, -323, 3923, -7932, 38229, -732938, 83928384, -382983985);
 
-    for (int i = 0; i < 1000; ++i) {
-      for (int r = Character.MIN_RADIX; r <= Character.MAX_RADIX; ++r) {
+    for (int i = 0; i < 1000; ++i) { // [N]
+      for (int r = Character.MIN_RADIX; r <= Character.MAX_RADIX; ++r) { // [N]
         final int random = (int)(Integer.MIN_VALUE * Math.random() + Integer.MAX_VALUE * Math.random());
         assertEquals(random, Integer.parseInt(Integer.toString(random, r), r));
         assertEquals(random, (int)Numbers.parseInteger(Integer.toString(random, r), r));
@@ -445,11 +445,11 @@ public class NumbersTest {
 
     testParse(Numbers::parseLong, 323L, -3923L, 7932L, -38229L, 732938L, -83928384L, 382983985L, -8434893285L, 38434893285L, -938434893285L, 1938434893285L, -21938434893285L, 921938434893285L, -9921938434893285L, 79921938434893285L, -279921938434893285L, 8279921938434893285L);
 
-    for (byte r = Character.MIN_RADIX; r <= Character.MAX_RADIX; ++r)
+    for (byte r = Character.MIN_RADIX; r <= Character.MAX_RADIX; ++r) // [N]
       testParseRadix(Numbers::parseLong, r, 323L, -3923L, 7932L, -38229L, 732938L, -83928384L, 382983985L, -8434893285L, 38434893285L, -938434893285L, 1938434893285L, -21938434893285L, 921938434893285L, -9921938434893285L, 79921938434893285L, -279921938434893285L, 8279921938434893285L);
 
-    for (int i = 0; i < 1000; ++i) {
-      for (int r = Character.MIN_RADIX; r <= Character.MAX_RADIX; ++r) {
+    for (int i = 0; i < 1000; ++i) { // [N]
+      for (int r = Character.MIN_RADIX; r <= Character.MAX_RADIX; ++r) { // [N]
         final long random = (long)(Long.MIN_VALUE * Math.random() + Long.MAX_VALUE * Math.random());
         assertEquals(random, Long.parseLong(Long.toString(random, r), r));
         assertEquals(random, (long)Numbers.parseLong(Long.toString(random, r), r));
@@ -458,7 +458,7 @@ public class NumbersTest {
   }
 
   private static void testIsDigit(final int radix) {
-    for (int r = 0; r < radix; ++r) {
+    for (int r = 0; r < radix; ++r) { // [N]
       if (r < 10) {
         assertTrue(String.valueOf(r), Numbers.isDigit((char)('0' + r), radix));
       }
@@ -483,7 +483,7 @@ public class NumbersTest {
 
   @Test
   public void testIsDigit() {
-    for (int r = Character.MIN_RADIX; r <= Character.MAX_RADIX; ++r)
+    for (int r = Character.MIN_RADIX; r <= Character.MAX_RADIX; ++r) // [N]
       testIsDigit(r);
   }
 
@@ -496,7 +496,7 @@ public class NumbersTest {
   public void testPrecisionByte() {
     testPrecisionByte(Byte.MIN_VALUE);
     testPrecisionByte(Byte.MAX_VALUE);
-    for (int i = 0; i < 1000000; ++i) {
+    for (int i = 0; i < 1000000; ++i) { // [N]
       final byte n = (byte)random.nextInt();
       testPrecisionByte(n);
     }
@@ -511,7 +511,7 @@ public class NumbersTest {
   public void testPrecisionShort() {
     testPrecisionShort(Short.MIN_VALUE);
     testPrecisionShort(Short.MAX_VALUE);
-    for (int i = 0; i < 1000000; ++i) {
+    for (int i = 0; i < 1000000; ++i) { // [N]
       final short n = (short)random.nextInt();
       testPrecisionShort(n);
     }
@@ -526,7 +526,7 @@ public class NumbersTest {
   public void testPrecisionInt() {
     testPrecisionInt(Integer.MIN_VALUE);
     testPrecisionInt(Integer.MAX_VALUE);
-    for (int i = 0; i < 1000000; ++i) {
+    for (int i = 0; i < 1000000; ++i) { // [N]
       final int n = random.nextInt();
       testPrecisionInt(n);
     }
@@ -541,7 +541,7 @@ public class NumbersTest {
   public void testPrecisionLong() {
     testPrecisionLong(Long.MIN_VALUE);
     testPrecisionLong(Long.MAX_VALUE);
-    for (int i = 0; i < 1000000; ++i) {
+    for (int i = 0; i < 1000000; ++i) { // [N]
       final long n = random.nextLong();
       testPrecisionLong(n);
     }
@@ -554,7 +554,7 @@ public class NumbersTest {
 
   @Test
   public void testPrecisionBigInteger() {
-    for (int i = 0; i < 1000000; ++i) {
+    for (int i = 0; i < 1000000; ++i) { // [N]
       final BigInteger n = BigInteger.valueOf(random.nextLong());
       testPrecisionBigInteger(n);
     }
@@ -573,7 +573,7 @@ public class NumbersTest {
     if (n.scale() > 0)
       --len;
 
-    for (int i = n.signum() < 0 ? 1 : 0; len >= 0; ++i) {
+    for (int i = n.signum() < 0 ? 1 : 0; len >= 0; ++i) { // [N]
       final char ch = str.charAt(i);
       if (ch == '0') {
         --len;
@@ -591,7 +591,7 @@ public class NumbersTest {
 
   @Test
   public void testPrecisionBigDecimal() {
-    for (int i = 0; i < 1000000; ++i) {
+    for (int i = 0; i < 1000000; ++i) { // [N]
       final BigDecimal n = BigDecimal.valueOf(random.nextDouble());
       testPrecisionBigDecimal(n);
     }
@@ -599,7 +599,7 @@ public class NumbersTest {
 
   @Test
   public void testCast() {
-    for (int i = 0; i < 1000000; ++i) {
+    for (int i = 0; i < 1000000; ++i) { // [N]
       final long n = random.nextLong();
       assertEquals(Byte.valueOf((byte)(n % 0xFF - 0xFF >> 1)), Numbers.cast((byte)(n % 0xFF - 0xFF >> 1), Byte.class));
       assertEquals(Short.valueOf((short)(n % 0xFFFF - 0xFFFF >> 1)), Numbers.cast((short)(n % 0xFFFF - 0xFFFF >> 1), Short.class));
@@ -612,7 +612,7 @@ public class NumbersTest {
 
   @Test
   public void testSignumInt() {
-    for (int i = 9, j; i < 1000000; ++i) {
+    for (int i = 9, j; i < 1000000; ++i) { // [N]
       j = random.nextInt();
       assertEquals(j < 0 ? -1 : j == 0 ? 0 : 1, Numbers.signum(j));
     }
@@ -620,7 +620,7 @@ public class NumbersTest {
 
   @Test
   public void testSignumLong() {
-    for (long i = 9, j; i < 1000000; ++i) {
+    for (long i = 9, j; i < 1000000; ++i) { // [N]
       j = random.nextLong();
       assertEquals(j < 0 ? -1 : j == 0 ? 0 : 1, Numbers.signum(j));
     }
@@ -629,7 +629,7 @@ public class NumbersTest {
   @Test
   public void testIsPowerOf2Int() {
     final double log2 = Math.log(2);
-    for (int i = 0, x; i < 1000000; ++i) {
+    for (int i = 0, x; i < 1000000; ++i) { // [N]
       x = random.nextInt();
       final boolean expected = Math.ceil(Math.log(x) / log2) == Math.floor(Math.log(x) / log2);
       final boolean actual = Numbers.isPowerOf2(x);
@@ -640,7 +640,7 @@ public class NumbersTest {
   @Test
   public void testIsPowerOf2Long() {
     final double log2 = Math.log(2);
-    for (long i = 0, x; i < 1000000; ++i) {
+    for (long i = 0, x; i < 1000000; ++i) { // [N]
       x = random.nextLong();
       final boolean expected = Math.ceil(Math.log(x) / log2) == Math.floor(Math.log(x) / log2);
       final boolean actual = Numbers.isPowerOf2(x);

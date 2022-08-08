@@ -67,7 +67,7 @@ public class Hexadecimal extends DataEncoding<byte[],String> {
   public static String encode(final byte[] bytes, final int offset, final int len) {
     assertNotNull(bytes);
     final StringBuilder builder = new StringBuilder(len * 2);
-    for (int i = offset; i < len + offset; ++i) {
+    for (int i = offset; i < len + offset; ++i) { // [N]
       builder.append(hexChar[(bytes[i] & 0xf0) >>> 4]);
       builder.append(hexChar[bytes[i] & 0x0f]);
     }
@@ -76,7 +76,7 @@ public class Hexadecimal extends DataEncoding<byte[],String> {
   }
 
   private static void decode0(final String hex, final byte[] bytes, final int offset) {
-    for (int i = 0, len = hex.length(), j = offset; i < len; i += 2, ++j) {
+    for (int i = 0, len = hex.length(), j = offset; i < len; i += 2, ++j) { // [N]
       final int high = charToNibble(hex.charAt(i));
       final int low = charToNibble(hex.charAt(i + 1));
       bytes[j] = (byte)((high << 4) | low);
@@ -89,9 +89,8 @@ public class Hexadecimal extends DataEncoding<byte[],String> {
    * @param hex The hex string.
    * @param bytes The {@code bytes} array.
    * @param offset The offset into the {@code bytes} array.
-   * @throws ArrayIndexOutOfBoundsException If the size of {@code bytes} is not
-   *           big enough, or if {@code offset} causes the index to go out of
-   *           bounds.
+   * @throws ArrayIndexOutOfBoundsException If the size of {@code bytes} is not big enough, or if {@code offset} causes the index to
+   *           go out of bounds.
    * @throws IllegalArgumentException If {@code hex} or {@code bytes} is null.
    */
   public static void decode(final String hex, final byte[] bytes, final int offset) {
@@ -134,8 +133,7 @@ public class Hexadecimal extends DataEncoding<byte[],String> {
   }
 
   /**
-   * Create a new {@link Hexadecimal} object with the provided hex-encoded
-   * string value.
+   * Create a new {@link Hexadecimal} object with the provided hex-encoded string value.
    *
    * @param hex The hex-encoded string value.
    */

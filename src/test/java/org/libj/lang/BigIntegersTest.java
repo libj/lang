@@ -30,7 +30,7 @@ public class BigIntegersTest {
     assertSame(a, BigIntegers.intern(a));
     assertSame(b, BigIntegers.intern(b));
 
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < 100; ++i) { // [N]
       assertSame(a, BigIntegers.intern(new BigInteger("58921")));
       assertSame(b, BigIntegers.intern(new BigInteger("122414")));
     }
@@ -38,9 +38,9 @@ public class BigIntegersTest {
 
   @Test
   public void testInternString() {
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < 100; ++i) { // [N]
       new Thread(() -> {
-        for (int j = 0; j < 1000; ++j) {
+        for (int j = 0; j < 1000; ++j) { // [N]
           BigIntegers.intern(String.valueOf(j));
         }
       }).start();

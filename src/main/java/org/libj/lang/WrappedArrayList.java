@@ -29,9 +29,8 @@ import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
 /**
- * A list that wraps a java array. This class differentiates itself from the
- * implementation returned by {@link Arrays#asList(Object...)} by allowing
- * subclassing.
+ * A list that wraps a java array. This class differentiates itself from the implementation returned by
+ * {@link Arrays#asList(Object...)} by allowing subclassing.
  *
  * @param <E> The type of elements in this list.
  */
@@ -39,8 +38,7 @@ public class WrappedArrayList<E> extends AbstractList<E> implements RandomAccess
   protected final E[] array;
 
   /**
-   * Creates a new {@link WrappedArrayList} that wraps the provided {@code objs}
-   * array.
+   * Creates a new {@link WrappedArrayList} that wraps the provided {@code objs} array.
    *
    * @param objs The array to wrap.
    * @throws IllegalArgumentException If {@code array} is null.
@@ -95,12 +93,12 @@ public class WrappedArrayList<E> extends AbstractList<E> implements RandomAccess
   public int indexOf(final Object o) {
     final E[] a = this.array;
     if (o == null) {
-      for (int i = 0; i < a.length; ++i)
+      for (int i = 0; i < a.length; ++i) // [A]
         if (a[i] == null)
           return i;
     }
     else {
-      for (int i = 0; i < a.length; ++i)
+      for (int i = 0; i < a.length; ++i) // [A]
         if (o.equals(a[i]))
           return i;
     }
@@ -126,7 +124,7 @@ public class WrappedArrayList<E> extends AbstractList<E> implements RandomAccess
   @Override
   public void forEach(final Consumer<? super E> action) {
     assertNotNull(action);
-    for (final E e : array)
+    for (final E e : array) // [A]
       action.accept(e);
   }
 
@@ -139,7 +137,7 @@ public class WrappedArrayList<E> extends AbstractList<E> implements RandomAccess
   public void replaceAll(final UnaryOperator<E> operator) {
     assertNotNull(operator);
     final E[] a = this.array;
-    for (int i = 0; i < a.length; ++i)
+    for (int i = 0; i < a.length; ++i) // [A]
       a[i] = operator.apply(a[i]);
   }
 
