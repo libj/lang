@@ -22,7 +22,7 @@ import java.util.Enumeration;
 
 import org.junit.Test;
 
-public class EnumerationTest {
+public class EnumerationsTest {
   private final Enumeration<Integer> enumeration = new Enumeration<Integer>() {
     private int position;
 
@@ -39,7 +39,7 @@ public class EnumerationTest {
 
   @Test
   public void testToArray() {
-    final Integer[] array = Enumerations.toArray(Integer.class, enumeration);
+    final Integer[] array = Enumerations.toArray(enumeration, Integer.class);
     assertArrayEquals(new Integer[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, array);
   }
 }
