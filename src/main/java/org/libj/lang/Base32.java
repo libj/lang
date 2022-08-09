@@ -109,7 +109,7 @@ public class Base32 extends DataEncoding<byte[],String> {
    * @throws IllegalArgumentException If {@code base32} or {@code bytes} is null.
    */
   public static void decode(final String base32, final byte[] bytes, int offset) {
-    for (int i = 0, len = assertNotNull(base32).length(), index = 0, ch, digit; i < len; ++i) { // [N]
+    for (int i = 0, i$ = assertNotNull(base32).length(), index = 0, ch, digit; i < i$; ++i) { // [N]
       ch = base32.charAt(i) - '0';
       if (ch < 0 || lookup.length < ch)
         continue;

@@ -101,7 +101,7 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>byte toggle(byte mask, final E ... enums) {
-      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i) // [A]
+      for (int i = 0, i$ = assertNotNull(enums).length; i < i$; ++i) // [A]
         mask ^= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;
@@ -118,7 +118,7 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>short toggle(short mask, final E ... enums) {
-      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i) // [A]
+      for (int i = 0, i$ = assertNotNull(enums).length; i < i$; ++i) // [A]
         mask ^= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;
@@ -135,7 +135,7 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>int toggle(int mask, final E ... enums) {
-      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i) // [A]
+      for (int i = 0, i$ = assertNotNull(enums).length; i < i$; ++i) // [A]
         mask ^= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;
@@ -152,7 +152,7 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>long toggle(long mask, final E ... enums) {
-      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i) // [A]
+      for (int i = 0, i$ = assertNotNull(enums).length; i < i$; ++i) // [A]
         mask ^= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;
@@ -169,7 +169,7 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>byte set(byte mask, final E ... enums) {
-      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i) // [A]
+      for (int i = 0, i$ = assertNotNull(enums).length; i < i$; ++i) // [A]
         mask |= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;
@@ -186,7 +186,7 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>short set(short mask, final E ... enums) {
-      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i) // [A]
+      for (int i = 0, i$ = assertNotNull(enums).length; i < i$; ++i) // [A]
         mask |= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;
@@ -203,7 +203,7 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>int set(int mask, final E ... enums) {
-      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i) // [A]
+      for (int i = 0, i$ = assertNotNull(enums).length; i < i$; ++i) // [A]
         mask |= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;
@@ -220,7 +220,7 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>long set(long mask, final E ... enums) {
-      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i) // [A]
+      for (int i = 0, i$ = assertNotNull(enums).length; i < i$; ++i) // [A]
         mask |= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;
@@ -237,7 +237,7 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>byte unset(byte mask, final E ... enums) {
-      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i) // [A]
+      for (int i = 0, i$ = assertNotNull(enums).length; i < i$; ++i) // [A]
         mask &= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;
@@ -254,7 +254,7 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>short unset(short mask, final E ... enums) {
-      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i) // [A]
+      for (int i = 0, i$ = assertNotNull(enums).length; i < i$; ++i) // [A]
         mask &= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;
@@ -271,7 +271,7 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>int unset(int mask, final E ... enums) {
-      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i) // [A]
+      for (int i = 0, i$ = assertNotNull(enums).length; i < i$; ++i) // [A]
         mask &= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;
@@ -288,7 +288,7 @@ public final class Enums {
      */
     @SafeVarargs
     public static <E extends Enum<?>>long unset(long mask, final E ... enums) {
-      for (int i = 0, len = assertNotNull(enums).length; i < len; ++i) // [A]
+      for (int i = 0, i$ = assertNotNull(enums).length; i < i$; ++i) // [A]
         mask &= 1 << assertNotNull(enums[i]).ordinal();
 
       return mask;

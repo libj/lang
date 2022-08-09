@@ -434,7 +434,7 @@ public final class Strings {
    */
   public static StringBuilder toProperCase(final StringBuilder builder) {
     boolean nextUpper = true;
-    for (int i = 0, len = assertNotNull(builder).length(); i < len; ++i) { // [N]
+    for (int i = 0, i$ = assertNotNull(builder).length(); i < i$; ++i) { // [N]
       final char ch = builder.charAt(i);
       if (Character.isWhitespace(ch)) {
         nextUpper = true;
@@ -473,7 +473,7 @@ public final class Strings {
    * @see Character#toLowerCase(char)
    */
   public static StringBuilder toLowerCase(final StringBuilder builder) {
-    for (int i = 0, len = assertNotNull(builder).length(); i < len; ++i) // [N]
+    for (int i = 0, i$ = assertNotNull(builder).length(); i < i$; ++i) // [N]
       builder.setCharAt(i, Character.toLowerCase(builder.charAt(i)));
 
     return builder;
@@ -489,7 +489,7 @@ public final class Strings {
    * @see Character#toUpperCase(char)
    */
   public static StringBuilder toUpperCase(final StringBuilder builder) {
-    for (int i = 0, len = assertNotNull(builder).length(); i < len; ++i) // [N]
+    for (int i = 0, i$ = assertNotNull(builder).length(); i < i$; ++i) // [N]
       builder.setCharAt(i, Character.toUpperCase(builder.charAt(i)));
 
     return builder;
@@ -759,12 +759,12 @@ public final class Strings {
   }
 
   private static int countPrintable(final CharSequence str, final int index) {
-    final int len = assertNotNull(str).length();
+    final int i$ = assertNotNull(str).length();
     int start = 0;
     char ch, last = '\0';
     boolean esc = false;
     int i = 0;
-    for (; i < len; ++i, last = ch) { // [N]
+    for (; i < i$; ++i, last = ch) { // [N]
       ch = str.charAt(i);
       if (esc) {
         esc = ch != 'm';
@@ -855,9 +855,9 @@ public final class Strings {
    * @return The string of UTF-8 literal hexadecimal encodings of characters of the specified {@link CharSequence}.
    */
   public static String toUTF8Literal(final CharSequence str) {
-    final int len = str.length();
-    final StringBuilder builder = new StringBuilder(len * 4);
-    for (int i = 0; i < len; ++i) // [N]
+    final int i$ = str.length();
+    final StringBuilder builder = new StringBuilder(i$ * 4);
+    for (int i = 0; i < i$; ++i) // [N]
       builder.append(toUTF8Literal(str.charAt(i)));
 
     return builder.toString();
@@ -1036,14 +1036,14 @@ public final class Strings {
       return null;
 
     int i = -1;
-    final int len = str.length();
-    while (++i < len && str.charAt(i) == ch);
-    if (i == len)
+    final int i$ = str.length();
+    while (++i < i$ && str.charAt(i) == ch);
+    if (i == i$)
       return "";
 
-    int j = len;
+    int j = i$;
     while (j > i && str.charAt(--j) == ch);
-    return i == 0 && j == len - 1 ? str : str.substring(i, j + 1);
+    return i == 0 && j == i$ - 1 ? str : str.substring(i, j + 1);
   }
 
   /**
@@ -1062,9 +1062,9 @@ public final class Strings {
     if (str == null)
       return null;
 
-    final int len = str.length();
-    if (len > 1 && str.charAt(0) == start && str.charAt(len - 1) == end)
-      return str.substring(1, len - 1);
+    final int i$ = str.length();
+    if (i$ > 1 && str.charAt(0) == start && str.charAt(i$ - 1) == end)
+      return str.substring(1, i$ - 1);
 
     return str;
   }
@@ -1173,7 +1173,7 @@ public final class Strings {
    */
   public static int indexOfUnEscaped(final CharSequence str, final char ch, final int fromIndex) {
     boolean escaped = false;
-    for (int i = Math.max(fromIndex, 0), len = assertNotNull(str).length(); i < len; ++i) { // [N]
+    for (int i = Math.max(fromIndex, 0), i$ = assertNotNull(str).length(); i < i$; ++i) { // [N]
       final char c = str.charAt(i);
       if (escaped) {
         if (c == '\\' && ch == '\\')
@@ -1222,7 +1222,7 @@ public final class Strings {
     final int substrLen = assertNotNull(substr).length();
     boolean escaped = false;
     final boolean substrIsBackslash = substr.length() == 1 && substr.charAt(0) == '\\';
-    for (int i = Math.max(fromIndex, 0), len = assertNotNull(str).length(); i < len; ++i) { // [N]
+    for (int i = Math.max(fromIndex, 0), i$ = assertNotNull(str).length(); i < i$; ++i) { // [N]
       final char c = str.charAt(i);
       if (escaped) {
         if (c == '\\' && substrIsBackslash)
@@ -1363,7 +1363,7 @@ public final class Strings {
   public static int indexOfUnQuoted(final CharSequence str, final char ch, final int fromIndex) {
     boolean escaped = false;
     boolean quoted = false;
-    for (int i = Math.max(fromIndex, 0), len = assertNotNull(str).length(); i < len; ++i) { // [N]
+    for (int i = Math.max(fromIndex, 0), i$ = assertNotNull(str).length(); i < i$; ++i) { // [N]
       final char c = str.charAt(i);
       if (escaped)
         escaped = false;
@@ -1412,7 +1412,7 @@ public final class Strings {
     final int substrLen = assertNotNull(substr).length();
     boolean escaped = false;
     boolean quoted = false;
-    for (int i = Math.max(fromIndex, 0), len = assertNotNull(str).length(); i < len; ++i) { // [N]
+    for (int i = Math.max(fromIndex, 0), i$ = assertNotNull(str).length(); i < i$; ++i) { // [N]
       final char c = str.charAt(i);
       if (escaped)
         escaped = false;
@@ -1565,7 +1565,7 @@ public final class Strings {
   public static int indexOfUnEnclosed(final CharSequence str, final char ch, final char open, final char close, final int fromIndex) {
     boolean escaped = false;
     boolean enclosed = false;
-    for (int i = Math.max(fromIndex, 0), len = assertNotNull(str).length(); i < len; ++i) { // [N]
+    for (int i = Math.max(fromIndex, 0), i$ = assertNotNull(str).length(); i < i$; ++i) { // [N]
       final char c = str.charAt(i);
       if (escaped)
         escaped = false;
@@ -1620,7 +1620,7 @@ public final class Strings {
     boolean escaped = false;
     boolean enclosed = false;
     final int substrLen = assertNotNull(substr).length();
-    for (int i = Math.max(fromIndex, 0), len = assertNotNull(str).length(); i < len; ++i) { // [N]
+    for (int i = Math.max(fromIndex, 0), i$ = assertNotNull(str).length(); i < i$; ++i) { // [N]
       final char c = str.charAt(i);
       if (escaped)
         escaped = false;
@@ -1678,7 +1678,7 @@ public final class Strings {
    */
   public static int indexOfScopeClose(final CharSequence str, final char open, final char close, final int fromIndex) {
     boolean escaped = false;
-    for (int i = Math.max(fromIndex, 0), len = assertNotNull(str).length(), scope = 1; i < len; ++i) { // [N]
+    for (int i = Math.max(fromIndex, 0), i$ = assertNotNull(str).length(), scope = 1; i < i$; ++i) { // [N]
       final char c = str.charAt(i);
       if (escaped)
         escaped = false;
@@ -1905,8 +1905,8 @@ public final class Strings {
     final StringBuilder builder = new StringBuilder();
     final StringBuilder var = new StringBuilder();
     boolean escape = false;
-    final int len = s.length();
-    for (int i = 0; i < len; ++i) { // [N]
+    final int i$ = s.length();
+    for (int i = 0; i < i$; ++i) { // [N]
       char ch = s.charAt(i);
       if (ch == '\\') {
         if (var.length() > 0) {
@@ -1923,7 +1923,7 @@ public final class Strings {
             appendElVar(vars, builder, var);
           }
 
-          if (++i == len) {
+          if (++i == i$) {
             builder.append('$');
           }
           else {
@@ -1934,7 +1934,7 @@ public final class Strings {
               if (ch != '\\')
                 builder.append(ch);
             }
-            else if (++i == len) {
+            else if (++i == i$) {
               appendElNoMatch(builder, var, '\0');
             }
             else {
@@ -2010,8 +2010,8 @@ public final class Strings {
     final StringBuilder var = new StringBuilder();
     boolean escape = false;
     boolean bracket = false;
-    final int len = s.length();
-    for (int i = 0; i < len; ++i) { // [N]
+    final int i$ = s.length();
+    for (int i = 0; i < i$; ++i) { // [N]
       char ch = s.charAt(i);
       if (ch == '\\') {
         if (var.length() > 0)
@@ -2025,7 +2025,7 @@ public final class Strings {
           if (var.length() > 0)
             appendEvVar(vars, builder, var);
 
-          if (++i == len) {
+          if (++i == i$) {
             builder.append('$');
           }
           else {
@@ -2035,7 +2035,7 @@ public final class Strings {
 
             if (ch == '{') {
               bracket = true;
-              if (++i == len)
+              if (++i == i$)
                 throw new ParseException("${: bad substitution", i);
 
               ch = s.charAt(i);
@@ -2082,7 +2082,7 @@ public final class Strings {
 
     if (var.length() > 0) {
       if (bracket)
-        throw new ParseException("${" + var + ": bad substitution", len);
+        throw new ParseException("${" + var + ": bad substitution", i$);
 
       appendEvVar(vars, builder, var);
     }
@@ -2101,8 +2101,8 @@ public final class Strings {
     if (str == null)
       return false;
 
-    final int len = str.length();
-    for (int i = 0; i < len; ++i) // [N]
+    final int i$ = str.length();
+    for (int i = 0; i < i$; ++i) // [N]
       if (!Character.isWhitespace(str.charAt(i)))
         return false;
 
@@ -2121,7 +2121,7 @@ public final class Strings {
   public static boolean isLowerCase(final CharSequence str) {
     assertNotEmpty(str, "Empty");
 
-    for (int i = 0, len = str.length(); i < len; ++i) // [N]
+    for (int i = 0, i$ = str.length(); i < i$; ++i) // [N]
       if (!Character.isLowerCase(str.charAt(i)))
         return false;
 
@@ -2140,7 +2140,7 @@ public final class Strings {
   public static boolean isUpperCase(final CharSequence str) {
     assertNotEmpty(str, "Empty");
 
-    for (int i = 0, len = str.length(); i < len; ++i) // [N]
+    for (int i = 0, i$ = str.length(); i < i$; ++i) // [N]
       if (!Character.isUpperCase(str.charAt(i)))
         return false;
 
@@ -2160,7 +2160,7 @@ public final class Strings {
       return 0;
 
     long hash = 0;
-    for (int i = 0, len = str.length(); i < len; ++i) // [N]
+    for (int i = 0, i$ = str.length(); i < i$; ++i) // [N]
       hash = 31 * hash + str.charAt(i);
 
     return hash;
@@ -2283,11 +2283,11 @@ public final class Strings {
     if (fromIndex < 0)
       fromIndex = 0;
 
-    final int len = assertNotNull(str).length();
-    if (fromIndex > len)
+    final int i$ = assertNotNull(str).length();
+    if (fromIndex > i$)
       return -1;
 
-    for (int i = fromIndex; i < len; ++i) // [N]
+    for (int i = fromIndex; i < i$; ++i) // [N]
       if (str.charAt(i) == ch)
         return i;
 
@@ -2341,14 +2341,14 @@ public final class Strings {
     if (fromIndex < 0)
       fromIndex = 0;
 
-    final int len = assertNotNull(str).length() - assertNotNull(substr).length() + 1;
-    if (fromIndex > len)
+    final int i$ = assertNotNull(str).length() - assertNotNull(substr).length() + 1;
+    if (fromIndex > i$)
       return -1;
 
     if (substr.length() == 0)
       return fromIndex;
 
-    for (int i = fromIndex; i < len; ++i) // [N]
+    for (int i = fromIndex; i < i$; ++i) // [N]
       if (regionMatches(str, false, i, substr, 0, substr.length()))
         return i;
 
@@ -2404,8 +2404,8 @@ public final class Strings {
     if (fromIndex < 0)
       fromIndex = 0;
 
-    final int len = assertNotNull(str).length();
-    if (fromIndex > len)
+    final int i$ = assertNotNull(str).length();
+    if (fromIndex > i$)
       return -1;
 
     final char uCh, lCh;
@@ -2418,7 +2418,7 @@ public final class Strings {
       lCh = ch;
     }
 
-    for (int i = fromIndex; i < len; ++i) { // [N]
+    for (int i = fromIndex; i < i$; ++i) { // [N]
       ch = str.charAt(i);
       if (ch == uCh || ch == lCh)
         return i;
@@ -2476,14 +2476,14 @@ public final class Strings {
     if (fromIndex < 0)
       fromIndex = 0;
 
-    final int len = assertNotNull(str).length() - assertNotNull(substr).length() + 1;
-    if (fromIndex > len)
+    final int i$ = assertNotNull(str).length() - assertNotNull(substr).length() + 1;
+    if (fromIndex > i$)
       return -1;
 
     if (substr.length() == 0)
       return fromIndex;
 
-    for (int i = fromIndex; i < len; ++i) // [N]
+    for (int i = fromIndex; i < i$; ++i) // [N]
       if (regionMatches(str, true, i, substr, 0, substr.length()))
         return i;
 
@@ -2564,13 +2564,13 @@ public final class Strings {
     return intern != null ? intern : str;
   }
 
-  private static String[] split(final CharSequence str, final int len, final char ch, final int empties, final StringBuilder builder, int index, final int depth) {
+  private static String[] split(final CharSequence str, final int i$, final char ch, final int empties, final StringBuilder builder, int index, final int depth) {
     final String[] parts;
     final char c = str.charAt(index);
     if (c != ch) {
       builder.append(c);
-      if (++index == len) {
-        if (index != len || builder.length() > 0) {
+      if (++index == i$) {
+        if (index != i$ || builder.length() > 0) {
           final String part = builder.toString();
           parts = new String[depth + 1];
           parts[depth] = part;
@@ -2580,24 +2580,24 @@ public final class Strings {
         }
       }
       else {
-        parts = split(str, len, ch, empties, builder, index, depth);
+        parts = split(str, i$, ch, empties, builder, index, depth);
       }
     }
     else {
-      if (++index != len || builder.length() > 0) {
+      if (++index != i$ || builder.length() > 0) {
         final String part = builder.toString();
-        if (index == len)
+        if (index == i$)
           parts = new String[depth + 1];
         else
-          parts = split(str, len, ch, part.length() == 0 ? empties + 1 : 0, new StringBuilder(), index, depth + 1);
+          parts = split(str, i$, ch, part.length() == 0 ? empties + 1 : 0, new StringBuilder(), index, depth + 1);
 
         parts[Math.min(parts.length - 1, depth)] = part;
       }
       else {
-        if (index == len)
+        if (index == i$)
           parts = new String[depth - empties];
         else
-          parts = split(str, len, ch, empties, new StringBuilder(), index, depth);
+          parts = split(str, i$, ch, empties, new StringBuilder(), index, depth);
       }
     }
 
@@ -2614,8 +2614,8 @@ public final class Strings {
    * @see String#split(String)
    */
   public static String[] split(final CharSequence str, final char ch) {
-    final int len = assertNotNull(str).length();
-    return len == 0 ? EMPTY_ARRAY : split(str, len, ch, 0, new StringBuilder(), 0, 0);
+    final int i$ = assertNotNull(str).length();
+    return i$ == 0 ? EMPTY_ARRAY : split(str, i$, ch, 0, new StringBuilder(), 0, 0);
   }
 
   private Strings() {

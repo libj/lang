@@ -157,7 +157,7 @@ public abstract class ArrayCharSequence implements CharSequence, Serializable {
     @Override
     public int hashCode() {
       int hashCode = 1;
-      for (int i = offset, len = offset + count; i < len; ++i) // [N]
+      for (int i = offset, i$ = offset + count; i < i$; ++i) // [N]
         hashCode = 31 * hashCode + buf[i];
 
       return hashCode;
@@ -210,7 +210,7 @@ public abstract class ArrayCharSequence implements CharSequence, Serializable {
     @Override
     public int hashCode() {
       int hashCode = 1;
-      for (int i = offset, len = offset + count; i < len; ++i) // [N]
+      for (int i = offset, i$ = offset + count; i < i$; ++i) // [N]
         hashCode = 31 * hashCode + str.charAt(i);
 
       return hashCode;

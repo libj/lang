@@ -274,10 +274,10 @@ public final class Identifiers {
     if (string.length() == 0)
       return builder;
 
-    int len = string.length();
+    int i$ = string.length();
     int i = 0;
     char ch = '\0';
-    for (; i < len; ++i) { // [N]
+    for (; i < i$; ++i) { // [N]
       ch = string.charAt(i);
       if (Character.isJavaIdentifierStart(ch)) {
         builder.append(ch);
@@ -301,7 +301,7 @@ public final class Identifiers {
         throw new IllegalArgumentException("Unspecified prefix or substitution for illegal start character: " + ch);
     }
 
-    for (++i; i < len; ++i) { // [N]
+    for (++i; i < i$; ++i) { // [N]
       ch = string.charAt(i);
       if (Character.isJavaIdentifierPart(ch)) {
         builder.append(ch);
@@ -511,7 +511,7 @@ public final class Identifiers {
 
     int startUpper = -1;
     boolean capNext = false;
-    for (int i = 0, len = string.length(); i < len; ++i) { // [N]
+    for (int i = 0, i$ = string.length(); i < i$; ++i) { // [N]
       char ch = string.charAt(i);
       if (builder.length() == 0 && !Character.isJavaIdentifierStart(ch)) {
         if (prefix != '\0')
@@ -703,11 +703,11 @@ public final class Identifiers {
    */
   private static StringBuilder toInstanceCase0(final String string, final char prefix, final char substitute, final Map<Character,String> substitutes, final Function<? super Character,String> function) {
     final StringBuilder builder = toCamelCase0(string, prefix, substitute, substitutes, function);
-    final int len = builder.length();
-    if (len == 0)
+    final int i$ = builder.length();
+    if (i$ == 0)
       return builder;
 
-    if (len == 1) {
+    if (i$ == 1) {
       if (Character.isUpperCase(builder.charAt(0)))
         builder.setCharAt(0, Character.toLowerCase(builder.charAt(0)));
 
@@ -715,14 +715,14 @@ public final class Identifiers {
     }
 
     int i;
-    for (i = 0; i < len; ++i) // [N]
+    for (i = 0; i < i$; ++i) // [N]
       if (!Character.isUpperCase(builder.charAt(i)))
         break;
 
     if (i == 0)
       return builder;
 
-    if (i == len)
+    if (i == i$)
       return Strings.toLowerCase(builder);
 
     if (i == 1) {

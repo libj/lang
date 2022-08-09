@@ -30,7 +30,7 @@ public class ArrayCharSequenceTest {
   private static final Random r = new Random();
 
   private static void assertEquals(final CharSequence expected, final CharSequence actual) {
-    for (int i = 0, len = expected.length(); i < len; ++i)
+    for (int i = 0, i$ = expected.length(); i < i$; ++i)
       Assert.assertEquals(i + "\n" + expected + "\n" + actual, expected.charAt(i), actual.charAt(i));
   }
 

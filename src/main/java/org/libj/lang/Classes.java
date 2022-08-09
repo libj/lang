@@ -888,7 +888,7 @@ public final class Classes {
     if (parameterTypes.length != args.length)
       return false;
 
-    for (int i = 0, len = parameterTypes.length; i < len; ++i) // [A]
+    for (int i = 0, i$ = parameterTypes.length; i < i$; ++i) // [A]
       if (args[i] != null && !isAssignableFrom(parameterTypes[i], args[i], true))
         return false;
 
@@ -1543,7 +1543,7 @@ public final class Classes {
       return (T)(executable instanceof Constructor ? ((Constructor<?>)executable).newInstance(parameters) : ((Method)executable).invoke(null, parameters));
 
     final Class<?>[] parameterTypes = new Class[parameters.length];
-    for (int i = 0, len = parameters.length; i < len; ++i) // [A]
+    for (int i = 0, i$ = parameters.length; i < i$; ++i) // [A]
       parameterTypes[i] = parameters[i] == null ? null : parameters[i].getClass();
 
     if (parameterTypes.length == 1 && parameterTypes[0] == String.class) {

@@ -321,7 +321,7 @@ public class NumbersTest {
 
   private static final byte countTrailingZeroes(final String str) {
     byte count = 0;
-    for (final int len = str.length(); count < len && str.charAt(len - 1 - count) == '0'; ++count); // [X]
+    for (final int i$ = str.length(); count < i$ && str.charAt(i$ - 1 - count) == '0'; ++count); // [X]
     return count;
   }
 
@@ -569,14 +569,14 @@ public class NumbersTest {
     if (e < 0)
       e = str.length();
 
-    int len = n.signum() < 0 ? e - 1 : e;
+    int i$ = n.signum() < 0 ? e - 1 : e;
     if (n.scale() > 0)
-      --len;
+      --i$;
 
-    for (int i = n.signum() < 0 ? 1 : 0; len >= 0; ++i) { // [N]
+    for (int i = n.signum() < 0 ? 1 : 0; i$ >= 0; ++i) { // [N]
       final char ch = str.charAt(i);
       if (ch == '0') {
-        --len;
+        --i$;
         continue;
       }
 
@@ -586,7 +586,7 @@ public class NumbersTest {
       break;
     }
 
-    assertEquals(str, len, Numbers.precision(n));
+    assertEquals(str, i$, Numbers.precision(n));
   }
 
   @Test
