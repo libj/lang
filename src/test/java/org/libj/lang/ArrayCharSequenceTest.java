@@ -30,7 +30,7 @@ public class ArrayCharSequenceTest {
   private static final Random r = new Random();
 
   private static void assertEquals(final CharSequence expected, final CharSequence actual) {
-    for (int i = 0, i$ = expected.length(); i < i$; ++i)
+    for (int i = 0, i$ = expected.length(); i < i$; ++i) // [N]
       Assert.assertEquals(i + "\n" + expected + "\n" + actual, expected.charAt(i), actual.charAt(i));
   }
 
@@ -98,7 +98,7 @@ public class ArrayCharSequenceTest {
 
   @Test
   public void test() {
-    for (int i = 0; i < 1000; ++i) {
+    for (int i = 0; i < 1000; ++i) { // [N]
       test(buf);
       test(str);
     }
