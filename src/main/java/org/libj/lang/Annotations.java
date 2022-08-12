@@ -168,7 +168,7 @@ public final class Annotations {
       builder.append('{');
       if (value.getClass().getComponentType() == byte.class) {
         final byte[] array = (byte[])value;
-        for (int i = 0; i < array.length; ++i) { // [A]
+        for (int i = 0, i$ = array.length; i < i$; ++i) { // [A]
           if (i > 0)
             builder.append(", ");
 
@@ -177,7 +177,7 @@ public final class Annotations {
       }
       else if (value.getClass().getComponentType() == char.class) {
         final char[] array = (char[])value;
-        for (int i = 0; i < array.length; ++i) { // [A]
+        for (int i = 0, i$ = array.length; i < i$; ++i) { // [A]
           if (i > 0)
             builder.append(", ");
 
@@ -186,7 +186,7 @@ public final class Annotations {
       }
       else if (value.getClass().getComponentType() == short.class) {
         final short[] array = (short[])value;
-        for (int i = 0; i < array.length; ++i) { // [A]
+        for (int i = 0, i$ = array.length; i < i$; ++i) { // [A]
           if (i > 0)
             builder.append(", ");
 
@@ -195,7 +195,7 @@ public final class Annotations {
       }
       else if (value.getClass().getComponentType() == int.class) {
         final int[] array = (int[])value;
-        for (int i = 0; i < array.length; ++i) { // [A]
+        for (int i = 0, i$ = array.length; i < i$; ++i) { // [A]
           if (i > 0)
             builder.append(", ");
 
@@ -204,7 +204,7 @@ public final class Annotations {
       }
       else if (value.getClass().getComponentType() == long.class) {
         final long[] array = (long[])value;
-        for (int i = 0; i < array.length; ++i) { // [A]
+        for (int i = 0, i$ = array.length; i < i$; ++i) { // [A]
           if (i > 0)
             builder.append(", ");
 
@@ -213,7 +213,7 @@ public final class Annotations {
       }
       else if (value.getClass().getComponentType() == double.class) {
         final double[] array = (double[])value;
-        for (int i = 0; i < array.length; ++i) { // [A]
+        for (int i = 0, i$ = array.length; i < i$; ++i) { // [A]
           if (i > 0)
             builder.append(", ");
 
@@ -222,7 +222,7 @@ public final class Annotations {
       }
       else if (value.getClass().getComponentType() == float.class) {
         final float[] array = (float[])value;
-        for (int i = 0; i < array.length; ++i) { // [A]
+        for (int i = 0, i$ = array.length; i < i$; ++i) { // [A]
           if (i > 0)
             builder.append(", ");
 
@@ -231,7 +231,7 @@ public final class Annotations {
       }
       else if (value.getClass().getComponentType() == boolean.class) {
         final boolean[] array = (boolean[])value;
-        for (int i = 0; i < array.length; ++i) { // [A]
+        for (int i = 0, i$ = array.length; i < i$; ++i) { // [A]
           if (i > 0)
             builder.append(", ");
 
@@ -240,7 +240,7 @@ public final class Annotations {
       }
       else {
         final Object[] array = (Object[])value;
-        for (int i = 0; i < array.length; ++i) { // [A]
+        for (int i = 0, i$ = array.length; i < i$; ++i) { // [A]
           if (i > 0)
             builder.append(", ");
 

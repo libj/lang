@@ -322,7 +322,7 @@ public final class Repeat {
     protected <M,A>M[] simple(final M[] array, final Class<M> type, final BiPredicate<? super M,A> predicate, final A arg) {
       super.simple(array, type, predicate, arg);
       final List<M> list = new ArrayList<>(array.length);
-      for (int i = 0; i < array.length; ++i) // [A]
+      for (int i = 0, i$ = array.length; i < i$; ++i) // [A]
         if (predicate.test(array[i], arg))
           list.add(array[i]);
 

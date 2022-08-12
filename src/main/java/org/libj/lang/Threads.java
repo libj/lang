@@ -79,7 +79,7 @@ public final class Threads {
 
     final StringBuilder builder = new StringBuilder();
     final ThreadInfo[] threadInfos = ManagementFactory.getThreadMXBean().dumpAllThreads(true, true);
-    for (int i = 0; i < threadInfos.length; ++i) { // [A]
+    for (int i = 0, i$ = threadInfos.length; i < i$; ++i) { // [A]
       if (builder.length() > 0)
         builder.append("\n\n");
 

@@ -87,7 +87,7 @@ public class RepeatTest {
   public void testDeepRecursive() {
     final Field[] fields = getFieldsDeep(H.class);
     assertEquals(fieldNames.length, fields.length);
-    for (int i = 0; i < fields.length; ++i) // [A]
+    for (int i = 0, i$ = fields.length; i < i$; ++i) // [A]
       assertEquals(fieldNames[i], fields[i].getName());
   }
 

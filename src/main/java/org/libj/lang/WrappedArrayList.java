@@ -93,12 +93,12 @@ public class WrappedArrayList<E> extends AbstractList<E> implements RandomAccess
   public int indexOf(final Object o) {
     final E[] a = this.array;
     if (o == null) {
-      for (int i = 0; i < a.length; ++i) // [A]
+      for (int i = 0, i$ = a.length; i < i$; ++i) // [A]
         if (a[i] == null)
           return i;
     }
     else {
-      for (int i = 0; i < a.length; ++i) // [A]
+      for (int i = 0, i$ = a.length; i < i$; ++i) // [A]
         if (o.equals(a[i]))
           return i;
     }
@@ -137,7 +137,7 @@ public class WrappedArrayList<E> extends AbstractList<E> implements RandomAccess
   public void replaceAll(final UnaryOperator<E> operator) {
     assertNotNull(operator);
     final E[] a = this.array;
-    for (int i = 0; i < a.length; ++i) // [A]
+    for (int i = 0, i$ = a.length; i < i$; ++i) // [A]
       a[i] = operator.apply(a[i]);
   }
 

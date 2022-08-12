@@ -315,7 +315,7 @@ public final class ObjectUtil {
     final StringBuilder builder = new StringBuilder();
     builder.append('[');
     final Object[] array = (Object[])obj;
-    for (int i = 0; i < array.length; ++i) { // [A]
+    for (int i = 0, i$ = array.length; i < i$; ++i) { // [A]
       if (i > 0)
         builder.append(", ");
 

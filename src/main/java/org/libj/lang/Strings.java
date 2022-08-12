@@ -315,7 +315,7 @@ public final class Strings {
     if (str.length() < prefix.length())
       return false;
 
-    for (int i = 0; i < prefix.length(); ++i) // [N]
+    for (int i = 0, i$ = prefix.length(); i < i$; ++i) // [N]
       if (str.charAt(i) != prefix.charAt(i))
         return false;
 
@@ -341,7 +341,7 @@ public final class Strings {
     if (str.length() < prefix.length())
       return false;
 
-    for (int i = 0; i < prefix.length(); ++i) { // [N]
+    for (int i = 0, i$ = prefix.length(); i < i$; ++i) { // [N]
       final char a = str.charAt(i);
       final char b = prefix.charAt(i);
       if (Character.toUpperCase(a) != Character.toUpperCase(b) && Character.toLowerCase(a) != Character.toLowerCase(b))
@@ -740,7 +740,7 @@ public final class Strings {
   public static String padAll(final String str, final Align align, final int length, final char pad, final boolean truncate) {
     final StringBuilder builder = new StringBuilder();
     final String[] lines = assertNotNull(str).split("[\n\r]");
-    for (int i = 0; i < lines.length; ++i) { // [N]
+    for (int i = 0, i$ = lines.length; i < i$; ++i) { // [N]
       if (i > 0)
         builder.append('\n');
 
@@ -893,8 +893,8 @@ public final class Strings {
 
     final String string0 = strings[0];
     assertNotNull(string0);
-    for (int i = 0; i < string0.length(); ++i) // [N]
-      for (int j = 1; j < strings.length; ++j) // [N]
+    for (int i = 0, i$ = string0.length(); i < i$; ++i) // [N]
+      for (int j = 1, j$ = strings.length; j < j$; ++j) // [N]
         if (i == assertNotNull(strings[j]).length() || string0.charAt(i) != strings[j].charAt(i))
           return string0.substring(0, i);
 
@@ -916,7 +916,7 @@ public final class Strings {
       return iterator.next();
 
     final String string0 = iterator.next();
-    for (int i = 0; i < string0.length(); ++i) { // [N]
+    for (int i = 0, i$ = string0.length(); i < i$; ++i) { // [N]
       if (i > 0) {
         iterator = strings.iterator();
         iterator.next();
@@ -1819,7 +1819,7 @@ public final class Strings {
 
     boolean hasLower = false;
     boolean hasUpper = false;
-    for (int i = 1; i < str.length(); ++i) { // [N]
+    for (int i = 1, i$ = str.length(); i < i$; ++i) { // [N]
       hasLower = hasLower || Character.isLowerCase(str.charAt(i));
       hasUpper = hasUpper || Character.isUpperCase(str.charAt(i));
       if (hasLower && hasUpper)

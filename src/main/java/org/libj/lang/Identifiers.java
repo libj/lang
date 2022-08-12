@@ -70,7 +70,7 @@ public final class Identifiers {
   private static void checkSubstitutes(final Map<Character,String> substitutes) {
     if (substitutes != null)
       for (final String substitute : substitutes.values()) // [C]
-        for (int i = 0; i < substitute.length(); ++i) // [N]
+        for (int i = 0, i$ = substitute.length(); i < i$; ++i) // [N]
           if (!Character.isJavaIdentifierPart(substitute.charAt(i)))
             throw new IllegalArgumentException("Substitution \"" + substitute + "\" contains illegal character: " + substitute.charAt(i));
   }
@@ -79,7 +79,7 @@ public final class Identifiers {
     if (function != null) {
       final String replacement = function.apply(ch);
       if (replacement != null) {
-        for (int i = 0; i < replacement.length(); ++i) // [N]
+        for (int i = 0, i$ = replacement.length(); i < i$; ++i) // [N]
           if (start && builder.length() == 0 && i == 0 ? !Character.isJavaIdentifierStart(replacement.charAt(i)) : !Character.isJavaIdentifierPart(replacement.charAt(i)))
             throw new IllegalArgumentException("Substitution \"" + replacement + "\" contains illegal " + (start ? "start " : "") + "character: '" + replacement.charAt(i) + "'");
 

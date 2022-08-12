@@ -394,7 +394,7 @@ public final class Classes {
 
     final Class<?>[] superInterfaces = cls.getInterfaces();
     final Type[] genericSuperInterfaces = cls.getGenericInterfaces();
-    for (int i = 0; i < genericSuperInterfaces.length; ++i) { // [A]
+    for (int i = 0, i$ = genericSuperInterfaces.length; i < i$; ++i) { // [A]
       final Class<?> superInterface = superInterfaces[i];
       if (!visited.add(superInterface))
         continue;
@@ -474,7 +474,7 @@ public final class Classes {
 
     final Type[] types = ((ParameterizedType)genericType).getActualTypeArguments();
     final Class<?>[] classes = new Class[types.length];
-    for (int i = 0; i < classes.length; ++i) { // [A]
+    for (int i = 0, i$ = classes.length; i < i$; ++i) { // [A]
       final Type type = types[i];
       if (type instanceof Class)
         classes[i] = (Class<?>)type;
@@ -1463,7 +1463,7 @@ public final class Classes {
   public static Class<?>[] getExecutionStack() {
     final Class<?>[] context = new CallingClass().getClassContext();
     final Class<?>[] executionStack = new Class[context.length - 3];
-    for (int i = 3; i < context.length; ++i) // [A]
+    for (int i = 3, i$ = context.length; i < i$; ++i) // [A]
       executionStack[i - 3] = context[i];
 
     return executionStack;
@@ -1697,19 +1697,19 @@ public final class Classes {
 
     // Create a map of the method signature to the index of the method in the methods array
     final HashMap<String,Integer> methodSigToIndex = new HashMap<>(methods.length);
-    for (int i = 0; i < methods.length; ++i) // [A]
+    for (int i = 0, i$ = methods.length; i < i$; ++i) // [A]
       methodSigToIndex.put(getSignature(methods[i]), i);
 
     // Create a composite set connecting the method to its line number
     final Object[][] methodLineNumbers = new Object[methods.length][2];
-    for (int i = 0; i < methods.length; ++i) // [A]
+    for (int i = 0, i$ = methods.length; i < i$; ++i) // [A]
       methodLineNumbers[i] = new Object[] {methods[i], null};
 
     final boolean[] success = {false};
     try {
       final ClassPool pool = ClassPool.getDefault();
       Class<?> cls, last = null;
-      for (int i = 0; i < methodLineNumbers.length; ++i, last = cls) { // [A]
+      for (int i = 0, i$ = methodLineNumbers.length; i < i$; ++i, last = cls) { // [A]
         cls = methods[i].getDeclaringClass();
         if (cls != last) {
           final CtClass ctClass = pool.get(cls.getName());
@@ -1745,7 +1745,7 @@ public final class Classes {
         return Integer.compare((Integer)a[1], (Integer)b[1]);
       });
 
-      for (int i = 0; i < methods.length; ++i) // [A]
+      for (int i = 0, i$ = methods.length; i < i$; ++i) // [A]
         methods[i] = (Method)methodLineNumbers[i][0];
 
       return success[0];
@@ -1829,7 +1829,7 @@ public final class Classes {
     if (assertNotNull(cls).isArray())
       return "[" + getInternalName(cls.getComponentType());
 
-    for (int i = 0; i < primitiveClasses.length; ++i) // [A]
+    for (int i = 0, i$ = primitiveClasses.length; i < i$; ++i) // [A]
       if (primitiveClasses[i] == cls)
         return primitiveInternalNames[i];
 

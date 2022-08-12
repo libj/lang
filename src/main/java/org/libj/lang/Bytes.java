@@ -54,7 +54,7 @@ public final class Bytes {
     if (sequence.length == 0 || bytes.length < sequence.length)
       return -1;
 
-    for (int i = offset; i < bytes.length; ++i) { // [A]
+    for (int i = offset, i$ = bytes.length; i < i$; ++i) { // [A]
       if (bytes[i] == sequence[0]) {
         boolean match = true;
         for (int j = 0; j < sequence.length && (match = bytes.length > i + j && sequence[j] == bytes[i + j]); ++j); // [N]
@@ -528,7 +528,7 @@ public final class Bytes {
   public static short[] toOctal(final byte ... bytes) {
     assertNotNull(bytes);
     final short[] octal = new short[bytes.length];
-    for (int i = 0; i < bytes.length; ++i) // [A]
+    for (int i = 0, i$ = bytes.length; i < i$; ++i) // [A]
       octal[i] = toOctal(bytes[i]);
 
     return octal;
@@ -708,7 +708,7 @@ public final class Bytes {
     final byte remainder = (byte)(1 + (bits - 1) % 8);
     dest[0] = readBitsFromByte(src, offset, remainder);
     offset += remainder;
-    for (int i = 1; i < dest.length; i++, offset += 8) // [A]
+    for (int i = 1, i$ = dest.length; i < i$; i++, offset += 8) // [A]
       dest[i] = readBitsFromByte(src, offset, (byte)8);
 
     return dest;

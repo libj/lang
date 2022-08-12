@@ -656,7 +656,7 @@ public final class Buffers {
    */
   public static String toString(final byte ... buf) {
     final byte[] bytes = new byte[assertNotNull(buf).length * Byte.SIZE];
-    for (int i = 0; i < buf.length; ++i) // [A]
+    for (int i = 0, i$ = buf.length; i < i$; ++i) // [A]
       toUnsignedString(buf[i], bytes, i, Byte.SIZE);
 
     return new String(bytes);
@@ -671,7 +671,7 @@ public final class Buffers {
    */
   public static String toString(final char ... buf) {
     final byte[] bytes = new byte[assertNotNull(buf).length * Character.SIZE];
-    for (int i = 0; i < buf.length; ++i) // [A]
+    for (int i = 0, i$ = buf.length; i < i$; ++i) // [A]
       toUnsignedString(buf[i], bytes, i, Character.SIZE);
 
     return new String(bytes);
@@ -686,7 +686,7 @@ public final class Buffers {
    */
   public static String toString(final short ... buf) {
     final byte[] bytes = new byte[assertNotNull(buf).length * Short.SIZE];
-    for (int i = 0; i < buf.length; ++i) // [A]
+    for (int i = 0, i$ = buf.length; i < i$; ++i) // [A]
       toUnsignedString(buf[i], bytes, i, Short.SIZE);
 
     return new String(bytes);
@@ -701,7 +701,7 @@ public final class Buffers {
    */
   public static String toString(final int ... buf) {
     final byte[] bytes = new byte[assertNotNull(buf).length * Integer.SIZE];
-    for (int i = 0; i < buf.length; ++i) // [A]
+    for (int i = 0, i$ = buf.length; i < i$; ++i) // [A]
       toUnsignedString(buf[i], bytes, i, Integer.SIZE);
 
     return new String(bytes);
@@ -716,7 +716,7 @@ public final class Buffers {
    */
   public static String toString(final long ... buf) {
     final byte[] bytes = new byte[assertNotNull(buf).length * Long.SIZE];
-    for (int i = 0; i < buf.length; ++i) // [A]
+    for (int i = 0, i$ = buf.length; i < i$; ++i) // [A]
       toUnsignedString(buf[i], bytes, i, Long.SIZE);
 
     return new String(bytes);

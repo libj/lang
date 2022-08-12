@@ -1754,7 +1754,7 @@ public final class Numbers {
    */
   public static int[] parseInt(final String ... s) {
     final int[] values = new int[s.length];
-    for (int i = 0; i < s.length; ++i) // [A]
+    for (int i = 0, i$ = s.length; i < i$; ++i) // [A]
       values[i] = Integer.parseInt(s[i]);
 
     return values;
@@ -1769,7 +1769,7 @@ public final class Numbers {
    */
   public static double[] parseDouble(final String ... s) {
     final double[] values = new double[s.length];
-    for (int i = 0; i < s.length; ++i) // [A]
+    for (int i = 0, i$ = s.length; i < i$; ++i) // [A]
       values[i] = Double.parseDouble(s[i]);
 
     return values;
@@ -2327,7 +2327,7 @@ public final class Numbers {
    */
   public static BigDecimal average(final BigDecimal ... numbers) {
     BigDecimal sum = assertNotNull(numbers)[0];
-    for (int i = 1; i < numbers.length; ++i) // [A]
+    for (int i = 1, i$ = numbers.length; i < i$; ++i) // [A]
       sum = sum.add(numbers[i]);
 
     return sum.divide(BigDecimal.valueOf(numbers.length), RoundingMode.HALF_UP);
@@ -2343,7 +2343,7 @@ public final class Numbers {
    */
   public static BigDecimal average(final BigInteger ... numbers) {
     BigDecimal sum = new BigDecimal(assertNotNull(numbers)[0]);
-    for (int i = 1; i < numbers.length; ++i) // [A]
+    for (int i = 1, i$ = numbers.length; i < i$; ++i) // [A]
       sum = sum.add(new BigDecimal(numbers[i]));
 
     return sum.divide(BigDecimal.valueOf(numbers.length), RoundingMode.HALF_UP);
@@ -2359,7 +2359,7 @@ public final class Numbers {
    */
   public static double average(final byte ... numbers) {
     long sum = assertNotNull(numbers)[0];
-    for (int i = 1; i < numbers.length; ++i) // [A]
+    for (int i = 1, i$ = numbers.length; i < i$; ++i) // [A]
       sum += numbers[i];
 
     return sum / numbers.length;
@@ -2375,7 +2375,7 @@ public final class Numbers {
    */
   public static double average(final short ... numbers) {
     long sum = assertNotNull(numbers)[0];
-    for (int i = 1; i < numbers.length; ++i) // [A]
+    for (int i = 1, i$ = numbers.length; i < i$; ++i) // [A]
       sum += numbers[i];
 
     return sum / numbers.length;
@@ -2391,7 +2391,7 @@ public final class Numbers {
    */
   public static double average(final int ... numbers) {
     long sum = assertNotNull(numbers)[0];
-    for (int i = 1; i < numbers.length; ++i) // [A]
+    for (int i = 1, i$ = numbers.length; i < i$; ++i) // [A]
       sum += numbers[i];
 
     return sum / numbers.length;
@@ -2407,7 +2407,7 @@ public final class Numbers {
    */
   public static double average(final long ... numbers) {
     long sum = assertNotNull(numbers)[0];
-    for (int i = 1; i < numbers.length; ++i) // [A]
+    for (int i = 1, i$ = numbers.length; i < i$; ++i) // [A]
       sum += numbers[i];
 
     return sum / numbers.length;
@@ -2423,7 +2423,7 @@ public final class Numbers {
    */
   public static double average(final float ... numbers) {
     double sum = assertNotNull(numbers)[0];
-    for (int i = 1; i < numbers.length; ++i) // [A]
+    for (int i = 1, i$ = numbers.length; i < i$; ++i) // [A]
       sum += numbers[i];
 
     return sum / numbers.length;
@@ -2439,7 +2439,7 @@ public final class Numbers {
    */
   public static double average(final double ... numbers) {
     double sum = assertNotNull(numbers)[0];
-    for (int i = 1; i < numbers.length; ++i) // [A]
+    for (int i = 1, i$ = numbers.length; i < i$; ++i) // [A]
       sum += numbers[i];
 
     return sum / numbers.length;

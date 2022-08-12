@@ -180,7 +180,7 @@ public final class Assertions {
     if (obj == null)
       throw new IllegalArgumentException(message);
 
-    for (int i = 0; i < obj.length; ++i) // [A]
+    for (int i = 0, i$ = obj.length; i < i$; ++i) // [A]
       if (obj[i] == null)
         throw new IllegalArgumentException(message + " at index " + i);
 
@@ -211,7 +211,7 @@ public final class Assertions {
     if (obj == null)
       throw new IllegalArgumentException(String.format(format, args));
 
-    for (int i = 0; i < obj.length; ++i) // [A]
+    for (int i = 0, i$ = obj.length; i < i$; ++i) // [A]
       if (obj[i] == null)
         throw new IllegalArgumentException(String.format(format, args) + " at index " + i);
 
