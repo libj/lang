@@ -31,16 +31,12 @@ import java.util.jar.Manifest;
  */
 public final class Manifests {
   /**
-   * Returns the {@link Manifest} associated to the provided {@link Class}, or
-   * {@code null} if no such {@link Manifest} exists.
+   * Returns the {@link Manifest} associated to the provided {@link Class}, or {@code null} if no such {@link Manifest} exists.
    *
-   * @implNote This method is designed to returns a single {@link Manifest}
-   *           associated to the provided {@link Class} that has been loaded by
-   *           its {@link ClassLoader}.
-   * @param cls The {@link Class} for which the {@link Manifest} is to be
-   *          returned.
-   * @return The {@link Manifest} associated to the provided {@link Class}, or
-   *         {@code null} if no such {@link Manifest} exists.
+   * @implNote This method is designed to returns a single {@link Manifest} associated to the provided {@link Class} that has been
+   *           loaded by its {@link ClassLoader}.
+   * @param cls The {@link Class} for which the {@link Manifest} is to be returned.
+   * @return The {@link Manifest} associated to the provided {@link Class}, or {@code null} if no such {@link Manifest} exists.
    * @throws IOException If an I/O error has occurred.
    * @throws IllegalArgumentException If {@code cls} is null.
    */
@@ -60,17 +56,13 @@ public final class Manifests {
   }
 
   /**
-   * Returns an array of {@link Manifest}s associated to the provided
-   * {@link Class}, or an array of zero members if no such {@link Manifest}
-   * exists.
+   * Returns an array of {@link Manifest}s associated to the provided {@link Class}, or an array of zero members if no such
+   * {@link Manifest} exists.
    *
-   * @implNote This method is designed to returns all {@link Manifest}s
-   *           associated to the provided {@link Class} across all paths in the
-   *           classpath.
-   * @param cls The {@link Class} for which the {@link Manifest}s are to be
-   *          returned.
-   * @return An array of {@link Manifest}s associated to the provided
-   *         {@link Class}, or an array of zero members if no such
+   * @implNote This method is designed to returns all {@link Manifest}s associated to the provided {@link Class} across all paths in
+   *           the classpath.
+   * @param cls The {@link Class} for which the {@link Manifest}s are to be returned.
+   * @return An array of {@link Manifest}s associated to the provided {@link Class}, or an array of zero members if no such
    *         {@link Manifest} exists.
    * @throws IOException If an I/O error has occurred.
    * @throws IllegalArgumentException If {@code cls} is null.

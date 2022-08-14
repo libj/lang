@@ -25,22 +25,18 @@ public class AnnotationParameterException extends RuntimeException {
   private final Annotation annotation;
 
   /**
-   * Creates an {@link AnnotationParameterException} for the specified
-   * annotation.
+   * Creates an {@link AnnotationParameterException} for the specified annotation.
    *
-   * @param annotation The {@link Annotation} that is the subject of this
-   *          exception.
+   * @param annotation The {@link Annotation} that is the subject of this exception.
    */
   public AnnotationParameterException(final Annotation annotation) {
     this.annotation = annotation;
   }
 
   /**
-   * Creates an {@link AnnotationParameterException} for the specified
-   * annotation.
+   * Creates an {@link AnnotationParameterException} for the specified annotation.
    *
-   * @param annotation The {@link Annotation} that is the subject of this
-   *          exception.
+   * @param annotation The {@link Annotation} that is the subject of this exception.
    * @param message The detail message.
    */
   public AnnotationParameterException(final Annotation annotation, final String message) {

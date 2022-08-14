@@ -72,33 +72,24 @@ public final class Resources {
   }
 
   /**
-   * Recursively traverses the tree of resource entries rooted at the provided
-   * {@code name}. For each matching entry, the {@link ForEachEntry
-   * forEachEntry} predicate is called with the {@code root}, {@code entry}, and
-   * {@code isDirectory} values.
+   * Recursively traverses the tree of resource entries rooted at the provided {@code name}. For each matching entry, the
+   * {@link ForEachEntry forEachEntry} predicate is called with the {@code root}, {@code entry}, and {@code isDirectory} values.
    * <p>
-   * If {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the
-   * walk operation is shortcutted.
+   * If {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the walk operation is shortcutted.
    * <p>
    * Resource matching behavior is as follows:
    * <ol>
-   * <li>If no resource matching {@code name} is found, this method returns
-   * immediately.</li>
-   * <li>If the resource matching {@code name} represents a file entry,
-   * {@link ForEachEntry forEachEntry} is called once for the matching file
-   * entry.</li>
-   * <li>If the resource matching {@code name} represents a directory entry,
-   * {@link ForEachEntry forEachEntry} is called for the directory entry, as
-   * well as for each child entry rooted at the entry provided by
-   * {@code name}, <b>recursively</b>.</li>
+   * <li>If no resource matching {@code name} is found, this method returns immediately.</li>
+   * <li>If the resource matching {@code name} represents a file entry, {@link ForEachEntry forEachEntry} is called once for the
+   * matching file entry.</li>
+   * <li>If the resource matching {@code name} represents a directory entry, {@link ForEachEntry forEachEntry} is called for the
+   * directory entry, as well as for each child entry rooted at the entry provided by {@code name}, <b>recursively</b>.</li>
    * </ol>
    *
-   * @param classLoader The {@link ClassLoader} in which to search for resource
-   *          entries.
+   * @param classLoader The {@link ClassLoader} in which to search for resource entries.
    * @param name The name of the root resource entry.
-   * @param forEachEntry The predicate that is called for each matched resource
-   *          entry. If {@link ForEachEntry#test(URL,String,boolean)} returns
-   *          {@code false}, the walk operation is shortcutted.
+   * @param forEachEntry The predicate that is called for each matched resource entry. If
+   *          {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the walk operation is shortcutted.
    * @throws IOException If an I/O error has occurred.
    * @throws IllegalArgumentException If any of the provided arguments is null.
    */
@@ -107,33 +98,24 @@ public final class Resources {
   }
 
   /**
-   * Non-recursively traverses the tree of resource entries rooted at the
-   * provided {@code name}. For each matching entry, the {@link ForEachEntry
-   * forEachEntry} predicate is called with the {@code root}, {@code entry}, and
-   * {@code isDirectory} values.
+   * Non-recursively traverses the tree of resource entries rooted at the provided {@code name}. For each matching entry, the
+   * {@link ForEachEntry forEachEntry} predicate is called with the {@code root}, {@code entry}, and {@code isDirectory} values.
    * <p>
-   * If {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the
-   * walk operation is shortcutted.
+   * If {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the walk operation is shortcutted.
    * <p>
    * Resource matching behavior is as follows:
    * <ol>
-   * <li>If no resource matching {@code name} is found, this method returns
-   * immediately.</li>
-   * <li>If the resource matching {@code name} represents a file entry,
-   * {@link ForEachEntry forEachEntry} is called once for the matching file
-   * entry.</li>
-   * <li>If the resource matching {@code name} represents a directory entry,
-   * {@link ForEachEntry forEachEntry} is called for the directory entry, as
-   * well as for each child entry rooted at the entry provided by {@code name},
-   * <b>non-recursively</b>.</li>
+   * <li>If no resource matching {@code name} is found, this method returns immediately.</li>
+   * <li>If the resource matching {@code name} represents a file entry, {@link ForEachEntry forEachEntry} is called once for the
+   * matching file entry.</li>
+   * <li>If the resource matching {@code name} represents a directory entry, {@link ForEachEntry forEachEntry} is called for the
+   * directory entry, as well as for each child entry rooted at the entry provided by {@code name}, <b>non-recursively</b>.</li>
    * </ol>
    *
-   * @param classLoader The {@link ClassLoader} in which to search for resource
-   *          entries.
+   * @param classLoader The {@link ClassLoader} in which to search for resource entries.
    * @param name The name of the root resource entry.
-   * @param forEachEntry The predicate that is called for each matched resource
-   *          entry. If {@link ForEachEntry#test(URL,String,boolean)} returns
-   *          {@code false}, the walk operation is shortcutted.
+   * @param forEachEntry The predicate that is called for each matched resource entry. If
+   *          {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the walk operation is shortcutted.
    * @throws IOException If an I/O error has occurred.
    * @throws IllegalArgumentException If any of the provided arguments is null.
    */
@@ -142,34 +124,25 @@ public final class Resources {
   }
 
   /**
-   * Traverses the tree of resource entries rooted at the provided {@code name}.
-   * For each matching entry, the {@link ForEachEntry forEachEntry} predicate is
-   * called with the {@code root}, {@code entry}, and {@code isDirectory}
-   * values.
+   * Traverses the tree of resource entries rooted at the provided {@code name}. For each matching entry, the {@link ForEachEntry
+   * forEachEntry} predicate is called with the {@code root}, {@code entry}, and {@code isDirectory} values.
    * <p>
-   * If {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the
-   * walk operation is shortcutted.
+   * If {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the walk operation is shortcutted.
    * <p>
    * Resource matching behavior is as follows:
    * <ol>
-   * <li>If no resource matching {@code name} is found, this method returns
-   * immediately.</li>
-   * <li>If the resource matching {@code name} represents a file entry,
-   * {@link ForEachEntry forEachEntry} is called once for the matching file
-   * entry.</li>
-   * <li>If the resource matching {@code name} represents a directory entry,
-   * {@link ForEachEntry forEachEntry} is called for the directory entry, as
-   * well as for each child entry rooted at the entry provided by {@code name},
-   * <b>recursively</b>.</li>
+   * <li>If no resource matching {@code name} is found, this method returns immediately.</li>
+   * <li>If the resource matching {@code name} represents a file entry, {@link ForEachEntry forEachEntry} is called once for the
+   * matching file entry.</li>
+   * <li>If the resource matching {@code name} represents a directory entry, {@link ForEachEntry forEachEntry} is called for the
+   * directory entry, as well as for each child entry rooted at the entry provided by {@code name}, <b>recursively</b>.</li>
    * </ol>
    *
-   * @param resources The {@link Enumeration} of resource URLs provided by
-   *          {@link ClassLoader#getResources(String)}.
+   * @param resources The {@link Enumeration} of resource URLs provided by {@link ClassLoader#getResources(String)}.
    * @param name The name of the root resource entry.
    * @param recursive Whether traversal should be recursive or not.
-   * @param forEachEntry The predicate that is called for each matched resource
-   *          entry. If {@link ForEachEntry#test(URL,String,boolean)} returns
-   *          {@code false}, the walk operation is shortcutted.
+   * @param forEachEntry The predicate that is called for each matched resource entry. If
+   *          {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the walk operation is shortcutted.
    * @throws IOException If an I/O error has occurred.
    * @throws IllegalArgumentException If any of the provided arguments is null.
    */
@@ -268,12 +241,11 @@ public final class Resources {
   }
 
   /**
-   * Returns an {@link URL} to a file by the specified name (in the current
-   * working directory), or, if not found, to a resource by the same name.
+   * Returns an {@link URL} to a file by the specified name (in the current working directory), or, if not found, to a resource by
+   * the same name.
    *
    * @param name The name of the resource.
-   * @return An {@link URL} to a file by the specified name, or, if not found,
-   *         to a resource by the same name.
+   * @return An {@link URL} to a file by the specified name, or, if not found, to a resource by the same name.
    * @throws IllegalArgumentException If {@code name} is null.
    */
   public static URL getFileOrResource(final String name) {

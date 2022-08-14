@@ -17,9 +17,8 @@
 package org.libj.lang;
 
 /**
- * Thrown when an application attempts to load in a package using
- * {@link PackageLoader}, but no definition for the specified package can be
- * found.
+ * Thrown when an application attempts to load in a package using {@link PackageLoader}, but no definition for the specified package
+ * can be found.
  */
 public final class PackageNotFoundException extends ReflectiveOperationException {
   /**
@@ -30,8 +29,7 @@ public final class PackageNotFoundException extends ReflectiveOperationException
   }
 
   /**
-   * Creates a {@link PackageNotFoundException} with the specified detail
-   * message.
+   * Creates a {@link PackageNotFoundException} with the specified detail message.
    *
    * @param message The detail message.
    */
@@ -40,8 +38,7 @@ public final class PackageNotFoundException extends ReflectiveOperationException
   }
 
   /**
-   * Constructs a {@link PackageNotFoundException} with the specified exception
-   * that was the cause of this exception.
+   * Constructs a {@link PackageNotFoundException} with the specified exception that was the cause of this exception.
    *
    * @param cause The exception that was the cause of this exception.
    */
@@ -50,8 +47,8 @@ public final class PackageNotFoundException extends ReflectiveOperationException
   }
 
   /**
-   * Constructs a {@link PackageNotFoundException} with the specified detail
-   * message and exception that was the cause of this exception.
+   * Constructs a {@link PackageNotFoundException} with the specified detail message and exception that was the cause of this
+   * exception.
    *
    * @param message The detail message.
    * @param cause The exception that was the cause of this exception.

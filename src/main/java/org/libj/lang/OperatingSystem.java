@@ -37,11 +37,9 @@ public enum OperatingSystem {
   MAC(Sys.OS_NAME.contains("mac"));
 
   /**
-   * Returns the {@link OperatingSystem} enum representing the host operating
-   * system of the current java process.
+   * Returns the {@link OperatingSystem} enum representing the host operating system of the current java process.
    *
-   * @return The {@link OperatingSystem} enum representing the host operating
-   *         system of the current java process.
+   * @return The {@link OperatingSystem} enum representing the host operating system of the current java process.
    */
   public static OperatingSystem get() {
     return current;
@@ -61,8 +59,7 @@ public enum OperatingSystem {
   /**
    * States whether this instance represents a Windows operating system.
    *
-   * @return {@code true} if this instance represents a Windows operating
-   *         system; {@code false} otherwise.
+   * @return {@code true} if this instance represents a Windows operating system; {@code false} otherwise.
    */
   public boolean isWindows() {
     return this == WINDOWS;
@@ -71,8 +68,7 @@ public enum OperatingSystem {
   /**
    * States whether this instance represents a UNIX operating system.
    *
-   * @return {@code true} if this instance represents a UNIX operating system;
-   *         {@code false} otherwise.
+   * @return {@code true} if this instance represents a UNIX operating system; {@code false} otherwise.
    */
   public boolean isUnix() {
     return this == UNIX;
@@ -81,8 +77,7 @@ public enum OperatingSystem {
   /**
    * States whether this instance represents a Solaris operating system.
    *
-   * @return {@code true} if this instance represents a Solaris operating
-   *         system; {@code false} otherwise.
+   * @return {@code true} if this instance represents a Solaris operating system; {@code false} otherwise.
    */
   public boolean isSolaris() {
     return this == SOLARIS;
@@ -91,8 +86,7 @@ public enum OperatingSystem {
   /**
    * States whether this instance represents a Mac operating system.
    *
-   * @return {@code true} if this instance represents a Mac operating system;
-   *         {@code false} otherwise.
+   * @return {@code true} if this instance represents a Mac operating system; {@code false} otherwise.
    */
   public boolean isMac() {
     return this == MAC;

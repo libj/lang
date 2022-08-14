@@ -17,21 +17,18 @@
 package org.libj.lang;
 
 /**
- * Functions implementing common operations on {@code Boolean} references and
- * {@code boolean} values.
+ * Functions implementing common operations on {@code Boolean} references and {@code boolean} values.
  */
 public final class Booleans {
   /**
-   * Parses the string argument as a boolean. The {@link Boolean} returned is
-   * null if the string argument is null, and the value {@code true} if the
-   * string argument is equal, ignoring case, to the string {@code "true"}.
+   * Parses the string argument as a boolean. The {@link Boolean} returned is null if the string argument is null, and the value
+   * {@code true} if the string argument is equal, ignoring case, to the string {@code "true"}.
    * <ul>
    * <li>{@code Boolean.parseBoolean("True")} returns {@code true}.</li>
    * <li>{@code Boolean.parseBoolean("yes")} returns {@code false}.</li>
    * </ul>
    *
-   * @param s The {@link String} containing the boolean representation to be
-   *          parsed.
+   * @param s The {@link String} containing the boolean representation to be parsed.
    * @return The {@link Boolean} represented by the string argument.
    * @see Boolean#parseBoolean(String)
    */
@@ -40,25 +37,21 @@ public final class Booleans {
   }
 
   /**
-   * Returns {@link Boolean#FALSE} if {@code i == 0}, otherwise
-   * {@link Boolean#TRUE}. If {@code i == null}, this method returns
+   * Returns {@link Boolean#FALSE} if {@code i == 0}, otherwise {@link Boolean#TRUE}. If {@code i == null}, this method returns
    * {@code null}.
    *
    * @param i The {@link Integer}.
-   * @return {@link Boolean#FALSE} if {@code i == 0}, otherwise
-   *         {@link Boolean#TRUE}.
+   * @return {@link Boolean#FALSE} if {@code i == 0}, otherwise {@link Boolean#TRUE}.
    */
   public static Boolean valueOf(final Integer i) {
     return i == null ? null : i == 0 ? Boolean.FALSE : Boolean.TRUE;
   }
 
   /**
-   * Returns {@link Boolean#FALSE} if {@code i == 0}, otherwise
-   * {@link Boolean#TRUE}.
+   * Returns {@link Boolean#FALSE} if {@code i == 0}, otherwise {@link Boolean#TRUE}.
    *
    * @param i The {@code int}.
-   * @return {@link Boolean#FALSE} if {@code i == 0}, otherwise
-   *         {@link Boolean#TRUE}.
+   * @return {@link Boolean#FALSE} if {@code i == 0}, otherwise {@link Boolean#TRUE}.
    */
   public static boolean parseBoolean(final int i) {
     return i == 0 ? Boolean.FALSE : Boolean.TRUE;
@@ -85,12 +78,10 @@ public final class Booleans {
   }
 
   /**
-   * Returns {@code 0} if {@code b == false}, {@code 1} if {@code b == true},
-   * and {@code null} if {@code b == null}.
+   * Returns {@code 0} if {@code b == false}, {@code 1} if {@code b == true}, and {@code null} if {@code b == null}.
    *
    * @param b The {@code boolean}.
-   * @return {@code 0} if {@code b == false}, {@code 1} if {@code b == true},
-   *         and {@code null} if {@code b == null}.
+   * @return {@code 0} if {@code b == false}, {@code 1} if {@code b == true}, and {@code null} if {@code b == null}.
    */
   public static Byte toByte(final Boolean b) {
     return b == null ? null : b ? (byte)1 : 0;

@@ -20,8 +20,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 /**
- * {@link ClassLoader} that resolves classes and resources via the bootstrap
- * class loader.
+ * {@link ClassLoader} that resolves classes and resources via the bootstrap class loader.
  */
 public final class BootProxyClassLoader extends URLClassLoader {
   public static final BootProxyClassLoader INSTANCE = new BootProxyClassLoader();
@@ -41,28 +40,24 @@ public final class BootProxyClassLoader extends URLClassLoader {
   }
 
   /**
-   * A variation of {@link #loadClass(String)} to load a class with the
-   * specified binary name. This method returns {@code null} when the class is
-   * not found. Invoking this method is equivalent to invoking
-   * {@link #loadClassOrNull(String,boolean) loadClassOrNull(name, false)}.
+   * A variation of {@link #loadClass(String)} to load a class with the specified binary name. This method returns {@code null} when
+   * the class is not found. Invoking this method is equivalent to invoking {@link #loadClassOrNull(String,boolean)
+   * loadClassOrNull(name, false)}.
    *
    * @param name The binary name of the class.
-   * @return The resulting {@link Class} object if successfully loaded,
-   *         otherwise {@code null}.
+   * @return The resulting {@link Class} object if successfully loaded, otherwise {@code null}.
    */
   public Class<?> loadClassOrNull(final String name) {
     return loadClassOrNull(name, false);
   }
 
   /**
-   * A variation of {@link #loadClass(String,boolean)} to load a class with the
-   * specified binary name. This method returns {@code null} when the class is
-   * not found.
+   * A variation of {@link #loadClass(String,boolean)} to load a class with the specified binary name. This method returns
+   * {@code null} when the class is not found.
    *
    * @param name The binary name of the class.
    * @param resolve If {@code true} then resolve the class.
-   * @return The resulting {@link Class} object if successfully loaded,
-   *         otherwise {@code null}.
+   * @return The resulting {@link Class} object if successfully loaded, otherwise {@code null}.
    */
   public Class<?> loadClassOrNull(final String name, final boolean resolve) {
     try {

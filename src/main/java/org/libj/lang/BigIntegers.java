@@ -45,12 +45,10 @@ public final class BigIntegers {
   }
 
   /**
-   * Returns a canonical representation of the {@link BigInteger} object
-   * representing the specified string value.
+   * Returns a canonical representation of the {@link BigInteger} object representing the specified string value.
    *
    * @param val The value of the desired {@link BigInteger} instance.
-   * @return A canonical representation of the {@link BigInteger} object
-   *         representing the specified string value.
+   * @return A canonical representation of the {@link BigInteger} object representing the specified string value.
    * @throws IllegalArgumentException If {@code val} is null.
    */
   public static BigInteger intern(final String val) {
@@ -62,9 +60,8 @@ public final class BigIntegers {
    * Returns a canonical representation for the {@link BigInteger} object.
    *
    * @param n The {@link BigInteger} to intern.
-   * @return A {@link BigInteger} that has the same contents as the specified
-   *         {@link BigInteger}, but is guaranteed to be from a pool of unique
-   *         instances.
+   * @return A {@link BigInteger} that has the same contents as the specified {@link BigInteger}, but is guaranteed to be from a
+   *         pool of unique instances.
    * @throws IllegalArgumentException If {@code n} is null.
    */
   public static BigInteger intern(final BigInteger n) {
@@ -78,8 +75,7 @@ public final class BigIntegers {
    * @param signum The sign of the {@link BigInteger} to be returned.
    * @param mag The unsigned magnitude of the {@link BigInteger} to be returned.
    * @return A {@link BigInteger} equal to the unsigned value of the argument.
-   * @throws NumberFormatException If {@code signum} is not -1, 0 or 1, or if
-   *           {@code signum == 0 && mag != 0}.
+   * @throws NumberFormatException If {@code signum} is not -1, 0 or 1, or if {@code signum == 0 && mag != 0}.
    */
   public static BigInteger valueOf(final int signum, final int mag) {
     final long signed = Integer.toUnsignedLong(mag);
@@ -92,8 +88,7 @@ public final class BigIntegers {
    * @param signum The sign of the {@link BigInteger} to be returned.
    * @param mag The unsigned magnitude of the {@link BigInteger} to be returned.
    * @return A {@link BigInteger} equal to the unsigned value of the argument.
-   * @throws NumberFormatException If {@code signum} is not -1, 0 or 1, or if
-   *           {@code signum == 0 && mag != 0}.
+   * @throws NumberFormatException If {@code signum} is not -1, 0 or 1, or if {@code signum == 0 && mag != 0}.
    */
   public static BigInteger valueOf(final int signum, final long mag) {
     if (signum < -1 || signum > 1)
@@ -120,8 +115,7 @@ public final class BigIntegers {
    * @param signum The sign of the {@link BigInteger} to be returned.
    * @param mag The unsigned magnitude of the {@link BigInteger} to be returned.
    * @return A {@link BigInteger} equal to the unsigned value of the argument.
-   * @throws NumberFormatException If {@code signum} is not -1, 0 or 1, or if
-   *           {@code signum == 0 && mag != 0}.
+   * @throws NumberFormatException If {@code signum} is not -1, 0 or 1, or if {@code signum == 0 && mag != 0}.
    */
   public static BigInteger valueOf(final int signum, final byte[] mag) {
     return new BigInteger(signum, mag);

@@ -25,12 +25,10 @@ import java.util.UUID;
  */
 public final class UUIDs {
   /**
-   * Returns a string representation of the specified {@link UUID} with its
-   * dashes removed, making it 32 characters in length.
+   * Returns a string representation of the specified {@link UUID} with its dashes removed, making it 32 characters in length.
    *
    * @param uuid The {@link UUID}.
-   * @return A string representation of the specified {@link UUID} with its
-   *         dashes removed, making it 32 characters in length.
+   * @return A string representation of the specified {@link UUID} with its dashes removed, making it 32 characters in length.
    * @throws IllegalAnnotationException If {@code uuid} is null.
    */
   public static String toString32(final UUID uuid) {

@@ -35,31 +35,23 @@ public final class WrapperProxy {
   }
 
   /**
-   * Returns a {@linkplain Proxy proxy} with type {@code <T>} of the specified
-   * {@code obj} wrapping the provided {@code wrapper} instance. Method
-   * invocations on the proxy instance will be handled as such:
+   * Returns a {@linkplain Proxy proxy} with type {@code <T>} of the specified {@code obj} wrapping the provided {@code wrapper}
+   * instance. Method invocations on the proxy instance will be handled as such:
    * <ol>
-   * <li>The {@code wrapper} instance will be invoked for methods that
-   * <i>exist</i> in the {@code wrapper} instance.</li>
-   * <li>The {@code obj} instance will be invoked for methods that <i>do not
-   * exist</i> in the {@code wrapper} instance.</li>
+   * <li>The {@code wrapper} instance will be invoked for methods that <i>exist</i> in the {@code wrapper} instance.</li>
+   * <li>The {@code obj} instance will be invoked for methods that <i>do not exist</i> in the {@code wrapper} instance.</li>
    * </ol>
-   * The type of the returned {@linkplain Proxy proxy} will be the composition
-   * of all super-interfaces of the runtime type of the specified {@code obj}
-   * instance.
+   * The type of the returned {@linkplain Proxy proxy} will be the composition of all super-interfaces of the runtime type of the
+   * specified {@code obj} instance.
    *
-   * @implNote The runtime type of the returned instance will <i>not be</i> of a
-   *           concrete class, but rather a composition of all super-interfaces
-   *           of the concrete class {@code <T>}. It is therefore not possible
-   *           to cast the instance returned by this method to a concrete class,
-   *           but rather any super-interface of the concrete class.
+   * @implNote The runtime type of the returned instance will <i>not be</i> of a concrete class, but rather a composition of all
+   *           super-interfaces of the concrete class {@code <T>}. It is therefore not possible to cast the instance returned by
+   *           this method to a concrete class, but rather any super-interface of the concrete class.
    * @param <T> The type parameter of the specified arguments.
    * @param obj The target object instance to wrap.
    * @param wrapper The wrapping object.
-   * @return a {@linkplain Proxy proxy} with type {@code <T>} of the specified
-   *         {@code obj} wrapping the provided {@code wrapper} instance, or,
-   *         {@code wrapper} if {@code obj == wrapper}, or if {@code target} or
-   *         {@code wrapper} is null.
+   * @return a {@linkplain Proxy proxy} with type {@code <T>} of the specified {@code obj} wrapping the provided {@code wrapper}
+   *         instance, or, {@code wrapper} if {@code obj == wrapper}, or if {@code target} or {@code wrapper} is null.
    */
   @SuppressWarnings("unchecked")
   public static <T>T wrap(final T obj, final T wrapper) {
@@ -119,17 +111,13 @@ public final class WrapperProxy {
   }
 
   /**
-   * Tests whether the specified object is a proxy of a wrapped instance type
-   * matching the provided {@code wrappedClass}.
+   * Tests whether the specified object is a proxy of a wrapped instance type matching the provided {@code wrappedClass}.
    *
    * @param <T> The common type of the proxy and wrapped instance.
    * @param obj The object to test.
-   * @param wrappedClass The type of the instance wrapped by the specified
-   *          {@code obj}.
-   * @return Whether the specified object is a proxy of a wrapped instance type
-   *         matching the provided {@code wrappedClass}.
-   * @throws IllegalArgumentException If {@code obj} or {@code wrappedClass} is
-   *           null.
+   * @param wrappedClass The type of the instance wrapped by the specified {@code obj}.
+   * @return Whether the specified object is a proxy of a wrapped instance type matching the provided {@code wrappedClass}.
+   * @throws IllegalArgumentException If {@code obj} or {@code wrappedClass} is null.
    */
   public static <T>boolean isWrapper(final T obj, final Class<T> wrappedClass) {
     assertNotNull(obj);

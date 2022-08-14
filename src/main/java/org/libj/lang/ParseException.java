@@ -21,15 +21,13 @@ package org.libj.lang;
  */
 public class ParseException extends Exception {
   /**
-   * The zero-based character offset into the string being parsed at which the
-   * error was found during parsing.
+   * The zero-based character offset into the string being parsed at which the error was found during parsing.
    */
   private final int errorOffset;
 
   /**
-   * Constructs a {@link ParseException} with the specified detail message and
-   * offset. A detail message is a String that describes this particular
-   * exception.
+   * Constructs a {@link ParseException} with the specified detail message and offset. A detail message is a String that describes
+   * this particular exception.
    *
    * @param message The detail message.
    * @param errorOffset The position where the error is found while parsing.
@@ -39,9 +37,8 @@ public class ParseException extends Exception {
   }
 
   /**
-   * Constructs a {@link ParseException} with the specified detail message and
-   * offset. A detail message is a String that describes this particular
-   * exception.
+   * Constructs a {@link ParseException} with the specified detail message and offset. A detail message is a String that describes
+   * this particular exception.
    *
    * @param message The detail message.
    * @param errorOffset The position where the error is found while parsing.
