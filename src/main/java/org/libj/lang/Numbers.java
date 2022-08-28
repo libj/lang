@@ -516,6 +516,284 @@ public final class Numbers {
   }
 
   /**
+   * Parses the {@link CharSequence} argument as per the specification of {@link Byte#parseByte(String)}, but returns {@code null}
+   * if the sequence does not contain a parsable {@code byte}.
+   *
+   * @param s A {@link CharSequence} containing the {@link Byte} representation to be parsed.
+   * @return The integer value represented by the argument, or {@code null} if the sequence does not contain a parsable
+   *         {@code byte}.
+   * @see Byte#parseByte(String)
+   */
+  public static Byte parseByte(final CharSequence s) {
+    return s == null ? null : parseByte0(s, 0, s.length(), 10);
+  }
+
+  /**
+   * Parses the {@link CharSequence} argument as per the specification of {@link Byte#parseByte(String)}, but returns {@code null}
+   * if the sequence does not contain a parsable {@code byte}.
+   *
+   * @param s A {@link CharSequence} containing the {@link Byte} representation to be parsed.
+   * @param fromIndex The index in {@code s} from which to start parsing (inclusive).
+   * @param toIndex The index in {@code s} at which to end parsing (exclusive).
+   * @return The integer value represented by the argument, or {@code null} if the sequence does not contain a parsable
+   *         {@code byte}.
+   * @throws IndexOutOfBoundsException If the given {@code fromIndex} or {@code toIndex} is out of range.
+   * @see Byte#parseByte(String)
+   */
+  public static Byte parseByte(final CharSequence s, final int fromIndex, final int toIndex) {
+    if (s == null)
+      return null;
+
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
+    return parseByte0(s, fromIndex, toIndex, 10);
+  }
+
+  /**
+   * Parses the {@link CharSequence} argument as per the specification of {@link Byte#parseByte(String)}, but returns
+   * {@code defaultValue} if the sequence does not contain a parsable {@code byte}.
+   *
+   * @param s A {@link CharSequence} containing the {@code byte} representation to be parsed.
+   * @param defaultValue The {@code byte} value to be returned if the sequence does not contain a parsable {@code byte}.
+   * @return The {@code byte} value represented by the argument, or {@code defaultValue} if the sequence does not contain a parsable
+   *         {@code byte}.
+   * @see Byte#parseByte(String)
+   */
+  public static byte parseByte(final CharSequence s, final byte defaultValue) {
+    return s == null ? defaultValue : parseByte0(s, 0, s.length(), 10, defaultValue);
+  }
+
+  /**
+   * Parses the {@link CharSequence} argument as per the specification of {@link Byte#parseByte(String)}, but returns
+   * {@code defaultValue} if the sequence does not contain a parsable {@code byte}.
+   *
+   * @param s A {@link CharSequence} containing the {@code byte} representation to be parsed.
+   * @param fromIndex The index in {@code s} from which to start parsing (inclusive).
+   * @param toIndex The index in {@code s} at which to end parsing (exclusive).
+   * @param defaultValue The {@code byte} value to be returned if the sequence does not contain a parsable {@code byte}.
+   * @return The {@code byte} value represented by the argument, or {@code defaultValue} if the sequence does not contain a parsable
+   *         {@code byte}.
+   * @throws IndexOutOfBoundsException If the given {@code fromIndex} or {@code toIndex} is out of range.
+   * @see Byte#parseByte(String)
+   */
+  public static byte parseByte(final CharSequence s, final int fromIndex, final int toIndex, final byte defaultValue) {
+    if (s == null)
+      return defaultValue;
+
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
+    return parseByte0(s, fromIndex, toIndex, 10, defaultValue);
+  }
+
+  /**
+   * Parses the {@code char[]} argument as per the specification of {@link Byte#parseByte(String)}, but returns {@code defaultValue}
+   * if the char array does not contain a parsable {@code byte}.
+   *
+   * @param cbuf A {@code char} array containing the {@code byte} representation to be parsed.
+   * @param defaultValue The {@code byte} value to be returned if the char array does not contain a parsable {@code byte}.
+   * @return The {@code byte} value represented by the argument, or {@code defaultValue} if the char array does not contain a
+   *         parsable {@code byte}.
+   * @see Byte#parseByte(String)
+   */
+  public static byte parseByte(final char[] cbuf, final byte defaultValue) {
+    return cbuf == null ? defaultValue : parseByte0(cbuf, 0, cbuf.length, 10, defaultValue);
+  }
+
+  /**
+   * Parses the {@code char[]} argument as per the specification of {@link Byte#parseByte(String)}, but returns {@code defaultValue}
+   * if the char array does not contain a parsable {@code byte}.
+   *
+   * @param cbuf A {@code char} array containing the {@code byte} representation to be parsed.
+   * @param fromIndex The index in {@code cbuf} from which to start parsing (inclusive).
+   * @param toIndex The index in {@code cbuf} at which to end parsing (exclusive).
+   * @param defaultValue The {@code byte} value to be returned if the char array does not contain a parsable {@code byte}.
+   * @return The {@code byte} value represented by the argument, or {@code defaultValue} if the char array does not contain a
+   *         parsable {@code byte}.
+   * @throws IndexOutOfBoundsException If the given {@code fromIndex} or {@code toIndex} is out of range.
+   * @see Byte#parseByte(String)
+   */
+  public static byte parseByte(final char[] cbuf, final int fromIndex, final int toIndex, final byte defaultValue) {
+    if (cbuf == null)
+      return defaultValue;
+
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
+    return parseByte0(cbuf, fromIndex, toIndex, 10, defaultValue);
+  }
+
+  /**
+   * Parses the {@link CharSequence} argument as per the specification of {@link Byte#parseByte(String,int)}, but returns
+   * {@code null} if the sequence does not contain a parsable {@code byte}.
+   *
+   * @param s A {@link CharSequence} containing the {@link Byte} representation to be parsed.
+   * @param radix The radix to be used while parsing {@code s}.
+   * @return The integer value represented by the argument, or {@code null} if the sequence does not contain a parsable
+   *         {@code byte}.
+   * @see Byte#parseByte(String)
+   */
+  public static Byte parseByte(final CharSequence s, final int radix) {
+    if (s == null)
+      return null;
+
+    final int i = parseInt0(s, 0, s.length(), radix, Integer.MIN_VALUE);
+    return i < Byte.MIN_VALUE || i > Byte.MAX_VALUE ? null : (byte)i;
+  }
+
+  /**
+   * Parses the {@link CharSequence} argument as per the specification of {@link Byte#parseByte(String,int)}, but returns
+   * {@code null} if the sequence does not contain a parsable {@code byte}.
+   *
+   * @param s A {@link CharSequence} containing the {@link Byte} representation to be parsed.
+   * @param fromIndex The index in {@code s} from which to start parsing (inclusive).
+   * @param toIndex The index in {@code s} at which to end parsing (exclusive).
+   * @param radix The radix to be used while parsing {@code s}.
+   * @return The integer value represented by the argument, or {@code null} if the sequence does not contain a parsable
+   *         {@code byte}.
+   * @throws IndexOutOfBoundsException If the given {@code fromIndex} or {@code toIndex} is out of range.
+   * @see Byte#parseByte(String)
+   */
+  public static Byte parseByte(final CharSequence s, final int fromIndex, final int toIndex, final int radix) {
+    if (s == null)
+      return null;
+
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
+    return parseByte0(s, fromIndex, toIndex, radix);
+  }
+
+  private static Byte parseByte0(final CharSequence s, final int fromIndex, final int toIndex, final int radix) {
+    final int i = parseInt0(s, fromIndex, toIndex, radix, Integer.MIN_VALUE);
+    return i < Byte.MIN_VALUE || i > Byte.MAX_VALUE ? null : (byte)i;
+  }
+
+  /**
+   * Parses the {@code char[]} argument as per the specification of {@link Byte#parseByte(String,int)}, but returns {@code null} if
+   * the char array does not contain a parsable {@code byte}.
+   *
+   * @param cbuf A {@code char} array containing the {@link Byte} representation to be parsed.
+   * @param radix The radix to be used while parsing {@code s}.
+   * @return The integer value represented by the argument, or {@code null} if the char array does not contain a parsable
+   *         {@code byte}.
+   * @see Byte#parseByte(String)
+   */
+  public static Byte parseByte(final char[] cbuf, final int radix) {
+    if (cbuf == null)
+      return null;
+
+    final int i = parseInt0(cbuf, 0, cbuf.length, radix, Integer.MIN_VALUE);
+    return i < Byte.MIN_VALUE || i > Byte.MAX_VALUE ? null : (byte)i;
+  }
+
+  /**
+   * Parses the {@code char[]} argument as per the specification of {@link Byte#parseByte(String,int)}, but returns {@code null} if
+   * the char array does not contain a parsable {@code byte}.
+   *
+   * @param cbuf A {@code char} array containing the {@link Byte} representation to be parsed.
+   * @param fromIndex The index in {@code cbuf} from which to start parsing (inclusive).
+   * @param toIndex The index in {@code cbuf} at which to end parsing (exclusive).
+   * @param radix The radix to be used while parsing {@code s}.
+   * @return The integer value represented by the argument, or {@code null} if the char array does not contain a parsable
+   *         {@code byte}.
+   * @throws IndexOutOfBoundsException If the given {@code fromIndex} or {@code toIndex} is out of range.
+   * @see Byte#parseByte(String)
+   */
+  public static Byte parseByte(final char[] cbuf, final int fromIndex, final int toIndex, final int radix) {
+    if (cbuf == null)
+      return null;
+
+    final int i = parseInt(cbuf, fromIndex, toIndex, radix, Integer.MIN_VALUE);
+    return i < Byte.MIN_VALUE || i > Byte.MAX_VALUE ? null : (byte)i;
+  }
+
+  /**
+   * Parses the {@link CharSequence} argument as per the specification of {@link Byte#parseByte(String,int)}, but returns
+   * {@code defaultValue} if the sequence does not contain a parsable {@code byte}.
+   *
+   * @param s A {@link CharSequence} containing the {@code byte} representation to be parsed.
+   * @param defaultValue The {@code byte} value to be returned if the sequence does not contain a parsable {@code byte}.
+   * @param radix The radix to be used while parsing {@code s}.
+   * @return The integer value represented by the argument, or {@code defaultValue} if the sequence does not contain a parsable
+   *         {@code byte}.
+   * @see Byte#parseByte(String)
+   */
+  public static byte parseByte(final CharSequence s, final int radix, final byte defaultValue) {
+    if (s == null)
+      return defaultValue;
+
+    final int i = parseInt0(s, 0, s.length(), radix, Integer.MIN_VALUE);
+    return i < Byte.MIN_VALUE || i > Byte.MAX_VALUE ? defaultValue : (byte)i;
+  }
+
+  /**
+   * Parses the {@link CharSequence} argument as per the specification of {@link Byte#parseByte(String,int)}, but returns
+   * {@code defaultValue} if the sequence does not contain a parsable {@code byte}.
+   *
+   * @param s A {@link CharSequence} containing the {@code byte} representation to be parsed.
+   * @param fromIndex The index in {@code s} from which to start parsing (inclusive).
+   * @param toIndex The index in {@code s} at which to end parsing (exclusive).
+   * @param defaultValue The {@code byte} value to be returned if the sequence does not contain a parsable {@code byte}.
+   * @param radix The radix to be used while parsing {@code s}.
+   * @return The integer value represented by the argument, or {@code defaultValue} if the sequence does not contain a parsable
+   *         {@code byte}.
+   * @throws IndexOutOfBoundsException If the given {@code fromIndex} or {@code toIndex} is out of range.
+   * @see Byte#parseByte(String)
+   */
+  public static byte parseByte(final CharSequence s, final int fromIndex, final int toIndex, final int radix, final byte defaultValue) {
+    if (s == null)
+      return defaultValue;
+
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
+    return parseByte0(s, fromIndex, toIndex, radix, defaultValue);
+  }
+
+  private static byte parseByte0(final CharSequence s, final int fromIndex, final int toIndex, final int radix, final byte defaultValue) {
+    final int i = parseInt0(s, fromIndex, toIndex, radix, Integer.MIN_VALUE);
+    return i < Byte.MIN_VALUE || i > Byte.MAX_VALUE ? defaultValue : (byte)i;
+  }
+
+  /**
+   * Parses the {@code char[]} argument as per the specification of {@link Byte#parseByte(String,int)}, but returns
+   * {@code defaultValue} if the char array does not contain a parsable {@code byte}.
+   *
+   * @param cbuf A {@code char} array containing the {@code byte} representation to be parsed.
+   * @param defaultValue The {@code byte} value to be returned if the char array does not contain a parsable {@code byte}.
+   * @param radix The radix to be used while parsing {@code s}.
+   * @return The integer value represented by the argument, or {@code defaultValue} if the char array does not contain a parsable
+   *         {@code byte}.
+   * @see Byte#parseByte(String)
+   */
+  public static byte parseByte(final char[] cbuf, final int radix, final byte defaultValue) {
+    if (cbuf == null)
+      return defaultValue;
+
+    final int i = parseInt0(cbuf, 0, cbuf.length, radix, Integer.MIN_VALUE);
+    return i < Byte.MIN_VALUE || i > Byte.MAX_VALUE ? defaultValue : (byte)i;
+  }
+
+  /**
+   * Parses the {@code char[]} argument as per the specification of {@link Byte#parseByte(String,int)}, but returns
+   * {@code defaultValue} if the char array does not contain a parsable {@code byte}.
+   *
+   * @param cbuf A {@code char} array containing the {@code byte} representation to be parsed.
+   * @param fromIndex The index in {@code cbuf} from which to start parsing (inclusive).
+   * @param toIndex The index in {@code cbuf} at which to end parsing (exclusive).
+   * @param defaultValue The {@code byte} value to be returned if the char array does not contain a parsable {@code byte}.
+   * @param radix The radix to be used while parsing {@code s}.
+   * @return The integer value represented by the argument, or {@code defaultValue} if the char array does not contain a parsable
+   *         {@code byte}.
+   * @throws IndexOutOfBoundsException If the given {@code fromIndex} or {@code toIndex} is out of range.
+   * @see Byte#parseByte(String)
+   */
+  public static byte parseByte(final char[] cbuf, final int fromIndex, final int toIndex, final int radix, final byte defaultValue) {
+    if (cbuf == null)
+      return defaultValue;
+
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "cbuf.length", cbuf.length);
+    return parseByte0(cbuf, fromIndex, toIndex, radix, defaultValue);
+  }
+
+  private static byte parseByte0(final char[] cbuf, final int fromIndex, final int toIndex, final int radix, final byte defaultValue) {
+    final int i = parseInt0(cbuf, fromIndex, toIndex, radix, Integer.MIN_VALUE);
+    return i < Byte.MIN_VALUE || i > Byte.MAX_VALUE ? defaultValue : (byte)i;
+  }
+
+  /**
    * Parses the {@link CharSequence} argument as per the specification of {@link Short#parseShort(String)}, but returns {@code null}
    * if the sequence does not contain a parsable {@code short}.
    *
@@ -1823,24 +2101,82 @@ public final class Numbers {
     throw new UnsupportedOperationException("Unsupported Number type: " + as.getName());
   }
 
-  public static double parseNumber(String s) {
-    if (s == null || (s = s.trim()).length() == 0 || !isNumber(s))
-      return Double.NaN;
+  private static final String MIN_LONG = "-9223372036854775808";
+  private static final String MAX_LONG = "9223372036854775807";
 
-    double scalar = 0;
-    final String[] parts = s.split(" ");
-    if (parts.length == 2) {
-      scalar += new BigDecimal(parts[0]).doubleValue();
-      s = parts[1];
+  public static Number parseNumber(final String str) {
+    final int len;
+    if (str == null || (len = str.length()) == 0)
+      return null;
+
+    char ch = str.charAt(0);
+    final boolean neg = ch == '-';
+    final int start = neg || ch == '+' ? 1 : 0;
+    final int digits = len - start;
+
+    if (digits < 3)
+      return parseByte(str);
+
+    if (digits == 3) {
+      final Integer i = parseInteger(str);
+      if (i == 0)
+        return null;
+
+      final byte b = i.byteValue();
+      if (b == i)
+        return b;
+
+      return i.shortValue();
     }
 
-    final int slash = s.indexOf('/');
-    if (slash == 1)
-      scalar += (double)Integer.parseInt(s.substring(0, slash)) / Integer.parseInt(s.substring(slash + 1));
-    else
-      scalar += new BigDecimal(s).doubleValue();
+    if (digits < 5)
+      return parseShort(str);
 
-    return scalar;
+    if (digits == 5) {
+      final Integer i = parseInteger(str);
+      if (i == null)
+        return null;
+
+      final short s = i.shortValue();
+      if (s == i)
+        return s;
+
+      return i;
+    }
+
+    if (digits < 10)
+      return parseInteger(str);
+
+    if (digits == 10) {
+      final Long l = parseLong(str);
+      if (l == null)
+        return null;
+
+      final int i = l.intValue();
+      if (i == l)
+        return i;
+
+      return l;
+    }
+
+    if (digits < 19)
+      return parseLong(str);
+
+    if (digits == 19) {
+      final String limit = neg ? MIN_LONG : MAX_LONG;
+      for (int i = start; i < len; ++i) {
+        ch = str.charAt(i);
+        if (!Character.isDigit(ch))
+          throw new NumberFormatException(str);
+
+        if (ch > limit.charAt(i))
+          return new BigInteger(str);
+      }
+
+      return parseLong(str);
+    }
+
+    return isNumber(str) ? new BigInteger(str) : null;
   }
 
   /**

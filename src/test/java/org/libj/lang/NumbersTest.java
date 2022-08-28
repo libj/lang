@@ -231,36 +231,103 @@ public class NumbersTest {
   }
 
   @Test
-  public void testParseNumber() {
-    assertEquals(2.5, Numbers.parseNumber("2 1/2"), 0);
-    assertEquals(2.75, Numbers.parseNumber("2 3/4"), 0);
+  public void testParseNumberByteMin() {
+    final Byte v = Byte.MIN_VALUE;
+    String s = v.toString();
+    Number t = Numbers.parseNumber(s);
+    assertEquals(v, t);
+    s = s.substring(0, s.length() - 1) + '9';
+    t = Numbers.parseNumber(s);
+    assertEquals(Short.valueOf(s), t);
+  }
 
-    assertEquals(0, Numbers.parseNumber("0"), 0);
-    assertEquals(299792458, Numbers.parseNumber(" 299792458"), 0);
-    assertEquals(-299792458, Numbers.parseNumber("-299792458 "), 0);
-    assertEquals(3.14159265, Numbers.parseNumber(" 3.14159265"), 0);
-    assertEquals(-3.14159265, Numbers.parseNumber("-3.14159265"), 0);
-    assertEquals(6.022E23, Numbers.parseNumber("6.022E23 "), 0);
-    assertEquals(-6.022E23, Numbers.parseNumber(" -6.022E23"), 0);
-    assertEquals(6.626068E-34, Numbers.parseNumber(" 6.626068E-34"), 0);
-    assertEquals(-6.626068E-34, Numbers.parseNumber("-6.626068E-34 "), 0);
+  @Test
+  public void testParseNumberByteMax() {
+    final Byte v = Byte.MAX_VALUE;
+    String s = v.toString();
+    Number t = Numbers.parseNumber(s);
+    assertEquals(v, t);
+    s = s.substring(0, s.length() - 1) + '8';
+    t = Numbers.parseNumber(s);
+    assertEquals(Short.valueOf(s), t);
+    s = "+" + s;
+    t = Numbers.parseNumber(s);
+    assertEquals(Short.valueOf(s), t);
+  }
 
-    assertEquals(Double.NaN, Numbers.parseNumber(null), 0);
-    assertEquals(Double.NaN, Numbers.parseNumber(""), 0);
-    assertEquals(Double.NaN, Numbers.parseNumber(" "), 0);
-    assertEquals(Double.NaN, Numbers.parseNumber("not number"), 0);
-    assertEquals(Double.NaN, Numbers.parseNumber("3.14.15"), 0);
-    assertEquals(Double.NaN, Numbers.parseNumber("29-97924"), 0);
-    assertEquals(Double.NaN, Numbers.parseNumber("-29-97924"), 0);
-    assertEquals(Double.NaN, Numbers.parseNumber("2 997924"), 0);
-    assertEquals(Double.NaN, Numbers.parseNumber("-29-979.24"), 0);
-    assertEquals(Double.NaN, Numbers.parseNumber("-2.9-979.24"), 0);
-    assertEquals(Double.NaN, Numbers.parseNumber("6.022 E23 "), 0);
-    assertEquals(Double.NaN, Numbers.parseNumber(" -6.022E 23"), 0);
-    assertEquals(Double.NaN, Numbers.parseNumber("-6.626068E--34 "), 0);
-    assertEquals(Double.NaN, Numbers.parseNumber("-6.626068E-3-4 "), 0);
-    assertEquals(Double.NaN, Numbers.parseNumber("-6.626068E-3.4"), 0);
-    assertEquals(Double.NaN, Numbers.parseNumber("-6.626E068E-34"), 0);
+  @Test
+  public void testParseNumberShortMin() {
+    final Short v = Short.MIN_VALUE;
+    String s = v.toString();
+    Number t = Numbers.parseNumber(s);
+    assertEquals(v, t);
+    s = s.substring(0, s.length() - 1) + '9';
+    t = Numbers.parseNumber(s);
+    assertEquals(Integer.valueOf(s), t);
+  }
+
+  @Test
+  public void testParseNumberShortMax() {
+    final Short v = Short.MAX_VALUE;
+    String s = v.toString();
+    Number t = Numbers.parseNumber(s);
+    assertEquals(v, t);
+    s = s.substring(0, s.length() - 1) + '8';
+    t = Numbers.parseNumber(s);
+    assertEquals(Integer.valueOf(s), t);
+    s = "+" + s;
+    t = Numbers.parseNumber(s);
+    assertEquals(Integer.valueOf(s), t);
+  }
+
+  @Test
+  public void testParseNumberIntMin() {
+    final Integer v = Integer.MIN_VALUE;
+    String s = v.toString();
+    Number t = Numbers.parseNumber(s);
+    assertEquals(v, t);
+    s = s.substring(0, s.length() - 1) + '9';
+    t = Numbers.parseNumber(s);
+    assertEquals(Long.valueOf(s), t);
+  }
+
+  @Test
+  public void testParseNumberIntMax() {
+    final Integer v = Integer.MAX_VALUE;
+    String s = v.toString();
+    Number t = Numbers.parseNumber(s);
+    assertEquals(v, t);
+    s = s.substring(0, s.length() - 1) + '8';
+    t = Numbers.parseNumber(s);
+    assertEquals(Long.valueOf(s), t);
+    s = "+" + s;
+    t = Numbers.parseNumber(s);
+    assertEquals(Long.valueOf(s), t);
+  }
+
+  @Test
+  public void testParseNumberLongMin() {
+    final Long v = Long.MIN_VALUE;
+    String s = v.toString();
+    Number t = Numbers.parseNumber(s);
+    assertEquals(v, t);
+    s = s.substring(0, s.length() - 1) + '9';
+    t = Numbers.parseNumber(s);
+    assertEquals(new BigInteger(s), t);
+  }
+
+  @Test
+  public void testParseNumberLongMax() {
+    final Long v = Long.MAX_VALUE;
+    String s = v.toString();
+    Number t = Numbers.parseNumber(s);
+    assertEquals(v, t);
+    s = s.substring(0, s.length() - 1) + '8';
+    t = Numbers.parseNumber(s);
+    assertEquals(new BigInteger(s), t);
+    s = "+" + s;
+    t = Numbers.parseNumber(s);
+    assertEquals(new BigInteger(s), t);
   }
 
   @Test
