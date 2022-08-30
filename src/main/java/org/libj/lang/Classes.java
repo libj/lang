@@ -482,8 +482,10 @@ public final class Classes {
         classes[i] = (Class<?>)((ParameterizedType)type).getRawType();
       else if (type instanceof TypeVariable)
         classes[i] = (Class<?>)((TypeVariable<?>)type).getBounds()[0];
-      else if (type instanceof WildcardType)
-        classes[i] = (Class<?>)((WildcardType)type).getUpperBounds()[0];
+      else if (type instanceof WildcardType) {
+        final Type wildcardType = ((WildcardType)type).getUpperBounds()[0];
+        classes[i] = (Class<?>)(wildcardType instanceof ParameterizedType ? ((ParameterizedType)wildcardType).getRawType() : wildcardType);
+      }
     }
 
     return classes;
