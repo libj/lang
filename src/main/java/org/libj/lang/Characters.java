@@ -37,7 +37,9 @@ public final class Characters {
   }
 
   /**
-   * Returns the escaped representation of the specified character.<blockquote>
+   * Returns the escaped representation of the specified character.
+   *
+   * <pre>
    * <table>
    * <caption>Escape Sequences</caption>
    * <tr><td><b>Escape Sequence</b></td><td><b>Description</b></td></tr>
@@ -58,7 +60,7 @@ public final class Characters {
    * <tr><td><code>\<b>6</b></code></td><td>6</td></tr>
    * <tr><td><code>\<b>7</b></code></td><td>7</td></tr>
    * </table>
-   * </blockquote>
+   * </pre>
    *
    * @implSpec This method only supports single-character escape sequences, and therefore does not handle 2-digit or 3-digit octal
    *           escape sequences, or 4-hex-digit unicode sequences.
@@ -77,7 +79,9 @@ public final class Characters {
   }
 
   /**
-   * Tests whether the specified character is escapable.<blockquote>
+   * Tests whether the specified character is escapable
+   * <p>
+   * <blockquote>
    * <table>
    * <caption>Escape Sequences</caption>
    * <tr><td><b>Escape Sequence</b></td><td><b>Description</b></td></tr>
