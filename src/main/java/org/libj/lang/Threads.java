@@ -133,11 +133,13 @@ public final class Threads {
     private ReaperThread() {
       start();
       try {
+        // Await run() to be called
         lock.lock();
         condition.await();
         lock.unlock();
       }
       catch (final InterruptedException e) {
+        throw new IllegalStateException(e);
       }
     }
 
@@ -154,18 +156,15 @@ public final class Threads {
 
     @Override
     public void run() {
-      boolean running = false;
-      do {
+      // Signal thread that called start()
+      lock.lock();
+      condition.signal();
+      lock.unlock();
+      while (true) {
         final Entry entry = queue.poll();
-        if (!running) {
-          lock.lock();
-          condition.signal();
-          lock.unlock();
-          running = true;
-        }
-
         if (entry == null) {
           try {
+            // Await Entry to be added
             lock.lock();
             condition.await();
             lock.unlock();
@@ -178,18 +177,15 @@ public final class Threads {
         }
         else {
           queue.offer(entry);
-          synchronized (queue) {
-            try {
-              lock.lock();
-              condition.await(System.currentTimeMillis() - entry.expireTime, TimeUnit.MILLISECONDS);
-              lock.unlock();
-            }
-            catch (final InterruptedException e) {
-            }
+          try {
+            lock.lock();
+            condition.await(System.currentTimeMillis() - entry.expireTime, TimeUnit.MILLISECONDS);
+            lock.unlock();
+          }
+          catch (final InterruptedException e) {
           }
         }
       }
-      while (running);
     }
   }
 
@@ -213,13 +209,13 @@ public final class Threads {
 
   /**
    * Returns a new {@link Runnable} instance that wraps the provided {@code runnable}, and is scheduled to be
-   * {@linkplain Thread#interrupt() interrupted} once the provided {@code timeout} of {@link TimeUnit unit} expires.
+   * {@linkplain Thread#interrupt() interrupted} once the provided {@code timeout} of {@link TimeUnit unit} elapses.
    *
    * @param runnable The {@link Runnable} to be wrapped.
    * @param timeout The maximum time to wait.
    * @param unit The {@link TimeUnit} of the {@code timeout} argument.
    * @return A new {@link Runnable} instance wrapping the provided {@code runnable} that is scheduled to be
-   *         {@linkplain Thread#interrupt() interrupted} once the provided {@code timeout} of {@link TimeUnit unit} expires.
+   *         {@linkplain Thread#interrupt() interrupted} once the provided {@code timeout} of {@link TimeUnit unit} elapses.
    * @throws IllegalArgumentException If {@code runnable} or {@code unit} is null, or if {@code timeout} is negative.
    */
   public static Runnable interruptAfterTimeout(final Runnable runnable, final long timeout, final TimeUnit unit) {
@@ -234,14 +230,14 @@ public final class Threads {
 
   /**
    * Returns a new {@link Callable} instance that wraps the provided {@code callable}, and is scheduled to be
-   * {@linkplain Thread#interrupt() interrupted} once the provided {@code timeout} of {@link TimeUnit unit} expires.
+   * {@linkplain Thread#interrupt() interrupted} once the provided {@code timeout} of {@link TimeUnit unit} elapses.
    *
    * @param <V> The type parameter of the {@code callable} argument.
    * @param callable The {@link Callable} to be wrapped.
    * @param timeout The maximum time to wait.
    * @param unit The {@link TimeUnit} of the {@code timeout} argument.
    * @return A new {@link Callable} instance wrapping the provided {@code callable} that is scheduled to be
-   *         {@linkplain Thread#interrupt() interrupted} once the provided {@code timeout} of {@link TimeUnit unit} expires.
+   *         {@linkplain Thread#interrupt() interrupted} once the provided {@code timeout} of {@link TimeUnit unit} elapses.
    * @throws IllegalArgumentException If {@code callable} or {@code unit} is null, or if {@code timeout} is negative.
    */
   public static <V>Callable<V> interruptAfterTimeout(final Callable<V> callable, final long timeout, final TimeUnit unit) {
