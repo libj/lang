@@ -2231,7 +2231,7 @@ public final class Numbers {
     if (s == null || (s = s.trim()).length() == 0)
       return false;
 
-    final String[] parts = s.split(" ");
+    final String[] parts = Strings.split(s, ' ');
     if (parts.length > 2)
       return false;
 

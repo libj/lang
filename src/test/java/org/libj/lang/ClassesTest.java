@@ -73,8 +73,9 @@ public class ClassesTest {
     catch (final IllegalArgumentException e) {
     }
 
-    for (final Map.Entry<Class<?>[],Class<?>> entry : classes.entrySet()) // [S]
-      assertSame(entry.getValue(), Classes.getGreatestCommonSuperclass(entry.getKey()));
+    if (classes.size() > 0)
+      for (final Map.Entry<Class<?>[],Class<?>> entry : classes.entrySet()) // [S]
+        assertSame(entry.getValue(), Classes.getGreatestCommonSuperclass(entry.getKey()));
   }
 
   @Test

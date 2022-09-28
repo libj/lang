@@ -68,7 +68,7 @@ public final class Identifiers {
   }
 
   private static void checkSubstitutes(final Map<Character,String> substitutes) {
-    if (substitutes != null)
+    if (substitutes != null && substitutes.size() > 0)
       for (final String substitute : substitutes.values()) // [C]
         for (int i = 0, i$ = substitute.length(); i < i$; ++i) // [N]
           if (!Character.isJavaIdentifierPart(substitute.charAt(i)))

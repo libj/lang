@@ -42,6 +42,12 @@ import java.util.function.UnaryOperator;
  * @param <E> The type of elements in this list.
  */
 public class WrappedArrayList<E> extends ArrayList<E> {
+  /**
+   * The empty {@link WrappedArrayList} (immutable). This list is serializable.
+   */
+  @SuppressWarnings("rawtypes")
+  public static final WrappedArrayList EMPTY_LIST = new WrappedArrayList<>();
+
   protected final E[] elementData;
   private final int size;
 
@@ -49,7 +55,7 @@ public class WrappedArrayList<E> extends ArrayList<E> {
    * Creates a new {@link WrappedArrayList} that wraps the provided {@code objs} array.
    *
    * @param objs The array to wrap.
-   * @throws IllegalArgumentException If {@code array} is null.
+   * @throws IllegalArgumentException If {@code objs} is null.
    */
   @SafeVarargs
   public WrappedArrayList(final E ... objs) {
@@ -70,7 +76,7 @@ public class WrappedArrayList<E> extends ArrayList<E> {
   /**
    * {@inheritDoc}
    *
-   * @throws IllegalArgumentException If {@code action} is null.
+   * @throws IllegalArgumentException If {@code a} is null.
    */
   @Override
   @SuppressWarnings("unchecked")
@@ -684,7 +690,7 @@ public class WrappedArrayList<E> extends ArrayList<E> {
           final int hi = getFence(), lo = index, mid = (lo + hi) >>> 1;
           // ArrayListSpliterator can be used here as the source is already bound
           return (lo >= mid) ? null : // divide range in half unless too small
-              root.new ArrayListSpliterator(lo, index = mid, expectedModCount);
+            root.new ArrayListSpliterator(lo, index = mid, expectedModCount);
         }
 
         @Override

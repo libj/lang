@@ -196,16 +196,18 @@ public final class Strings {
     assertNotNull(prefix);
     assertNotNull(suffix);
     StringBuilder builder = null;
-    for (final Map.Entry<String,String> entry : properties.entrySet()) { // [S]
-      final String value = entry.getValue();
-      if (value != null) {
-        if (builder == null)
-          builder = new StringBuilder(value.length());
-        else
-          builder.setLength(0);
+    if (properties.size() > 0) {
+      for (final Map.Entry<String,String> entry : properties.entrySet()) { // [S]
+        final String value = entry.getValue();
+        if (value != null) {
+          if (builder == null)
+            builder = new StringBuilder(value.length());
+          else
+            builder.setLength(0);
 
-        builder.append(value);
-        entry.setValue(interpolateDeep(builder, properties, prefix, suffix));
+          builder.append(value);
+          entry.setValue(interpolateDeep(builder, properties, prefix, suffix));
+        }
       }
     }
 
