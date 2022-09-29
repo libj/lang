@@ -144,14 +144,16 @@ public final class Annotations {
     attributes.putAll(getAttributes(annotation, removeDefaults));
 
     final StringBuilder builder = new StringBuilder("@").append(annotation.annotationType().getName()).append('(');
-    final Iterator<Map.Entry<String,Object>> iterator = attributes.entrySet().iterator();
-    for (int i = 0; iterator.hasNext(); ++i) { // [I]
-      if (i > 0)
-        builder.append(", ");
+    if (attributes.size() > 0) {
+      final Iterator<Map.Entry<String,Object>> iterator = attributes.entrySet().iterator();
+      for (int i = 0; iterator.hasNext(); ++i) { // [I]
+        if (i > 0)
+          builder.append(", ");
 
-      final Map.Entry<String,Object> entry = iterator.next();
-      builder.append(entry.getKey()).append('=');
-      appendValue(builder, comparator, entry.getValue());
+        final Map.Entry<String,Object> entry = iterator.next();
+        builder.append(entry.getKey()).append('=');
+        appendValue(builder, comparator, entry.getValue());
+      }
     }
 
     return builder.append(')').toString();

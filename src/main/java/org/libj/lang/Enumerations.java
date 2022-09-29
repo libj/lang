@@ -181,7 +181,7 @@ public final class Enumerations {
   public static int getSize(final Enumeration<?> enumeration) {
     assertNotNull(enumeration);
     int size = 0;
-    for (; enumeration.hasMoreElements(); enumeration.nextElement(), ++size); // [X]
+    for (; enumeration.hasMoreElements(); enumeration.nextElement(), ++size); // [E]
     return size;
   }
 

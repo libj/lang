@@ -2164,7 +2164,7 @@ public final class Numbers {
 
     if (digits == 19) {
       final String limit = neg ? MIN_LONG : MAX_LONG;
-      for (int i = start; i < len; ++i) { // [X]
+      for (int i = start; i < len; ++i) { // [$]
         ch = str.charAt(i);
         if (!Character.isDigit(ch))
           throw new NumberFormatException(str);

@@ -388,7 +388,7 @@ public class NumbersTest {
 
   private static final byte countTrailingZeroes(final String str) {
     byte count = 0;
-    for (final int i$ = str.length(); count < i$ && str.charAt(i$ - 1 - count) == '0'; ++count); // [X]
+    for (final int i$ = str.length(); count < i$ && str.charAt(i$ - 1 - count) == '0'; ++count); // [$]
     return count;
   }
 
