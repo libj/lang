@@ -275,6 +275,35 @@ public class ClassesTest {
   }
 
   @Test
+  public void testGetGenericSuperclassTypeArguments() {
+    try {
+      Classes.getGenericSuperclassTypeArguments(Integer.class, null);
+      fail("Expected IllegalArgumentException");
+    }
+    catch (final IllegalArgumentException e) {
+    }
+
+    try {
+      Classes.getGenericSuperclassTypeArguments(null, Serializable.class);
+      fail("Expected IllegalArgumentException");
+    }
+    catch (final IllegalArgumentException e) {
+    }
+
+    try {
+      Classes.getGenericSuperclassTypeArguments(Integer.class, Serializable.class);
+      fail("Expected IllegalArgumentException");
+    }
+    catch (final IllegalArgumentException e) {
+    }
+
+    assertEquals(0, Classes.getGenericSuperclassTypeArguments(Integer.class, Number.class).length);
+    assertEquals(Double.class, Classes.getGenericSuperclassTypeArguments(Z.class, Y.class)[0]);
+    assertEquals(Double.class, Classes.getGenericSuperclassTypeArguments(ZZ.class, Y.class)[0]);
+    assertArrayEquals(new Class[] {Byte.class}, Classes.getGenericSuperclassTypeArguments(ZZ.class, Z.class));
+  }
+
+  @Test
   public void testGetGenericInterfaceTypeArguments() {
     try {
       Classes.getGenericInterfaceTypeArguments(Integer.class, null);
@@ -297,7 +326,7 @@ public class ClassesTest {
     catch (final IllegalArgumentException e) {
     }
 
-    assertArrayEquals(new Type[0], Classes.getGenericInterfaceTypeArguments(Integer.class, Serializable.class));
+    assertEquals(0, Classes.getGenericInterfaceTypeArguments(Integer.class, Serializable.class).length);
     assertArrayEquals(new Class[] {Integer.class, Double.class}, Classes.getGenericInterfaceTypeArguments(Z.class, X.class));
   }
 

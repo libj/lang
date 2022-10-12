@@ -344,6 +344,45 @@ public final class Classes {
   }
 
   /**
+   * Finds the specified {@code superClass} in the class hierarchy of the provided {@code cls}, and returns an array of {@link Type}
+   * objects representing the actual type arguments to the generic type.
+   * <p>
+   * Note that in some cases, the returned array be empty. This can occur if this type represents a non-parameterized type nested
+   * within a parameterized type.
+   *
+   * @param cls The {@link Class} in which to find the specified {@code interfaceType}.
+   * @param superClass The {@link Class} to find in the class hierarchy of the provided {@code cls}.
+   * @return An array of {@link Type} objects representing the actual type arguments specified for {@code superClass}.
+   * @throws TypeNotPresentException If any of the actual type arguments refers to a non-existent type declaration.
+   * @throws MalformedParameterizedTypeException If any of the actual type parameters refer to a parameterized type that cannot be
+   *           instantiated for any reason.
+   * @throws IllegalArgumentException If {@code cls} or {@code superClass} is null, or if {@code superClass} is a {@link Class} of
+   *           an interface type.
+   */
+  public static Type[] getGenericSuperclassTypeArguments(Class<?> cls, final Class<?> superClass) {
+    assertNotNull(cls);
+    assertNotNull(superClass);
+    if (superClass.isInterface())
+      throw new IllegalArgumentException(superClass.getName() + " is an interface type");
+
+    for (Type superType; (superType = cls.getGenericSuperclass()) != null;) {
+      if (superType instanceof ParameterizedType) {
+        final ParameterizedType parameterizedType = (ParameterizedType)superType;
+        cls = (Class<?>)parameterizedType.getRawType();
+        if (cls == superClass)
+          return parameterizedType.getActualTypeArguments();
+      }
+      else {
+        cls = (Class<?>)superType;
+        if (cls == superClass)
+          return EMPTY_TYPES;
+      }
+    }
+
+    return EMPTY_TYPES;
+  }
+
+  /**
    * Finds the specified {@code interfaceType} in the class hierarchy of the provided {@code cls}, and returns an array of
    * {@link Type} objects representing the actual type arguments to the generic type.
    * <p>
@@ -351,12 +390,12 @@ public final class Classes {
    * within a parameterized type.
    *
    * @param cls The {@link Class} in which to find the specified {@code interfaceType}.
-   * @param interfaceType The interface {@link Class} to find in the provided {@code cls}.
-   * @return An array of {@link Type} objects representing the actual type arguments to this type.
+   * @param interfaceType The interface {@link Class} to find in the class hierarchy of the provided {@code cls}.
+   * @return An array of {@link Type} objects representing the actual type arguments specified for {@code interfaceType}.
    * @throws TypeNotPresentException If any of the actual type arguments refers to a non-existent type declaration.
    * @throws MalformedParameterizedTypeException If any of the actual type parameters refer to a parameterized type that cannot be
    *           instantiated for any reason.
-   * @throws IllegalArgumentException If {@code interfaceType} or {@code cls} is null, or if {@code interfaceType} is not a
+   * @throws IllegalArgumentException If {@code cls} or {@code interfaceType} is null, or if {@code interfaceType} is not a
    *           {@link Class} of an interface type.
    */
   public static Type[] getGenericInterfaceTypeArguments(final Class<?> cls, final Class<?> interfaceType) {
@@ -473,8 +512,9 @@ public final class Classes {
       return emptyClasses;
 
     final Type[] types = ((ParameterizedType)genericType).getActualTypeArguments();
-    final Class<?>[] classes = new Class[types.length];
-    for (int i = 0, i$ = classes.length; i < i$; ++i) { // [A]
+    final int len = types.length;
+    final Class<?>[] classes = new Class[len];
+    for (int i = 0; i < len; ++i) { // [A]
       final Type type = types[i];
       if (type instanceof Class)
         classes[i] = (Class<?>)type;
@@ -491,8 +531,7 @@ public final class Classes {
     return classes;
   }
 
-  private static Field getField(final Class<?> cls, final String fieldName, final boolean declared) {
-    final Field[] fields = declared ? cls.getDeclaredFields() : cls.getFields();
+  private static Field getField(final Field[] fields, final String fieldName) {
     for (final Field field : fields) // [A]
       if (fieldName.equals(field.getName()))
         return field;
@@ -533,7 +572,7 @@ public final class Classes {
    */
   @SuppressWarnings("javadoc")
   public static Field getField(final Class<?> cls, final String name) {
-    return Classes.getField(assertNotNull(cls), assertNotNull(name), false);
+    return Classes.getField(assertNotNull(cls).getFields(), assertNotNull(name));
   }
 
   /**
@@ -561,7 +600,7 @@ public final class Classes {
    */
   @SuppressWarnings("javadoc")
   public static Field getDeclaredField(final Class<?> cls, final String name) {
-    return Classes.getField(assertNotNull(cls), assertNotNull(name), true);
+    return Classes.getField(assertNotNull(cls).getDeclaredFields(), assertNotNull(name));
   }
 
   /**
@@ -593,7 +632,7 @@ public final class Classes {
     assertNotNull(name);
     Field field;
     do
-      field = getField(cls, name, true);
+      field = getField(cls.getDeclaredFields(), name);
     while (field == null && (cls = cls.getSuperclass()) != null);
     return field;
   }
@@ -1489,20 +1528,20 @@ public final class Classes {
     if (primitiveType == long.class)
       return Long.class;
 
-    if (primitiveType == boolean.class)
-      return Boolean.class;
-
-    if (primitiveType == byte.class)
-      return Byte.class;
-
-    if (primitiveType == char.class)
-      return Character.class;
+    if (primitiveType == double.class)
+      return Double.class;
 
     if (primitiveType == float.class)
       return Float.class;
 
-    if (primitiveType == double.class)
-      return Double.class;
+    if (primitiveType == boolean.class)
+      return Boolean.class;
+
+    if (primitiveType == char.class)
+      return Character.class;
+
+    if (primitiveType == byte.class)
+      return Byte.class;
 
     if (primitiveType == short.class)
       return Short.class;
@@ -1510,7 +1549,41 @@ public final class Classes {
     if (primitiveType == void.class)
       return Void.class;
 
-    throw new UnsupportedOperationException("Unsupported class type: " + primitiveType.getName());
+    throw new UnsupportedOperationException("Unsupported class: " + primitiveType.getName());
+  }
+
+  public static Class<?> toPrimitiveClass(final Class<?> clazz) {
+    if (clazz.isPrimitive())
+      return clazz;
+
+    if (clazz == Integer.class)
+      return int.class;
+
+    if (clazz == Long.class)
+      return long.class;
+
+    if (clazz == Double.class)
+      return double.class;
+
+    if (clazz == Float.class)
+      return float.class;
+
+    if (clazz == Boolean.class)
+      return boolean.class;
+
+    if (clazz == Character.class)
+      return char.class;
+
+    if (clazz == Byte.class)
+      return byte.class;
+
+    if (clazz == Short.class)
+      return short.class;
+
+    if (clazz == Void.class)
+      return void.class;
+
+    throw new UnsupportedOperationException("Unsupported class: " + clazz.getName());
   }
 
   private static final IdentityHashMap<Class<?>,Executable> classToExecutable = new IdentityHashMap<>();
