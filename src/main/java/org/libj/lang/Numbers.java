@@ -525,7 +525,21 @@ public final class Numbers {
    * @see Byte#parseByte(String)
    */
   public static Byte parseByte(final CharSequence s) {
-    return s == null ? null : parseByte0(s, 0, s.length(), 10);
+    return parseByte(s, null);
+  }
+
+  /**
+   * Parses the {@link CharSequence} argument as per the specification of {@link Byte#parseByte(String)}, but returns
+   * {@code defaultValue} if the sequence does not contain a parsable {@code byte}.
+   *
+   * @param s A {@link CharSequence} containing the {@link Byte} representation to be parsed.
+   * @param defaultValue The value to return if the sequence does not contain a parsable {@code byte}.
+   * @return The integer value represented by the argument, or {@code null} if the sequence does not contain a parsable
+   *         {@code byte}.
+   * @see Byte#parseByte(String)
+   */
+  public static Byte parseByte(final CharSequence s, final Byte defaultValue) {
+    return s == null ? defaultValue : parseByte0(s, 0, s.length(), 10, defaultValue);
   }
 
   /**
@@ -541,11 +555,28 @@ public final class Numbers {
    * @see Byte#parseByte(String)
    */
   public static Byte parseByte(final CharSequence s, final int fromIndex, final int toIndex) {
+    return parseByte(s, fromIndex, toIndex, null);
+  }
+
+  /**
+   * Parses the {@link CharSequence} argument as per the specification of {@link Byte#parseByte(String)}, but returns
+   * {@code defaultValue} if the sequence does not contain a parsable {@code byte}.
+   *
+   * @param s A {@link CharSequence} containing the {@link Byte} representation to be parsed.
+   * @param fromIndex The index in {@code s} from which to start parsing (inclusive).
+   * @param toIndex The index in {@code s} at which to end parsing (exclusive).
+   * @param defaultValue The value to return if the sequence does not contain a parsable {@code byte}.
+   * @return The integer value represented by the argument, or {@code null} if the sequence does not contain a parsable
+   *         {@code byte}.
+   * @throws IndexOutOfBoundsException If the given {@code fromIndex} or {@code toIndex} is out of range.
+   * @see Byte#parseByte(String)
+   */
+  public static Byte parseByte(final CharSequence s, final int fromIndex, final int toIndex, final Byte defaultValue) {
     if (s == null)
-      return null;
+      return defaultValue;
 
     assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
-    return parseByte0(s, fromIndex, toIndex, 10);
+    return parseByte0(s, fromIndex, toIndex, 10, defaultValue);
   }
 
   /**
@@ -650,16 +681,34 @@ public final class Numbers {
    * @see Byte#parseByte(String)
    */
   public static Byte parseByte(final CharSequence s, final int fromIndex, final int toIndex, final int radix) {
-    if (s == null)
-      return null;
-
-    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
-    return parseByte0(s, fromIndex, toIndex, radix);
+    return parseByte(s, fromIndex, toIndex, radix, null);
   }
 
-  private static Byte parseByte0(final CharSequence s, final int fromIndex, final int toIndex, final int radix) {
+  /**
+   * Parses the {@link CharSequence} argument as per the specification of {@link Byte#parseByte(String,int)}, but returns
+   * {@code defaultValue} if the sequence does not contain a parsable {@code byte}.
+   *
+   * @param s A {@link CharSequence} containing the {@link Byte} representation to be parsed.
+   * @param fromIndex The index in {@code s} from which to start parsing (inclusive).
+   * @param toIndex The index in {@code s} at which to end parsing (exclusive).
+   * @param radix The radix to be used while parsing {@code s}.
+   * @param defaultValue The value to return if the sequence does not contain a parsable {@code byte}.
+   * @return The integer value represented by the argument, or {@code null} if the sequence does not contain a parsable
+   *         {@code byte}.
+   * @throws IndexOutOfBoundsException If the given {@code fromIndex} or {@code toIndex} is out of range.
+   * @see Byte#parseByte(String)
+   */
+  public static Byte parseByte(final CharSequence s, final int fromIndex, final int toIndex, final int radix, final Byte defaultValue) {
+    if (s == null)
+      return defaultValue;
+
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
+    return parseByte0(s, fromIndex, toIndex, radix, defaultValue);
+  }
+
+  private static Byte parseByte0(final CharSequence s, final int fromIndex, final int toIndex, final int radix, final Byte defaultValue) {
     final int i = parseInt0(s, fromIndex, toIndex, radix, Integer.MIN_VALUE);
-    return i < Byte.MIN_VALUE || i > Byte.MAX_VALUE ? null : (byte)i;
+    return i < Byte.MIN_VALUE || i > Byte.MAX_VALUE ? defaultValue : (byte)i;
   }
 
   /**
@@ -803,7 +852,21 @@ public final class Numbers {
    * @see Short#parseShort(String)
    */
   public static Short parseShort(final CharSequence s) {
-    return s == null ? null : parseShort0(s, 0, s.length(), 10);
+    return parseShort(s, null);
+  }
+
+  /**
+   * Parses the {@link CharSequence} argument as per the specification of {@link Short#parseShort(String)}, but returns
+   * {@code defaultValue} if the sequence does not contain a parsable {@code short}.
+   *
+   * @param s A {@link CharSequence} containing the {@link Short} representation to be parsed.
+   * @param defaultValue The value to return if the sequence does not contain a parsable {@code short}.
+   * @return The integer value represented by the argument, or {@code null} if the sequence does not contain a parsable
+   *         {@code short}.
+   * @see Short#parseShort(String)
+   */
+  public static Short parseShort(final CharSequence s, final Short defaultValue) {
+    return s == null ? defaultValue : parseShort0(s, 0, s.length(), 10, defaultValue);
   }
 
   /**
@@ -819,11 +882,28 @@ public final class Numbers {
    * @see Short#parseShort(String)
    */
   public static Short parseShort(final CharSequence s, final int fromIndex, final int toIndex) {
+    return parseShort(s, fromIndex, toIndex, null);
+  }
+
+  /**
+   * Parses the {@link CharSequence} argument as per the specification of {@link Short#parseShort(String)}, but returns
+   * {@code defaultValue} if the sequence does not contain a parsable {@code short}.
+   *
+   * @param s A {@link CharSequence} containing the {@link Short} representation to be parsed.
+   * @param fromIndex The index in {@code s} from which to start parsing (inclusive).
+   * @param toIndex The index in {@code s} at which to end parsing (exclusive).
+   * @param defaultValue The value to return if the sequence does not contain a parsable {@code short}.
+   * @return The integer value represented by the argument, or {@code null} if the sequence does not contain a parsable
+   *         {@code short}.
+   * @throws IndexOutOfBoundsException If the given {@code fromIndex} or {@code toIndex} is out of range.
+   * @see Short#parseShort(String)
+   */
+  public static Short parseShort(final CharSequence s, final int fromIndex, final int toIndex, final Short defaultValue) {
     if (s == null)
-      return null;
+      return defaultValue;
 
     assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
-    return parseShort0(s, fromIndex, toIndex, 10);
+    return parseShort0(s, fromIndex, toIndex, 10, defaultValue);
   }
 
   /**
@@ -928,16 +1008,34 @@ public final class Numbers {
    * @see Short#parseShort(String)
    */
   public static Short parseShort(final CharSequence s, final int fromIndex, final int toIndex, final int radix) {
-    if (s == null)
-      return null;
-
-    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
-    return parseShort0(s, fromIndex, toIndex, radix);
+    return parseShort(s, fromIndex, toIndex, radix, null);
   }
 
-  private static Short parseShort0(final CharSequence s, final int fromIndex, final int toIndex, final int radix) {
+  /**
+   * Parses the {@link CharSequence} argument as per the specification of {@link Short#parseShort(String,int)}, but returns
+   * {@code defaultValue} if the sequence does not contain a parsable {@code short}.
+   *
+   * @param s A {@link CharSequence} containing the {@link Short} representation to be parsed.
+   * @param fromIndex The index in {@code s} from which to start parsing (inclusive).
+   * @param toIndex The index in {@code s} at which to end parsing (exclusive).
+   * @param radix The radix to be used while parsing {@code s}.
+   * @param defaultValue The value to return if the sequence does not contain a parsable {@code short}.
+   * @return The integer value represented by the argument, or {@code null} if the sequence does not contain a parsable
+   *         {@code short}.
+   * @throws IndexOutOfBoundsException If the given {@code fromIndex} or {@code toIndex} is out of range.
+   * @see Short#parseShort(String)
+   */
+  public static Short parseShort(final CharSequence s, final int fromIndex, final int toIndex, final int radix, final Short defaultValue) {
+    if (s == null)
+      return defaultValue;
+
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
+    return parseShort0(s, fromIndex, toIndex, radix, defaultValue);
+  }
+
+  private static Short parseShort0(final CharSequence s, final int fromIndex, final int toIndex, final int radix, final Short defaultValue) {
     final int i = parseInt0(s, fromIndex, toIndex, radix, Integer.MIN_VALUE);
-    return i < Short.MIN_VALUE || i > Short.MAX_VALUE ? null : (short)i;
+    return i < Short.MIN_VALUE || i > Short.MAX_VALUE ? defaultValue : (short)i;
   }
 
   /**
@@ -1081,7 +1179,21 @@ public final class Numbers {
    * @see Integer#parseInt(String)
    */
   public static Integer parseInteger(final CharSequence s) {
-    return s == null ? null : parseInteger0(s, 0, s.length(), 10);
+    return parseInteger(s, null);
+  }
+
+  /**
+   * Parses the {@link CharSequence} argument as per the specification of {@link Integer#parseInt(String)}, but returns
+   * {@code defaultValue} if the sequence does not contain a parsable {@code int}.
+   *
+   * @param s A {@link CharSequence} containing the {@link Integer} representation to be parsed.
+   * @param defaultValue The value to return if the sequence does not contain a parsable {@code int}.
+   * @return The {@code int} value represented by the argument, or {@code null} if the sequence does not contain a parsable
+   *         {@code int}.
+   * @see Integer#parseInt(String)
+   */
+  public static Integer parseInteger(final CharSequence s, final Integer defaultValue) {
+    return s == null ? defaultValue : parseInteger0(s, 0, s.length(), 10, defaultValue);
   }
 
   /**
@@ -1097,11 +1209,28 @@ public final class Numbers {
    * @see Integer#parseInt(String)
    */
   public static Integer parseInteger(final CharSequence s, final int fromIndex, final int toIndex) {
+    return parseInteger(s, fromIndex, toIndex, null);
+  }
+
+  /**
+   * Parses the {@link CharSequence} argument as per the specification of {@link Integer#parseInt(String)}, but returns
+   * {@code defaultValue} if the sequence does not contain a parsable {@code int}.
+   *
+   * @param s A {@link CharSequence} containing the {@link Integer} representation to be parsed.
+   * @param fromIndex The index in {@code s} from which to start parsing (inclusive).
+   * @param toIndex The index in {@code s} at which to end parsing (exclusive).
+   * @param defaultValue The value to return if the sequence does not contain a parsable {@code int}.
+   * @return The {@code int} value represented by the argument, or {@code null} if the sequence does not contain a parsable
+   *         {@code int}.
+   * @throws IndexOutOfBoundsException If the given {@code fromIndex} or {@code toIndex} is out of range.
+   * @see Integer#parseInt(String)
+   */
+  public static Integer parseInteger(final CharSequence s, final int fromIndex, final int toIndex, final Integer defaultValue) {
     if (s == null)
-      return null;
+      return defaultValue;
 
     assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
-    return parseInteger0(s, fromIndex, toIndex, 10);
+    return parseInteger0(s, fromIndex, toIndex, 10, defaultValue);
   }
 
   /**
@@ -1353,7 +1482,22 @@ public final class Numbers {
    * @see Integer#parseInt(String)
    */
   public static Integer parseInteger(final CharSequence s, final int radix) {
-    return s == null ? null : parseInteger0(s, 0, s.length(), radix);
+    return parseInteger(s, radix, null);
+  }
+
+  /**
+   * Parses the {@link CharSequence} argument as per the specification of {@link Integer#parseInt(String,int)}, but returns
+   * {@code defaultValue} if the sequence does not contain a parsable {@code int}.
+   *
+   * @param s A {@link CharSequence} containing the {@link Integer} representation to be parsed.
+   * @param radix The radix to be used while parsing {@code s}.
+   * @param defaultValue The value to return if the sequence does not contain a parsable {@code int}.
+   * @return The {@code int} value represented by the argument, or {@code null} if the sequence does not contain a parsable
+   *         {@code int}.
+   * @see Integer#parseInt(String)
+   */
+  public static Integer parseInteger(final CharSequence s, final int radix, final Integer defaultValue) {
+    return s == null ? defaultValue : parseInteger0(s, 0, s.length(), radix, defaultValue);
   }
 
   /**
@@ -1370,20 +1514,38 @@ public final class Numbers {
    * @see Integer#parseInt(String)
    */
   public static Integer parseInteger(final CharSequence s, final int fromIndex, final int toIndex, final int radix) {
-    if (s == null)
-      return null;
-
-    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
-    return parseInteger0(s, fromIndex, toIndex, radix);
+    return parseInteger(s, fromIndex, toIndex, radix, null);
   }
 
-  private static Integer parseInteger0(final CharSequence s, final int fromIndex, final int toIndex, final int radix) {
+  /**
+   * Parses the {@link CharSequence} argument as per the specification of {@link Integer#parseInt(String,int)}, but returns
+   * {@code defaultValue} if the sequence does not contain a parsable {@code int}.
+   *
+   * @param s A {@link CharSequence} containing the {@link Integer} representation to be parsed.
+   * @param fromIndex The index in {@code s} from which to start parsing (inclusive).
+   * @param toIndex The index in {@code s} at which to end parsing (exclusive).
+   * @param radix The radix to be used while parsing {@code s}.
+   * @param defaultValue The value to return if the sequence does not contain a parsable {@code int}.
+   * @return The {@code int} value represented by the argument, or {@code null} if the sequence does not contain a parsable
+   *         {@code int}.
+   * @throws IndexOutOfBoundsException If the given {@code fromIndex} or {@code toIndex} is out of range.
+   * @see Integer#parseInt(String)
+   */
+  public static Integer parseInteger(final CharSequence s, final int fromIndex, final int toIndex, final int radix, final Integer defaultValue) {
+    if (s == null)
+      return defaultValue;
+
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
+    return parseInteger0(s, fromIndex, toIndex, radix, defaultValue);
+  }
+
+  private static Integer parseInteger0(final CharSequence s, final int fromIndex, final int toIndex, final int radix, final Integer defaultValue) {
     if (radix < Character.MIN_RADIX || radix > Character.MAX_RADIX)
-      return null;
+      return defaultValue;
 
     final int len = toIndex - fromIndex;
     if (len == 0)
-      return null;
+      return defaultValue;
 
     boolean negative = false;
     int i = fromIndex;
@@ -1396,11 +1558,11 @@ public final class Numbers {
         limit = Integer.MIN_VALUE;
       }
       else if (firstChar != '+') {
-        return null;
+        return defaultValue;
       }
 
       if (len == 1) { // Cannot have lone "+" or "-"
-        return null;
+        return defaultValue;
       }
 
       ++i;
@@ -1412,11 +1574,11 @@ public final class Numbers {
       // Accumulating negatively avoids surprises near MAX_VALUE
       final int digit = Character.digit(s.charAt(i++), radix);
       if (digit < 0 || result < multmin)
-        return null;
+        return defaultValue;
 
       result *= radix;
       if (result < limit + digit)
-        return null;
+        return defaultValue;
 
       result -= digit;
     }
@@ -1516,7 +1678,21 @@ public final class Numbers {
    * @see Long#parseLong(String)
    */
   public static Long parseLong(final CharSequence s) {
-    return s == null ? null : parseLong0(s, 0, s.length(), 10);
+    return parseLong(s, null);
+  }
+
+  /**
+   * Parses the {@link CharSequence} argument as per the specification of {@link Long#parseLong(String)}, but returns
+   * {@code defaultValue} if the sequence does not contain a parsable {@code long}.
+   *
+   * @param s A {@link CharSequence} containing the {@link Long} representation to be parsed.
+   * @param defaultValue The value to return if the sequence does not contain a parsable {@code long}.
+   * @return The {@code long} value represented by the argument, or {@code null} if the sequence does not contain a parsable
+   *         {@code long}.
+   * @see Long#parseLong(String)
+   */
+  public static Long parseLong(final CharSequence s, final Long defaultValue) {
+    return s == null ? defaultValue : parseLong0(s, 0, s.length(), 10, defaultValue);
   }
 
   /**
@@ -1532,11 +1708,28 @@ public final class Numbers {
    * @see Long#parseLong(String)
    */
   public static Long parseLong(final CharSequence s, final int fromIndex, final int toIndex) {
+    return parseLong(s, fromIndex, toIndex, null);
+  }
+
+  /**
+   * Parses the {@link CharSequence} argument as per the specification of {@link Long#parseLong(String)}, but returns
+   * {@code defaultValue} if the sequence does not contain a parsable {@code long}.
+   *
+   * @param s A {@link CharSequence} containing the {@link Long} representation to be parsed.
+   * @param fromIndex The index in {@code s} from which to start parsing (inclusive).
+   * @param toIndex The index in {@code s} at which to end parsing (exclusive).
+   * @param defaultValue The value to return if the sequence does not contain a parsable {@code long}.
+   * @return The {@code long} value represented by the argument, or {@code null} if the sequence does not contain a parsable
+   *         {@code long}.
+   * @throws IndexOutOfBoundsException If the given {@code fromIndex} or {@code toIndex} is out of range.
+   * @see Long#parseLong(String)
+   */
+  public static Long parseLong(final CharSequence s, final int fromIndex, final int toIndex, final Long defaultValue) {
     if (s == null)
-      return null;
+      return defaultValue;
 
     assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
-    return parseLong0(s, fromIndex, toIndex, 10);
+    return parseLong0(s, fromIndex, toIndex, 10, defaultValue);
   }
 
   /**
@@ -1620,7 +1813,22 @@ public final class Numbers {
    * @see Long#parseLong(String)
    */
   public static Long parseLong(final CharSequence s, final int radix) {
-    return s == null ? null : parseLong0(s, 0, s.length(), radix);
+    return parseLong(s, radix, null);
+  }
+
+  /**
+   * Parses the {@link CharSequence} argument as per the specification of {@link Long#parseLong(String,int)}, but returns
+   * {@code defaultValue} if the sequence does not contain a parsable {@code long}.
+   *
+   * @param s A {@link CharSequence} containing the {@link Long} representation to be parsed.
+   * @param radix The radix to be used while parsing {@code s}.
+   * @param defaultValue The value to return if the sequence does not contain a parsable {@code long}.
+   * @return The {@code long} value represented by the argument, or {@code null} if the sequence does not contain a parsable
+   *         {@code long}.
+   * @see Long#parseLong(String)
+   */
+  public static Long parseLong(final CharSequence s, final int radix, final Long defaultValue) {
+    return s == null ? defaultValue : parseLong0(s, 0, s.length(), radix, defaultValue);
   }
 
   /**
@@ -1637,20 +1845,38 @@ public final class Numbers {
    * @see Long#parseLong(String)
    */
   public static Long parseLong(final CharSequence s, final int fromIndex, final int toIndex, final int radix) {
-    if (s == null)
-      return null;
-
-    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
-    return parseLong0(s, fromIndex, toIndex, radix);
+    return parseLong(s, fromIndex, toIndex, radix, null);
   }
 
-  private static Long parseLong0(final CharSequence s, final int fromIndex, final int toIndex, final int radix) {
+  /**
+   * Parses the {@link CharSequence} argument as per the specification of {@link Long#parseLong(String,int)}, but returns
+   * {@code defaultValue} if the sequence does not contain a parsable {@code long}.
+   *
+   * @param s A {@link CharSequence} containing the {@link Long} representation to be parsed.
+   * @param fromIndex The index in {@code s} from which to start parsing (inclusive).
+   * @param toIndex The index in {@code s} at which to end parsing (exclusive).
+   * @param radix The radix to be used while parsing {@code s}.
+   * @param defaultValue The value to return if the sequence does not contain a parsable {@code long}.
+   * @return The {@code long} value represented by the argument, or {@code null} if the sequence does not contain a parsable
+   *         {@code long}.
+   * @throws IndexOutOfBoundsException If the given {@code fromIndex} or {@code toIndex} is out of range.
+   * @see Long#parseLong(String)
+   */
+  public static Long parseLong(final CharSequence s, final int fromIndex, final int toIndex, final int radix, final Long defaultValue) {
+    if (s == null)
+      return defaultValue;
+
+    assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
+    return parseLong0(s, fromIndex, toIndex, radix, defaultValue);
+  }
+
+  private static Long parseLong0(final CharSequence s, final int fromIndex, final int toIndex, final int radix, final Long defaultValue) {
     if (radix < Character.MIN_RADIX || radix > Character.MAX_RADIX)
-      return null;
+      return defaultValue;
 
     final int len = toIndex - fromIndex;
     if (len == 0)
-      return null;
+      return defaultValue;
 
     boolean negative = false;
     int i = fromIndex;
@@ -1663,11 +1889,11 @@ public final class Numbers {
         limit = Long.MIN_VALUE;
       }
       else if (firstChar != '+') {
-        return null;
+        return defaultValue;
       }
 
       if (len == 1) { // Cannot have lone "+" or "-"
-        return null;
+        return defaultValue;
       }
 
       ++i;
@@ -1679,11 +1905,11 @@ public final class Numbers {
       // Accumulating negatively avoids surprises near MAX_VALUE
       final int digit = Character.digit(s.charAt(i++), radix);
       if (digit < 0 || result < multmin)
-        return null;
+        return defaultValue;
 
       result *= radix;
       if (result < limit + digit)
-        return null;
+        return defaultValue;
 
       result -= digit;
     }
@@ -1785,7 +2011,7 @@ public final class Numbers {
    * @see Long#parseLong(String)
    */
   public static long parseLong(final CharSequence s, final int radix, final long defaultValue) {
-    return s == null ? defaultValue : parseLong0(s, 0, s.length(), radix);
+    return s == null ? defaultValue : parseLong0(s, 0, s.length(), radix, defaultValue);
   }
 
   /**
@@ -1807,7 +2033,7 @@ public final class Numbers {
       return defaultValue;
 
     assertRange("fromIndex", fromIndex, "toIndex", toIndex, "s.length()", s.length());
-    return parseLong0(s, fromIndex, toIndex, radix);
+    return parseLong0(s, fromIndex, toIndex, radix, defaultValue);
   }
 
   private static long parseLong0(final CharSequence s, final int fromIndex, final int toIndex, final int radix, final long defaultValue) {
@@ -1951,13 +2177,30 @@ public final class Numbers {
    * @see Float#parseFloat(String)
    */
   public static Float parseFloat(final String s) {
+    return parseFloat(s, null);
+  }
+
+  /**
+   * Parses the string argument as per the specification of {@link Float#parseFloat(String)}, but returns {@code defaultValue} if
+   * the string does not contain a parsable {@code float}.
+   *
+   * @param s A {@link String} containing the {@link Float} representation to be parsed.
+   * @param defaultValue The value to return if the sequence does not contain a parsable {@code float}.
+   * @return The {@code float} value represented by the argument, or {@code null} if the string does not contain a parsable
+   *         {@code float}.
+   * @see Float#parseFloat(String)
+   */
+  public static Float parseFloat(final String s, final Float defaultValue) {
+    if (s == null)
+      return defaultValue;
+
     // FIXME: Can a NumberFormatException be avoided altogether? Yes, if
     // FIXME: the implementation is copied.
     try {
-      return s == null ? null : Float.parseFloat(s);
+      return Float.parseFloat(s);
     }
     catch (final NumberFormatException e) {
-      return null;
+      return defaultValue;
     }
   }
 
@@ -1992,13 +2235,30 @@ public final class Numbers {
    * @see Double#parseDouble(String)
    */
   public static Double parseDouble(final String s) {
+    return parseDouble(s, null);
+  }
+
+  /**
+   * Parses the string argument as per the specification of {@link Double#parseDouble(String)}, but returns {@code defaultValue} if
+   * the string does not contain a parsable {@code double}.
+   *
+   * @param s A {@link String} containing the {@link Double} representation to be parsed.
+   * @param defaultValue The value to return if the sequence does not contain a parsable {@code double}.
+   * @return The {@code double} value represented by the argument, or {@code null} if the string does not contain a parsable
+   *         {@code double}.
+   * @see Double#parseDouble(String)
+   */
+  public static Double parseDouble(final String s, final Double defaultValue) {
+    if (s == null)
+      return defaultValue;
+
     // FIXME: Can a NumberFormatException be avoided altogether? Yes, if
     // FIXME: the implementation is copied.
     try {
-      return s == null ? null : Double.parseDouble(s);
+      return Double.parseDouble(s);
     }
     catch (final NumberFormatException e) {
-      return null;
+      return defaultValue;
     }
   }
 

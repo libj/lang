@@ -22,7 +22,6 @@ import static org.libj.lang.Numbers.Unsigned.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Random;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.junit.Test;
@@ -470,8 +469,13 @@ public class NumbersTest {
     }
   }
 
+  @FunctionalInterface
+  public interface ObjIntFunction<T,R> {
+    R apply(T t, int i);
+  }
+
   @SuppressWarnings("unchecked")
-  private static <T extends Number>void testParseRadix(final BiFunction<? super String,? super Integer,T> function, final int radix, final T ... numbers) {
+  private static <T extends Number>void testParseRadix(final ObjIntFunction<String,T> function, final int radix, final T ... numbers) {
     for (final T number : numbers) { // [A]
       final String str = Long.toString(number.longValue(), radix);
       assertEquals(number, function.apply(str, radix));
