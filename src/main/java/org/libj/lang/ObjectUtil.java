@@ -274,8 +274,7 @@ public final class ObjectUtil {
    * {@link Arrays#toString(Object[])} into one method.
    *
    * @param obj An object.
-   * @return The result of calling {@code toString} for a non-{@code
-   * null} argument and {@code "null"} for a {@code null} argument.
+   * @return The result of calling {@code toString} for a non-{@code null} argument and {@code "null"} for a {@code null} argument.
    * @see Objects#toString(Object)
    * @see Arrays#toString(Object[])
    */
