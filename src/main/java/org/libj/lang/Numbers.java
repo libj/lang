@@ -708,7 +708,7 @@ public final class Numbers {
 
   private static Byte parseByte0(final CharSequence s, final int fromIndex, final int toIndex, final int radix, final Byte defaultValue) {
     final int i = parseInt0(s, fromIndex, toIndex, radix, Integer.MIN_VALUE);
-    return i < Byte.MIN_VALUE || i > Byte.MAX_VALUE ? defaultValue : (byte)i;
+    return i < Byte.MIN_VALUE || i > Byte.MAX_VALUE ? defaultValue : Byte.valueOf((byte)i);
   }
 
   /**
@@ -1035,7 +1035,7 @@ public final class Numbers {
 
   private static Short parseShort0(final CharSequence s, final int fromIndex, final int toIndex, final int radix, final Short defaultValue) {
     final int i = parseInt0(s, fromIndex, toIndex, radix, Integer.MIN_VALUE);
-    return i < Short.MIN_VALUE || i > Short.MAX_VALUE ? defaultValue : (short)i;
+    return i < Short.MIN_VALUE || i > Short.MAX_VALUE ? defaultValue : Short.valueOf((short)i);
   }
 
   /**
