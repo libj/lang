@@ -44,6 +44,7 @@ import java.util.Optional;
 import java.util.Queue;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -417,9 +418,27 @@ public class ClassesTest {
     @Override
     public void a() {
     }
+
+    public void withIgnore() {
+    }
+
+    public void withoutIgnore() {
+    }
   }
 
   public static class Foo extends Bar implements B {
+    @Ignore
+    @Override
+    public void withIgnore() {
+    }
+  }
+
+  public static class Kludge extends Foo implements B {
+    @Ignore
+    @Override
+    public void withoutIgnore() {
+      super.withoutIgnore();
+    }
   }
 
   public static final Foo foo = new Foo();
@@ -518,5 +537,35 @@ public class ClassesTest {
     Classes.sortDeclarativeOrder(methods);
     final String str = Arrays.toString(methods);
     assertTrue(str, str.startsWith("[public java.lang.Class org.libj.lang.BootProxyClassLoader.findClass(java.lang.String) throws java.lang.ClassNotFoundException, public java.lang.Class org.libj.lang.BootProxyClassLoader.loadClass(java.lang.String,boolean) throws java.lang.ClassNotFoundException, public java.lang.Class org.libj.lang.BootProxyClassLoader.loadClassOrNull(java.lang.String), public java.lang.Class org.libj.lang.BootProxyClassLoader.loadClassOrNull(java.lang.String,boolean)"));
+  }
+
+  @Test
+  public void testWithIgnore() throws NoSuchMethodException {
+    Method withIgnoreMethod = Kludge.class.getMethod("withIgnore");
+    assertNotNull(Classes.getAnnotationDeep(withIgnoreMethod, Ignore.class));
+    assertTrue(Classes.isAnnotationPresentDeep(withIgnoreMethod, Ignore.class));
+
+    withIgnoreMethod = Foo.class.getMethod("withIgnore");
+    assertNotNull(Classes.getAnnotationDeep(withIgnoreMethod, Ignore.class));
+    assertTrue(Classes.isAnnotationPresentDeep(withIgnoreMethod, Ignore.class));
+
+    withIgnoreMethod = Bar.class.getMethod("withIgnore");
+    assertNull(Classes.getAnnotationDeep(withIgnoreMethod, Ignore.class));
+    assertFalse(Classes.isAnnotationPresentDeep(withIgnoreMethod, Ignore.class));
+  }
+
+  @Test
+  public void testWithoutIgnore() throws NoSuchMethodException {
+    Method withIgnoreMethod = Kludge.class.getMethod("withoutIgnore");
+    assertNotNull(Classes.getAnnotationDeep(withIgnoreMethod, Ignore.class));
+    assertTrue(Classes.isAnnotationPresentDeep(withIgnoreMethod, Ignore.class));
+
+    withIgnoreMethod = Foo.class.getMethod("withoutIgnore");
+    assertNull(Classes.getAnnotationDeep(withIgnoreMethod, Ignore.class));
+    assertFalse(Classes.isAnnotationPresentDeep(withIgnoreMethod, Ignore.class));
+
+    withIgnoreMethod = Bar.class.getMethod("withoutIgnore");
+    assertNull(Classes.getAnnotationDeep(withIgnoreMethod, Ignore.class));
+    assertFalse(Classes.isAnnotationPresentDeep(withIgnoreMethod, Ignore.class));
   }
 }

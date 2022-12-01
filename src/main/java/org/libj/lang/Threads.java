@@ -88,17 +88,36 @@ public final class Threads {
       if (thread == null)
         continue;
 
-      builder.append('"').append(threadInfo.getThreadName()).append("\" #").append(threadInfo.getThreadId());
-      if (thread.isDaemon())
-        builder.append(" daemon");
-
-      builder.append(" prio=").append(thread.getPriority());
-      builder.append("\n   java.lang.Thread.State: ").append(threadInfo.getThreadState());
-      for (final StackTraceElement stackTraceElement : threadInfo.getStackTrace()) // [A]
-        builder.append("\n  at ").append(stackTraceElement);
+      appendThreadTrace(builder, thread, threadInfo);
     }
 
     s.accept(builder.toString());
+  }
+
+  /**
+   * Returns the string representation of the specified {@link Thread}.
+   *
+   * @param thread The {@link Thread}.
+   * @return The string representation of the specified {@link Thread}.
+   */
+  public static String toString(final Thread thread) {
+    final ThreadInfo threadInfo = ManagementFactory.getThreadMXBean().getThreadInfo(thread.getId());
+    final StringBuilder builder = new StringBuilder();
+    appendThreadTrace(builder, thread, threadInfo);
+    return builder.toString();
+  }
+
+  private static void appendThreadTrace(final StringBuilder builder, final Thread thread, final ThreadInfo threadInfo) {
+    builder.append('"').append(threadInfo.getThreadName()).append("\" #").append(threadInfo.getThreadId());
+    if (thread.isDaemon())
+      builder.append(" daemon");
+
+    builder.append(" prio=").append(thread.getPriority());
+    builder.append("\n   java.lang.Thread.State: ").append(threadInfo.getThreadState());
+    for (final StackTraceElement stackTraceElement : threadInfo.getStackTrace()) // [A]
+      builder.append("\n  at ").append(stackTraceElement);
+
+    builder.toString();
   }
 
   private static class ReaperThread extends Thread {

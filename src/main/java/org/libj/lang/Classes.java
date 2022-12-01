@@ -365,7 +365,7 @@ public final class Classes {
     if (superClass.isInterface())
       throw new IllegalArgumentException(superClass.getName() + " is an interface type");
 
-    for (Type superType; (superType = cls.getGenericSuperclass()) != null;) {
+    for (Type superType; (superType = cls.getGenericSuperclass()) != null;) { // [X]
       if (superType instanceof ParameterizedType) {
         final ParameterizedType parameterizedType = (ParameterizedType)superType;
         cls = (Class<?>)parameterizedType.getRawType();
@@ -1263,21 +1263,42 @@ public final class Classes {
     A annotation;
     do {
       annotation = parent.getAnnotation(annotationClass);
-      if (annotation != null)
-        return annotation;
     }
-    while ((parent = parent.getSuperclass()) != null);
-    return null;
+    while (annotation == null && (parent = parent.getSuperclass()) != null);
+    return annotation;
+  }
+
+  /**
+   * Returns the annotation for the specified {@code annotationClass} on the provided method if such an annotation is <i>present</i>,
+   * else null.
+   *
+   * @implNote This method differentiates itself from {@link Class#getAnnotation(Class)} by continuing to look at each superclass of
+   *           the provided class if the specified annotation cannot be found.
+   * @param <A> The type of the annotation to query for and return if present.
+   * @param method The {@link Method} on which to look for the specified annotation type.
+   * @param annotationClass The {@link Class} object corresponding to the annotation type.
+   * @return The annotation for the specified annotation type on the provided class if present, else null.
+   * @throws IllegalArgumentException If {@code cls} or {@code annotationClass} is null.
+   */
+  public static <A extends Annotation>A getAnnotationDeep(Method method, final Class<A> annotationClass) {
+    assertNotNull(method);
+    assertNotNull(annotationClass);
+    A annotation;
+    Class<?> declaringClass;
+    do {
+      annotation = method.getAnnotation(annotationClass);
+    }
+    while (annotation == null && (declaringClass = method.getDeclaringClass().getSuperclass()) != null && (method = getDeclaredMethodDeep(declaringClass, method.getName(), method.getParameterTypes())) != null);
+    return annotation;
   }
 
   /**
    * Returns {@code true} if an annotation for the specified type is <i>present</i> on the provided class, else {@code false}. This
    * method is designed primarily for convenient access to marker annotations.
    * <p>
-   * The truth value returned by this method is equivalent to: {@code Classes.getAnnotationDeep(cls,annotationClass) != null}
+   * The truth value returned by this method is equivalent to: {@link #getAnnotationDeep(Class,Class) Classes.getAnnotationDeep(cls, annotationClass) != null}.
    * <p>
    * The body of the default method is specified to be the code above.
-   * <p>
    *
    * @param cls The {@link Class} on which to look for the specified annotation type.
    * @param annotationClass The {@link Class} object corresponding to the annotation type.
@@ -1292,6 +1313,31 @@ public final class Classes {
         return true;
     }
     while ((parent = parent.getSuperclass()) != null);
+    return false;
+  }
+
+  /**
+   * Returns {@code true} if an annotation for the specified type is <i>present</i> on the provided method, else {@code false}. This
+   * method is designed primarily for convenient access to marker annotations.
+   * <p>
+   * The truth value returned by this method is equivalent to: {@link #getAnnotationDeep(Method,Class) Classes.getAnnotationDeep(method, annotationClass) != null}
+   * <p>
+   * The body of the default method is specified to be the code above.
+   *
+   * @param method The {@link Method} on which to look for the specified annotation type.
+   * @param annotationClass The {@link Class} object corresponding to the annotation type.
+   * @return {@code true} if an annotation for the specified annotation type is present on this element, else {@code false}.
+   * @throws IllegalArgumentException If {@code cls} or {@code annotationClass} is null.
+   */
+  public static boolean isAnnotationPresentDeep(Method method, final Class<? extends Annotation> annotationClass) {
+    assertNotNull(method);
+    assertNotNull(annotationClass);
+    Class<?> declaringClass;
+    do {
+      if (method.isAnnotationPresent(annotationClass))
+        return true;
+    }
+    while ((declaringClass = method.getDeclaringClass().getSuperclass()) != null && (method = getDeclaredMethodDeep(declaringClass, method.getName(), method.getParameterTypes())) != null);
     return false;
   }
 
