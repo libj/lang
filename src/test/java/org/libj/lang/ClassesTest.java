@@ -82,8 +82,7 @@ public class ClassesTest {
   @Test
   public void testGetExecutionStack() {
     final Class<?>[] classes = Classes.getExecutionStack();
-    for (final Class<?> cls : classes) // [A]
-      logger.info(cls.getName());
+    if (logger.isInfoEnabled()) for (final Class<?> cls : classes) logger.info(cls.getName());
   }
 
   protected static class Inn$r {

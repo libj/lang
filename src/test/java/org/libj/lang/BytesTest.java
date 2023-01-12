@@ -85,19 +85,19 @@ public class BytesTest {
     final long l = 65535L;
     final short s = (short)l;
     final String binary = toBinaryString(l, Short.SIZE);
-    logger.info("Binary: " + binary);
-    logger.info("From binary: " + Integer.parseInt(toBinaryString(l, Short.SIZE), 2));
+    if (logger.isInfoEnabled()) logger.info("Binary: " + binary);
+    if (logger.isInfoEnabled()) logger.info("From binary: " + Integer.parseInt(toBinaryString(l, Short.SIZE), 2));
     final byte[] bytes = new byte[Short.SIZE / 8];
     Bytes.toBytes(s, bytes, 0, true);
-    logger.info("Convert.toBytes: " + Arrays.toString(bytes));
+    if (logger.isInfoEnabled()) logger.info("Convert.toBytes: " + Arrays.toString(bytes));
     assertArrayEquals(new byte[] {(byte)-1, (byte)-1}, bytes);
     final int unsignedShort = Bytes.toShort(bytes, 0, true, false);
-    logger.info("Convert.to[unsigned]Short: " + unsignedShort);
+    if (logger.isInfoEnabled()) logger.info("Convert.to[unsigned]Short: " + unsignedShort);
     assertEquals(l, unsignedShort);
     final short signedShort = Bytes.toShort(bytes, 0, true);
-    logger.info("Convert.to[signed]Short: " + signedShort);
+    if (logger.isInfoEnabled()) logger.info("Convert.to[signed]Short: " + signedShort);
     assertEquals(s, signedShort);
-    logger.info("Raw: " + s);
+    if (logger.isInfoEnabled()) logger.info("Raw: " + s);
   }
 
   @Test
@@ -105,35 +105,35 @@ public class BytesTest {
     final long l = 4294967295L;
     final int i = (int)l;
     final String binary = toBinaryString(l, Integer.SIZE);
-    logger.info("Binary: " + binary);
-    logger.info("From binary: " + Long.parseLong(toBinaryString(l, Integer.SIZE), 2));
+    if (logger.isInfoEnabled()) logger.info("Binary: " + binary);
+    if (logger.isInfoEnabled()) logger.info("From binary: " + Long.parseLong(toBinaryString(l, Integer.SIZE), 2));
     final byte[] bytes = new byte[Integer.SIZE / 8];
     Bytes.toBytes(i, bytes, 0, true);
-    logger.info("Convert.toBytes: " + Arrays.toString(bytes));
+    if (logger.isInfoEnabled()) logger.info("Convert.toBytes: " + Arrays.toString(bytes));
     assertArrayEquals(new byte[] {(byte)-1, (byte)-1, (byte)-1, (byte)-1}, bytes);
     final long unsignedInt = Bytes.toInt(bytes, 0, true, false);
-    logger.info("Convert.to[unsigned]Int: " + unsignedInt);
+    if (logger.isInfoEnabled()) logger.info("Convert.to[unsigned]Int: " + unsignedInt);
     assertEquals(l, unsignedInt);
     final int signedInt = Bytes.toInt(bytes, 0, true);
-    logger.info("Convert.to[signed]Int: " + signedInt);
+    if (logger.isInfoEnabled()) logger.info("Convert.to[signed]Int: " + signedInt);
     assertEquals(i, signedInt);
-    logger.info("Raw: " + i);
+    if (logger.isInfoEnabled()) logger.info("Raw: " + i);
   }
 
   @Test
   public void testLong() {
     final long l = 9223372036854775807L;
     final String binary = toBinaryString(l, Long.SIZE);
-    logger.info("Binary: " + binary);
+    if (logger.isInfoEnabled()) logger.info("Binary: " + binary);
     // log("From binary: " + Long.parseLong(binary(l, Long.SIZE), 2));
     final byte[] bytes = new byte[Long.SIZE / 8];
     Bytes.toBytes(l, bytes, 0, true);
-    logger.info("Convert.toBytes: " + Arrays.toString(bytes));
+    if (logger.isInfoEnabled()) logger.info("Convert.toBytes: " + Arrays.toString(bytes));
     assertArrayEquals(new byte[] {127, (byte)-1, (byte)-1, (byte)-1, (byte)-1, (byte)-1, (byte)-1, (byte)-1}, bytes);
     final long signedInt = Bytes.toLong(bytes, 0, true);
-    logger.info("Convert.to[signed]Int: " + signedInt);
+    if (logger.isInfoEnabled()) logger.info("Convert.to[signed]Int: " + signedInt);
     assertEquals(l, signedInt);
-    logger.info("Raw: " + l);
+    if (logger.isInfoEnabled()) logger.info("Raw: " + l);
   }
 
   @Test

@@ -32,7 +32,7 @@ public class ResourcesTest {
   public void testListJUnit() throws IOException {
     final AtomicInteger counter = new AtomicInteger();
     Resources.list(ClassLoader.getSystemClassLoader(), "junit/", (u, p, d) -> {
-      logger.debug(p);
+      if (logger.isDebugEnabled()) logger.debug(p);
       counter.getAndIncrement();
       return true;
     });
@@ -43,7 +43,7 @@ public class ResourcesTest {
   public void testWalkJUnit() throws IOException {
     final AtomicInteger counter = new AtomicInteger();
     Resources.walk(ClassLoader.getSystemClassLoader(), "junit/", (u, p, d) -> {
-      logger.debug(p);
+      if (logger.isDebugEnabled()) logger.debug(p);
       counter.getAndIncrement();
       return true;
     });
@@ -54,7 +54,7 @@ public class ResourcesTest {
   public void testListJUnitRunner() throws IOException {
     final AtomicInteger counter = new AtomicInteger();
     Resources.list(ClassLoader.getSystemClassLoader(), "junit/runner/", (u, p, d) -> {
-      logger.debug(p);
+      if (logger.isDebugEnabled()) logger.debug(p);
       counter.getAndIncrement();
       return true;
     });
@@ -65,7 +65,7 @@ public class ResourcesTest {
   public void testWalkJUnitRunner() throws IOException {
     final AtomicInteger counter = new AtomicInteger();
     Resources.walk(ClassLoader.getSystemClassLoader(), "junit/runner/", (u, p, d) -> {
-      logger.debug(p);
+      if (logger.isDebugEnabled()) logger.debug(p);
       counter.getAndIncrement();
       return true;
     });
@@ -76,7 +76,7 @@ public class ResourcesTest {
   public void testListLibJRunner() throws IOException {
     final AtomicInteger counter = new AtomicInteger();
     Resources.list(ClassLoader.getSystemClassLoader(), "org/junit/", (u, p, d) -> {
-      logger.debug(u + " " + p);
+      if (logger.isDebugEnabled()) logger.debug(u + " " + p);
       counter.getAndIncrement();
       return true;
     });
@@ -87,7 +87,7 @@ public class ResourcesTest {
   public void testWalkLibJRunner() throws IOException {
     final AtomicInteger counter = new AtomicInteger();
     Resources.walk(ClassLoader.getSystemClassLoader(), "org/junit/", (u, p, d) -> {
-      logger.debug(p);
+      if (logger.isDebugEnabled()) logger.debug(p);
       counter.getAndIncrement();
       return true;
     });

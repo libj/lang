@@ -289,8 +289,7 @@ public class PackageLoader {
           Class.forName(className, true, loader);
       }
       catch (final ClassNotFoundException | VerifyError e) {
-        if (logger.isTraceEnabled())
-          logger.trace("Problem loading package: " + (packageName.length() > 0 ? packageName : "<default>"), e);
+        if (logger.isTraceEnabled()) logger.trace("Problem loading package: " + (packageName.length() > 0 ? packageName : "<default>"), e);
       }
       catch (final NoClassDefFoundError ignored) {
       }
