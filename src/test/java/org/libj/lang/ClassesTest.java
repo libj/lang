@@ -79,12 +79,6 @@ public class ClassesTest {
         assertSame(entry.getValue(), Classes.getGreatestCommonSuperclass(entry.getKey()));
   }
 
-  @Test
-  public void testGetExecutionStack() {
-    final Class<?>[] classes = Classes.getExecutionStack();
-    if (logger.isInfoEnabled()) for (final Class<?> cls : classes) logger.info(cls.getName());
-  }
-
   protected static class Inn$r {
     protected static class $nner {
       protected static class $nner$ {

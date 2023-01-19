@@ -1531,31 +1531,6 @@ public final class Classes {
     return gcc;
   }
 
-  @SuppressWarnings({"deprecation", "removal"})
-  private static class CallingClass extends SecurityManager {
-    @Override
-    public Class<?>[] getClassContext() {
-      return super.getClassContext();
-    }
-  }
-
-  /**
-   * Returns the current execution stack as an array of classes.
-   * <p>
-   * The length of the array is the number of methods on the execution stack. The element at index {@code 0} is the class of the
-   * currently executing method, the element at index {@code 1} is the class of that method's caller, and so on.
-   *
-   * @return The current execution stack as an array of classes.
-   */
-  public static Class<?>[] getExecutionStack() {
-    final Class<?>[] context = new CallingClass().getClassContext();
-    final Class<?>[] executionStack = new Class[context.length - 3];
-    for (int i = 3, i$ = context.length; i < i$; ++i) // [A]
-      executionStack[i - 3] = context[i];
-
-    return executionStack;
-  }
-
   /**
    * Returns the boxed {@link Class} for the specified {@code primitiveType} class. If the specified class does not represent a
    * primitive type, the same class is returned.
