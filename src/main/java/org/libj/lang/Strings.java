@@ -247,16 +247,37 @@ public final class Strings {
   }
 
   /**
+   * Replaces each {@code target} char in the specified {@link StringBuilder} with the {@code replacement} char.
+   *
+   * @param builder The {@link StringBuilder}.
+   * @param target The char to be replaced.
+   * @param replacement The replacement char.
+   * @return Whether the specified {@link StringBuilder} was changed as a result of this operation.
+   * @throws IllegalArgumentException If {@code builder} is null.
+   * @see String#replace(char,char)
+   */
+  public static boolean replace(final StringBuilder builder, final char target, final char replacement) {
+    assertNotNull(builder);
+    boolean changed = false;
+    for (int i = 0; (i = Strings.indexOf(builder, target, i)) > -1;) {
+      builder.setCharAt(i, replacement);
+      changed = true;
+    }
+
+    return changed;
+  }
+
+  /**
    * Replaces each substring in the specified {@link StringBuilder} that matches the literal target sequence with the specified
    * literal replacement sequence. The replacement proceeds from the beginning of the string to the end, for example, replacing "aa"
    * with "b" in the string "aaa" will result in "ba" rather than "ab".
    *
    * @param builder The {@link StringBuilder}.
-   * @param target The sequence of char values to be replaced
-   * @param replacement The replacement sequence of char values
+   * @param target The sequence of char values to be replaced.
+   * @param replacement The replacement sequence of char values.
    * @return Whether the specified {@link StringBuilder} was changed as a result of this operation.
    * @throws IllegalArgumentException If {@code builder}, {@code target}, or {@code replacement} is null.
-   * @see String#replace(CharSequence, CharSequence)
+   * @see String#replace(CharSequence,CharSequence)
    * @throws OutOfMemoryError If the specified parameters result in a {@link StringBuilder} that grows beyond length of
    *           {@link Integer#MAX_VALUE}.
    */
@@ -2194,10 +2215,13 @@ public final class Strings {
     if (spaces == 0)
       return str;
 
-    final String replacement = "\n" + repeat(' ', spaces);
+    final String indent = repeat(' ', spaces);
     Strings.replace(str, "\n\n", "\7\n");
-    Strings.replace(str, "\n", replacement);
-    Strings.replace(str, "\7", "\n");
+
+    for (int i = str.length(); i > 0 && (i = Strings.lastIndexOf(str, '\n', i - 1)) > -1;)
+      str.insert(i + 1, indent);
+
+    Strings.replace(str, '\7', '\n');
     return str;
   }
 
@@ -2618,6 +2642,67 @@ public final class Strings {
   public static String[] split(final CharSequence str, final char ch) {
     final int i$ = assertNotNull(str).length();
     return i$ == 0 ? EMPTY_ARRAY : split(str, i$, ch, 0, new StringBuilder(), 0, 0);
+  }
+
+  /**
+   * Compares the two provided {@link CharSequence} objects for equality. The result is {@code
+   * true} if and only if the two objects are null, or the two objects represent the same sequence of characters.
+   *
+   * @param a The first {@link CharSequence}.
+   * @param b The second {@link CharSequence}.
+   * @return {@code true} if and only if the two objects are null, or the objects represent the same sequence of characters.
+   * @see String#compareTo(String)
+   * @see String#compareToIgnoreCase(String)
+   * @see String#equals(Object)
+   * @see String#equalsIgnoreCase(String)
+   */
+  public static boolean equals(final CharSequence a, final CharSequence b) {
+    if (a == b)
+      return true;
+
+    if (a == null || b == null)
+      return false;
+
+    final int len = a.length();
+    if (len != b.length())
+      return false;
+
+    for (int i = 0; i < len; ++i)
+      if (a.charAt(i) != b.charAt(i))
+        return false;
+
+    return true;
+  }
+
+  /**
+   * Compares the two provided {@link CharSequence} objects for equality, ignoring case. The result is {@code
+   * true} if and only if the two objects are null, or the two objects represent the same sequence of characters, ignoring case.
+   *
+   * @param a The first {@link CharSequence}.
+   * @param b The second {@link CharSequence}.
+   * @return {@code true} if and only if the two objects are null, or the objects represent the same sequence of characters,
+   *         ignoring case.
+   * @see String#compareTo(String)
+   * @see String#compareToIgnoreCase(String)
+   * @see String#equals(Object)
+   * @see String#equalsIgnoreCase(String)
+   */
+  public static boolean equalsIgnoreCase(final CharSequence a, final CharSequence b) {
+    if (a == b)
+      return true;
+
+    if (a == null || b == null)
+      return false;
+
+    final int len = a.length();
+    if (len != b.length())
+      return false;
+
+    for (int i = 0; i < len; ++i)
+      if (Character.toLowerCase(a.charAt(i)) != Character.toLowerCase(b.charAt(i)))
+        return false;
+
+    return true;
   }
 
   private Strings() {

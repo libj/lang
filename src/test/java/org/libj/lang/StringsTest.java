@@ -882,4 +882,19 @@ public class StringsTest {
       assertTrue(expected + " != " + ch, Strings.endsWithIgnoreCase(Strings.repeat(expected, i % 100 + 1), Strings.repeat(ch, i % 100)));
     }
   }
+
+  @Test
+  public void testReplaceChar() {
+    final StringBuilder b = new StringBuilder("\nThe quick\nbrown fox\njumps over\nthe lazy dog\n");
+    assertTrue(Strings.replace(b, '\n', '\t'));
+    assertEquals("\tThe quick\tbrown fox\tjumps over\tthe lazy dog\t", b.toString());
+    assertFalse(Strings.replace(b, '\n', '\t'));
+  }
+
+  @Test
+  public void testIndent() {
+    final StringBuilder b = new StringBuilder("\nThe quick\nbrown fox\njumps over\nthe lazy dog\n");
+    Strings.indent(b, 2);
+    assertEquals("\n  The quick\n  brown fox\n  jumps over\n  the lazy dog\n  ", b.toString());
+  }
 }
