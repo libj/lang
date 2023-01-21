@@ -1664,11 +1664,11 @@ public final class Classes {
 
     final String types = Arrays.stream(parameterTypes).map(Class::getName).collect(Collectors.joining(","));
     final StringBuilder message = new StringBuilder();
-    message.append(type.getName()).append(" does not define <init>(").append(types).append(")");
+    message.append(type.getName()).append(" does not define <init>(").append(types).append(')');
     if (parameterTypes.length == 1 && parameterTypes[0] == String.class)
-      message.append(", valueOf(").append(types).append("), or fromString(").append(types).append(")");
+      message.append(", valueOf(").append(types).append("), or fromString(").append(types).append(')');
     else
-      message.append(" or valueOf(").append(types).append(")");
+      message.append(" or valueOf(").append(types).append(')');
 
     throw new IllegalArgumentException(message.toString());
   }
@@ -1679,7 +1679,7 @@ public final class Classes {
    * Invoking this method is equivalent to:
    *
    * <pre>
-   *  {@code
+   * {@code
    * Classes.forNameOrNull(className, true, currentLoader)
    * }
    * </pre>
