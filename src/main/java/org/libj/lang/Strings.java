@@ -375,6 +375,32 @@ public final class Strings {
   }
 
   /**
+   * Tests if the specified {@link CharSequence} starts with the specified prefix.
+   *
+   * @param str The {@link CharSequence}.
+   * @param prefix The prefix.
+   * @return {@code true} if the {@code prefix} character sequence is a prefix of {@code str}; {@code false} otherwise.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static boolean startsWith(final CharSequence str, final char prefix) {
+    return str.length() > 0 && str.charAt(0) == prefix;
+  }
+
+  /**
+   * Tests if the specified {@link CharSequence} starts with the specified prefix, ignoring case.
+   *
+   * @param str The {@link CharSequence}.
+   * @param prefix The prefix.
+   * @return {@code true} if the {@code prefix} character sequence is a prefix of {@code str}, ignoring case.; {@code false}
+   *         otherwise.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static boolean startsWithIgnoreCase(final CharSequence str, final char prefix) {
+    final char ch;
+    return str.length() > 0 && (Character.toUpperCase(ch = str.charAt(0)) == Character.toUpperCase(prefix) || Character.toLowerCase(ch) == Character.toLowerCase(prefix));
+  }
+
+  /**
    * Tests if the specified {@link CharSequence} ends with the specified suffix.
    *
    * @param str The {@link CharSequence}.
@@ -437,11 +463,26 @@ public final class Strings {
    * @param suffix The suffix.
    * @return {@code true} if the {@code suffix} character sequence is a suffix of {@code str}; {@code false} otherwise. Note also
    *         that {@code true} will be returned if {@code suffix} is an empty string or is equal to {@code str}.
-   * @throws IllegalArgumentException If {@code str} is null.
+   * @throws NullPointerException If {@code str} is null.
    */
   public static boolean endsWith(final CharSequence str, final char suffix) {
-    assertNotNull(str);
-    return str.length() > 0 && str.charAt(str.length() - 1) == suffix;
+    final int len = str.length();
+    return len > 0 && str.charAt(len - 1) == suffix;
+  }
+
+  /**
+   * Tests if the specified {@link CharSequence} ends with the specified suffix, ignoring case.
+   *
+   * @param str The {@link CharSequence}.
+   * @param suffix The suffix.
+   * @return {@code true} if the {@code suffix} character sequence is a prefix of {@code str}, ignoring case.; {@code false}
+   *         otherwise.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static boolean endsWithIgnoreCase(final CharSequence str, final char suffix) {
+    final char ch;
+    final int len = str.length();
+    return len > 0 && (Character.toUpperCase(ch = str.charAt(len - 1)) == Character.toUpperCase(suffix) || Character.toLowerCase(ch) == Character.toLowerCase(suffix));
   }
 
   /**
@@ -1172,9 +1213,10 @@ public final class Strings {
   }
 
   private static int lastIndexOf0(final CharSequence str, final CharSequence substr, final int fromIndex) {
+    assertNotNull(str);
     final int substrLen = assertNotNull(substr).length();
-    for (int i = Math.min(fromIndex, assertNotNull(str).length() - 1); i >= 0; --i) // [N]
-      if (regionMatches(str, false, i, substr, 0, substrLen))
+    for (int i = Math.min(fromIndex, str.length() - 1); i >= 0; --i) // [N]
+      if (regionMatches0(str, false, i, substr, 0, substrLen))
         return i;
 
     return -1;
@@ -1195,8 +1237,9 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} is null.
    */
   public static int indexOfUnEscaped(final CharSequence str, final char ch, final int fromIndex) {
+    assertNotNull(str);
     boolean escaped = false;
-    for (int i = Math.max(fromIndex, 0), i$ = assertNotNull(str).length(); i < i$; ++i) { // [N]
+    for (int i = Math.max(fromIndex, 0), i$ = str.length(); i < i$; ++i) { // [N]
       final char c = str.charAt(i);
       if (escaped) {
         if (c == '\\' && ch == '\\')
@@ -1242,10 +1285,11 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int indexOfUnEscaped(final CharSequence str, final CharSequence substr, final int fromIndex) {
+    assertNotNull(str);
     final int substrLen = assertNotNull(substr).length();
     boolean escaped = false;
     final boolean substrIsBackslash = substr.length() == 1 && substr.charAt(0) == '\\';
-    for (int i = Math.max(fromIndex, 0), i$ = assertNotNull(str).length(); i < i$; ++i) { // [N]
+    for (int i = Math.max(fromIndex, 0), i$ = str.length(); i < i$; ++i) { // [N]
       final char c = str.charAt(i);
       if (escaped) {
         if (c == '\\' && substrIsBackslash)
@@ -1255,7 +1299,7 @@ public final class Strings {
       }
       else if (c == '\\')
         escaped = true;
-      else if (regionMatches(str, false, i, substr, 0, substrLen))
+      else if (regionMatches0(str, false, i, substr, 0, substrLen))
         return i;
     }
 
@@ -1432,16 +1476,17 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int indexOfUnQuoted(final CharSequence str, final CharSequence substr, final int fromIndex) {
+    assertNotNull(str);
     final int substrLen = assertNotNull(substr).length();
     boolean escaped = false;
     boolean quoted = false;
-    for (int i = Math.max(fromIndex, 0), i$ = assertNotNull(str).length(); i < i$; ++i) { // [N]
+    for (int i = Math.max(fromIndex, 0), i$ = str.length(); i < i$; ++i) { // [N]
       final char c = str.charAt(i);
       if (escaped)
         escaped = false;
       else if (c == '\\')
         escaped = true;
-      else if (!quoted && regionMatches(str, false, i, substr, 0, substrLen))
+      else if (!quoted && regionMatches0(str, false, i, substr, 0, substrLen))
         return i;
       else if (c == '"')
         quoted = !quoted;
@@ -1481,10 +1526,11 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} is null.
    */
   public static int lastIndexOfUnQuoted(final CharSequence str, final char ch, final int fromIndex) {
+    assertNotNull(str);
     boolean esacped = false;
     boolean quoted = false;
     char n = '\0';
-    for (int end = assertNotNull(str).length() - 1, i = Math.min(fromIndex, end); i >= 0; --i) { // [N]
+    for (int end = str.length() - 1, i = Math.min(fromIndex, end); i >= 0; --i) { // [N]
       final char c = str.charAt(i);
       if (c == '\\')
         esacped = true;
@@ -1532,17 +1578,18 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int lastIndexOfUnQuoted(final CharSequence str, final CharSequence substr, final int fromIndex) {
+    assertNotNull(str);
     final int substrLen = assertNotNull(substr).length();
     boolean esacped = false;
     boolean quoted = false;
     char n = '\0';
-    for (int end = assertNotNull(str).length() - 1, i = Math.min(fromIndex, end); i >= 0; --i) { // [N]
+    for (int end = str.length() - 1, i = Math.min(fromIndex, end); i >= 0; --i) { // [N]
       final char c = str.charAt(i);
       if (c == '\\')
         esacped = true;
       else if (esacped)
         esacped = false;
-      else if (!quoted && regionMatches(str, false, i, substr, 0, substrLen))
+      else if (!quoted && regionMatches0(str, false, i, substr, 0, substrLen))
         return i + 1;
       else if (n == '"')
         quoted = !quoted;
@@ -1586,9 +1633,10 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} is null.
    */
   public static int indexOfUnEnclosed(final CharSequence str, final char ch, final char open, final char close, final int fromIndex) {
+    assertNotNull(str);
     boolean escaped = false;
     boolean enclosed = false;
-    for (int i = Math.max(fromIndex, 0), i$ = assertNotNull(str).length(); i < i$; ++i) { // [N]
+    for (int i = Math.max(fromIndex, 0), i$ = str.length(); i < i$; ++i) { // [N]
       final char c = str.charAt(i);
       if (escaped)
         escaped = false;
@@ -1640,10 +1688,11 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int indexOfUnEnclosed(final CharSequence str, final CharSequence substr, final char open, final char close, final int fromIndex) {
+    assertNotNull(str);
     boolean escaped = false;
     boolean enclosed = false;
     final int substrLen = assertNotNull(substr).length();
-    for (int i = Math.max(fromIndex, 0), i$ = assertNotNull(str).length(); i < i$; ++i) { // [N]
+    for (int i = Math.max(fromIndex, 0), i$ = str.length(); i < i$; ++i) { // [N]
       final char c = str.charAt(i);
       if (escaped)
         escaped = false;
@@ -1651,7 +1700,7 @@ public final class Strings {
         escaped = true;
       else if (enclosed)
         enclosed = c != close;
-      else if (regionMatches(str, false, i, substr, 0, substrLen))
+      else if (regionMatches0(str, false, i, substr, 0, substrLen))
         return i;
       else
         enclosed = c == open;
@@ -1700,8 +1749,9 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} is null.
    */
   public static int indexOfScopeClose(final CharSequence str, final char open, final char close, final int fromIndex) {
+    assertNotNull(str);
     boolean escaped = false;
-    for (int i = Math.max(fromIndex, 0), i$ = assertNotNull(str).length(), scope = 1; i < i$; ++i) { // [N]
+    for (int i = Math.max(fromIndex, 0), i$ = str.length(), scope = 1; i < i$; ++i) { // [N]
       final char c = str.charAt(i);
       if (escaped)
         escaped = false;
@@ -2239,8 +2289,10 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static boolean regionMatches(final CharSequence str, final boolean ignoreCase, final int strOffset, final CharSequence substr, final int substrOffset, int len) {
-    assertNotNull(str);
-    assertNotNull(substr);
+    return regionMatches0(assertNotNull(str), ignoreCase, strOffset, assertNotNull(substr), substrOffset, len);
+  }
+
+  private static boolean regionMatches0(final CharSequence str, final boolean ignoreCase, final int strOffset, final CharSequence substr, final int substrOffset, int len) {
     if (str instanceof String && substr instanceof String)
       return ((String)str).regionMatches(ignoreCase, strOffset, (String)substr, substrOffset, len);
 
@@ -2306,10 +2358,11 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} is null.
    */
   public static int indexOf(final CharSequence str, final char ch, int fromIndex) {
+    assertNotNull(str);
     if (fromIndex < 0)
       fromIndex = 0;
 
-    final int i$ = assertNotNull(str).length();
+    final int i$ = str.length();
     if (fromIndex > i$)
       return -1;
 
@@ -2364,10 +2417,12 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int indexOf(final CharSequence str, final CharSequence substr, int fromIndex) {
+    assertNotNull(str);
+    assertNotNull(substr);
     if (fromIndex < 0)
       fromIndex = 0;
 
-    final int i$ = assertNotNull(str).length() - assertNotNull(substr).length() + 1;
+    final int i$ = str.length() - substr.length() + 1;
     if (fromIndex > i$)
       return -1;
 
@@ -2375,7 +2430,7 @@ public final class Strings {
       return fromIndex;
 
     for (int i = fromIndex; i < i$; ++i) // [N]
-      if (regionMatches(str, false, i, substr, 0, substr.length()))
+      if (regionMatches0(str, false, i, substr, 0, substr.length()))
         return i;
 
     return -1;
@@ -2427,10 +2482,11 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} is null.
    */
   public static int indexOfIgnoreCase(final CharSequence str, char ch, int fromIndex) {
+    assertNotNull(str);
     if (fromIndex < 0)
       fromIndex = 0;
 
-    final int i$ = assertNotNull(str).length();
+    final int i$ = str.length();
     if (fromIndex > i$)
       return -1;
 
@@ -2499,10 +2555,12 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} or {@code substr} is null.
    */
   public static int indexOfIgnoreCase(final CharSequence str, final CharSequence substr, int fromIndex) {
+    assertNotNull(str);
+    assertNotNull(substr);
     if (fromIndex < 0)
       fromIndex = 0;
 
-    final int i$ = assertNotNull(str).length() - assertNotNull(substr).length() + 1;
+    final int i$ = str.length() - substr.length() + 1;
     if (fromIndex > i$)
       return -1;
 
@@ -2510,7 +2568,7 @@ public final class Strings {
       return fromIndex;
 
     for (int i = fromIndex; i < i$; ++i) // [N]
-      if (regionMatches(str, true, i, substr, 0, substr.length()))
+      if (regionMatches0(str, true, i, substr, 0, substr.length()))
         return i;
 
     return -1;
