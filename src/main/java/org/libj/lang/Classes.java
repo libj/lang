@@ -1779,14 +1779,14 @@ public final class Classes {
    *         of the {@code methods}, otherwise {@code false}.
    */
   public static boolean sortDeclarativeOrder(final Method[] methods) {
+    if (methods.length == 0)
+      return true;
+
     if (hasJavaAssist == null)
       hasJavaAssist = forNameOrNull("javassist.ClassPool") != null;
 
     if (!hasJavaAssist)
       return false;
-
-    if (methods.length == 0)
-      return true;
 
     // First, sort the methods based on the class hierarchy
     Arrays.sort(methods, (a, b) -> a.getDeclaringClass() == b.getDeclaringClass() ? 0 : a.getDeclaringClass().isAssignableFrom(b.getDeclaringClass()) ? -1 : 1);
