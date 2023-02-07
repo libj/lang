@@ -3433,6 +3433,61 @@ public final class Numbers {
   }
 
   /**
+   * Returns the signum of the provided {@link Number}.
+   *
+   * @param a The {@code int} whose signum to return.
+   * @return {@code -1}, {@code 0}, or {@code 1} as the value of the provided {@code int} is negative, zero or positive.
+   * @throws NullPointerException If the provided {@link Number} is null.
+   */
+  public static int signum(final Number a) {
+    if (a instanceof Integer)
+      return signum((int)a);
+
+    if (a instanceof Long)
+      return signum((long)a);
+
+    if (a instanceof BigInteger)
+      return ((BigInteger)a).signum();
+
+    if (a instanceof BigDecimal)
+      return ((BigDecimal)a).signum();
+
+    if (a instanceof Double)
+      return signum((double)a);
+
+    if (a instanceof Float)
+      return signum((float)a);
+
+    if (a instanceof Short)
+      return signum((short)a);
+
+    if (a instanceof Byte)
+      return signum((byte)a);
+
+    return signum(a.doubleValue());
+  }
+
+  /**
+   * Returns the signum of the provided {@code byte}.
+   *
+   * @param a The {@code byte} whose signum to return.
+   * @return {@code -1}, {@code 0}, or {@code 1} as the value of the provided {@code byte} is negative, zero or positive.
+   */
+  public static int signum(final byte a) {
+    return a < 0 ? -1 : a > 0 ? 1 : 0;
+  }
+
+  /**
+   * Returns the signum of the provided {@code short}.
+   *
+   * @param a The {@code short} whose signum to return.
+   * @return {@code -1}, {@code 0}, or {@code 1} as the value of the provided {@code short} is negative, zero or positive.
+   */
+  public static int signum(final short a) {
+    return a < 0 ? -1 : a > 0 ? 1 : 0;
+  }
+
+  /**
    * Returns the signum of the provided {@code int}.
    *
    * @param a The {@code int} whose signum to return.
@@ -3449,6 +3504,26 @@ public final class Numbers {
    * @return {@code -1}, {@code 0}, or {@code 1} as the value of the provided {@code long} is negative, zero or positive.
    */
   public static int signum(final long a) {
+    return a < 0 ? -1 : a > 0 ? 1 : 0;
+  }
+
+  /**
+   * Returns the signum of the provided {@code float}.
+   *
+   * @param a The {@code float} whose signum to return.
+   * @return {@code -1}, {@code 0}, or {@code 1} as the value of the provided {@code float} is negative, zero or positive.
+   */
+  public static int signum(final float a) {
+    return a < 0 ? -1 : a > 0 ? 1 : 0;
+  }
+
+  /**
+   * Returns the signum of the provided {@code double}.
+   *
+   * @param a The {@code double} whose signum to return.
+   * @return {@code -1}, {@code 0}, or {@code 1} as the value of the provided {@code double} is negative, zero or positive.
+   */
+  public static int signum(final double a) {
     return a < 0 ? -1 : a > 0 ? 1 : 0;
   }
 

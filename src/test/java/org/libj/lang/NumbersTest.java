@@ -682,6 +682,24 @@ public class NumbersTest {
   }
 
   @Test
+  public void testSignumByte() {
+    byte j;
+    for (int i = 9; i < 1000000; ++i) { // [N]
+      j = (byte)random.nextInt();
+      assertEquals(j < 0 ? -1 : j == 0 ? 0 : 1, Numbers.signum(j));
+    }
+  }
+
+  @Test
+  public void testSignumShort() {
+    short j;
+    for (int i = 9; i < 1000000; ++i) { // [N]
+      j = (short)random.nextInt();
+      assertEquals(j < 0 ? -1 : j == 0 ? 0 : 1, Numbers.signum(j));
+    }
+  }
+
+  @Test
   public void testSignumInt() {
     for (int i = 9, j; i < 1000000; ++i) { // [N]
       j = random.nextInt();
@@ -694,6 +712,58 @@ public class NumbersTest {
     for (long i = 9, j; i < 1000000; ++i) { // [N]
       j = random.nextLong();
       assertEquals(j < 0 ? -1 : j == 0 ? 0 : 1, Numbers.signum(j));
+    }
+  }
+
+  @Test
+  public void testSignumFloat() {
+    float j;
+    for (int i = 9; i < 1000000; ++i) { // [N]
+      j = random.nextFloat();
+      assertEquals(j < 0 ? -1 : j == 0 ? 0 : 1, Numbers.signum(j));
+    }
+  }
+
+  @Test
+  public void testSignumDouble() {
+    double j;
+    for (int i = 9; i < 1000000; ++i) { // [N]
+      j = random.nextDouble();
+      assertEquals(j < 0 ? -1 : j == 0 ? 0 : 1, Numbers.signum(j));
+    }
+  }
+
+  private static Number makeNumber(final int m, final int signum) {
+    if (m == 0)
+      return signum == 0 ? 0 : signum * (random.nextInt(Integer.MAX_VALUE - 1) + 1);
+    else if (m == 1)
+      return signum == 0 ? 0L : signum * (long)(random.nextInt(Integer.MAX_VALUE - 1) + 1);
+    else if (m == 2)
+      return signum == 0 ? BigInteger.ZERO : BigInteger.valueOf(signum * (random.nextInt(Integer.MAX_VALUE - 1) + 1));
+    else if (m == 3)
+      return signum == 0 ? BigDecimal.ZERO : BigDecimal.valueOf((random.nextDouble() + 1) * signum);
+    else if (m == 4)
+      return signum == 0 ? 0d : (random.nextDouble() + 1) * signum;
+    else if (m == 5)
+      return signum == 0 ? 0f : (random.nextFloat() + 1) * signum;
+    else if (m == 6)
+      return signum == 0 ? (short)0 : (short)(signum * (random.nextInt(Short.MAX_VALUE - 1) + 1));
+    else if (m == 7)
+      return signum == 0 ? (byte)0 : (byte)(signum * (random.nextInt(Byte.MAX_VALUE - 1) + 1));
+    else
+      throw new IllegalStateException();
+  }
+
+  @Test
+  public void testSignumNumber() {
+    for (int i = 0; i < 1000000; ++i) { // [N]
+      final int m = i % 8;
+      Number n = makeNumber(m, 1);
+      assertEquals(n.getClass().getSimpleName() + " " + n.toString(), 1, Numbers.signum(n));
+      n = makeNumber(m, -1);
+      assertEquals(n.getClass().getSimpleName() + " " + n.toString(), -1, Numbers.signum(n));
+      n = makeNumber(m, 0);
+      assertEquals(n.getClass().getSimpleName() + " " + n.toString(), 0, Numbers.signum(n));
     }
   }
 
