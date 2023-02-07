@@ -949,7 +949,7 @@ public final class Classes {
    * @throws IllegalArgumentException If {@code target} is null.
    */
   public static boolean isInstance(final Class<?> target, final Object obj) {
-    return obj != null && isAssignableFrom(assertNotNull(target), obj.getClass(), true);
+    return obj != null && isAssignableFrom(target, obj.getClass(), true);
   }
 
   /**
@@ -1243,6 +1243,48 @@ public final class Classes {
   @SuppressWarnings("unchecked")
   public static Class<?>[] getDeclaredClassesWithAnnotationDeep(final Class<?> cls, final Class<? extends Annotation> annotationType) {
     return Repeat.Recursive.inverted(assertNotNull(cls), cls.getDeclaredClasses(), (Class<Class<?>>)Class.class.getClass(), classWithAnnotationRecurser, assertNotNull(annotationType));
+  }
+
+  private static final HashMap<Method,Annotation[]> methodToAnnotations = new HashMap<>();
+
+  /**
+   * Returns annotations that are present on the specified {@link Method}. If there are no annotations present on the
+   * {@link Method}, the return value is an array of length 0.
+   * <p>
+   * This method differentiates itself from {@link Method#getAnnotations()} by caching and return the same array to each caller.
+   * Therefore, unlike with the arrays returned by {@link Method#getAnnotations()}, the caller of this method is <b>not</b> free to
+   * modify the returned array, as it <b>will have</b> an effect on the arrays returned to other callers.
+   *
+   * @param method The {@link Method} whose annotations are to be returned.
+   * @return Annotations present on the specified {@link Method}.
+   */
+  public static Annotation[] getAnnotations(final Method method) {
+    Annotation[] annotations = methodToAnnotations.get(method);
+    if (annotations == null)
+      methodToAnnotations.put(method, annotations = method.getAnnotations());
+
+    return annotations;
+  }
+
+  private static final HashMap<Field,Annotation[]> fieldToAnnotations = new HashMap<>();
+
+  /**
+   * Returns annotations that are present on the specified {@link Field}. If there are no annotations present on the {@link Field},
+   * the return value is an array of length 0.
+   * <p>
+   * This method differentiates itself from {@link Field#getAnnotations()} by caching and return the same array to each caller.
+   * Therefore, unlike with the arrays returned by {@link Field#getAnnotations()}, the caller of this method is <b>not</b> free to
+   * modify the returned array, as it <b>will have</b> an effect on the arrays returned to other callers.
+   *
+   * @param field The {@link Field} whose annotations are to be returned.
+   * @return Annotations present on the specified {@link Field}.
+   */
+  public static Annotation[] getAnnotations(final Field field) {
+    Annotation[] annotations = fieldToAnnotations.get(field);
+    if (annotations == null)
+      fieldToAnnotations.put(field, annotations = field.getAnnotations());
+
+    return annotations;
   }
 
   /**
