@@ -235,7 +235,7 @@ public class NumbersTest {
     String s = v.toString();
     Number t = Numbers.parseNumber(s);
     assertEquals(v, t);
-    s = s.substring(0, s.length() - 1) + '9';
+    s = s.substring(0, s.length() - 1) + "9";
     t = Numbers.parseNumber(s);
     assertEquals(Short.valueOf(s), t);
   }
@@ -246,7 +246,7 @@ public class NumbersTest {
     String s = v.toString();
     Number t = Numbers.parseNumber(s);
     assertEquals(v, t);
-    s = s.substring(0, s.length() - 1) + '8';
+    s = s.substring(0, s.length() - 1) + "8";
     t = Numbers.parseNumber(s);
     assertEquals(Short.valueOf(s), t);
     s = "+" + s;
@@ -260,7 +260,7 @@ public class NumbersTest {
     String s = v.toString();
     Number t = Numbers.parseNumber(s);
     assertEquals(v, t);
-    s = s.substring(0, s.length() - 1) + '9';
+    s = s.substring(0, s.length() - 1) + "9";
     t = Numbers.parseNumber(s);
     assertEquals(Integer.valueOf(s), t);
   }
@@ -271,7 +271,7 @@ public class NumbersTest {
     String s = v.toString();
     Number t = Numbers.parseNumber(s);
     assertEquals(v, t);
-    s = s.substring(0, s.length() - 1) + '8';
+    s = s.substring(0, s.length() - 1) + "8";
     t = Numbers.parseNumber(s);
     assertEquals(Integer.valueOf(s), t);
     s = "+" + s;
@@ -285,7 +285,7 @@ public class NumbersTest {
     String s = v.toString();
     Number t = Numbers.parseNumber(s);
     assertEquals(v, t);
-    s = s.substring(0, s.length() - 1) + '9';
+    s = s.substring(0, s.length() - 1) + "9";
     t = Numbers.parseNumber(s);
     assertEquals(Long.valueOf(s), t);
   }
@@ -296,7 +296,7 @@ public class NumbersTest {
     String s = v.toString();
     Number t = Numbers.parseNumber(s);
     assertEquals(v, t);
-    s = s.substring(0, s.length() - 1) + '8';
+    s = s.substring(0, s.length() - 1) + "8";
     t = Numbers.parseNumber(s);
     assertEquals(Long.valueOf(s), t);
     s = "+" + s;
@@ -310,7 +310,7 @@ public class NumbersTest {
     String s = v.toString();
     Number t = Numbers.parseNumber(s);
     assertEquals(v, t);
-    s = s.substring(0, s.length() - 1) + '9';
+    s = s.substring(0, s.length() - 1) + "9";
     t = Numbers.parseNumber(s);
     assertEquals(new BigInteger(s), t);
   }
@@ -321,7 +321,7 @@ public class NumbersTest {
     String s = v.toString();
     Number t = Numbers.parseNumber(s);
     assertEquals(v, t);
-    s = s.substring(0, s.length() - 1) + '8';
+    s = s.substring(0, s.length() - 1) + "8";
     t = Numbers.parseNumber(s);
     assertEquals(new BigInteger(s), t);
     s = "+" + s;
@@ -759,11 +759,11 @@ public class NumbersTest {
     for (int i = 0; i < 1000000; ++i) { // [N]
       final int m = i % 8;
       Number n = makeNumber(m, 1);
-      assertEquals(n.getClass().getSimpleName() + " " + n.toString(), 1, Numbers.signum(n));
+      assertEquals(n.getClass().getSimpleName() + " " + n, 1, Numbers.signum(n));
       n = makeNumber(m, -1);
-      assertEquals(n.getClass().getSimpleName() + " " + n.toString(), -1, Numbers.signum(n));
+      assertEquals(n.getClass().getSimpleName() + " " + n, -1, Numbers.signum(n));
       n = makeNumber(m, 0);
-      assertEquals(n.getClass().getSimpleName() + " " + n.toString(), 0, Numbers.signum(n));
+      assertEquals(n.getClass().getSimpleName() + " " + n, 0, Numbers.signum(n));
     }
   }
 
