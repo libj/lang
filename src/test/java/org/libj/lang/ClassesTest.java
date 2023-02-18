@@ -69,9 +69,9 @@ public class ClassesTest {
   public void testGreatestCommonClass() throws Exception {
     try {
       Classes.getGreatestCommonSuperclass((Class<?>[])null);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     if (classes.size() > 0)
@@ -90,9 +90,9 @@ public class ClassesTest {
   public void testGetDeclaringClassName() {
     try {
       Classes.getDeclaringClassName(null);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     try {
@@ -128,9 +128,9 @@ public class ClassesTest {
   public void testGetRootDeclaringClassName() {
     try {
       Classes.getRootDeclaringClassName(null);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     try {
@@ -165,9 +165,9 @@ public class ClassesTest {
   public void testToCanonicalClassName() {
     try {
       Classes.toCanonicalClassName(null);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     try {
@@ -201,9 +201,9 @@ public class ClassesTest {
   public void testGetCompositeName() {
     try {
       Classes.getCompositeName(null);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     assertEquals("Map$Entry", Classes.getCompositeName(Map.Entry.class));
@@ -213,9 +213,9 @@ public class ClassesTest {
   public void testGetCanonicalCompositeName() {
     try {
       Classes.getCompositeName(null);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     assertEquals("Map.Entry", Classes.getCanonicalCompositeName(Map.Entry.class));
@@ -272,9 +272,9 @@ public class ClassesTest {
   public void testGetGenericSuperclassTypeArguments() {
     try {
       Classes.getGenericSuperclassTypeArguments(Integer.class, null);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     try {
@@ -301,16 +301,16 @@ public class ClassesTest {
   public void testGetGenericInterfaceTypeArguments() {
     try {
       Classes.getGenericInterfaceTypeArguments(Integer.class, null);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     try {
       Classes.getGenericInterfaceTypeArguments(null, Serializable.class);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     try {
@@ -337,9 +337,9 @@ public class ClassesTest {
   public void testGetClassHierarchy() {
     try {
       Classes.getClassHierarchy(null, c -> false);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     final Class<?>[] hierarchy = {LinkedList.class, AbstractSequentialList.class, List.class, Deque.class, Cloneable.class, Serializable.class, AbstractList.class, Collection.class, Queue.class, AbstractCollection.class, Iterable.class, Object.class};
@@ -354,9 +354,9 @@ public class ClassesTest {
   public void testWalkClassHierarchy() {
     try {
       Classes.walkClassHierarchy(null, c -> false);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     assertNull(Classes.walkClassHierarchy(LinkedList.class, null));

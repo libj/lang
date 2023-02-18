@@ -106,15 +106,10 @@ public final class Repeat {
        * @param recurser {@link Recurser} defining the recursion logic.
        * @param arg Argument to be passed to {@code predicate}.
        * @return The {@code type}-typed array of {@code recurser}-accepted members of {@code array} argument.
-       * @throws IllegalArgumentException If {@code array} is not null, and {@code type} or {@code recurser} is null.
+       * @throws NullPointerException If {@code array} is not null, and {@code type} or {@code recurser} is null.
        */
       protected <C,M,A>M[] contained(final C container, final M[] array, final Class<M> type, final Recurser<C,M,A> recurser, final A arg) {
-        if (array == null)
-          return null;
-
-        assertNotNull(type, "type == null");
-        assertNotNull(recurser, "recurser == null");
-        return recurse(container, array, type, recurser, arg, 0, 0);
+        return array == null ? null : recurse(container, array, type, recurser, arg, 0, 0);
       }
 
       /**

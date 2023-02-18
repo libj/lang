@@ -410,23 +410,28 @@ public class WrappedArrayList<E> extends ArrayList<E> {
   }
 
   private boolean equalsRange(final List<?> other, int from, final int to) {
+    final int o$ = other.size();
+    if (o$ == 0)
+      return from == to;
+
+    if (from == to)
+      return false;
+
     final Object[] es = elementData;
     if (other instanceof RandomAccess) {
-      int o = 0;
-      final int o$ = other.size();
-      for (; from < to; ++from) // [A]
+      int o = 0; do // [RA]
         if (o == o$ || !Objects.equals(es[from], other.get(o++)))
           return false;
-
+      while (++from < to);
       return o == o$;
     }
 
     final Iterator<?> oit = other.iterator();
-    for (; from < to; ++from) // [A]
-      if (!oit.hasNext() || !Objects.equals(es[from], oit.next()))
+    do // [I]
+      if (!oit.hasNext() || !Objects.equals(es[from++], oit.next()))
         return false;
-
-    return !oit.hasNext();
+    while (oit.hasNext());
+    return true;
   }
 
   private int hashCodeRange(final int from, final int to) {

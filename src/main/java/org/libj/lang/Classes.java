@@ -84,7 +84,8 @@ public final class Classes {
    *
    * @param className The class name for which to return the name of the declaring class.
    * @return The name of the declaring class of the specified class name.
-   * @throws IllegalArgumentException If {@code className} is null, or if {@code className} is not a valid
+   * @throws NullPointerException If {@code className} is null.
+   * @throws IllegalArgumentException If {@code className} is not a valid
    *           <a href= "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.8">Java Identifier</a>.
    */
   public static String getDeclaringClassName(final String className) {
@@ -119,7 +120,8 @@ public final class Classes {
    *
    * @param className The class name for which to return the name of the root declaring class.
    * @return The name of the root declaring class for the specified class name.
-   * @throws IllegalArgumentException If {@code className} is null, or if {@code className} is not a valid
+   * @throws NullPointerException If {@code className} is null.
+   * @throws IllegalArgumentException If {@code className} is not a valid
    *           <a href= "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.8">Java Identifier</a>.
    */
   public static String getRootDeclaringClassName(final String className) {
@@ -157,7 +159,8 @@ public final class Classes {
    *
    * @param className The class name.
    * @return The canonical name of the underlying specified class name.
-   * @throws IllegalArgumentException If {@code className} is null, or if {@code className} is not a valid
+   * @throws NullPointerException If {@code className} is null.
+   * @throws IllegalArgumentException If {@code className} is not a valid
    *           <a href= "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.8">Java Identifier</a>.
    * @see <a href= "https://docs.oracle.com/javase/specs/jls/se7/html/jls-6.html#jls-6.7">6.7. Fully Qualified Names and Canonical
    *      Names</a>
@@ -196,10 +199,10 @@ public final class Classes {
    *
    * @param cls The class or interface.
    * @return The "Composite Name" of the class or interface represented by {@code cls}.
-   * @throws IllegalArgumentException If {@code cls} is null.
+   * @throws NullPointerException If {@code cls} is null.
    */
   public static String getCompositeName(final Class<?> cls) {
-    final String pkg = assertNotNull(cls).getPackage().getName();
+    final String pkg = cls.getPackage().getName();
     return pkg.length() == 0 ? cls.getName() : cls.getName().substring(pkg.length() + 1);
   }
 
@@ -217,10 +220,10 @@ public final class Classes {
    *
    * @param cls The class or interface.
    * @return The canonical "Composite Name" of the class or interface represented by {@code cls}.
-   * @throws IllegalArgumentException If {@code cls} is null.
+   * @throws NullPointerException If {@code cls} is null.
    */
   public static String getCanonicalCompositeName(final Class<?> cls) {
-    if (assertNotNull(cls).isPrimitive())
+    if (cls.isPrimitive())
       return cls.getCanonicalName();
 
     final String pkg = cls.getPackage().getName();
@@ -239,10 +242,10 @@ public final class Classes {
    * @throws TypeNotPresentException If the generic superclass refers to a non-existent type declaration.
    * @throws MalformedParameterizedTypeException If the generic superclass refers to a parameterized type that cannot be
    *           instantiated for any reason.
-   * @throws IllegalArgumentException If {@code cls} is null.
+   * @throws NullPointerException If {@code cls} is null.
    */
   public static Type[] getSuperclassGenericTypes(final Class<?> cls) {
-    return assertNotNull(cls).getGenericSuperclass() instanceof ParameterizedType ? ((ParameterizedType)cls.getGenericSuperclass()).getActualTypeArguments() : null;
+    return cls.getGenericSuperclass() instanceof ParameterizedType ? ((ParameterizedType)cls.getGenericSuperclass()).getActualTypeArguments() : null;
   }
 
   private static <T>T visitSuperclass(final Class<?> cls, final Queue<? super Class<?>> queue, final Set<? super Class<?>> visited, final Function<? super Class<?>,T> function) {
@@ -268,10 +271,9 @@ public final class Classes {
    *          {@link Function} returns a non-null value, traversal will terminate, and the method will return the value returned by
    *          the {@code function}.
    * @return The first non-null value returned from the {@code function}.
-   * @throws IllegalArgumentException If {@code cls} null.
+   * @throws NullPointerException If {@code cls} null.
    */
   public static <T>T walkClassHierarchy(Class<?> cls, final Function<? super Class<?>,T> function) {
-    assertNotNull(cls);
     final Set<Class<?>> visited = new LinkedHashSet<>();
     final Queue<Class<?>> queue = new LinkedList<>();
     T t;
@@ -310,10 +312,9 @@ public final class Classes {
    *          {@link Predicate} returns {@code false}, traversal will terminate, and the method will return the set of classes that
    *          had been visited before termination.
    * @return The class hierarchy of the specified {@link Class}.
-   * @throws IllegalArgumentException If {@code cls} null.
+   * @throws NullPointerException If {@code cls} null.
    */
   public static Set<Class<?>> getClassHierarchy(Class<?> cls, final Predicate<? super Class<?>> forEach) {
-    assertNotNull(cls);
     final Set<Class<?>> visited = new LinkedHashSet<>();
     final Queue<Class<?>> queue = new LinkedList<>();
     if (!visitSuperclass(cls, queue, visited, forEach))
@@ -337,7 +338,7 @@ public final class Classes {
    *
    * @param cls The {@link Class}.
    * @return The class hierarchy of the specified {@link Class}.
-   * @throws IllegalArgumentException If {@code cls} is null.
+   * @throws NullPointerException If {@code cls} is null.
    */
   public static Set<Class<?>> getClassHierarchy(final Class<?> cls) {
     return getClassHierarchy(cls, null);
@@ -356,12 +357,10 @@ public final class Classes {
    * @throws TypeNotPresentException If any of the actual type arguments refers to a non-existent type declaration.
    * @throws MalformedParameterizedTypeException If any of the actual type parameters refer to a parameterized type that cannot be
    *           instantiated for any reason.
-   * @throws IllegalArgumentException If {@code cls} or {@code superClass} is null, or if {@code superClass} is a {@link Class} of
-   *           an interface type.
+   * @throws NullPointerException If {@code cls} or {@code superClass} is null.
+   * @throws IllegalArgumentException If {@code superClass} is a {@link Class} of an interface type.
    */
   public static Type[] getGenericSuperclassTypeArguments(Class<?> cls, final Class<?> superClass) {
-    assertNotNull(cls);
-    assertNotNull(superClass);
     if (superClass.isInterface())
       throw new IllegalArgumentException(superClass.getName() + " is an interface type");
 
@@ -395,12 +394,10 @@ public final class Classes {
    * @throws TypeNotPresentException If any of the actual type arguments refers to a non-existent type declaration.
    * @throws MalformedParameterizedTypeException If any of the actual type parameters refer to a parameterized type that cannot be
    *           instantiated for any reason.
-   * @throws IllegalArgumentException If {@code cls} or {@code interfaceType} is null, or if {@code interfaceType} is not a
-   *           {@link Class} of an interface type.
+   * @throws NullPointerException If {@code cls} or {@code interfaceType} is null.
+   * @throws IllegalArgumentException If {@code interfaceType} is not a {@link Class} of an interface type.
    */
   public static Type[] getGenericInterfaceTypeArguments(final Class<?> cls, final Class<?> interfaceType) {
-    assertNotNull(cls);
-    assertNotNull(interfaceType);
     if (!interfaceType.isInterface())
       throw new IllegalArgumentException(interfaceType.getName() + " is not an interface type");
 
@@ -418,10 +415,10 @@ public final class Classes {
    * @param function The {@link BiFunction} to be invoked for each superclasses and superinterface of the specified {@link Class},
    *          whereby a return of {@code false} will terminate subsequent traversal of the class hierarchy.
    * @return The first non-null value returned from the {@code function}.
-   * @throws IllegalArgumentException If {@code cls} or {@code function} is null.
+   * @throws NullPointerException If {@code cls} or {@code function} is null.
    */
   public static <T>T resolveGenericTypes(final Class<?> cls, final BiFunction<Class<?>,Type[],T> function) {
-    return resolveGenericTypes(assertNotNull(cls), null, new HashSet<>(8), assertNotNull(function));
+    return resolveGenericTypes(cls, null, new HashSet<>(8), function);
   }
 
   private static <T>T resolveGenericTypes(final Class<?> cls, final Object[][] args, final Set<Class<?>> visited, final BiFunction<Class<?>,Type[],T> function) {
@@ -487,10 +484,10 @@ public final class Classes {
    *
    * @param method The {@link Method}
    * @return The array of generic parameter classes for the specified method.
-   * @throws IllegalArgumentException If {@code method} is null.
+   * @throws NullPointerException If {@code method} is null.
    */
   public static Class<?>[] getGenericParameters(final Method method) {
-    return getGenericParameters(assertNotNull(method).getGenericReturnType());
+    return getGenericParameters(method.getGenericReturnType());
   }
 
   private static final Class<?>[] emptyClasses = {};
@@ -501,10 +498,10 @@ public final class Classes {
    *
    * @param field The {@link Field}
    * @return The array of generic parameter classes for the specified field.
-   * @throws IllegalArgumentException If {@code field} is null.
+   * @throws NullPointerException If {@code field} is null.
    */
   public static Class<?>[] getGenericParameters(final Field field) {
-    return getGenericParameters(assertNotNull(field).getGenericType());
+    return getGenericParameters(field.getGenericType());
   }
 
   public static Class<?>[] getGenericParameters(final Type genericType) {
@@ -565,14 +562,14 @@ public final class Classes {
    * @return A {@link Field} object that reflects the specified public member field of the class or interface represented by
    *         {@code cls} (including inherited fields). The {@code name} parameter is a {@link String} specifying the simple name of
    *         the desired field.
-   * @throws IllegalArgumentException If {@code cls} or {@code name} is null.
+   * @throws NullPointerException If {@code cls} or {@code name} is null.
    * @throws SecurityException If a security manager, <i>s</i>, is present and the caller's class loader is not the same as or an
    *           ancestor of the class loader for the current class and invocation of {@link SecurityManager#checkPackageAccess
    *           s.checkPackageAccess()} denies access to the package of this class.
    */
   @SuppressWarnings("javadoc")
   public static Field getField(final Class<?> cls, final String name) {
-    return Classes.getField(assertNotNull(cls).getFields(), assertNotNull(name));
+    return Classes.getField(cls.getFields(), name);
   }
 
   /**
@@ -593,14 +590,14 @@ public final class Classes {
    * @return A {@link Field} object that reflects the specified public member field of the class or interface represented by
    *         {@code cls} (excluding inherited fields). The {@code name} parameter is a {@link String} specifying the simple name of
    *         the desired field.
-   * @throws IllegalArgumentException If {@code cls} or {@code name} is null.
+   * @throws NullPointerException If {@code cls} or {@code name} is null.
    * @throws SecurityException If a security manager, <i>s</i>, is present and the caller's class loader is not the same as or an
    *           ancestor of the class loader for the current class and invocation of {@link SecurityManager#checkPackageAccess
    *           s.checkPackageAccess()} denies access to the package of this class.
    */
   @SuppressWarnings("javadoc")
   public static Field getDeclaredField(final Class<?> cls, final String name) {
-    return Classes.getField(assertNotNull(cls).getDeclaredFields(), assertNotNull(name));
+    return Classes.getField(cls.getDeclaredFields(), name);
   }
 
   /**
@@ -621,15 +618,13 @@ public final class Classes {
    * @return A {@link Field} object that reflects the specified public member field of the class or interface represented by
    *         {@code cls} (including inherited fields). The {@code name} parameter is a {@link String} specifying the simple name of
    *         the desired field.
-   * @throws IllegalArgumentException If {@code cls} or {@code name} is null.
+   * @throws NullPointerException If {@code cls} or {@code name} is null.
    * @throws SecurityException If a security manager, <i>s</i>, is present and the caller's class loader is not the same as or an
    *           ancestor of the class loader for the current class and invocation of {@link SecurityManager#checkPackageAccess
    *           s.checkPackageAccess()} denies access to the package of this class.
    */
   @SuppressWarnings("javadoc")
   public static Field getDeclaredFieldDeep(Class<?> cls, final String name) {
-    assertNotNull(cls);
-    assertNotNull(name);
     Field field;
     do
       field = getField(cls.getDeclaredFields(), name);
@@ -653,11 +648,11 @@ public final class Classes {
    * @param parameterTypes The parameter array.
    * @return A {@link Constructor} object that reflects the specified public constructor signature of the class represented by
    *         {@code cls} (including inherited constructors), or {@code null} if the constructor is not found.
-   * @throws IllegalArgumentException If {@code cls} is null.
+   * @throws NullPointerException If {@code cls} is null.
    */
   @SuppressWarnings("unchecked")
   public static <T>Constructor<T> getConstructor(final Class<T> cls, final Class<?> ... parameterTypes) {
-    final Constructor<?>[] constructors = assertNotNull(cls).getConstructors();
+    final Constructor<?>[] constructors = cls.getConstructors();
     for (final Constructor<?> constructor : constructors) // [A]
       if (isMatch(constructor, parameterTypes))
         return (Constructor<T>)constructor;
@@ -682,11 +677,11 @@ public final class Classes {
    * @param parameterTypes The parameter array.
    * @return A {@link Constructor} object that reflects the specified public constructor signature of the class represented by
    *         {@code cls} (including inherited constructors), or {@code null} if the constructor is not found.
-   * @throws IllegalArgumentException If {@code cls} or {@code parameterTypes} is null.
+   * @throws NullPointerException If {@code cls} or {@code parameterTypes} is null.
    */
   @SuppressWarnings("unchecked")
   public static <T>Constructor<T> getCompatibleConstructor(final Class<T> cls, final Class<?> ... parameterTypes) {
-    final Constructor<?>[] constructors = assertNotNull(cls).getConstructors();
+    final Constructor<?>[] constructors = cls.getConstructors();
     for (final Constructor<?> constructor : constructors) // [A]
       if (isCompatible(constructor.getParameterTypes(), parameterTypes))
         return (Constructor<T>)constructor;
@@ -712,11 +707,11 @@ public final class Classes {
    * @param parameterTypes The parameter array.
    * @return A {@link Constructor} object that reflects the specified declared constructor signature of the class represented by
    *         {@code cls} (excluding inherited constructors), or {@code null} if the constructor is not found.
-   * @throws IllegalArgumentException If {@code cls} is null.
+   * @throws NullPointerException If {@code cls} is null.
    */
   @SuppressWarnings("unchecked")
   public static <T>Constructor<T> getDeclaredConstructor(final Class<T> cls, final Class<?> ... parameterTypes) {
-    final Constructor<?>[] constructors = assertNotNull(cls).getDeclaredConstructors();
+    final Constructor<?>[] constructors = cls.getDeclaredConstructors();
     for (final Constructor<?> constructor : constructors) // [A]
       if (isMatch(constructor, parameterTypes))
         return (Constructor<T>)constructor;
@@ -736,17 +731,12 @@ public final class Classes {
    * @param key The key.
    * @param newValue The new value.
    * @return The previous value assigned to {@code key}.
-   * @throws IllegalArgumentException If {@code annotation}, {@code key} or {@code newValue} is null, or if {@code newValue} does
-   *           not match the required type of the value for {@code key}.
+   * @throws NullPointerException If {@code annotation}, {@code key} or {@code newValue} is null.
+   * @throws IllegalArgumentException If {@code newValue} does not match the required type of the value for {@code key}.
    */
   @SuppressWarnings("unchecked")
   public static <T>T setAnnotationValue(final Annotation annotation, final String key, final T newValue) {
-    assertNotNull(annotation);
-    assertNotNull(key);
-    assertNotNull(newValue);
     final Object handler = Proxy.getInvocationHandler(annotation);
-    assertNotNull(key);
-    assertNotNull(newValue);
     final Field field;
     final Map<String,Object> memberValues;
     try {
@@ -758,7 +748,7 @@ public final class Classes {
       throw new IllegalStateException(e);
     }
 
-    final T oldValue = assertNotNull((T)memberValues.get(key), key + " is not a valid key");
+    final T oldValue = assertNotNull((T)memberValues.get(key), "%s is not a valid key", key);
     if (newValue.getClass() != oldValue.getClass())
       throw new IllegalArgumentException(newValue.getClass().getName() + " does not match the required type " + oldValue.getClass().getName());
 
@@ -823,10 +813,10 @@ public final class Classes {
    *
    * @param cls The class in which to find declared fields.
    * @return An array of Field objects declared in {@code cls} (including inherited fields).
-   * @throws IllegalArgumentException If {@code cls} is null.
+   * @throws NullPointerException If {@code cls} is null.
    */
   public static Field[] getDeclaredFieldsDeep(final Class<?> cls) {
-    return Repeat.Recursive.inverted(assertNotNull(cls), cls.getDeclaredFields(), Field.class, declaredFieldRecurser, null);
+    return Repeat.Recursive.inverted(cls, cls.getDeclaredFields(), Field.class, declaredFieldRecurser, null);
   }
 
   /**
@@ -845,10 +835,10 @@ public final class Classes {
    * @param cls The class in which to find declared fields.
    * @param predicate The {@link Predicate} used to decide whether the field should be included in the returned array.
    * @return An array of Field objects declared in {@code cls} (including inherited fields).
-   * @throws IllegalArgumentException If {@code cls} or {@code predicate} is null.
+   * @throws NullPointerException If {@code cls} or {@code predicate} is null.
    */
   public static Field[] getDeclaredFieldsDeep(final Class<?> cls, final Predicate<Field> predicate) {
-    return Repeat.Recursive.inverted(assertNotNull(cls), cls.getDeclaredFields(), Field.class, declaredFieldWithPredicateRecurser, assertNotNull(predicate));
+    return Repeat.Recursive.inverted(cls, cls.getDeclaredFields(), Field.class, declaredFieldWithPredicateRecurser, predicate);
   }
 
   /**
@@ -867,10 +857,10 @@ public final class Classes {
    * @param annotationType The type of the annotation to match.
    * @return An array of Field objects declared in {@code cls} (excluding inherited fields) that have an annotation of
    *         {@code annotationType}.
-   * @throws IllegalArgumentException If {@code cls} or {@code annotationType} is null.
+   * @throws NullPointerException If {@code cls} or {@code annotationType} is null.
    */
   public static Field[] getDeclaredFieldsWithAnnotation(final Class<?> cls, final Class<? extends Annotation> annotationType) {
-    return Repeat.Recursive.ordered(assertNotNull(cls).getDeclaredFields(), Field.class, declaredFieldWithAnnotationFilter, assertNotNull(annotationType));
+    return Repeat.Recursive.ordered(cls.getDeclaredFields(), Field.class, declaredFieldWithAnnotationFilter, annotationType);
   }
 
   /**
@@ -890,10 +880,10 @@ public final class Classes {
    * @param annotationType The type of the annotation to match.
    * @return An array of Field objects declared in {@code cls} (including inherited fields) that have an annotation of
    *         {@code annotationType}.
-   * @throws IllegalArgumentException If {@code cls} or {@code annotationType} is null.
+   * @throws NullPointerException If {@code cls} or {@code annotationType} is null.
    */
   public static Field[] getDeclaredFieldsWithAnnotationDeep(final Class<?> cls, final Class<? extends Annotation> annotationType) {
-    return Repeat.Recursive.inverted(assertNotNull(cls), cls.getDeclaredFields(), Field.class, declaredFieldWithAnnotationRecurser, assertNotNull(annotationType));
+    return Repeat.Recursive.inverted(cls, cls.getDeclaredFields(), Field.class, declaredFieldWithAnnotationRecurser, annotationType);
   }
 
   /**
@@ -915,10 +905,10 @@ public final class Classes {
    * @param parameterTypes The parameter array.
    * @return A {@link Method} object that reflects the specified declared method of the class or interface represented by
    *         {@code cls} (excluding inherited methods), or {@code null} if the method is not found.
-   * @throws IllegalArgumentException If {@code cls} or {@code name} is null.
+   * @throws NullPointerException If {@code cls} or {@code name} is null.
    */
   public static Method getMethod(final Class<?> cls, final String name, final Class<?> ... parameterTypes) {
-    for (final Method method : assertNotNull(cls).getMethods()) // [A]
+    for (final Method method : cls.getMethods()) // [A]
       if (name.equals(method.getName()) && (parameterTypes == null || parameterTypes.length == 0 ? method.getParameterCount() == 0 : parameterTypes.length == method.getParameterCount() && Arrays.equals(method.getParameterTypes(), parameterTypes)))
         return method;
 
@@ -946,7 +936,7 @@ public final class Classes {
    * @param obj The object to check.
    * @return Whether the specified {@code Object obj} is assignment-compatible with the class or interface represented by
    *         {@code target}, or {@code null} if {@code obj} is null.
-   * @throws IllegalArgumentException If {@code target} is null.
+   * @throws NullPointerException If {@code target} is null.
    */
   public static boolean isInstance(final Class<?> target, final Object obj) {
     return obj != null && isAssignableFrom(target, obj.getClass(), true);
@@ -972,7 +962,7 @@ public final class Classes {
    * @param cls The argument class.
    * @return Whether the class or interface represented by {@code target} is either the same as, or is a superclass or
    *         superinterface of, the class or interface represented by the specified {@code cls} parameter.
-   * @throws IllegalArgumentException If {@code target} or {@code cls} is null.
+   * @throws NullPointerException If {@code target} or {@code cls} is null.
    */
   public static boolean isAssignableFrom(final Class<?> target, final Class<?> cls) {
     return isAssignableFrom(target, cls, true);
@@ -991,11 +981,9 @@ public final class Classes {
    * @param canWrap If {@code true}, this method will check compatibility of the wrapped form of a primitive type.
    * @return Whether the class or interface represented by {@code target} is either the same as, or is a superclass or
    *         superinterface of, the class or interface represented by the specified {@code cls} parameter.
-   * @throws IllegalArgumentException If {@code target} or {@code cls} is null.
+   * @throws NullPointerException If {@code target} or {@code cls} is null.
    */
   public static boolean isAssignableFrom(Class<?> target, Class<?> cls, final boolean canWrap) {
-    assertNotNull(target);
-    assertNotNull(cls);
     if (target.isArray()) {
       if (!cls.isArray())
         return false;
@@ -1040,12 +1028,9 @@ public final class Classes {
    * @param parameterTypes The parameter array.
    * @return A {@link Method} object that reflects the specified declared method of the class or interface represented by
    *         {@code cls} (excluding inherited methods), or {@code null} if the method is not found.
-   * @throws IllegalArgumentException If {@code cls}, {@code name} or {@code parameterTypes} is null.
+   * @throws NullPointerException If {@code cls}, {@code name} or {@code parameterTypes} is null.
    */
   public static Method getCompatibleMethod(final Class<?> cls, final String name, final Class<?> ... parameterTypes) {
-    assertNotNull(cls);
-    assertNotNull(name);
-    assertNotNull(parameterTypes);
     for (final Method method : cls.getMethods()) // [A]
       if (name.equals(method.getName()) && isCompatible(method.getParameterTypes(), parameterTypes))
         return method;
@@ -1074,12 +1059,9 @@ public final class Classes {
    * @param parameterTypes The parameter array.
    * @return A {@link Method} object that reflects the specified declared method of the class or interface represented by
    *         {@code cls} (excluding inherited methods), or {@code null} if the method is not found.
-   * @throws IllegalArgumentException If {@code cls} or {@code name} is null.
+   * @throws NullPointerException If {@code cls} or {@code name} is null.
    */
   public static Method getDeclaredMethod(final Class<?> cls, final String name, final Class<?> ... parameterTypes) {
-    assertNotNull(cls);
-    assertNotNull(name);
-    assertNotNull(parameterTypes);
     for (final Method method : cls.getDeclaredMethods()) // [A]
       if (name.equals(method.getName()) && (parameterTypes.length == 0 ? method.getParameterCount() == 0 : Arrays.equals(method.getParameterTypes(), parameterTypes)))
         return method;
@@ -1107,11 +1089,9 @@ public final class Classes {
    * @param parameterTypes The parameter array.
    * @return A {@link Method} object that reflects the specified declared method of the class or interface represented by
    *         {@code cls} (including inherited methods), or {@code null} if the method is not found.
-   * @throws IllegalArgumentException If {@code cls} or {@code name} is null.
+   * @throws NullPointerException If {@code cls} or {@code name} is null.
    */
   public static Method getDeclaredMethodDeep(Class<?> cls, final String name, final Class<?> ... parameterTypes) {
-    assertNotNull(cls);
-    assertNotNull(name);
     Method method;
     do
       method = getDeclaredMethod(cls, name, parameterTypes);
@@ -1131,10 +1111,10 @@ public final class Classes {
    *
    * @param cls The class in which to find declared methods.
    * @return An array of {@link Method} objects declared in {@code cls} (including inherited methods).
-   * @throws IllegalArgumentException If {@code cls} is null.
+   * @throws NullPointerException If {@code cls} is null.
    */
   public static Method[] getDeclaredMethodsDeep(final Class<?> cls) {
-    return Repeat.Recursive.inverted(assertNotNull(cls), cls.getDeclaredMethods(), Method.class, declaredMethodRecurser, null);
+    return Repeat.Recursive.inverted(cls, cls.getDeclaredMethods(), Method.class, declaredMethodRecurser, null);
   }
 
   /**
@@ -1151,10 +1131,10 @@ public final class Classes {
    * @param cls The class in which to find declared methods.
    * @param predicate The {@link Predicate} used to decide whether the method should be included in the returned array.
    * @return An array of {@link Method} objects declared in {@code cls} (including inherited methods).
-   * @throws IllegalArgumentException If {@code cls} or {@code predicate} is null.
+   * @throws NullPointerException If {@code cls} or {@code predicate} is null.
    */
   public static Method[] getDeclaredMethodsDeep(final Class<?> cls, final Predicate<Method> predicate) {
-    return Repeat.Recursive.inverted(assertNotNull(cls), cls.getDeclaredMethods(), Method.class, declaredMethodWithPredicateRecurser, assertNotNull(predicate));
+    return Repeat.Recursive.inverted(cls, cls.getDeclaredMethods(), Method.class, declaredMethodWithPredicateRecurser, predicate);
   }
 
   /**
@@ -1173,10 +1153,10 @@ public final class Classes {
    * @param annotationType The type of the annotation to match.
    * @return An array of {@link Method} objects declared in {@code cls} (excluding inherited methods) that have an annotation of
    *         {@code annotationType}.
-   * @throws IllegalArgumentException If {@code cls} or {@code annotationType} is null.
+   * @throws NullPointerException If {@code cls} or {@code annotationType} is null.
    */
   public static Method[] getDeclaredMethodsWithAnnotation(final Class<?> cls, final Class<? extends Annotation> annotationType) {
-    return Repeat.Recursive.ordered(assertNotNull(cls).getDeclaredMethods(), Method.class, declaredMethodWithAnnotationFilter, assertNotNull(annotationType));
+    return Repeat.Recursive.ordered(cls.getDeclaredMethods(), Method.class, declaredMethodWithAnnotationFilter, annotationType);
   }
 
   /**
@@ -1194,10 +1174,10 @@ public final class Classes {
    * @param annotationType The type of the annotation to match.
    * @return An array of {@link Method} objects declared in {@code cls} (including inherited methods) that have an annotation of
    *         {@code annotationType}.
-   * @throws IllegalArgumentException If {@code cls} or {@code annotationType} is null.
+   * @throws NullPointerException If {@code cls} or {@code annotationType} is null.
    */
   public static Method[] getDeclaredMethodsWithAnnotationDeep(final Class<?> cls, final Class<? extends Annotation> annotationType) {
-    return Repeat.Recursive.inverted(assertNotNull(cls), cls.getDeclaredMethods(), Method.class, declaredMethodWithAnnotationRecurser, assertNotNull(annotationType));
+    return Repeat.Recursive.inverted(cls, cls.getDeclaredMethods(), Method.class, declaredMethodWithAnnotationRecurser, annotationType);
   }
 
   /**
@@ -1216,11 +1196,11 @@ public final class Classes {
    * @param annotationType The type of the annotation to match.
    * @return An array of {@link Class} objects declared in {@code cls} (excluding inherited classes) that have an annotation of
    *         {@code annotationType}.
-   * @throws IllegalArgumentException If {@code cls} or {@code annotationType} is null.
+   * @throws NullPointerException If {@code cls} or {@code annotationType} is null.
    */
   @SuppressWarnings("unchecked")
   public static Class<?>[] getDeclaredClassesWithAnnotation(final Class<?> cls, final Class<? extends Annotation> annotationType) {
-    return Repeat.Recursive.ordered(assertNotNull(cls).getDeclaredClasses(), (Class<Class<?>>)Class.class.getClass(), classWithAnnotationFilter, assertNotNull(annotationType));
+    return Repeat.Recursive.ordered(cls.getDeclaredClasses(), (Class<Class<?>>)Class.class.getClass(), classWithAnnotationFilter, annotationType);
   }
 
   /**
@@ -1238,11 +1218,11 @@ public final class Classes {
    * @param annotationType The type of the annotation to match.
    * @return An array of {@link Class} objects declared in {@code cls} (including inherited classes) that have an annotation of
    *         {@code annotationType}.
-   * @throws IllegalArgumentException If {@code cls} or {@code annotationType} is null.
+   * @throws NullPointerException If {@code cls} or {@code annotationType} is null.
    */
   @SuppressWarnings("unchecked")
   public static Class<?>[] getDeclaredClassesWithAnnotationDeep(final Class<?> cls, final Class<? extends Annotation> annotationType) {
-    return Repeat.Recursive.inverted(assertNotNull(cls), cls.getDeclaredClasses(), (Class<Class<?>>)Class.class.getClass(), classWithAnnotationRecurser, assertNotNull(annotationType));
+    return Repeat.Recursive.inverted(cls, cls.getDeclaredClasses(), (Class<Class<?>>)Class.class.getClass(), classWithAnnotationRecurser, annotationType);
   }
 
   private static final HashMap<Method,Annotation[]> methodToAnnotations = new HashMap<>();
@@ -1297,11 +1277,10 @@ public final class Classes {
    * @param cls The {@link Class} on which to look for the specified annotation type.
    * @param annotationClass The {@link Class} object corresponding to the annotation type.
    * @return The annotation for the specified annotation type on the provided class if present, else null.
-   * @throws IllegalArgumentException If {@code cls} or {@code annotationClass} is null.
+   * @throws NullPointerException If {@code cls} or {@code annotationClass} is null.
    */
   public static <A extends Annotation>A getAnnotationDeep(final Class<?> cls, final Class<A> annotationClass) {
-    Class<?> parent = assertNotNull(cls);
-    assertNotNull(annotationClass);
+    Class<?> parent = cls;
     A annotation;
     do {
       annotation = parent.getAnnotation(annotationClass);
@@ -1320,11 +1299,9 @@ public final class Classes {
    * @param method The {@link Method} on which to look for the specified annotation type.
    * @param annotationClass The {@link Class} object corresponding to the annotation type.
    * @return The annotation for the specified annotation type on the provided class if present, else null.
-   * @throws IllegalArgumentException If {@code cls} or {@code annotationClass} is null.
+   * @throws NullPointerException If {@code cls} or {@code annotationClass} is null.
    */
   public static <A extends Annotation>A getAnnotationDeep(Method method, final Class<A> annotationClass) {
-    assertNotNull(method);
-    assertNotNull(annotationClass);
     A annotation;
     Class<?> declaringClass;
     do {
@@ -1345,15 +1322,13 @@ public final class Classes {
    * @param cls The {@link Class} on which to look for the specified annotation type.
    * @param annotationClass The {@link Class} object corresponding to the annotation type.
    * @return {@code true} if an annotation for the specified annotation type is present on this element, else {@code false}.
-   * @throws IllegalArgumentException If {@code cls} or {@code annotationClass} is null.
+   * @throws NullPointerException If {@code cls} or {@code annotationClass} is null.
    */
   public static boolean isAnnotationPresentDeep(final Class<?> cls, final Class<? extends Annotation> annotationClass) {
-    Class<?> parent = assertNotNull(cls);
-    assertNotNull(annotationClass);
-    do {
+    Class<?> parent = cls;
+    do
       if (parent.isAnnotationPresent(annotationClass))
         return true;
-    }
     while ((parent = parent.getSuperclass()) != null);
     return false;
   }
@@ -1369,16 +1344,13 @@ public final class Classes {
    * @param method The {@link Method} on which to look for the specified annotation type.
    * @param annotationClass The {@link Class} object corresponding to the annotation type.
    * @return {@code true} if an annotation for the specified annotation type is present on this element, else {@code false}.
-   * @throws IllegalArgumentException If {@code cls} or {@code annotationClass} is null.
+   * @throws NullPointerException If {@code cls} or {@code annotationClass} is null.
    */
   public static boolean isAnnotationPresentDeep(Method method, final Class<? extends Annotation> annotationClass) {
-    assertNotNull(method);
-    assertNotNull(annotationClass);
     Class<?> declaringClass;
-    do {
+    do
       if (method.isAnnotationPresent(annotationClass))
         return true;
-    }
     while ((declaringClass = method.getDeclaringClass().getSuperclass()) != null && (method = getDeclaredMethodDeep(declaringClass, method.getName(), method.getParameterTypes())) != null);
     return false;
   }
@@ -1390,10 +1362,9 @@ public final class Classes {
    *
    * @param cls The class.
    * @return All interfaces implemented by the class or interface represented by the specified class.
-   * @throws IllegalArgumentException If {@code cls} is null.
+   * @throws NullPointerException If {@code cls} is null.
    */
   public static Class<?>[] getAllInterfaces(Class<?> cls) {
-    assertNotNull(cls);
     Class<?>[] thisInterfaces;
     LinkedHashSet<Class<?>> allInterfaces = null;
     do {
@@ -1416,11 +1387,9 @@ public final class Classes {
    *
    * @param iface The interface {@link Class}.
    * @param allInterfaces The set into which all extended interfaces are to be added.
-   * @throws IllegalArgumentException If {@code iface} or {@code allInterfaces} is null.
+   * @throws NullPointerException If {@code iface} or {@code allInterfaces} is null.
    */
   private static void getAllInterfaces(final Class<?> iface, final LinkedHashSet<Class<?>> allInterfaces) {
-    assertNotNull(iface);
-    assertNotNull(allInterfaces);
     if (allInterfaces.contains(iface))
       return;
 
@@ -1436,10 +1405,9 @@ public final class Classes {
    *
    * @param cls The class.
    * @return All generic interfaces implemented by the class or interface represented by the specified class.
-   * @throws IllegalArgumentException If {@code cls} is null.
+   * @throws NullPointerException If {@code cls} is null.
    */
   public static Type[] getAllGenericInterfaces(Class<?> cls) {
-    assertNotNull(cls);
     Class<?>[] thisInterfaces = null;
     Type[] thisGenericInterfaces = null;
     LinkedHashSet<Class<?>> allInterfaces = null;
@@ -1476,12 +1444,9 @@ public final class Classes {
    * @param iface The interface {@link Class}.
    * @param allInterfaces The set into which all extended interfaces are to be added.
    * @param allGenericInterfaces The set into which all extended generic interfaces are to be added.
-   * @throws IllegalArgumentException If {@code iface}, {@code allInterfaces} or {@code allGenericInterfaces} is null.
+   * @throws NullPointerException If {@code iface}, {@code allInterfaces} or {@code allGenericInterfaces} is null.
    */
   private static void getAllGenericInterfaces(final Class<?> iface, final LinkedHashSet<Class<?>> allInterfaces, final LinkedHashSet<Type> allGenericInterfaces) {
-    assertNotNull(iface);
-    assertNotNull(allInterfaces);
-    assertNotNull(allGenericInterfaces);
     if (allInterfaces.contains(iface))
       return;
 
@@ -1496,11 +1461,11 @@ public final class Classes {
    *
    * @param classes The array of classes.
    * @return The greatest common superclass of the specified array of classes.
-   * @throws IllegalArgumentException If {@code classes} or a member of {@code classes} is null, or if the number of arguments in
-   *           the {@code classes} parameter is 0.
+   * @throws NullPointerException If {@code classes} or a member of {@code classes} is null.
+   * @throws IllegalArgumentException If the number of arguments in the {@code classes} parameter is 0.
    */
   public static Class<?> getGreatestCommonSuperclass(final Class<?> ... classes) {
-    if (assertNotNull(classes).length == 0)
+    if (classes.length == 0)
       throw new IllegalArgumentException("Number of arguments must be greater than 0");
 
     if (classes.length == 1)
@@ -1519,12 +1484,12 @@ public final class Classes {
    * @param <T> The type parameter of the specified array of objects.
    * @param objects The array of objects.
    * @return The greatest common superclass of the classes of the specified array of objects.
-   * @throws IllegalArgumentException If {@code objects}, or a member of {@code objects} is null, or if the number of arguments in
-   *           the {@code objects} parameter is 0.
+   * @throws NullPointerException If {@code classes} or a member of {@code classes} is null.
+   * @throws IllegalArgumentException If the number of arguments in the {@code classes} parameter is 0.
    */
   @SafeVarargs
   public static <T>Class<?> getGreatestCommonSuperclass(final T ... objects) {
-    if (assertNotNull(objects).length == 0)
+    if (objects.length == 0)
       throw new IllegalArgumentException("Number of arguments must be greater than 0");
 
     return getGreatestCommonSuperclass0(objects);
@@ -1536,19 +1501,17 @@ public final class Classes {
    * @param <T> The type parameter of the specified {@link Collection} of objects.
    * @param objects The array of objects.
    * @return The greatest common superclass of the classes of the specified {@link Collection} of objects.
-   * @throws IllegalArgumentException If {@code objects}, or an element of {@code objects} is null, or if the number of elements in
-   *           the {@code objects} collection is 0.
+   * @throws NullPointerException If {@code objects} or a member of {@code objects} is null.
+   * @throws IllegalArgumentException If the number of arguments in the {@code objects} parameter is 0.
    */
   public static <T>Class<?> getGreatestCommonSuperclass(final Collection<T> objects) {
-    if (assertNotNull(objects).size() == 0)
+    if (objects.size() == 0)
       throw new IllegalArgumentException("Collection size must be greater than 0");
 
     return getGreatestCommonSuperclass0(objects.toArray());
   }
 
   private static Class<?> getGreatestCommonSuperclass(Class<?> c1, Class<?> c2) {
-    assertNotNull(c1);
-    assertNotNull(c2);
     final Class<?> c0 = c2;
     do {
       do
@@ -1665,14 +1628,12 @@ public final class Classes {
    *           constructor is inaccessible.
    * @throws InstantiationException If the class that declares the underlying constructor represents an abstract class.
    * @throws InvocationTargetException If the underlying constructor throws an exception.
-   * @throws IllegalArgumentException If the specified {@code type} or {@code parameters} is null, or if the specified string is
-   *           empty, or if an instance of the specific class type does not define {@code <init>(T)}, {@code fromString(String)} if
-   *           the provided object is a {@link String}, or {@code valueOf(T)}.
+   * @throws NullPointerException If the specified {@code type} or {@code parameters} is null.
+   * @throws IllegalArgumentException If the specified string is empty, or if an instance of the specific class type does not define
+   *           {@code <init>(T)}, {@code fromString(String)} if the provided object is a {@link String}, or {@code valueOf(T)}.
    */
   @SuppressWarnings("unchecked")
   public static <T>T newInstance(Class<T> type, final Object ... parameters) throws IllegalAccessException, InstantiationException, InvocationTargetException {
-    assertNotNull(type);
-    assertNotNull(parameters);
     if (type.isPrimitive())
       type = (Class<T>)toWrapper(type);
 
@@ -1927,11 +1888,10 @@ public final class Classes {
    *
    * @param classes The classes for which to return a string containing the internal names.
    * @return A string containing the internal names of the given classes, appended sans delimiter.
-   * @throws IllegalArgumentException If {@code classes} or any member of {@code classes} is null.
+   * @throws NullPointerException If {@code classes} or any member of {@code classes} is null.
    * @see #getInternalName(Class)
    */
   public static String getInternalName(final Class<?> ... classes) {
-    assertNotNull(classes);
     final StringBuilder builder = new StringBuilder();
     for (final Class<?> cls : classes) // [A]
       builder.append(getInternalName(cls));
@@ -1961,10 +1921,10 @@ public final class Classes {
    *
    * @param cls The class for which to return the internal name.
    * @return The internal name of the given class.
-   * @throws IllegalArgumentException If {@code cls} is null.
+   * @throws NullPointerException If {@code cls} is null.
    */
   public static String getInternalName(final Class<?> cls) {
-    if (assertNotNull(cls).isArray())
+    if (cls.isArray())
       return "[" + getInternalName(cls.getComponentType());
 
     for (int i = 0, i$ = primitiveClasses.length; i < i$; ++i) // [A]
