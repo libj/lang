@@ -1237,6 +1237,7 @@ public final class Classes {
    *
    * @param method The {@link Method} whose annotations are to be returned.
    * @return Annotations present on the specified {@link Method}.
+   * @throws NullPointerException If {@code method} is null.
    */
   public static Annotation[] getAnnotations(final Method method) {
     Annotation[] annotations = methodToAnnotations.get(method);
