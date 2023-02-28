@@ -25,8 +25,8 @@ import java.io.Serializable;
  * @param <E> The type parameter representing the encoding class.
  */
 public abstract class DataEncoding<D extends Serializable,E extends Serializable> implements Serializable {
-  protected volatile D data;
-  protected volatile E encoded;
+  protected D data;
+  protected E encoded;
 
   /**
    * Creates a new {@link DataEncoding}.

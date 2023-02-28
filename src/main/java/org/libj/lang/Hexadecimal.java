@@ -49,10 +49,10 @@ public class Hexadecimal extends DataEncoding<byte[],String> {
    *
    * @param bytes The bytes to encode.
    * @return The hex encoding of the provided {@code bytes} array.
-   * @throws IllegalArgumentException If {@code bytes} is null.
+   * @throws NullPointerException If {@code bytes} is null.
    */
   public static String encode(final byte[] bytes) {
-    return encode(bytes, 0, assertNotNull(bytes).length);
+    return encode(bytes, 0, bytes.length);
   }
 
   /**
@@ -62,23 +62,24 @@ public class Hexadecimal extends DataEncoding<byte[],String> {
    * @param offset The initial offset.
    * @param len The length.
    * @return The hexadecimal encoding of the provided {@code bytes} array.
-   * @throws IllegalArgumentException If {@code bytes} is null.
+   * @throws ArrayIndexOutOfBoundsException If {@code offset} is negative.
+   * @throws NegativeArraySizeException If {@code len} is negative.
+   * @throws NullPointerException If {@code bytes} is null.
    */
   public static String encode(final byte[] bytes, final int offset, final int len) {
-    assertNotNull(bytes);
-    final StringBuilder builder = new StringBuilder(len * 2);
-    for (int i = offset; i < len + offset; ++i) { // [N]
-      builder.append(hexChar[(bytes[i] & 0xf0) >>> 4]);
-      builder.append(hexChar[bytes[i] & 0x0f]);
+    final StringBuilder str = new StringBuilder(len * 2);
+    for (int i = offset, i$ = len + offset; i < i$; ++i) { // [N]
+      final byte b = bytes[i];
+      str.append(hexChar[(b & 0xf0) >>> 4]).append(hexChar[b & 0x0f]);
     }
 
-    return builder.toString();
+    return str.toString();
   }
 
   private static void decode0(final String hex, final int fromIndex, final int toIndex, final byte[] bytes, final int offset) {
-    for (int i = fromIndex, j = offset; i < toIndex; i += 2, ++j) { // [N]
-      final int high = charToNibble(hex.charAt(i));
-      final int low = charToNibble(hex.charAt(i + 1));
+    for (int i = fromIndex, j = offset; i < toIndex; ++j) { // [N]
+      final int high = charToNibble(hex.charAt(i++));
+      final int low = charToNibble(hex.charAt(i++));
       bytes[j] = (byte)((high << 4) | low);
     }
   }
@@ -93,12 +94,10 @@ public class Hexadecimal extends DataEncoding<byte[],String> {
    * @param offset The offset into the {@code bytes} array.
    * @throws ArrayIndexOutOfBoundsException If the size of {@code bytes} is not big enough, or if {@code offset} causes the index to
    *           go out of bounds.
-   * @throws IllegalArgumentException If {@code hex} or {@code bytes} is null.
+   * @throws NullPointerException If {@code hex} or {@code bytes} is null.
    */
   public static void decode(final String hex, final int fromIndex, final int toIndex, final byte[] bytes, final int offset) {
-    assertNotNull(hex);
     assertRange("fromIndex", fromIndex, "toIndex", toIndex, "hex.length()", hex.length());
-    assertNotNull(bytes);
     final int length = toIndex - fromIndex;
     if (length == 0)
       return;
@@ -118,10 +117,9 @@ public class Hexadecimal extends DataEncoding<byte[],String> {
    * @return A {@code new byte[]} of the decoded {@code hex} string.
    * @throws ArrayIndexOutOfBoundsException If the size of {@code bytes} is not big enough, or if {@code offset} causes the index to
    *           go out of bounds.
-   * @throws IllegalArgumentException If {@code hex} or {@code bytes} is null.
+   * @throws NullPointerException If {@code hex} or {@code bytes} is null.
    */
   public static byte[] decode(final String hex, final int fromIndex, final int toIndex) {
-    assertNotNull(hex);
     assertRange("fromIndex", fromIndex, "toIndex", toIndex, "hex.length()", hex.length());
     final int length = toIndex - fromIndex;
     if (length == 0)
@@ -143,7 +141,7 @@ public class Hexadecimal extends DataEncoding<byte[],String> {
    * @param offset The offset into the {@code bytes} array.
    * @throws ArrayIndexOutOfBoundsException If the size of {@code bytes} is not big enough, or if {@code offset} causes the index to
    *           go out of bounds.
-   * @throws IllegalArgumentException If {@code hex} or {@code bytes} is null.
+   * @throws NullPointerException If {@code hex} or {@code bytes} is null.
    */
   public static void decode(final String hex, final byte[] bytes, final int offset) {
     decode(hex, 0, hex.length(), bytes, offset);
@@ -154,10 +152,10 @@ public class Hexadecimal extends DataEncoding<byte[],String> {
    *
    * @param hex The hex string.
    * @return A {@code new byte[]} of the decoded {@code hex} string.
-   * @throws IllegalArgumentException If {@code hex} is null.
+   * @throws NullPointerException If {@code hex} is null.
    */
   public static byte[] decode(final String hex) {
-    final int length = assertNotNull(hex).length();
+    final int length = hex.length();
     if (length == 0)
       return new byte[0];
 
