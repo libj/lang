@@ -16,9 +16,8 @@
 
 package org.libj.lang;
 
-import static org.libj.lang.Assertions.*;
-
 import java.io.Closeable;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -30,7 +29,7 @@ public final class Runtimes {
    * {@link AutoCloseable} instance.
    *
    * @param closeable The {@link AutoCloseable} instance to automatically close when the virtual-machine shuts down.
-   * @throws IllegalAnnotationException If {@code closeable} is null.
+   * @throws NullPointerException If {@code closeable} is null.
    */
   public static void closeOnExit(final AutoCloseable closeable) {
     closeOnExit(closeable, null);
@@ -43,10 +42,10 @@ public final class Runtimes {
    * @param closeable The {@link AutoCloseable} instance to automatically close when the virtual-machine shuts down.
    * @param onException The {@link Consumer} to accept an exception that may occur during the execution of the
    *          {@link AutoCloseable#close()} of the provided {@link AutoCloseable} instance.
-   * @throws IllegalAnnotationException If {@code closeable} is null.
+   * @throws NullPointerException If {@code closeable} is null.
    */
   public static void closeOnExit(final AutoCloseable closeable, final Consumer<Exception> onException) {
-    assertNotNull(closeable);
+    Objects.requireNonNull(closeable);
     Runtime.getRuntime().addShutdownHook(new Thread() {
       @Override
       public void run() {
@@ -70,7 +69,7 @@ public final class Runtimes {
    * instance.
    *
    * @param closeable The {@link Closeable} instance to automatically close when the virtual-machine shuts down.
-   * @throws IllegalAnnotationException If {@code closeable} is null.
+   * @throws NullPointerException If {@code closeable} is null.
    */
   public static void closeOnExit(final Closeable closeable) {
     closeOnExit(closeable, null);
@@ -83,10 +82,10 @@ public final class Runtimes {
    * @param closeable The {@link Closeable} instance to automatically close when the virtual-machine shuts down.
    * @param onException The {@link Consumer} to accept an exception that may occur during the execution of the
    *          {@link Closeable#close()} of the provided {@link Closeable} instance.
-   * @throws IllegalAnnotationException If {@code closeable} is null.
+   * @throws NullPointerException If {@code closeable} is null.
    */
   public static void closeOnExit(final Closeable closeable, final Consumer<Exception> onException) {
-    assertNotNull(closeable);
+    Objects.requireNonNull(closeable);
     Runtime.getRuntime().addShutdownHook(new Thread() {
       @Override
       public void run() {

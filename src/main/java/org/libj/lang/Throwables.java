@@ -16,8 +16,6 @@
 
 package org.libj.lang;
 
-import static org.libj.lang.Assertions.*;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
@@ -39,7 +37,7 @@ public final class Throwables {
    * @param target The target exception.
    * @param suppressed The suppressed exception.
    * @return The exception based on the method's logic, described above.
-   * @throws IllegalArgumentException If {@code target} or {@code suppressed} is null.
+   * @throws NullPointerException If {@code target} or {@code suppressed} is null.
    */
   public static <T extends Throwable>T addSuppressed(final T target, final T suppressed) {
     if (suppressed == null)
@@ -48,8 +46,6 @@ public final class Throwables {
     if (target == null)
       return suppressed;
 
-    assertNotNull(target);
-    assertNotNull(suppressed);
     target.addSuppressed(suppressed);
     return target;
   }
@@ -61,11 +57,9 @@ public final class Throwables {
    * @param target The target exception.
    * @param suppressed The suppressed exceptions.
    * @return The exception based on the method's logic, described above.
-   * @throws IllegalArgumentException If {@code target} or {@code suppressed} is null.
+   * @throws NullPointerException If {@code target} or {@code suppressed} is null.
    */
   public static <T extends Throwable>T addSuppressed(final T target, final Exception[] suppressed) {
-    assertNotNull(target);
-    assertNotNull(suppressed);
     return addSuppressed0(target, suppressed, 0, suppressed.length);
   }
 
@@ -80,7 +74,7 @@ public final class Throwables {
    * @param toIndex The index (exclusive) of the last element in {@code suppressed}. If {@code toIndex > fromIndex}, the exceptions
    *          in {@code suppressed} will be traversed in regular order.
    * @return The exception based on the method's logic, described above.
-   * @throws IllegalArgumentException If {@code target} or {@code suppressed} is null.
+   * @throws NullPointerException If {@code target} or {@code suppressed} is null.
    * @throws IndexOutOfBoundsException If {@code off} is negative, {@code len} is negative, or {@code suppressed.length} is less
    *           than {@code off + len}.
    */
@@ -88,8 +82,6 @@ public final class Throwables {
     if (fromIndex == toIndex)
       return target;
 
-    assertNotNull(target);
-    assertNotNull(suppressed);
     return addSuppressed0(target, suppressed, fromIndex, toIndex);
   }
 
@@ -111,11 +103,9 @@ public final class Throwables {
    * @param target The target exception.
    * @param suppressed The suppressed exceptions.
    * @return The exception based on the method's logic, described above.
-   * @throws IllegalArgumentException If {@code target} or {@code suppressed} is null.
+   * @throws NullPointerException If {@code target} or {@code suppressed} is null.
    */
   public static <T extends Throwable>T addSuppressed(final T target, final List<Exception> suppressed) {
-    assertNotNull(target);
-    assertNotNull(suppressed);
     return addSuppressed0(target, suppressed, 0, suppressed.size());
   }
 
@@ -130,7 +120,7 @@ public final class Throwables {
    * @param toIndex The index (exclusive) of the last element in {@code suppressed}. If {@code toIndex > fromIndex}, the exceptions
    *          in {@code suppressed} will be traversed in regular order.
    * @return The exception based on the method's logic, described above.
-   * @throws IllegalArgumentException If {@code target} or {@code suppressed} is null.
+   * @throws NullPointerException If {@code target} or {@code suppressed} is null.
    * @throws IndexOutOfBoundsException If {@code off} is negative, {@code len} is negative, or {@code suppressed.length} is less
    *           than {@code off + len}.
    */
@@ -138,8 +128,6 @@ public final class Throwables {
     if (fromIndex == toIndex)
       return target;
 
-    assertNotNull(target);
-    assertNotNull(suppressed);
     return addSuppressed0(target, suppressed, fromIndex, toIndex);
   }
 
@@ -159,12 +147,12 @@ public final class Throwables {
    *
    * @param t The throwable.
    * @return The string representation of the specified {@link Throwable throwable} and its backtrace.
-   * @throws IllegalAnnotationException If {@code t} is null.
+   * @throws NullPointerException If {@code t} is null.
    * @see Throwable#printStackTrace(java.io.PrintStream)
    */
   public static String toString(final Throwable t) {
     final StringWriter out = new StringWriter();
-    assertNotNull(t).printStackTrace(new PrintWriter(out));
+    t.printStackTrace(new PrintWriter(out));
     return out.toString();
   }
 
@@ -176,11 +164,9 @@ public final class Throwables {
    * @param from The {@link Throwable} to copy from.
    * @param to The {@link Throwable} to copy to.
    * @return The {@link Throwable} being copied to.
-   * @throws IllegalAnnotationException If {@code from} or {@code to} is null.
+   * @throws NullPointerException If {@code from} or {@code to} is null.
    */
   public static <F extends Throwable,T extends F>T copy(final F from, final T to) {
-    assertNotNull(from);
-    assertNotNull(to);
     to.initCause(from.getCause());
     to.setStackTrace(from.getStackTrace());
     for (final Throwable suppressed : from.getSuppressed()) // [A]

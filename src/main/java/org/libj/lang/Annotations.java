@@ -16,8 +16,6 @@
 
 package org.libj.lang;
 
-import static org.libj.lang.Assertions.*;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -37,7 +35,7 @@ public final class Annotations {
    *
    * @param annotation The {@link Annotation} whose attributes to get.
    * @return A map of name-value pairs representing the attributes in the specified annotation.
-   * @throws IllegalArgumentException If {@code annotation} is null.
+   * @throws NullPointerException If {@code annotation} is null.
    */
   public static Map<String,Object> getAttributes(final Annotation annotation) {
     return getAttributes(annotation, false);
@@ -49,10 +47,10 @@ public final class Annotations {
    * @param annotation The {@link Annotation} whose attributes to get.
    * @param removeDefaults Whether fields whose values are equal to the {@code annotation}'s defaults should be omitted.
    * @return A map of name-value pairs representing the attributes in the specified annotation.
-   * @throws IllegalArgumentException If {@code annotation} is null.
+   * @throws NullPointerException If {@code annotation} is null.
    */
   public static Map<String,Object> getAttributes(final Annotation annotation, final boolean removeDefaults) {
-    final Class<? extends Annotation> annotationType = assertNotNull(annotation).annotationType();
+    final Class<? extends Annotation> annotationType = annotation.annotationType();
     final HashMap<String,Object> attributes = new HashMap<>();
     try {
       for (final Method method : annotationType.getDeclaredMethods()) { // [A]
@@ -87,7 +85,7 @@ public final class Annotations {
    *
    * @param annotation The {@link Annotation}.
    * @return A {@link #toString()} representation of {@code annotation}, with its property names sorted by {@code comparator}.
-   * @throws IllegalArgumentException If {@code annotation} is null.
+   * @throws NullPointerException If {@code annotation} is null.
    */
   public static String toSortedString(final Annotation annotation) {
     return toSortedString(annotation, null, false);
@@ -107,7 +105,7 @@ public final class Annotations {
    * @param annotation The {@link Annotation}.
    * @param removeDefaults Whether fields whose values are equal to the {@code annotation}'s defaults should be omitted.
    * @return A {@link #toString()} representation of {@code annotation}, with its property names sorted by {@code comparator}.
-   * @throws IllegalArgumentException If {@code annotation} is null.
+   * @throws NullPointerException If {@code annotation} is null.
    */
   public static String toSortedString(final Annotation annotation, final boolean removeDefaults) {
     return toSortedString(annotation, null, removeDefaults);
@@ -119,7 +117,7 @@ public final class Annotations {
    * @param annotation The {@link Annotation}.
    * @param comparator The {@link Comparator}.
    * @return A {@link #toString()} representation of {@code annotation}, with its property names sorted by {@code comparator}.
-   * @throws IllegalArgumentException If {@code annotation} is null.
+   * @throws NullPointerException If {@code annotation} is null.
    */
   public static String toSortedString(final Annotation annotation, final Comparator<String> comparator) {
     return toSortedString(annotation, comparator, false);
@@ -133,10 +131,10 @@ public final class Annotations {
    * @param comparator The {@link Comparator}.
    * @param removeDefaults Whether fields whose values are equal to the {@code annotation}'s defaults should be omitted.
    * @return A {@link #toString()} representation of {@code annotation}, with its property names sorted by {@code comparator}.
-   * @throws IllegalArgumentException If {@code annotation} is null.
+   * @throws NullPointerException If {@code annotation} is null.
    */
   public static String toSortedString(final Annotation annotation, final Comparator<String> comparator, final boolean removeDefaults) {
-    final String str = assertNotNull(annotation).toString();
+    final String str = annotation.toString();
     if (str.indexOf('(') < 0)
       return str;
 

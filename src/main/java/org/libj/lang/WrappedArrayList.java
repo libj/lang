@@ -55,11 +55,11 @@ public class WrappedArrayList<E> extends ArrayList<E> {
    * Creates a new {@link WrappedArrayList} that wraps the provided {@code objs} array.
    *
    * @param objs The array to wrap.
-   * @throws IllegalArgumentException If {@code objs} is null.
+   * @throws NullPointerException If {@code objs} is null.
    */
   @SafeVarargs
   public WrappedArrayList(final E ... objs) {
-    elementData = assertNotNull(objs);
+    elementData = Objects.requireNonNull(objs);
     size = objs.length;
   }
 
@@ -73,16 +73,11 @@ public class WrappedArrayList<E> extends ArrayList<E> {
     return elementData.clone();
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @throws IllegalArgumentException If {@code a} is null.
-   */
   @Override
   @SuppressWarnings("unchecked")
   public <T>T[] toArray(final T[] a) {
     final int size = this.size;
-    if (assertNotNull(a).length < size)
+    if (a.length < size)
       return Arrays.copyOf(this.elementData, size, (Class<? extends T[]>)a.getClass());
 
     System.arraycopy(this.elementData, 0, a, 0, size);
@@ -136,39 +131,22 @@ public class WrappedArrayList<E> extends ArrayList<E> {
     return Spliterators.spliterator(elementData, Spliterator.ORDERED);
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @throws IllegalArgumentException If {@code action} is null.
-   */
   @Override
   public void forEach(final Consumer<? super E> action) {
-    assertNotNull(action);
     for (final E e : elementData) // [A]
       action.accept(e);
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @throws IllegalArgumentException If {@code operator} is null.
-   */
   @Override
   public void replaceAll(final UnaryOperator<E> operator) {
-    assertNotNull(operator);
     final E[] a = this.elementData;
     for (int i = 0, i$ = a.length; i < i$; ++i) // [A]
       a[i] = operator.apply(a[i]);
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @throws IllegalArgumentException If {@code c} is null.
-   */
   @Override
   public void sort(final Comparator<? super E> c) {
-    Arrays.sort(assertNotNull(elementData), c);
+    Arrays.sort(elementData, c);
   }
 
   @Override
@@ -535,7 +513,7 @@ public class WrappedArrayList<E> extends ArrayList<E> {
     @SuppressWarnings("unchecked")
     public <T>T[] toArray(final T[] a) {
       final int size = this.size;
-      if (assertNotNull(a).length < size)
+      if (a.length < size)
         return (T[])Arrays.copyOfRange(root.elementData, offset, offset + size, a.getClass());
 
       System.arraycopy(root.elementData, offset, a, 0, size);

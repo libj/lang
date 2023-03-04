@@ -16,8 +16,6 @@
 
 package org.libj.lang;
 
-import static org.libj.lang.Assertions.*;
-
 import java.util.Arrays;
 
 /**
@@ -45,10 +43,10 @@ public class Base32 extends DataEncoding<byte[],String> {
    *
    * @param bytes The bytes to encode.
    * @return The base32 encoding of the provided {@code bytes} array.
-   * @throws IllegalArgumentException If {@code bytes} is null.
+   * @throws NullPointerException If {@code bytes} is null.
    */
   public static String encode(final byte[] bytes) {
-    return encode(bytes, 0, assertNotNull(bytes).length);
+    return encode(bytes, 0, bytes.length);
   }
 
   /**
@@ -58,10 +56,10 @@ public class Base32 extends DataEncoding<byte[],String> {
    * @param offset The initial offset.
    * @param len The length.
    * @return The base32 encoding of the provided {@code bytes} array.
-   * @throws IllegalArgumentException If {@code bytes} is null.
+   * @throws NullPointerException If {@code bytes} is null.
    */
   public static String encode(final byte[] bytes, final int offset, final int len) {
-    final StringBuilder base32 = new StringBuilder((assertNotNull(bytes).length + 7) * 8 / 5);
+    final StringBuilder base32 = new StringBuilder((bytes.length + 7) * 8 / 5);
     for (int i = offset, index = 0, digit, by0, by1; i < len + offset;) { // [N]
       by0 = (bytes[i] >= 0) ? bytes[i] : (bytes[i] + 256);
       if (index > 3) {
@@ -90,10 +88,10 @@ public class Base32 extends DataEncoding<byte[],String> {
    *
    * @param base32 The base32 string.
    * @return A {@code new byte[]} of the decoded {@code base32} string.
-   * @throws IllegalArgumentException If {@code base32} is null.
+   * @throws NullPointerException If {@code base32} is null.
    */
   public static byte[] decode(final String base32) {
-    final byte[] bytes = new byte[assertNotNull(base32).length() * 5 / 8];
+    final byte[] bytes = new byte[base32.length() * 5 / 8];
     decode(base32, bytes, 0);
     return bytes;
   }
@@ -106,10 +104,10 @@ public class Base32 extends DataEncoding<byte[],String> {
    * @param offset The offset into the {@code bytes} array.
    * @throws ArrayIndexOutOfBoundsException If the size of {@code bytes} is not big enough, or if {@code offset} causes the index to
    *           go out of bounds.
-   * @throws IllegalArgumentException If {@code base32} or {@code bytes} is null.
+   * @throws NullPointerException If {@code base32} or {@code bytes} is null.
    */
   public static void decode(final String base32, final byte[] bytes, int offset) {
-    for (int i = 0, i$ = assertNotNull(base32).length(), index = 0, ch, digit; i < i$; ++i) { // [N]
+    for (int i = 0, i$ = base32.length(), index = 0, ch, digit; i < i$; ++i) { // [N]
       ch = base32.charAt(i) - '0';
       if (ch < 0 || lookup.length < ch)
         continue;

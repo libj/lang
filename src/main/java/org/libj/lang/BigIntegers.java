@@ -16,9 +16,8 @@
 
 package org.libj.lang;
 
-import static org.libj.lang.Assertions.*;
-
 import java.math.BigInteger;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -49,10 +48,10 @@ public final class BigIntegers {
    *
    * @param val The value of the desired {@link BigInteger} instance.
    * @return A canonical representation of the {@link BigInteger} object representing the specified string value.
-   * @throws IllegalArgumentException If {@code val} is null.
+   * @throws NullPointerException If {@code val} is null.
    */
   public static BigInteger intern(final String val) {
-    final BigInteger intern = instances.get(assertNotNull(val));
+    final BigInteger intern = instances.get(Objects.requireNonNull(val));
     return intern != null ? intern : init(val, new BigInteger(val));
   }
 
@@ -62,10 +61,10 @@ public final class BigIntegers {
    * @param n The {@link BigInteger} to intern.
    * @return A {@link BigInteger} that has the same contents as the specified {@link BigInteger}, but is guaranteed to be from a
    *         pool of unique instances.
-   * @throws IllegalArgumentException If {@code n} is null.
+   * @throws NullPointerException If {@code n} is null.
    */
   public static BigInteger intern(final BigInteger n) {
-    final BigInteger instance = instances.putIfAbsent(assertNotNull(n).toString(), n);
+    final BigInteger instance = instances.putIfAbsent(n.toString(), n);
     return instance != null ? instance : n;
   }
 

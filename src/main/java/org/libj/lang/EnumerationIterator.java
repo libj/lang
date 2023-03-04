@@ -16,16 +16,15 @@
 
 package org.libj.lang;
 
-import static org.libj.lang.Assertions.*;
-
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.Objects;
 
 public class EnumerationIterator<E> implements Iterator<E> {
   private final Enumeration<E> enumeration;
 
   public EnumerationIterator(final Enumeration<E> enumeration) {
-    this.enumeration = assertNotNull(enumeration);
+    this.enumeration = Objects.requireNonNull(enumeration);
   }
 
   @Override

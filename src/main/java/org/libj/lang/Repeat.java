@@ -16,11 +16,10 @@
 
 package org.libj.lang;
 
-import static org.libj.lang.Assertions.*;
-
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiPredicate;
 
 /**
@@ -68,14 +67,14 @@ public final class Repeat {
      * @param predicate {@link BiPredicate} to be applied to each member of the {@code array}.
      * @param arg Argument to be passed to {@code predicate}.
      * @return The {@code type}-typed array of {@code predicate}-passed members of {@code array} argument.
-     * @throws IllegalArgumentException If {@code array} is not null, and {@code type} or {@code predicate} is null.
+     * @throws NullPointerException If {@code array} is not null, and {@code type} or {@code predicate} is null.
      */
     protected <M,A>M[] simple(final M[] array, final Class<M> type, final BiPredicate<? super M,A> predicate, final A arg) {
       if (array == null)
         return null;
 
-      assertNotNull(type, "type == null");
-      assertNotNull(predicate, "predicate == null");
+      Objects.requireNonNull(type, "type is null");
+      Objects.requireNonNull(predicate, "predicate is null");
       return null;
     }
   }
@@ -237,7 +236,7 @@ public final class Repeat {
      * @param arg Argument to be passed to {@code predicate}.
      * @return The {@code type}-typed array of {@code predicate}-passed members of {@code array} argument, stored in the order of
      *         traversal.
-     * @throws IllegalArgumentException If {@code array} is not null, and {@code type} or {@code predicate} is null.
+     * @throws NullPointerException If {@code array} is not null, and {@code type} or {@code predicate} is null.
      */
     public static <M,A>M[] ordered(final M[] array, final Class<M> type, final BiPredicate<? super M,A> predicate, final A arg) {
       return recursiveOrdered.simple(array, type, predicate, arg);
@@ -257,7 +256,7 @@ public final class Repeat {
      * @param arg Argument to be passed to {@code predicate}.
      * @return The {@code type}-typed array of {@code recurser}-accepted members of {@code array} argument, stored in the order of
      *         traversal.
-     * @throws IllegalArgumentException If {@code array} is not null, and {@code type} or {@code recurser} is null.
+     * @throws NullPointerException If {@code array} is not null, and {@code type} or {@code recurser} is null.
      */
     public static <C,M,A>M[] ordered(final C container, final M[] array, final Class<M> type, final Recurser<C,M,A> recurser, final A arg) {
       return recursiveOrdered.contained(container, array, type, recurser, arg);
@@ -276,7 +275,7 @@ public final class Repeat {
      * @param arg Argument to be passed to {@code predicate}.
      * @return The {@code type}-typed array of {@code predicate}-passed members of {@code array} argument, stored in the inverse
      *         order of traversal.
-     * @throws IllegalArgumentException If {@code array} is not null, and {@code type} or {@code predicate} is null.
+     * @throws NullPointerException If {@code array} is not null, and {@code type} or {@code predicate} is null.
      */
     public static <M,A>M[] inverted(final M[] array, final Class<M> type, final BiPredicate<? super M,A> predicate, final A arg) {
       return recursiveInverted.simple(array, type, predicate, arg);
@@ -297,7 +296,7 @@ public final class Repeat {
      * @param arg Argument to be passed to {@code predicate}.
      * @return The {@code type}-typed array of {@code recurser}-accepted members of {@code array} argument, stored in the inverse
      *         order of traversal.
-     * @throws IllegalArgumentException If {@code array} is not null, and {@code type} or {@code recurser} is null.
+     * @throws NullPointerException If {@code array} is not null, and {@code type} or {@code recurser} is null.
      */
     public static <C,M,A>M[] inverted(final C container, final M[] array, final Class<M> type, final Recurser<C,M,A> recurser, final A arg) {
       return recursiveInverted.contained(container, array, type, recurser, arg);
@@ -337,7 +336,7 @@ public final class Repeat {
    * @param arg Argument to be passed to {@code predicate}.
    * @return The {@code type}-typed array of {@code predicate}-passed members of {@code array} argument, stored in the order of
    *         traversal.
-   * @throws IllegalArgumentException If {@code array} is not null, and {@code type} or {@code predicate} is null.
+   * @throws NullPointerException If {@code array} is not null, and {@code type} or {@code predicate} is null.
    */
   public static <M,A>M[] iterative(final M[] array, final Class<M> type, final BiPredicate<? super M,A> predicate, final A arg) {
     return iterative.simple(array, type, predicate, arg);

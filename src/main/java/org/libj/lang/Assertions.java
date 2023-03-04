@@ -280,7 +280,7 @@ public final class Assertions {
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
   public static boolean[] assertNotEmpty(final boolean[] obj, final String format, final Object ... args) {
-    assertNotNull(obj, format);
+    assertNotNull(obj, format, args);
     if (obj.length == 0)
       throw new IllegalArgumentException(String.format(format, args));
 
@@ -352,7 +352,7 @@ public final class Assertions {
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
   public static byte[] assertNotEmpty(final byte[] obj, final String format, final Object ... args) {
-    assertNotNull(obj, format);
+    assertNotNull(obj, format, args);
     if (obj.length == 0)
       throw new IllegalArgumentException(String.format(format, args));
 
@@ -424,7 +424,7 @@ public final class Assertions {
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
   public static char[] assertNotEmpty(final char[] obj, final String format, final Object ... args) {
-    assertNotNull(obj, format);
+    assertNotNull(obj, format, args);
     if (obj.length == 0)
       throw new IllegalArgumentException(String.format(format, args));
 
@@ -496,7 +496,7 @@ public final class Assertions {
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
   public static short[] assertNotEmpty(final short[] obj, final String format, final Object ... args) {
-    assertNotNull(obj, format);
+    assertNotNull(obj, format, args);
     if (obj.length == 0)
       throw new IllegalArgumentException(String.format(format, args));
 
@@ -568,7 +568,7 @@ public final class Assertions {
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
   public static int[] assertNotEmpty(final int[] obj, final String format, final Object ... args) {
-    assertNotNull(obj, format);
+    assertNotNull(obj, format, args);
     if (obj.length == 0)
       throw new IllegalArgumentException(String.format(format, args));
 
@@ -640,7 +640,7 @@ public final class Assertions {
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
   public static long[] assertNotEmpty(final long[] obj, final String format, final Object ... args) {
-    assertNotNull(obj, format);
+    assertNotNull(obj, format, args);
     if (obj.length == 0)
       throw new IllegalArgumentException(String.format(format, args));
 
@@ -712,7 +712,7 @@ public final class Assertions {
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
   public static float[] assertNotEmpty(final float[] obj, final String format, final Object ... args) {
-    assertNotNull(obj, format);
+    assertNotNull(obj, format, args);
     if (obj.length == 0)
       throw new IllegalArgumentException(String.format(format, args));
 
@@ -784,7 +784,7 @@ public final class Assertions {
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
   public static double[] assertNotEmpty(final double[] obj, final String format, final Object ... args) {
-    assertNotNull(obj, format);
+    assertNotNull(obj, format, args);
     if (obj.length == 0)
       throw new IllegalArgumentException(String.format(format, args));
 
@@ -858,7 +858,7 @@ public final class Assertions {
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
   public static <T>T[] assertNotEmpty(final T[] obj, final String format, final Object ... args) {
-    assertNotNull(obj, format);
+    assertNotNull(obj, format, args);
     if (obj.length == 0)
       throw new IllegalArgumentException(String.format(format, args));
 
@@ -933,7 +933,7 @@ public final class Assertions {
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
   public static <T extends Collection<?>>T assertNotEmpty(final T obj, final String format, final Object ... args) {
-    if (assertNotNull(obj, format).size() == 0)
+    if (assertNotNull(obj, format, args).size() == 0)
       throw new IllegalArgumentException(String.format(format, args));
 
     return obj;
@@ -1005,7 +1005,7 @@ public final class Assertions {
    * @throws IllegalArgumentException If {@code str} is null or empty.
    */
   public static CharSequence assertNotEmpty(final CharSequence str, final String format, final Object ... args) {
-    if (assertNotNull(str, format).length() == 0)
+    if (assertNotNull(str, format, args).length() == 0)
       throw new IllegalArgumentException(String.format(format, args));
 
     return str;

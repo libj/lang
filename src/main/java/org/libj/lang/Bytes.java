@@ -45,11 +45,9 @@ public final class Bytes {
    * @param sequence The {@code byte} array sequence for which to search.
    * @return The index of the first occurrence of the specified {@code byte sequence} in {@code bytes}.
    * @throws ArrayIndexOutOfBoundsException If {@code offset} is out of range.
-   * @throws IllegalArgumentException If {@code bytes} or {@code sequence} is null.
+   * @throws NullPointerException If {@code bytes} or {@code sequence} is null.
    */
   public static int indexOf(final byte[] bytes, final int offset, final byte ... sequence) {
-    assertNotNull(bytes);
-    assertNotNull(sequence);
     assertRangeArray(offset, bytes.length);
     if (sequence.length == 0 || bytes.length < sequence.length)
       return -1;
@@ -72,10 +70,10 @@ public final class Bytes {
    * @param bytes The {@code byte} array in which to perform the replacement.
    * @param target The {@code byte} to search for.
    * @param replacement The {@code byte} to replace with.
-   * @throws IllegalArgumentException If {@code bytes} is null.
+   * @throws NullPointerException If {@code bytes} is null.
    */
   public static void replaceAll(final byte[] bytes, final byte target, final byte replacement) {
-    for (int index = 0; (index = Bytes.indexOf(assertNotNull(bytes), index + 1, target)) > -1; bytes[index] = replacement); // [N]
+    for (int index = 0; (index = Bytes.indexOf(bytes, index + 1, target)) > -1; bytes[index] = replacement); // [N]
   }
 
   /**
@@ -84,13 +82,12 @@ public final class Bytes {
    * @param bytes The {@code byte} array in which to perform the replacement.
    * @param target The {@code byte} array to search for.
    * @param replacement The {@code byte} array to replace with.
-   * @throws IllegalArgumentException If the length of {@code target} does not equal the length of {@code replacement}.
-   * @throws IllegalArgumentException If {@code bytes}, {@code target} or {@code replacement} is null or
+   * @throws IllegalArgumentException If the length of {@code target} does not equal the length of {@code replacement}, or if
    *           {@code target.length != replacement.length}.
+   * @throws NullPointerException If {@code bytes}, {@code target} or {@code replacement} is null.
    */
   public static void replaceAll(final byte[] bytes, final byte[] target, final byte[] replacement) {
-    assertNotNull(bytes);
-    if (assertNotNull(target).length != assertNotNull(replacement).length)
+    if (target.length != replacement.length)
       throw new IllegalArgumentException("target.length != replacement.length");
 
     if (bytes.length < target.length || target.length == 0)
@@ -115,10 +112,9 @@ public final class Bytes {
    * @param offset The byte offset into the destination array.
    * @param isBigEndian If {@code true}, bytes will be written in big-endian encoding. If {@code false}, in little-endian.
    * @return A {@code byte} array representing the provided {@code short} value with big- or little- endian encoding.
-   * @throws IllegalArgumentException If {@code bytes} is null.
+   * @throws NullPointerException If {@code bytes} is null.
    */
   public static byte[] toBytes(final short value, final byte[] bytes, int offset, final boolean isBigEndian) {
-    assertNotNull(bytes);
     if (isBigEndian) {
       offset = bytes.length - offset;
       bytes[--offset] = (byte)(value & 0xff);
@@ -145,10 +141,9 @@ public final class Bytes {
    * @param offset The byte offset into the destination array.
    * @param isBigEndian If {@code true}, bytes will be written in big-endian encoding. If {@code false}, in little-endian.
    * @return A {@code byte} array representing the provided {@code char} value with big- or little- endian encoding.
-   * @throws IllegalArgumentException If {@code bytes} is null.
+   * @throws NullPointerException If {@code bytes} is null.
    */
   public static byte[] toBytes(final char c, final byte[] bytes, int offset, final boolean isBigEndian) {
-    assertNotNull(bytes);
     if (isBigEndian) {
       offset = bytes.length - offset;
       bytes[--offset] = (byte)(c & 0xff);
@@ -175,10 +170,9 @@ public final class Bytes {
    * @param offset The byte offset into the destination array.
    * @param isBigEndian If {@code true}, bytes will be written in big-endian encoding. If {@code false}, in little-endian.
    * @return A {@code byte} array representing the provided {@code int} value with big- or little- endian encoding.
-   * @throws IllegalArgumentException If {@code bytes} is null.
+   * @throws NullPointerException If {@code bytes} is null.
    */
   public static byte[] toBytes(final int i, final byte[] bytes, int offset, final boolean isBigEndian) {
-    assertNotNull(bytes);
     if (isBigEndian) {
       offset = bytes.length - offset;
       bytes[--offset] = (byte)(i & 0xff);
@@ -224,10 +218,9 @@ public final class Bytes {
    * @param offset The byte offset into the destination array.
    * @param isBigEndian If {@code true}, bytes will be written in big-endian encoding. If {@code false}, in little-endian.
    * @return A {@code byte} array representing the provided {@code long} value with big- or little- endian encoding.
-   * @throws IllegalArgumentException If {@code bytes} is null.
+   * @throws NullPointerException If {@code bytes} is null.
    */
   public static byte[] toBytes(final long l, final byte[] bytes, int offset, final boolean isBigEndian) {
-    assertNotNull(bytes);
     if (isBigEndian) {
       offset = bytes.length - offset;
       bytes[--offset] = (byte)(l & 0xff);
@@ -304,7 +297,7 @@ public final class Bytes {
    * @param offset The byte offset into the source byte array.
    * @param isBigEndian Is value in big-endian encoding.
    * @return A signed {@code short} representation of a {@code byte} array.
-   * @throws IllegalArgumentException If {@code src} is null.
+   * @throws NullPointerException If {@code src} is null.
    */
   public static short toShort(final byte[] src, final int offset, final boolean isBigEndian) {
     return (short)toShort(src, offset, isBigEndian, true);
@@ -322,10 +315,9 @@ public final class Bytes {
    * @param isBigEndian Is value in big-endian encoding.
    * @param signed If {@code true}, return signed {@code short} value. If {@code false}, return unsigned {@code int} value.
    * @return A signed {@code short} or an unsigned {@code int} representation of a byte array.
-   * @throws IllegalArgumentException If {@code src} is null.
+   * @throws NullPointerException If {@code src} is null.
    */
   public static int toShort(final byte[] src, int offset, final boolean isBigEndian, final boolean signed) {
-    assertNotNull(src);
     int value = 0;
     if (isBigEndian) {
       offset = src.length - offset;
@@ -360,7 +352,7 @@ public final class Bytes {
    * @param offset The byte offset into the source {@code byte} array.
    * @param isBigEndian Is value in big-endian encoding.
    * @return A signed {@code int} representation of a {@code byte} array.
-   * @throws IllegalArgumentException If {@code src} is null.
+   * @throws NullPointerException If {@code src} is null.
    */
   public static int toInt(final byte[] src, final int offset, final boolean isBigEndian) {
     return (int)toInt(src, offset, isBigEndian, true);
@@ -378,10 +370,9 @@ public final class Bytes {
    * @param isBigEndian Is value in big-endian encoding.
    * @param signed If {@code true}, return signed {@code int} value. If {@code false}, return unsigned {@code long} value.
    * @return A signed {@code int} or an unsigned {@code long} representation of a {@code byte} array.
-   * @throws IllegalArgumentException If {@code src} is null.
+   * @throws NullPointerException If {@code src} is null.
    */
   public static long toInt(final byte[] src, int offset, final boolean isBigEndian, final boolean signed) {
-    assertNotNull(src);
     long value = 0;
     if (isBigEndian) {
       offset = src.length - offset;
@@ -428,11 +419,10 @@ public final class Bytes {
    * @param offset The byte offset into the source {@code byte} array.
    * @param isBigEndian Is value in big-endian encoding.
    * @return A signed long representation of a {@code byte} array.
-   * @throws IllegalArgumentException If {@code src} is null.
+   * @throws NullPointerException If {@code src} is null.
    */
   // FIXME: Support unsigned
   public static long toLong(final byte[] src, int offset, final boolean isBigEndian) {
-    assertNotNull(src);
     long value = 0;
     if (isBigEndian) {
       offset = src.length - offset;
@@ -523,10 +513,9 @@ public final class Bytes {
    *
    * @param bytes The {@code byte} array.
    * @return A {@code short} array representing the base-8 values of the specified {@code byte} array.
-   * @throws IllegalArgumentException If {@code bytes} is null.
+   * @throws NullPointerException If {@code bytes} is null.
    */
   public static short[] toOctal(final byte ... bytes) {
-    assertNotNull(bytes);
     final short[] octal = new short[bytes.length];
     for (int i = 0, i$ = bytes.length; i < i$; ++i) // [A]
       octal[i] = toOctal(bytes[i]);
@@ -550,10 +539,9 @@ public final class Bytes {
    * @param src The source {@code byte} to write.
    * @param bits The number of bits of the {@code byte} to write (0 to 8).
    * @return The new offset adjusted by the written bits.
-   * @throws IllegalArgumentException If {@code dest} is null.
+   * @throws NullPointerException If {@code dest} is null.
    */
   public static int writeBitsB(final byte[] dest, final int offset, byte src, final byte bits) {
-    assertNotNull(dest);
     final int i = offset / 8;
     final int right = offset % 8;
     final int left = 8 - bits;
@@ -588,10 +576,9 @@ public final class Bytes {
    * @param src The source {@code byte} array to write.
    * @param bits The number of bits to write from the source array (0 to 8 * src.length).
    * @return The new offset adjusted by the written bits.
-   * @throws IllegalArgumentException If {@code dest} or {@code src} is null.
+   * @throws NullPointerException If {@code dest} or {@code src} is null.
    */
   public static int writeBitsB(final byte[] dest, int offset, final byte[] src, long bits) {
-    assertNotNull(dest);
     final byte remainder = (byte)(1 + (bits - 1) % 8);
     offset = writeBitsB(dest, offset, src[0], remainder);
     bits -= remainder;
@@ -617,10 +604,9 @@ public final class Bytes {
    * @param src The source {@code byte} to write.
    * @param bits The number of bits of the {@code byte} to write (0 to 8).
    * @return The new offset adjusted by the written bits.
-   * @throws IllegalArgumentException If {@code dest} is null.
+   * @throws NullPointerException If {@code dest} is null.
    */
   public static int writeBitsL(final byte[] dest, final int offset, byte src, final byte bits) {
-    assertNotNull(dest);
     final int i = offset / 8;
     final int r = offset % 8;
     final int left = 8 - bits;
@@ -655,10 +641,9 @@ public final class Bytes {
    * @param src The source {@code byte} array to write.
    * @param bits The number of bits to write from the source array (0 to 8 * src.length).
    * @return The new offset adjusted by the written bits.
-   * @throws IllegalArgumentException If {@code dest} or {@code src} is null.
+   * @throws NullPointerException If {@code dest} or {@code src} is null.
    */
   public static int writeBitsL(final byte[] dest, int offset, final byte[] src, int bits) {
-    assertNotNull(dest);
     int i = 0;
     for (; bits > 8; bits -= 8) // [N]
       offset = writeBitsL(dest, offset, src[i++], (byte)8);
@@ -676,10 +661,9 @@ public final class Bytes {
    * @param offset The offset in bits.
    * @param bits The number of bits to read (0 to 8).
    * @return The {@code byte} representation of the read bits from the source {@code byte} array at the offset.
-   * @throws IllegalArgumentException If {@code src} is null.
+   * @throws NullPointerException If {@code src} is null.
    */
   public static byte readBitsFromByte(final byte[] src, final int offset, byte bits) {
-    assertNotNull(src);
     final int i = offset / 8;
     final int left = offset % 8;
     bits = (byte)(8 - bits);
@@ -697,10 +681,9 @@ public final class Bytes {
    * @param offset The offset in bits.
    * @param bits The number of bits to read.
    * @return The {@code byte} array representation of the read bits from the source {@code byte} array at the offset.
-   * @throws IllegalArgumentException If {@code src} is null.
+   * @throws NullPointerException If {@code src} is null.
    */
   public static byte[] readBitsFromBytes(final byte[] src, int offset, final long bits) {
-    assertNotNull(src);
     if (bits <= 8)
       return new byte[] {readBitsFromByte(src, offset, (byte)bits)};
 

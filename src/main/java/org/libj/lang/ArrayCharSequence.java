@@ -19,6 +19,7 @@ package org.libj.lang;
 import static org.libj.lang.Assertions.*;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A {@link CharSequence} backed by a {@code String} or {@code char[]}.
@@ -31,10 +32,10 @@ public abstract class ArrayCharSequence implements CharSequence, Serializable {
    * @param buf The {@code char[]}.
    * @return A new {@link ArrayCharSequence} with the specified {@code char[]}, with the char sequence range as {@code 0} to
    *         {@code buf.length}.
-   * @throws IllegalArgumentException If {@code buf} is null.
+   * @throws NullPointerException If {@code buf} is null.
    */
   public static ArrayCharSequence of(final char[] buf) {
-    return new ArrayCharSequenceBuf(assertNotNull(buf), 0, buf.length);
+    return new ArrayCharSequenceBuf(buf, 0, buf.length);
   }
 
   /**
@@ -46,10 +47,10 @@ public abstract class ArrayCharSequence implements CharSequence, Serializable {
    * @return A new {@link ArrayCharSequence} with the specified {@code char[]}, with the char sequence range as {@code 0} to
    *         {@code count}.
    * @throws IndexOutOfBoundsException If {@code count} is negative, or {@code buf.length} is less than {@code count}.
-   * @throws IllegalArgumentException If {@code buf} is null.
+   * @throws NullPointerException If {@code buf} is null.
    */
   public static ArrayCharSequence of(final char[] buf, final int count) {
-    assertBoundsOffsetCount("length", assertNotNull(buf).length, "offset", 0, "count", count);
+    assertBoundsOffsetCount("length", buf.length, "offset", 0, "count", count);
     return new ArrayCharSequenceBuf(buf, 0, count);
   }
 
@@ -64,10 +65,10 @@ public abstract class ArrayCharSequence implements CharSequence, Serializable {
    *         {@code count}.
    * @throws IndexOutOfBoundsException If {@code offset} is negative, {@code count} is negative, or {@code buf.length} is less than
    *           {@code offset + count}.
-   * @throws IllegalArgumentException If {@code buf} is null.
+   * @throws NullPointerException If {@code buf} is null.
    */
   public static ArrayCharSequence of(final char[] buf, final int offset, final int count) {
-    assertBoundsOffsetCount("length", assertNotNull(buf).length, "offset", offset, "count", count);
+    assertBoundsOffsetCount("length", buf.length, "offset", offset, "count", count);
     return new ArrayCharSequenceBuf(buf, offset, count);
   }
 
@@ -78,10 +79,10 @@ public abstract class ArrayCharSequence implements CharSequence, Serializable {
    * @param str The string.
    * @return A new {@link ArrayCharSequence} with the specified string, with the char sequence range as {@code 0} to
    *         {@code buf.length}.
-   * @throws IllegalArgumentException If {@code str} is null.
+   * @throws NullPointerException If {@code str} is null.
    */
   public static ArrayCharSequence of(final String str) {
-    return new ArrayCharSequenceStr(assertNotNull(str), 0, str.length());
+    return new ArrayCharSequenceStr(str, 0, str.length());
   }
 
   /**
@@ -91,10 +92,10 @@ public abstract class ArrayCharSequence implements CharSequence, Serializable {
    * @param count The count.
    * @return A new {@link ArrayCharSequence} with the specified string, with the char sequence range as {@code 0} to {@code count}.
    * @throws IndexOutOfBoundsException If {@code count} is negative, or {@code str.length()} is less than {@code count}.
-   * @throws IllegalArgumentException If {@code str} is null.
+   * @throws NullPointerException If {@code str} is null.
    */
   public static ArrayCharSequence of(final String str, final int count) {
-    assertBoundsOffsetCount("length", assertNotNull(str).length(), "offset", 0, "count", count);
+    assertBoundsOffsetCount("length", str.length(), "offset", 0, "count", count);
     return new ArrayCharSequenceStr(str, 0, count);
   }
 
@@ -109,10 +110,10 @@ public abstract class ArrayCharSequence implements CharSequence, Serializable {
    *         {@code count}.
    * @throws IndexOutOfBoundsException If {@code offset} is negative, {@code count} is negative, or {@code str.length()} is less
    *           than {@code offset + count}.
-   * @throws IllegalArgumentException If {@code str} is null.
+   * @throws NullPointerException If {@code str} is null.
    */
   public static ArrayCharSequence of(final String str, final int offset, final int count) {
-    assertBoundsOffsetCount("length", assertNotNull(str).length(), "offset", offset, "count", count);
+    assertBoundsOffsetCount("length", str.length(), "offset", offset, "count", count);
     return new ArrayCharSequenceStr(str, offset, count);
   }
 
@@ -174,7 +175,7 @@ public abstract class ArrayCharSequence implements CharSequence, Serializable {
 
     ArrayCharSequenceStr(final String str, final int offset, final int count) {
       super(offset, count);
-      this.str = str;
+      this.str = Objects.requireNonNull(str);
     }
 
     @Override

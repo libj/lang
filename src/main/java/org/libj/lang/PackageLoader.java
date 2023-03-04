@@ -16,8 +16,6 @@
 
 package org.libj.lang;
 
-import static org.libj.lang.Assertions.*;
-
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -94,11 +92,11 @@ public class PackageLoader {
    * @return Set of classes discovered, loaded, and initialized.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If {@code pkg} cannot be found in the class loader of this {@link PackageLoader} instance.
-   * @throws IllegalArgumentException If {@code pkg} is null.
+   * @throws NullPointerException If {@code pkg} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
   public Set<Class<?>> loadPackage(final Package pkg) throws IOException, PackageNotFoundException {
-    return loadPackage(assertNotNull(pkg).getName(), true, true);
+    return loadPackage(pkg.getName(), true, true);
   }
 
   /**
@@ -113,11 +111,11 @@ public class PackageLoader {
    *          all classes.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If {@code pkg} cannot be found in the class loader of this {@link PackageLoader} instance.
-   * @throws IllegalArgumentException If {@code pkg} is null.
+   * @throws NullPointerException If {@code pkg} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
   public void loadPackage(final Package pkg, final Predicate<? super Class<?>> initialize) throws IOException, PackageNotFoundException {
-    loadPackage(assertNotNull(pkg).getName(), true, false, initialize, classLoader);
+    loadPackage(pkg.getName(), true, false, initialize, classLoader);
   }
 
   /**
@@ -132,11 +130,11 @@ public class PackageLoader {
    * @return Set of discovered classes, whether they were initialized or not.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If {@code pkg} cannot be found in the class loader of this {@link PackageLoader} instance.
-   * @throws IllegalArgumentException If {@code pkg} is null.
+   * @throws NullPointerException If {@code pkg} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
   public Set<Class<?>> loadPackage(final Package pkg, final boolean initialize) throws IOException, PackageNotFoundException {
-    return loadPackage(assertNotNull(pkg).getName(), true, initialize);
+    return loadPackage(pkg.getName(), true, initialize);
   }
 
   /**
@@ -154,11 +152,11 @@ public class PackageLoader {
    * @return Set of discovered classes, whether they were initialized or not.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If {@code pkg} cannot be found in the class loader of this {@link PackageLoader} instance.
-   * @throws IllegalArgumentException If {@code pkg} is null.
+   * @throws NullPointerException If {@code pkg} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
   public Set<Class<?>> loadPackage(final Package pkg, final boolean includeSubPackages, final boolean initialize) throws IOException, PackageNotFoundException {
-    return loadPackage(assertNotNull(pkg).getName(), includeSubPackages, initialize);
+    return loadPackage(pkg.getName(), includeSubPackages, initialize);
   }
 
   /**
@@ -173,7 +171,7 @@ public class PackageLoader {
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the package specified by {@code name} cannot be found in the class loader of this
    *           {@link PackageLoader} instance.
-   * @throws IllegalArgumentException If {@code name} is null.
+   * @throws NullPointerException If {@code name} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
   public Set<Class<?>> loadPackage(final String name) throws IOException, PackageNotFoundException {
@@ -193,7 +191,7 @@ public class PackageLoader {
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the package specified by {@code name} cannot be found in the class loader of this
    *           {@link PackageLoader} instance.
-   * @throws IllegalArgumentException If {@code name} is null.
+   * @throws NullPointerException If {@code name} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
   public Set<Class<?>> loadPackage(final String name, final boolean initialize) throws IOException, PackageNotFoundException {
@@ -213,7 +211,7 @@ public class PackageLoader {
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the package specified by {@code name} cannot be found in the class loader of this
    *           {@link PackageLoader} instance.
-   * @throws IllegalArgumentException If {@code name} is null.
+   * @throws NullPointerException If {@code name} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
   public void loadPackage(final String name, final Predicate<? super Class<?>> initialize) throws IOException, PackageNotFoundException {
@@ -236,7 +234,7 @@ public class PackageLoader {
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the package specified by {@code name} cannot be found in the class loader of this
    *           {@link PackageLoader} instance.
-   * @throws IllegalArgumentException If {@code name} is null.
+   * @throws NullPointerException If {@code name} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
   public void loadPackage(final String name, final boolean includeSubPackages, final Predicate<? super Class<?>> initialize) throws IOException, PackageNotFoundException {
@@ -259,7 +257,7 @@ public class PackageLoader {
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the package specified by {@code name} cannot be found in the class loader of this
    *           {@link PackageLoader} instance.
-   * @throws IllegalArgumentException If {@code name} is null.
+   * @throws NullPointerException If {@code name} is null.
    * @see Class#forName(String,boolean,ClassLoader)
    */
   public Set<Class<?>> loadPackage(final String name, final boolean includeSubPackages, final boolean initialize) throws IOException, PackageNotFoundException {
@@ -273,7 +271,7 @@ public class PackageLoader {
 
   private static void loadPackage(final String packageName, final boolean includeSubPackages, final boolean initialize, final Predicate<? super Class<?>> predicate, final ClassLoader classLoader) throws IOException, PackageNotFoundException {
     final ClassLoader loader = classLoader != null ? classLoader : bootLoaderProxy;
-    final String resourceName = assertNotNull(packageName).replace('.', '/');
+    final String resourceName = packageName.replace('.', '/');
     final Enumeration<URL> resources = loader.getResources(resourceName);
     if (!resources.hasMoreElements())
       throw new PackageNotFoundException(packageName.length() > 0 ? packageName : "<default>");

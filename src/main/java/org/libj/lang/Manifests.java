@@ -16,8 +16,6 @@
 
 package org.libj.lang;
 
-import static org.libj.lang.Assertions.*;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,10 +36,10 @@ public final class Manifests {
    * @param cls The {@link Class} for which the {@link Manifest} is to be returned.
    * @return The {@link Manifest} associated to the provided {@link Class}, or {@code null} if no such {@link Manifest} exists.
    * @throws IOException If an I/O error has occurred.
-   * @throws IllegalArgumentException If {@code cls} is null.
+   * @throws NullPointerException If {@code cls} is null.
    */
   public static Manifest getManifest(final Class<?> cls) throws IOException {
-    final CodeSource codeSource = assertNotNull(cls).getProtectionDomain().getCodeSource();
+    final CodeSource codeSource = cls.getProtectionDomain().getCodeSource();
     if (codeSource == null)
       return null;
 
@@ -65,10 +63,10 @@ public final class Manifests {
    * @return An array of {@link Manifest}s associated to the provided {@link Class}, or an array of zero members if no such
    *         {@link Manifest} exists.
    * @throws IOException If an I/O error has occurred.
-   * @throws IllegalArgumentException If {@code cls} is null.
+   * @throws NullPointerException If {@code cls} is null.
    */
   public static Manifest[] getManifests(final Class<?> cls) throws IOException {
-    final String name = assertNotNull(cls).getName().replace('.', '/').concat(".class");
+    final String name = cls.getName().replace('.', '/').concat(".class");
     return getManifests(cls.getClassLoader().getResources(name), name.length(), 0);
   }
 

@@ -203,9 +203,9 @@ public class StringsTest {
   public void testChangeCase() throws Exception {
     try {
       Strings.toLowerCase(null, 0, 1);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     try {
@@ -268,16 +268,16 @@ public class StringsTest {
   public void testToProperCase() {
     try {
       Strings.toProperCase((String)null);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     try {
       Strings.toProperCase((StringBuilder)null);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     assertEquals("", Strings.toProperCase("").toString());
@@ -290,16 +290,16 @@ public class StringsTest {
   public void testPad() {
     try {
       Strings.pad(null, LEFT, 0);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     try {
       Strings.pad(null, RIGHT, 0);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     try {
@@ -374,9 +374,9 @@ public class StringsTest {
     assertNull(Strings.getCommonPrefix((String)null));
     try {
       Strings.getCommonPrefix(null, null);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     assertEquals("a", Strings.getCommonPrefix("a"));
@@ -420,9 +420,9 @@ public class StringsTest {
   public void testRepeat() {
     try {
       Strings.repeat(null, 10);
-      fail("Expected a IllegalArgumentException");
+      fail("Expected a NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     try {
@@ -469,9 +469,9 @@ public class StringsTest {
   public void testIndexOfUnEscaped() {
     try {
       Strings.indexOfUnEscaped(null, '\0');
-      fail("Expected a IllegalArgumentException");
+      fail("Expected a NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     final String testString = "random a b c \\d d e f d \\d \\\\d \\\\\\d \\\\\\\\d";
@@ -492,9 +492,9 @@ public class StringsTest {
   public void testIndexOfUnQuoted() {
     try {
       Strings.indexOfUnQuoted(null, '\0');
-      fail("Expected a IllegalArgumentException");
+      fail("Expected a NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     final String testString = "random 'x' \"quoted \\'x\\' \\\"t\\\" \\\\\"s\\\\\"\" te'\\''xts";
@@ -518,9 +518,9 @@ public class StringsTest {
   public void testLastIndexOfUnQuoted() {
     try {
       Strings.indexOfUnQuoted(null, '\0');
-      fail("Expected a IllegalArgumentException");
+      fail("Expected a NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     final String testString = "ran'\\''dom 'n' \"quoted \\'n\\' \\\"d\\\" \\\\\"s\\\\\"\" texts";
@@ -569,9 +569,9 @@ public class StringsTest {
   public void testFlipFirstCap() {
     try {
       Strings.flipFirstCap(null);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     assertFlip("Foo", "foo");
@@ -595,16 +595,16 @@ public class StringsTest {
 
     try {
       Strings.derefEL(null, variables);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     try {
       Strings.derefEL("foo ${bar}", (Map<String,String>)null);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     assertEL(variables, "this string has a token on the $right", "this string has a token on the $right");
@@ -650,16 +650,16 @@ public class StringsTest {
 
     try {
       Strings.derefEV(null, variables);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     try {
       Strings.derefEV("foo ${bar}", null);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     assertEV(variables, "this string has a token on the $RIGHT", "this string has a token on the right");
@@ -751,9 +751,9 @@ public class StringsTest {
   public void testContainsIgnoreCaseChar() {
     try {
       Strings.containsIgnoreCase(null, '\0');
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     assertFalse(Strings.containsIgnoreCase("", '\0'));
@@ -766,16 +766,16 @@ public class StringsTest {
   public void testContainsIgnoreCaseCharSequence() {
     try {
       Strings.containsIgnoreCase(null, "");
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     try {
       Strings.containsIgnoreCase("", null);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     assertTrue(Strings.containsIgnoreCase("", ""));
@@ -800,9 +800,9 @@ public class StringsTest {
   public void testSplit() {
     try {
       Strings.split(null, ' ');
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     assertEquals(0, Strings.split("", ' ').length);
@@ -826,17 +826,10 @@ public class StringsTest {
   @Test
   public void testStartsWithIgnoreCase() {
     try {
-      Strings.startsWithIgnoreCase(null, "");
-      fail("Expected IllegalArgumentException");
-    }
-    catch (final IllegalArgumentException e) {
-    }
-
-    try {
       Strings.startsWithIgnoreCase("", null);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     assertTrue(Strings.startsWithIgnoreCase("", ""));
@@ -856,17 +849,10 @@ public class StringsTest {
   @Test
   public void testEndsWithIgnoreCase() {
     try {
-      Strings.endsWithIgnoreCase(null, "");
-      fail("Expected IllegalArgumentException");
-    }
-    catch (final IllegalArgumentException e) {
-    }
-
-    try {
       Strings.endsWithIgnoreCase("", null);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     assertTrue(Strings.endsWithIgnoreCase("", ""));

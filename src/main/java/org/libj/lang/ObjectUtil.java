@@ -16,8 +16,6 @@
 
 package org.libj.lang;
 
-import static org.libj.lang.Assertions.*;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -49,7 +47,7 @@ public final class ObjectUtil {
    * @param obj The object.
    * @return The class name of object {@code obj}, concatenated with '@', and the hexadecimal representation of its identity hash
    *         code.
-   * @throws IllegalArgumentException If {@code obj} is null.
+   * @throws NullPointerException If {@code obj} is null.
    * @see System#identityHashCode(Object)
    */
   public static String identityString(final Object obj) {
@@ -77,11 +75,11 @@ public final class ObjectUtil {
    * @param <T> The type of the specified object.
    * @param obj The object to be cloned.
    * @return A clone of the specified object that implements the {@link Cloneable} interface.
-   * @throws IllegalArgumentException If {@code obj} is null.
+   * @throws NullPointerException If {@code obj} is null.
    */
   @SuppressWarnings("unchecked")
   public static <T extends Cloneable>T clone(final T obj) {
-    final Class<?> cls = assertNotNull(obj).getClass();
+    final Class<?> cls = obj.getClass();
     Method cloneMethod = classToCloneMethod.get(cls);
     if (cloneMethod == null) {
       try {

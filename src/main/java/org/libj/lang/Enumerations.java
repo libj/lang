@@ -16,8 +16,6 @@
 
 package org.libj.lang;
 
-import static org.libj.lang.Assertions.*;
-
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -66,10 +64,10 @@ public final class Enumerations {
    * @param enumeration The {@link Enumeration}.
    * @return An array of type {@code T} containing the object references in the provided {@link Enumeration}, or {@code null} if the
    *         provided {@link Enumeration} was empty.
-   * @throws IllegalArgumentException If {@code enumeration} or {@code componentType} is null.
+   * @throws NullPointerException If {@code enumeration} or {@code componentType} is null.
    */
   public static <T>T[] toArray(final Enumeration<? extends T> enumeration, final Class<T> componentType) {
-    return recurse(assertNotNull(enumeration), null, assertNotNull(componentType), 0);
+    return recurse(enumeration, null, componentType, 0);
   }
 
   /**
@@ -85,10 +83,10 @@ public final class Enumerations {
    * @param function The {@link Function} to translate objects of type {@code <T>} to type {@code <E>}.
    * @return An array of type {@code T} containing the object references in the provided {@link Enumeration}, or {@code null} if the
    *         provided {@link Enumeration} was empty.
-   * @throws IllegalArgumentException If {@code enumeration}, {@code componentType} or {@code function} is null.
+   * @throws NullPointerException If {@code enumeration}, {@code componentType} or {@code function} is null.
    */
   public static <T,E>E[] toArray(final Enumeration<? extends T> enumeration, final Class<E> componentType, final Function<T,E> function) {
-    return recurse(assertNotNull(enumeration), null, assertNotNull(componentType), function, 0);
+    return recurse(enumeration, null, componentType, function, 0);
   }
 
   /**
@@ -101,11 +99,11 @@ public final class Enumerations {
    * @param array The array into which the elements of the provided {@link Enumeration} are to be stored, if it is big enough;
    *          otherwise, a new array of the same runtime type is allocated for this purpose.
    * @return An array of type {@code T} containing the object references in the provided {@link Enumeration}.
-   * @throws IllegalArgumentException If {@code enumeration} or {@code array} is null.
+   * @throws NullPointerException If {@code enumeration} or {@code array} is null.
    */
   @SuppressWarnings("unchecked")
   public static <T>T[] toArray(final Enumeration<? extends T> enumeration, final T[] array) {
-    return recurse(assertNotNull(enumeration), assertNotNull(array), (Class<T>)array.getClass().getComponentType(), 0);
+    return recurse(enumeration, array, (Class<T>)array.getClass().getComponentType(), 0);
   }
 
   /**
@@ -120,11 +118,11 @@ public final class Enumerations {
    * @param array The array into which the elements of the provided {@link Enumeration} are to be stored, if it is big enough;
    *          otherwise, a new array of the same runtime type is allocated for this purpose.
    * @return An array of type {@code T} containing the object references in the provided {@link Enumeration}.
-   * @throws IllegalArgumentException If {@code enumeration}, {@code array} or {@code function} is null.
+   * @throws NullPointerException If {@code enumeration}, {@code array} or {@code function} is null.
    */
   @SuppressWarnings("unchecked")
   public static <T,E>E[] toArray(final Enumeration<? extends T> enumeration, final E[] array, final Function<T,E> function) {
-    return recurse(assertNotNull(enumeration), assertNotNull(array), (Class<E>)array.getClass().getComponentType(), function, 0);
+    return recurse(enumeration, array, (Class<E>)array.getClass().getComponentType(), function, 0);
   }
 
   /**
@@ -136,7 +134,7 @@ public final class Enumerations {
    * @param componentType The class for the type {@code <T>}.
    * @param enumeration The {@link Enumeration}.
    * @return A {@link List} of type {@code T} containing the object references in the specified {@link Enumeration}.
-   * @throws IllegalArgumentException If {@code enumeration} or {@code componentType} is null.
+   * @throws NullPointerException If {@code enumeration} or {@code componentType} is null.
    */
   public static <T>List<T> asList(final Enumeration<? extends T> enumeration, final Class<T> componentType) {
     return Arrays.asList(toArray(enumeration, componentType));
@@ -149,10 +147,9 @@ public final class Enumerations {
    * @param <T> The type parameter of the specified {@link Class} and {@link Enumeration}.
    * @param enumeration The {@link Enumeration}.
    * @return A {@link Stream} containing the object references in the specified {@link Enumeration}.
-   * @throws IllegalArgumentException If {@code enumeration} is null.
+   * @throws NullPointerException If {@code enumeration} is null.
    */
   public static <T>Stream<T> asStream(final Enumeration<T> enumeration) {
-    assertNotNull(enumeration);
     return StreamSupport.stream(new Spliterators.AbstractSpliterator<T>(Long.MAX_VALUE, Spliterator.ORDERED) {
       @Override
       public boolean tryAdvance(final Consumer<? super T> action) {
@@ -176,10 +173,9 @@ public final class Enumerations {
    *
    * @param enumeration The {@link Enumeration}.
    * @return The size of the provided {@link Enumeration}.
-   * @throws IllegalArgumentException If {@code enumeration} is null.
+   * @throws NullPointerException If {@code enumeration} is null.
    */
   public static int getSize(final Enumeration<?> enumeration) {
-    assertNotNull(enumeration);
     int size = 0;
     for (; enumeration.hasMoreElements(); enumeration.nextElement(), ++size); // [E]
     return size;

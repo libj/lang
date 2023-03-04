@@ -16,8 +16,6 @@
 
 package org.libj.lang;
 
-import static org.libj.lang.Assertions.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -91,10 +89,10 @@ public final class Resources {
    * @param forEachEntry The predicate that is called for each matched resource entry. If
    *          {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the walk operation is shortcutted.
    * @throws IOException If an I/O error has occurred.
-   * @throws IllegalArgumentException If any of the provided arguments is null.
+   * @throws NullPointerException If any of the provided arguments is null.
    */
   public static void walk(final ClassLoader classLoader, final String name, final ForEachEntry forEachEntry) throws IOException {
-    traverse(assertNotNull(classLoader).getResources(assertNotNull(name)), name, true, assertNotNull(forEachEntry));
+    traverse(classLoader.getResources(name), name, true, forEachEntry);
   }
 
   /**
@@ -117,10 +115,10 @@ public final class Resources {
    * @param forEachEntry The predicate that is called for each matched resource entry. If
    *          {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the walk operation is shortcutted.
    * @throws IOException If an I/O error has occurred.
-   * @throws IllegalArgumentException If any of the provided arguments is null.
+   * @throws NullPointerException If any of the provided arguments is null.
    */
   public static void list(final ClassLoader classLoader, final String name, final ForEachEntry forEachEntry) throws IOException {
-    traverse(assertNotNull(classLoader).getResources(assertNotNull(name)), name, false, assertNotNull(forEachEntry));
+    traverse(classLoader.getResources(name), name, false, forEachEntry);
   }
 
   /**
@@ -144,12 +142,9 @@ public final class Resources {
    * @param forEachEntry The predicate that is called for each matched resource entry. If
    *          {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the walk operation is shortcutted.
    * @throws IOException If an I/O error has occurred.
-   * @throws IllegalArgumentException If any of the provided arguments is null.
+   * @throws NullPointerException If any of the provided arguments is null.
    */
   public static void traverse(final Enumeration<URL> resources, final String name, final boolean recursive, final ForEachEntry forEachEntry) throws IOException {
-    assertNotNull(resources);
-    assertNotNull(name);
-    assertNotNull(forEachEntry);
     if (!resources.hasMoreElements())
       return;
 
@@ -215,16 +210,15 @@ public final class Resources {
   }
 
   /**
-   * Returns an {@link URL} to a resource by the specified name, or, if not
-   * found, to a file by the same name (in the current working directory).
+   * Returns an {@link URL} to a resource by the specified name, or, if not found, to a file by the same name (in the current
+   * working directory).
    *
    * @param name The name of the resource.
-   * @return An {@link URL} to a resource by the specified name, or, if not
-   *         found, to a file by the same name.
-   * @throws IllegalArgumentException If {@code name} is null.
+   * @return An {@link URL} to a resource by the specified name, or, if not found, to a file by the same name.
+   * @throws NullPointerException If {@code name} is null.
    */
   public static URL getResourceOrFile(final String name) {
-    final URL resource = Thread.currentThread().getContextClassLoader().getResource(assertNotNull(name));
+    final URL resource = Thread.currentThread().getContextClassLoader().getResource(name);
     if (resource != null)
       return resource;
 
@@ -246,10 +240,10 @@ public final class Resources {
    *
    * @param name The name of the resource.
    * @return An {@link URL} to a file by the specified name, or, if not found, to a resource by the same name.
-   * @throws IllegalArgumentException If {@code name} is null.
+   * @throws NullPointerException If {@code name} is null.
    */
   public static URL getFileOrResource(final String name) {
-    final File file = new File(assertNotNull(name));
+    final File file = new File(name);
     if (file.exists()) {
       try {
         return file.toURI().toURL();

@@ -24,6 +24,7 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -48,20 +49,20 @@ public final class Threads {
    * Prints all threads and the full stack trace of code running on each thread to the specified print writer.
    *
    * @param s {@link PrintWriter} to use for output.
-   * @throws IllegalArgumentException If {@code s} is null.
+   * @throws NullPointerException If {@code s} is null.
    */
   public static void printThreadTrace(final PrintWriter s) {
-    printThreadTrace(assertNotNull(s)::println);
+    printThreadTrace(s::println);
   }
 
   /**
    * Prints all threads and the full stack trace of code running on each thread to the specified print stream.
    *
    * @param s {@link PrintStream} to use for output.
-   * @throws IllegalArgumentException If {@code s} is null.
+   * @throws NullPointerException If {@code s} is null.
    */
   public static void printThreadTrace(final PrintStream s) {
-    printThreadTrace(assertNotNull(s)::println);
+    printThreadTrace(s::println);
   }
 
   /**
@@ -71,7 +72,6 @@ public final class Threads {
    * @throws IllegalAnnotationException If {@code s} is null.
    */
   public static void printThreadTrace(final Consumer<String> s) {
-    assertNotNull(s);
     final Map<Thread,StackTraceElement[]> stackTraces = Thread.getAllStackTraces();
     final Map<Long,Thread> tidToThread = new HashMap<>(stackTraces.size());
     for (final Thread thread : stackTraces.keySet()) // [S]
@@ -235,12 +235,13 @@ public final class Threads {
    * @param unit The {@link TimeUnit} of the {@code timeout} argument.
    * @return A new {@link Runnable} instance wrapping the provided {@code runnable} that is scheduled to be
    *         {@linkplain Thread#interrupt() interrupted} once the provided {@code timeout} of {@link TimeUnit unit} elapses.
-   * @throws IllegalArgumentException If {@code runnable} or {@code unit} is null, or if {@code timeout} is negative.
+   * @throws NullPointerException If {@code runnable} or {@code unit} is null.
+   * @throws IllegalArgumentException If {@code timeout} is negative.
    */
   public static Runnable interruptAfterTimeout(final Runnable runnable, final long timeout, final TimeUnit unit) {
-    assertNotNull(runnable);
+    Objects.requireNonNull(runnable);
     assertNotNegative(timeout);
-    assertNotNull(unit);
+    Objects.requireNonNull(unit);
     return () -> {
       reaper().add(Thread.currentThread(), System.currentTimeMillis() + TimeUnit.MILLISECONDS.convert(timeout, unit));
       runnable.run();
@@ -257,12 +258,13 @@ public final class Threads {
    * @param unit The {@link TimeUnit} of the {@code timeout} argument.
    * @return A new {@link Callable} instance wrapping the provided {@code callable} that is scheduled to be
    *         {@linkplain Thread#interrupt() interrupted} once the provided {@code timeout} of {@link TimeUnit unit} elapses.
-   * @throws IllegalArgumentException If {@code callable} or {@code unit} is null, or if {@code timeout} is negative.
+   * @throws NullPointerException If {@code callable} or {@code unit} is null.
+   * @throws IllegalArgumentException If {@code timeout} is negative.
    */
   public static <V>Callable<V> interruptAfterTimeout(final Callable<V> callable, final long timeout, final TimeUnit unit) {
-    assertNotNull(callable);
+    Objects.requireNonNull(callable);
     assertNotNegative(timeout);
-    assertNotNull(unit);
+    Objects.requireNonNull(unit);
     return () -> {
       reaper().add(Thread.currentThread(), System.currentTimeMillis() + TimeUnit.MILLISECONDS.convert(timeout, unit));
       return callable.call();

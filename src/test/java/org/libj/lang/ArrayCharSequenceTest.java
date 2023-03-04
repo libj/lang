@@ -49,16 +49,16 @@ public class ArrayCharSequenceTest {
   public void testNull() {
     try {
       ArrayCharSequence.of((String)null);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
 
     try {
       ArrayCharSequence.of((char[])null);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
+    catch (final NullPointerException e) {
     }
   }
 
