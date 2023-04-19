@@ -80,7 +80,9 @@ public class WrappedArrayList<E> extends ArrayList<E> {
     if (a.length < size)
       return Arrays.copyOf(this.elementData, size, (Class<? extends T[]>)a.getClass());
 
-    System.arraycopy(this.elementData, 0, a, 0, size);
+    if (size > 0)
+      System.arraycopy(this.elementData, 0, a, 0, size);
+
     if (a.length > size)
       a[size] = null;
 
