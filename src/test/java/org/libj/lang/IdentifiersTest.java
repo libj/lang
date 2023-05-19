@@ -158,6 +158,7 @@ public class IdentifiersTest {
     test("x2FOoBAr", function, "2FOo_bAr");
     test("xabstract", function, "abstract");
     test("xdo", function, "do");
+    test("xsuper", function, "super");
   }
 
   @Test
@@ -181,6 +182,7 @@ public class IdentifiersTest {
     test("_do", function, "do");
     test("_2e2a", function, "2e_2a");
     test("_2e2a", function, "_2e_2a");
+    test("_super", function, "super");
   }
 
   @Test

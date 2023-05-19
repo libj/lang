@@ -24,8 +24,8 @@ import java.util.List;
  */
 public final class Enums {
   @SuppressWarnings("unchecked")
-  private static <T extends Enum<T>>T[] recurseValueOf(final Class<T> type, final int index, final int depth, final String[] names) {
-    if (index == names.length)
+  private static <T extends Enum<T>>T[] recurseValueOf(final Class<T> type, final String[] names, final int length, final int index, final int depth) {
+    if (index == length)
       return (T[])Array.newInstance(type, depth);
 
     T value;
@@ -36,10 +36,11 @@ public final class Enums {
       value = null;
     }
 
-    final T[] enums = recurseValueOf(type, index + 1, value != null ? depth + 1 : depth, names);
-    if (value != null)
-      enums[depth] = value;
+    if (value == null)
+      return recurseValueOf(type, names, length, index + 1, depth);
 
+    final T[] enums = recurseValueOf(type, names, length, index + 1, depth + 1);
+    enums[depth] = value;
     return enums;
   }
 
@@ -60,7 +61,7 @@ public final class Enums {
    * @throws NullPointerException If {@code type} or {@code names} is null.
    */
   public static <T extends Enum<T>>T[] valueOf(final Class<T> type, final String ... names) {
-    return recurseValueOf(type, 0, 0, names);
+    return recurseValueOf(type, names, names.length, 0, 0);
   }
 
   /**

@@ -70,12 +70,12 @@ public final class Manifests {
     return getManifests(cls.getClassLoader().getResources(name), name.length(), 0);
   }
 
-  private static Manifest[] getManifests(final Enumeration<URL> resources, final int len, final int depth) throws IOException {
+  private static Manifest[] getManifests(final Enumeration<URL> resources, final int length, final int depth) throws IOException {
     if (!resources.hasMoreElements())
       return new Manifest[depth];
 
     final String path = resources.nextElement().toString();
-    final URL url = new URL(path.substring(0, path.length() - len) + "META-INF/MANIFEST.MF");
+    final URL url = new URL(path.substring(0, path.length() - length) + "META-INF/MANIFEST.MF");
 
     Manifest manifest;
     try (final InputStream in = url.openStream()) {
@@ -85,10 +85,11 @@ public final class Manifests {
       manifest = null;
     }
 
-    final Manifest[] manifests = getManifests(resources, len, manifest != null ? depth + 1 : depth);
-    if (manifest != null)
-      manifests[depth] = manifest;
+    if (manifest == null)
+      return getManifests(resources, length, depth);
 
+    final Manifest[] manifests = getManifests(resources, length, depth + 1);
+    manifests[depth] = manifest;
     return manifests;
   }
 

@@ -258,7 +258,7 @@ public final class Strings {
    */
   public static boolean replace(final StringBuilder builder, final char target, final char replacement) {
     boolean changed = false;
-    for (int i = 0; (i = Strings.indexOf(builder, target, i)) > -1;) {
+    for (int i = 0; (i = Strings.indexOf(builder, target, i)) > -1;) { // [X]
       builder.setCharAt(i, replacement);
       changed = true;
     }
@@ -2252,7 +2252,7 @@ public final class Strings {
     final String indent = repeat(' ', spaces);
     Strings.replace(str, "\n\n", "\7\n");
 
-    for (int i = str.length(); i > 0 && (i = Strings.lastIndexOf(str, '\n', i - 1)) > -1;)
+    for (int i = str.length(); i > 0 && (i = Strings.lastIndexOf(str, '\n', i - 1)) > -1;) // [X]
       str.insert(i + 1, indent);
 
     Strings.replace(str, '\7', '\n');
@@ -2703,7 +2703,7 @@ public final class Strings {
     if (len != b.length())
       return false;
 
-    for (int i = 0; i < len; ++i)
+    for (int i = 0; i < len; ++i) // [A]
       if (a.charAt(i) != b.charAt(i))
         return false;
 
@@ -2734,7 +2734,7 @@ public final class Strings {
     if (len != b.length())
       return false;
 
-    for (int i = 0; i < len; ++i)
+    for (int i = 0; i < len; ++i) // [A]
       if (Character.toLowerCase(a.charAt(i)) != Character.toLowerCase(b.charAt(i)))
         return false;
 

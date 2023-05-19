@@ -446,19 +446,19 @@ public final class Classes {
   private static <T>T resolveGenericTypes(final Class<?> superClass, final ParameterizedType superType, final Object[][] args, final Set<Class<?>> visited, final BiFunction<Class<?>,Type[],T> function) {
     final TypeVariable<?>[] typeVariables = superClass.getTypeParameters();
     final Type[] typeArguments = superType.getActualTypeArguments();
-    final Object[][] nextArgs = recurseArgs(typeVariables, typeArguments, args, 0, 0);
+    final Object[][] nextArgs = recurseArgs(typeVariables, typeArguments, args, typeVariables.length, 0, 0);
     final T result = function.apply(superClass, typeArguments);
     return result != null ? result : resolveGenericTypes(superClass, nextArgs, visited, function);
   }
 
-  private static Object[][] recurseArgs(final TypeVariable<?>[] typeVariables, final Type[] typeArguments, final Object[][] args, final int index, final int depth) {
-    if (index == typeVariables.length)
+  private static Object[][] recurseArgs(final TypeVariable<?>[] typeVariables, final Type[] typeArguments, final Object[][] args, final int length, final int index, final int depth) {
+    if (index == length)
       return new Object[depth][2];
 
     final Object[][] nextArgs;
     if (typeArguments[index] instanceof Class<?>) {
       final Object[] arg = {typeVariables[index].getName(), (Class<?>)typeArguments[index]};
-      nextArgs = recurseArgs(typeVariables, typeArguments, args, index + 1, depth + 1);
+      nextArgs = recurseArgs(typeVariables, typeArguments, args, length, index + 1, depth + 1);
       nextArgs[depth] = arg;
       return nextArgs;
     }
@@ -468,14 +468,14 @@ public final class Classes {
       for (final Object[] arg : args) { // [A]
         if (localName.equals(arg[0])) {
           typeArguments[index] = (Class<?>)arg[1];
-          nextArgs = recurseArgs(typeVariables, typeArguments, args, index + 1, depth + 1);
+          nextArgs = recurseArgs(typeVariables, typeArguments, args, length, index + 1, depth + 1);
           nextArgs[depth] = new Object[] {typeVariables[index].getTypeName(), typeArguments[index]};
           return nextArgs;
         }
       }
     }
 
-    return recurseArgs(typeVariables, typeArguments, args, index + 1, depth);
+    return recurseArgs(typeVariables, typeArguments, args, length, index + 1, depth);
   }
 
   /**
