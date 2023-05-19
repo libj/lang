@@ -23,12 +23,144 @@ import java.util.Collection;
  */
 public final class Assertions {
   /**
+   * Checks that the specified boolean is true. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(boolean bar) {
+   *   this.bar = Assertions.assertTrue(bar, "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The boolean to check if true.
+   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if true.
+   * @throws IllegalArgumentException If {@code value} is false.
+   */
+  public static boolean assertTrue(final boolean value, final String message) {
+    if (!value)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the specified boolean is true. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(boolean bar) {
+   *   this.bar = Assertions.assertTrue(bar, "%s", "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The boolean to check if true.
+   * @param format The detail message
+   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
+   *          {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format string to be passed to
+   *          {@link String#format(String,Object...)}.
+   * @return {@code value} if true.
+   * @throws IllegalArgumentException If {@code value} is false.
+   */
+  public static boolean assertTrue(final boolean value, final String format, final Object ... args) {
+    if (!value)
+      throw new IllegalArgumentException(String.format(format, args));
+
+    return value;
+  }
+
+  /**
+   * Checks that the specified boolean is true. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(Bar bar) {
+   *   this.bar = Assertions.assertTrue(bar);
+   * }
+   * </pre>
+   *
+   * @param value The boolean to check if true.
+   * @return {@code value} if true.
+   * @throws IllegalArgumentException If {@code value} is false.
+   */
+  public static boolean assertTrue(final boolean value) {
+    return assertTrue(value, "false");
+  }
+
+  /**
+   * Checks that the specified boolean is false. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(boolean bar) {
+   *   this.bar = Assertions.assertFalse(bar, "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The boolean to check if false.
+   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if false.
+   * @throws IllegalArgumentException If {@code value} is true.
+   */
+  public static boolean assertFalse(final boolean value, final String message) {
+    if (value)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the specified boolean is false. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(boolean bar) {
+   *   this.bar = Assertions.assertFalse(bar, "%s", "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The boolean to check if false.
+   * @param format The detail message
+   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
+   *          {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format string to be passed to
+   *          {@link String#format(String,Object...)}.
+   * @return {@code value} if false.
+   * @throws IllegalArgumentException If {@code value} is true.
+   */
+  public static boolean assertFalse(final boolean value, final String format, final Object ... args) {
+    if (value)
+      throw new IllegalArgumentException(String.format(format, args));
+
+    return value;
+  }
+
+  /**
+   * Checks that the specified boolean is false. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(Bar bar) {
+   *   this.bar = Assertions.assertFalse(bar);
+   * }
+   * </pre>
+   *
+   * @param value The boolean to check if false.
+   * @return {@code value} if false.
+   * @throws IllegalArgumentException If {@code value} is true.
+   */
+  public static boolean assertFalse(final boolean value) {
+    return assertFalse(value, "true");
+  }
+
+  /**
    * Checks that the specified object reference is null. This method is designed primarily for doing parameter validation in methods
    * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(Bar bar) {
-   *   this.bar = Assertions.assertNull(bar);
+   *   this.bar = Assertions.assertNull(bar, "Value is invalid");
    * }
    * </pre>
    *
@@ -51,7 +183,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(Bar bar) {
-   *   this.bar = Assertions.assertNull(bar);
+   *   this.bar = Assertions.assertNull(bar, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -97,7 +229,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(Bar bar) {
-   *   this.bar = Assertions.assertNonNull(bar);
+   *   this.bar = Assertions.assertNonNull(bar, "Value is invalid");
    * }
    * </pre>
    *
@@ -120,7 +252,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(Bar bar) {
-   *   this.bar = Assertions.assertNonNull(bar);
+   *   this.bar = Assertions.assertNonNull(bar, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -166,7 +298,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(Bar[] bar) {
-   *   this.bar = Assertions.assertNonNull(bar);
+   *   this.bar = Assertions.assertNonNull(bar, "Value is invalid");
    * }
    * </pre>
    *
@@ -193,7 +325,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(Bar[] bar) {
-   *   this.bar = Assertions.assertNonNull(bar);
+   *   this.bar = Assertions.assertNonNull(bar, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -243,7 +375,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(boolean ... bars) {
-   *   this.bar = Assertions.assertNonEmpty(bars);
+   *   this.bar = Assertions.assertNonEmpty(bars, "Value is invalid");
    * }
    * </pre>
    *
@@ -266,7 +398,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(boolean ... bars) {
-   *   this.bar = Assertions.assertNonEmpty(bars);
+   *   this.bar = Assertions.assertNonEmpty(bars, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -315,7 +447,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(byte ... bars) {
-   *   this.bar = Assertions.assertNonEmpty(bars);
+   *   this.bar = Assertions.assertNonEmpty(bars, "Value is invalid");
    * }
    * </pre>
    *
@@ -338,7 +470,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(byte ... bars) {
-   *   this.bar = Assertions.assertNonEmpty(bars);
+   *   this.bar = Assertions.assertNonEmpty(bars, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -387,7 +519,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(char ... bars) {
-   *   this.bar = Assertions.assertNonEmpty(bars);
+   *   this.bar = Assertions.assertNonEmpty(bars, "Value is invalid");
    * }
    * </pre>
    *
@@ -410,7 +542,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(char ... bars) {
-   *   this.bar = Assertions.assertNonEmpty(bars);
+   *   this.bar = Assertions.assertNonEmpty(bars, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -459,7 +591,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(short ... bars) {
-   *   this.bar = Assertions.assertNonEmpty(bars);
+   *   this.bar = Assertions.assertNonEmpty(bars, "Value is invalid");
    * }
    * </pre>
    *
@@ -482,7 +614,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(short ... bars) {
-   *   this.bar = Assertions.assertNonEmpty(bars);
+   *   this.bar = Assertions.assertNonEmpty(bars, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -531,7 +663,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(int ... bars) {
-   *   this.bar = Assertions.assertNonEmpty(bars);
+   *   this.bar = Assertions.assertNonEmpty(bars, "Value is invalid");
    * }
    * </pre>
    *
@@ -554,7 +686,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(int ... bars) {
-   *   this.bar = Assertions.assertNonEmpty(bars);
+   *   this.bar = Assertions.assertNonEmpty(bars, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -603,7 +735,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(long ... bars) {
-   *   this.bar = Assertions.assertNonEmpty(bars);
+   *   this.bar = Assertions.assertNonEmpty(bars, "Value is invalid");
    * }
    * </pre>
    *
@@ -626,7 +758,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(long ... bars) {
-   *   this.bar = Assertions.assertNonEmpty(bars);
+   *   this.bar = Assertions.assertNonEmpty(bars, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -675,7 +807,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(float ... bars) {
-   *   this.bar = Assertions.assertNonEmpty(bars);
+   *   this.bar = Assertions.assertNonEmpty(bars, "Value is invalid");
    * }
    * </pre>
    *
@@ -698,7 +830,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(float ... bars) {
-   *   this.bar = Assertions.assertNonEmpty(bars);
+   *   this.bar = Assertions.assertNonEmpty(bars, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -747,7 +879,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(double ... bars) {
-   *   this.bar = Assertions.assertNonEmpty(bars);
+   *   this.bar = Assertions.assertNonEmpty(bars, "Value is invalid");
    * }
    * </pre>
    *
@@ -770,7 +902,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(double ... bars) {
-   *   this.bar = Assertions.assertNonEmpty(bars);
+   *   this.bar = Assertions.assertNonEmpty(bars, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -819,7 +951,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(Bar ... bars) {
-   *   this.bar = Assertions.assertNonEmpty(bars);
+   *   this.bar = Assertions.assertNonEmpty(bars, "Value is invalid");
    * }
    * </pre>
    *
@@ -843,7 +975,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(Bar ... bars) {
-   *   this.bar = Assertions.assertNonEmpty(bars);
+   *   this.bar = Assertions.assertNonEmpty(bars, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -894,7 +1026,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(Bar ... bars) {
-   *   this.bar = Assertions.assertNonEmpty(bars);
+   *   this.bar = Assertions.assertNonEmpty(bars, "Value is invalid");
    * }
    * </pre>
    *
@@ -918,7 +1050,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(Bar ... bars) {
-   *   this.bar = Assertions.assertNonEmpty(bars);
+   *   this.bar = Assertions.assertNonEmpty(bars, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -968,7 +1100,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(CharSequence str) {
-   *   this.bar = Assertions.assertNonEmpty(str);
+   *   this.bar = Assertions.assertNonEmpty(str, "Value is invalid");
    * }
    * </pre>
    *
@@ -991,7 +1123,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(CharSequence str) {
-   *   this.bar = Assertions.assertNonEmpty(str);
+   *   this.bar = Assertions.assertNonEmpty(str, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -1039,7 +1171,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(float bar) {
-   *   this.bar = Assertions.assertFinite(bar);
+   *   this.bar = Assertions.assertFinite(bar, "Value is invalid");
    * }
    * </pre>
    *
@@ -1061,7 +1193,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(float bar) {
-   *   this.bar = Assertions.assertFinite(bar);
+   *   this.bar = Assertions.assertFinite(bar, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -1108,7 +1240,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(double bar) {
-   *   this.bar = Assertions.assertFinite(bar);
+   *   this.bar = Assertions.assertFinite(bar, "Value is invalid");
    * }
    * </pre>
    *
@@ -1130,7 +1262,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(double bar) {
-   *   this.bar = Assertions.assertFinite(bar);
+   *   this.bar = Assertions.assertFinite(bar, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -1199,7 +1331,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(byte bar) {
-   *   this.bar = Assertions.assertPositive(bar);
+   *   this.bar = Assertions.assertPositive(bar, "Value is invalid");
    * }
    * </pre>
    *
@@ -1221,7 +1353,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(byte bar) {
-   *   this.bar = Assertions.assertPositive(bar);
+   *   this.bar = Assertions.assertPositive(bar, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -1268,7 +1400,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(short bar) {
-   *   this.bar = Assertions.assertPositive(bar);
+   *   this.bar = Assertions.assertPositive(bar, "Value is invalid");
    * }
    * </pre>
    *
@@ -1290,7 +1422,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(short bar) {
-   *   this.bar = Assertions.assertPositive(bar);
+   *   this.bar = Assertions.assertPositive(bar, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -1337,7 +1469,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(int bar) {
-   *   this.bar = Assertions.assertPositive(bar);
+   *   this.bar = Assertions.assertPositive(bar, "Value is invalid");
    * }
    * </pre>
    *
@@ -1359,7 +1491,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(int bar) {
-   *   this.bar = Assertions.assertPositive(bar);
+   *   this.bar = Assertions.assertPositive(bar, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -1406,7 +1538,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(long bar) {
-   *   this.bar = Assertions.assertPositive(bar);
+   *   this.bar = Assertions.assertPositive(bar, "Value is invalid");
    * }
    * </pre>
    *
@@ -1428,7 +1560,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(long bar) {
-   *   this.bar = Assertions.assertPositive(bar);
+   *   this.bar = Assertions.assertPositive(bar, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -1475,7 +1607,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(float bar) {
-   *   this.bar = Assertions.assertPositive(bar);
+   *   this.bar = Assertions.assertPositive(bar, "Value is invalid");
    * }
    * </pre>
    *
@@ -1497,7 +1629,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(float bar) {
-   *   this.bar = Assertions.assertPositive(bar);
+   *   this.bar = Assertions.assertPositive(bar, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -1544,7 +1676,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(double bar) {
-   *   this.bar = Assertions.assertPositive(bar);
+   *   this.bar = Assertions.assertPositive(bar, "Value is invalid");
    * }
    * </pre>
    *
@@ -1566,7 +1698,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(double bar) {
-   *   this.bar = Assertions.assertPositive(bar);
+   *   this.bar = Assertions.assertPositive(bar, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -1592,7 +1724,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(byte bar) {
-   *   this.bar = Assertions.assertNotNegative(bar);
+   *   this.bar = Assertions.assertNotNegative(bar, "Value is invalid");
    * }
    * </pre>
    *
@@ -1614,7 +1746,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(byte bar) {
-   *   this.bar = Assertions.assertNotNegative(bar);
+   *   this.bar = Assertions.assertNotNegative(bar, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -1661,7 +1793,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(short bar) {
-   *   this.bar = Assertions.assertNotNegative(bar);
+   *   this.bar = Assertions.assertNotNegative(bar, "Value is invalid");
    * }
    * </pre>
    *
@@ -1683,7 +1815,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(short bar) {
-   *   this.bar = Assertions.assertNotNegative(bar);
+   *   this.bar = Assertions.assertNotNegative(bar, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -1730,7 +1862,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(int bar) {
-   *   this.bar = Assertions.assertNotNegative(bar);
+   *   this.bar = Assertions.assertNotNegative(bar, "Value is invalid");
    * }
    * </pre>
    *
@@ -1752,7 +1884,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(int bar) {
-   *   this.bar = Assertions.assertNotNegative(bar);
+   *   this.bar = Assertions.assertNotNegative(bar, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -1799,7 +1931,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(long bar) {
-   *   this.bar = Assertions.assertNotNegative(bar);
+   *   this.bar = Assertions.assertNotNegative(bar, "Value is invalid");
    * }
    * </pre>
    *
@@ -1821,7 +1953,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(long bar) {
-   *   this.bar = Assertions.assertNotNegative(bar);
+   *   this.bar = Assertions.assertNotNegative(bar, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -1868,7 +2000,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(byte bar) {
-   *   this.bar = Assertions.assertNotZero(bar);
+   *   this.bar = Assertions.assertNotZero(bar, "Value is invalid");
    * }
    * </pre>
    *
@@ -1890,7 +2022,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(byte bar) {
-   *   this.bar = Assertions.assertNotZero(bar);
+   *   this.bar = Assertions.assertNotZero(bar, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -1937,7 +2069,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(short bar) {
-   *   this.bar = Assertions.assertNotZero(bar);
+   *   this.bar = Assertions.assertNotZero(bar, "Value is invalid");
    * }
    * </pre>
    *
@@ -1959,7 +2091,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(short bar) {
-   *   this.bar = Assertions.assertNotZero(bar);
+   *   this.bar = Assertions.assertNotZero(bar, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -2006,7 +2138,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(int bar) {
-   *   this.bar = Assertions.assertNotZero(bar);
+   *   this.bar = Assertions.assertNotZero(bar, "Value is invalid");
    * }
    * </pre>
    *
@@ -2028,7 +2160,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(int bar) {
-   *   this.bar = Assertions.assertNotZero(bar);
+   *   this.bar = Assertions.assertNotZero(bar, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -2075,7 +2207,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(long bar) {
-   *   this.bar = Assertions.assertNotZero(bar);
+   *   this.bar = Assertions.assertNotZero(bar, "Value is invalid");
    * }
    * </pre>
    *
@@ -2097,7 +2229,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(long bar) {
-   *   this.bar = Assertions.assertNotZero(bar);
+   *   this.bar = Assertions.assertNotZero(bar, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -2144,7 +2276,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(float bar) {
-   *   this.bar = Assertions.assertNotZero(bar);
+   *   this.bar = Assertions.assertNotZero(bar, "Value is invalid");
    * }
    * </pre>
    *
@@ -2166,7 +2298,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(float bar) {
-   *   this.bar = Assertions.assertNotZero(bar);
+   *   this.bar = Assertions.assertNotZero(bar, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -2213,7 +2345,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(double bar) {
-   *   this.bar = Assertions.assertNotZero(bar);
+   *   this.bar = Assertions.assertNotZero(bar, "Value is invalid");
    * }
    * </pre>
    *
@@ -2235,7 +2367,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(double bar) {
-   *   this.bar = Assertions.assertNotZero(bar);
+   *   this.bar = Assertions.assertNotZero(bar, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -2282,7 +2414,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(float bar) {
-   *   this.bar = Assertions.assertNotNegative(bar);
+   *   this.bar = Assertions.assertNotNegative(bar, "Value is invalid");
    * }
    * </pre>
    *
@@ -2304,7 +2436,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(float bar) {
-   *   this.bar = Assertions.assertNotNegative(bar);
+   *   this.bar = Assertions.assertNotNegative(bar, "%s", "Value is invalid");
    * }
    * </pre>
    *
@@ -2350,7 +2482,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(double bar) {
-   *   this.bar = Assertions.assertNotNegative(bar);
+   *   this.bar = Assertions.assertNotNegative(bar, "Value is invalid");
    * }
    * </pre>
    *
@@ -2372,7 +2504,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(double bar) {
-   *   this.bar = Assertions.assertNotNegative(bar);
+   *   this.bar = Assertions.assertNotNegative(bar, "%s", "Value is invalid");
    * }
    * </pre>
    *
