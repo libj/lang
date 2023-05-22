@@ -567,7 +567,6 @@ public final class Classes {
    *           ancestor of the class loader for the current class and invocation of {@link SecurityManager#checkPackageAccess
    *           s.checkPackageAccess()} denies access to the package of this class.
    */
-  @SuppressWarnings("javadoc")
   public static Field getField(final Class<?> cls, final String name) {
     return Classes.getField(cls.getFields(), name);
   }
@@ -595,7 +594,6 @@ public final class Classes {
    *           ancestor of the class loader for the current class and invocation of {@link SecurityManager#checkPackageAccess
    *           s.checkPackageAccess()} denies access to the package of this class.
    */
-  @SuppressWarnings("javadoc")
   public static Field getDeclaredField(final Class<?> cls, final String name) {
     return Classes.getField(cls.getDeclaredFields(), name);
   }
@@ -623,7 +621,6 @@ public final class Classes {
    *           ancestor of the class loader for the current class and invocation of {@link SecurityManager#checkPackageAccess
    *           s.checkPackageAccess()} denies access to the package of this class.
    */
-  @SuppressWarnings("javadoc")
   public static Field getDeclaredFieldDeep(Class<?> cls, final String name) {
     Field field;
     do
@@ -649,12 +646,41 @@ public final class Classes {
    * @return A {@link Constructor} object that reflects the specified public constructor signature of the class represented by
    *         {@code cls} (including inherited constructors), or {@code null} if the constructor is not found.
    * @throws NullPointerException If {@code cls} is null.
+   * @see #getConstructor(Class)
    */
   @SuppressWarnings("unchecked")
   public static <T>Constructor<T> getConstructor(final Class<T> cls, final Class<?> ... parameterTypes) {
     final Constructor<?>[] constructors = cls.getConstructors();
     for (final Constructor<?> constructor : constructors) // [A]
       if (isMatch(constructor, parameterTypes))
+        return (Constructor<T>)constructor;
+
+    return null;
+  }
+
+  /**
+   * Returns a {@link Constructor} object that reflects the no-parameter public constructor signature of the class represented by
+   * {@code cls} (including inherited constructors), or {@code null} if the constructor is not found.
+   * <p>
+   * The {@code parameterTypes} parameter is an array of {@link Class} objects that identify the constructor's formal parameter
+   * types, in declared order. If {@code cls} represents an inner class declared in a non-static context, the formal parameter types
+   * include the explicit enclosing instance as the first parameter.
+   * <p>
+   * This method differentiates itself from {@link Class#getConstructor(Class...)} by returning {@code null} when a method is not
+   * found, instead of throwing {@link NoSuchMethodException}.
+   *
+   * @param <T> The class in which the constructor is declared.
+   * @param cls The class in which to find the public constructor.
+   * @return A {@link Constructor} object that reflects the no-parameter public constructor signature of the class represented by
+   *         {@code cls} (including inherited constructors), or {@code null} if the constructor is not found.
+   * @throws NullPointerException If {@code cls} is null.
+   * @see #getConstructor(Class,Class...)
+   */
+  @SuppressWarnings("unchecked")
+  public static <T>Constructor<T> getConstructor(final Class<T> cls) {
+    final Constructor<?>[] constructors = cls.getConstructors();
+    for (final Constructor<?> constructor : constructors) // [A]
+      if (constructor.getParameterCount() == 0)
         return (Constructor<T>)constructor;
 
     return null;
@@ -708,12 +734,43 @@ public final class Classes {
    * @return A {@link Constructor} object that reflects the specified declared constructor signature of the class represented by
    *         {@code cls} (excluding inherited constructors), or {@code null} if the constructor is not found.
    * @throws NullPointerException If {@code cls} is null.
+   * @see #getDeclaredConstructor(Class)
    */
   @SuppressWarnings("unchecked")
   public static <T>Constructor<T> getDeclaredConstructor(final Class<T> cls, final Class<?> ... parameterTypes) {
     final Constructor<?>[] constructors = cls.getDeclaredConstructors();
     for (final Constructor<?> constructor : constructors) // [A]
       if (isMatch(constructor, parameterTypes))
+        return (Constructor<T>)constructor;
+
+    return null;
+  }
+
+  /**
+   * Returns a {@link Constructor} object that reflects the no-parameter declared constructor signature of the class represented by
+   * {@code cls} (excluding inherited constructors), or {@code null} if the constructor is not found.
+   * <p>
+   * Declared constructors include public, protected, default (package) access, and private visibility.
+   * <p>
+   * The {@code parameterTypes} parameter is an array of {@link Class} objects that identify the constructor's formal parameter
+   * types, in declared order. If {@code cls} represents an inner class declared in a non-static context, the formal parameter types
+   * include the explicit enclosing instance as the first parameter.
+   * <p>
+   * This method differentiates itself from {@link Class#getDeclaredConstructor(Class...)} by returning {@code null} when a method
+   * is not found, instead of throwing {@link NoSuchMethodException}.
+   *
+   * @param <T> The class in which the constructor is declared.
+   * @param cls The class in which to find the declared constructor.
+   * @return A {@link Constructor} object that reflects the no-parameter declared constructor signature of the class represented by
+   *         {@code cls} (excluding inherited constructors), or {@code null} if the constructor is not found.
+   * @throws NullPointerException If {@code cls} is null.
+   * @see #getDeclaredConstructor(Class,Class...)
+   */
+  @SuppressWarnings("unchecked")
+  public static <T>Constructor<T> getDeclaredConstructor(final Class<T> cls) {
+    final Constructor<?>[] constructors = cls.getDeclaredConstructors();
+    for (final Constructor<?> constructor : constructors) // [A]
+      if (constructor.getParameterCount() == 0)
         return (Constructor<T>)constructor;
 
     return null;
@@ -906,10 +963,41 @@ public final class Classes {
    * @return A {@link Method} object that reflects the specified declared method of the class or interface represented by
    *         {@code cls} (excluding inherited methods), or {@code null} if the method is not found.
    * @throws NullPointerException If {@code cls} or {@code name} is null.
+   * @see #getMethod(Class,String)
    */
   public static Method getMethod(final Class<?> cls, final String name, final Class<?> ... parameterTypes) {
     for (final Method method : cls.getMethods()) // [A]
-      if (name.equals(method.getName()) && (parameterTypes == null || parameterTypes.length == 0 ? method.getParameterCount() == 0 : parameterTypes.length == method.getParameterCount() && Arrays.equals(method.getParameterTypes(), parameterTypes)))
+      if (name.equals(method.getName()) && (parameterTypes.length == 0 ? method.getParameterCount() == 0 : Arrays.equals(method.getParameterTypes(), parameterTypes)))
+        return method;
+
+    return null;
+  }
+
+  /**
+   * Returns a {@link Method} object that reflects the public method with the provided {@code name} (and no parameter types) of the
+   * class or interface represented by {@code cls} (including inherited methods), or {@code null} if the method is not found.
+   * <p>
+   * The {@code name} parameter is a {@code String} that specifies the simple name of the desired method, and the
+   * {@code parameterTypes} parameter is an array of {@link Class} objects that identify the method's formal parameter types, in
+   * declared order. If more than one method with the same parameter types is declared in a class, and one of these methods has a
+   * return type that is more specific than any of the others, that method is returned; otherwise one of the methods is chosen
+   * arbitrarily. If the name is {@code "<init>"} or {@code "<clinit>"} this method returns {@code null}. If this Class object
+   * represents an array type, then this method does not find the {@code clone()} method.
+   * <p>
+   * This method differentiates itself from {@link Class#getDeclaredMethod(String,Class...)} by returning {@code null} when a method
+   * is not found, instead of throwing {@link NoSuchMethodException}.
+   *
+   * @param cls The class in which to find the declared method.
+   * @param name The simple name of the method.
+   * @return A {@link Method} object that reflects the public method with the provided {@code name} (and no parameter types) of the
+   *         class or interface represented by {@code cls} (excluding inherited methods), or {@code null} if the method is not
+   *         found.
+   * @throws NullPointerException If {@code cls} or {@code name} is null.
+   * @see #getMethod(Class,String,Class...)
+   */
+  public static Method getMethod(final Class<?> cls, final String name) {
+    for (final Method method : cls.getMethods()) // [A]
+      if (method.getParameterCount() == 0 && name.equals(method.getName()))
         return method;
 
     return null;
@@ -1039,8 +1127,8 @@ public final class Classes {
   }
 
   /**
-   * Returns a {@link Method} object that reflects the specified declared method of the class or interface represented by
-   * {@code cls} (excluding inherited methods), or {@code null} if the method is not found.
+   * Returns a {@link Method} object that reflects the declared method with the provided {@code name} and {@code parameterTypes} of
+   * the class or interface represented by {@code cls} (excluding inherited methods), or {@code null} if the method is not found.
    * <p>
    * Declared methods include public, protected, default (package) access, and private visibility.
    * <p>
@@ -1057,9 +1145,11 @@ public final class Classes {
    * @param cls The class in which to find the declared method.
    * @param name The simple name of the method.
    * @param parameterTypes The parameter array.
-   * @return A {@link Method} object that reflects the specified declared method of the class or interface represented by
-   *         {@code cls} (excluding inherited methods), or {@code null} if the method is not found.
+   * @return A {@link Method} object that reflects the declared method with the provided {@code name} and {@code parameterTypes} of
+   *         the class or interface represented by {@code cls} (excluding inherited methods), or {@code null} if the method is not
+   *         found.
    * @throws NullPointerException If {@code cls} or {@code name} is null.
+   * @see #getDeclaredMethod(Class,String)
    */
   public static Method getDeclaredMethod(final Class<?> cls, final String name, final Class<?> ... parameterTypes) {
     for (final Method method : cls.getDeclaredMethods()) // [A]
@@ -1070,8 +1160,39 @@ public final class Classes {
   }
 
   /**
-   * Returns a {@link Method} object that reflects the specified declared method of the class or interface represented by
-   * {@code cls} (including inherited methods), or {@code null} if the method is not found.
+   * Returns a {@link Method} object that reflects the declared method with the provided {@code name} (and no parameter types) of
+   * the class or interface represented by {@code cls} (excluding inherited methods), or {@code null} if the method is not found.
+   * <p>
+   * Declared methods include public, protected, default (package) access, and private visibility.
+   * <p>
+   * The {@code name} parameter is a {@code String} that specifies the simple name of the desired method. If more than one method
+   * with the same name is declared in a class, and one of these methods has a return type that is more specific than any of the
+   * others, that method is returned; otherwise one of the methods is chosen arbitrarily. If the name is {@code "<init>"} or
+   * {@code "<clinit>"} this method returns {@code null}. If this Class object represents an array type, then this method does not
+   * find the {@code clone()} method.
+   * <p>
+   * This method differentiates itself from {@link Class#getDeclaredMethod(String,Class...)} by returning {@code null} when a method
+   * is not found, instead of throwing {@link NoSuchMethodException}.
+   *
+   * @param cls The class in which to find the declared method.
+   * @param name The simple name of the method.
+   * @return A {@link Method} object that reflects the declared method with the provided {@code name} (and no parameter types) of
+   *         the class or interface represented by {@code cls} (excluding inherited methods), or {@code null} if the method is not
+   *         found.
+   * @throws NullPointerException If {@code cls} or {@code name} is null.
+   * @see #getDeclaredMethod(Class,String,Class...)
+   */
+  public static Method getDeclaredMethod(final Class<?> cls, final String name) {
+    for (final Method method : cls.getDeclaredMethods()) // [A]
+      if (name.equals(method.getName()))
+        return method;
+
+    return null;
+  }
+
+  /**
+   * Returns a {@link Method} object that reflects the declared method with the provided {@code name} and {@code parameterTypes} of
+   * the class or interface represented by {@code cls} (including inherited methods), or {@code null} if the method is not found.
    * <p>
    * Declared methods include public, protected, default (package) access, and private visibility.
    * <p>
@@ -1087,14 +1208,46 @@ public final class Classes {
    * @param cls The class in which to find the declared method.
    * @param name The simple name of the method.
    * @param parameterTypes The parameter array.
-   * @return A {@link Method} object that reflects the specified declared method of the class or interface represented by
-   *         {@code cls} (including inherited methods), or {@code null} if the method is not found.
+   * @return A {@link Method} object that reflects the declared method with the provided {@code name} and {@code parameterTypes} of
+   *         the class or interface represented by {@code cls} (including inherited methods), or {@code null} if the method is not
+   *         found.
    * @throws NullPointerException If {@code cls} or {@code name} is null.
+   * @see #getDeclaredMethodDeep(Class,String)
    */
   public static Method getDeclaredMethodDeep(Class<?> cls, final String name, final Class<?> ... parameterTypes) {
     Method method;
     do
       method = getDeclaredMethod(cls, name, parameterTypes);
+    while (method == null && (cls = cls.getSuperclass()) != null);
+    return method;
+  }
+
+  /**
+   * Returns a {@link Method} object that reflects the declared method with the provided {@code name} (and no parameter types) of
+   * the class or interface represented by {@code cls} (including inherited methods), or {@code null} if the method is not found.
+   * <p>
+   * Declared methods include public, protected, default (package) access, and private visibility.
+   * <p>
+   * The {@code name} parameter is a {@code String} that specifies the simple name of the desired method. If more than one method
+   * with the same name is declared in a class, and one of these methods has a return type that is more specific than any of the
+   * others, that method is returned; otherwise one of the methods is chosen arbitrarily. If the name is {@code "<init>"} or
+   * {@code "<clinit>"} this method returns {@code null}. If this Class object represents an array type, then this method does not
+   * find the {@code clone()} method.
+   *
+   * @implNote This method differentiates itself from {@link Class#getDeclaredMethod(String,Class...)} by returning {@code null}
+   *           when a method is not found, instead of throwing {@link NoSuchMethodException}.
+   * @param cls The class in which to find the declared method.
+   * @param name The simple name of the method.
+   * @return A {@link Method} object that reflects the declared method with the provided {@code name} (and no parameter types) of
+   *         the class or interface represented by {@code cls} (including inherited methods), or {@code null} if the method is not
+   *         found.
+   * @throws NullPointerException If {@code cls} or {@code name} is null.
+   * @see #getDeclaredMethodDeep(Class,String,Class...)
+   */
+  public static Method getDeclaredMethodDeep(Class<?> cls, final String name) {
+    Method method;
+    do
+      method = getDeclaredMethod(cls, name);
     while (method == null && (cls = cls.getSuperclass()) != null);
     return method;
   }
