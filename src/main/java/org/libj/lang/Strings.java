@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Utility functions that provide common operations pertaining to {@link String} and {@link StringBuilder}.
@@ -2739,6 +2741,106 @@ public final class Strings {
         return false;
 
     return true;
+  }
+
+  private static final Pattern replacePattern = Pattern.compile("^/((([^/])|(\\\\/))+)/((([^/])|(\\\\/))+)/$");
+
+  /**
+   * Returns the resulting string after the invocation of the provided {@code searchReplaceRegex} on the specified {@code str}, or
+   * the original {@code str} if {@code rename} is null. The RegEx pattern provided in {@code searchReplaceRegex} must be in the
+   * form:
+   *
+   * <pre>
+   * {@code /<search>/<replace>/}
+   * </pre>
+   *
+   * @param str The string on which to invoke the {@code searchReplaceRegex}.
+   * @param searchReplaceRegex The {@code /search/replace} RegEx pattern to invoke on {@code str}.
+   * @return the resulting string after the invocation of the provided {@code searchReplaceRegex} on the specified {@code str}, or
+   *         the original {@code str} if {@code rename} is null.
+   * @throws IllegalArgumentException If {@code rename} is malformed.
+   * @throws NullPointerException If {@code path} is null.
+   * @implNote This implementation supports Replacement Text Case Conversion via {@code \\l}, {@code \\u}, {@code \\L}, and
+   *           {@code \\U} operators.
+   */
+  public static String searchReplace(String str, final String searchReplaceRegex) {
+    if (searchReplaceRegex == null)
+      return str;
+
+    final Matcher matcher = replacePattern.matcher(searchReplaceRegex);
+    if (!matcher.matches())
+      throw new IllegalArgumentException(searchReplaceRegex + ": must be in the form: /<search>/<replace>/");
+
+    final String regex = matcher.group(1);
+    final String replacement = matcher.group(5).replaceAll("((\\\\[lLuU])(\\$((\\d+)|(\\{[^}]+\\})))+)", "\\\\$1\\\\\\\\$2");
+    str = str.replaceFirst(regex, replacement);
+
+    final StringBuilder b = new StringBuilder();
+    boolean escaped = false;
+    Boolean upperOne = null;
+    boolean upperAll = false;
+    Boolean lowerOne = null;
+    boolean lowerAll = false;
+    for (int i = 0, i$ = str.length(); i < i$; ++i) {
+      final char ch = str.charAt(i);
+      if (escaped) {
+        escaped = false;
+
+        if (ch == 'u') {
+          upperOne = upperOne != null ? null : Boolean.TRUE;
+          continue;
+        }
+
+        if (ch == 'U') {
+          upperAll = !upperAll;
+          continue;
+        }
+
+        if (ch == 'l') {
+          lowerOne = lowerOne != null ? null : Boolean.TRUE;
+          continue;
+        }
+
+        if (ch == 'L') {
+          lowerAll = !lowerAll;
+          continue;
+        }
+      }
+      else if (ch == '\\') {
+        escaped = true;
+        continue;
+      }
+      else if (upperOne != null) {
+        if (upperOne)
+          b.append(Character.toUpperCase(ch));
+        else
+          b.append(ch);
+
+        upperOne = Boolean.FALSE;
+        continue;
+      }
+      else if (upperAll) {
+        b.append(Character.toUpperCase(ch));
+        continue;
+      }
+      else if (lowerOne != null) {
+        if (lowerOne)
+          b.append(Character.toLowerCase(ch));
+        else
+          b.append(ch);
+
+        lowerOne = Boolean.FALSE;
+        continue;
+      }
+      else if (lowerAll) {
+        b.append(Character.toLowerCase(ch));
+        continue;
+      }
+
+      b.append(ch);
+    }
+
+    return b.toString();
   }
 
   private Strings() {

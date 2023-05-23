@@ -883,4 +883,41 @@ public class StringsTest {
     Strings.indent(b, 2);
     assertEquals("\n  The quick\n  brown fox\n  jumps over\n  the lazy dog\n  ", b.toString());
   }
+
+  @Test
+  public void testSearchReplace() {
+    try {
+      Strings.searchReplace((String)null, "/a/b/");
+      fail("Expected NullPointerException");
+    }
+    catch (final NullPointerException e) {
+    }
+
+    try {
+      Strings.searchReplace((String)null, "");
+      fail("Expected IllegalArgumentException");
+    }
+    catch (final IllegalArgumentException e) {
+    }
+
+    assertEquals("#ABcaBc#", Strings.searchReplace("aBc", "/(.*)/#\\u$1$1#/"));
+    assertEquals("#ABCABC#", Strings.searchReplace("aBc", "/(.*)/#\\U$1$1#/"));
+    assertEquals("#aBcaBc#", Strings.searchReplace("aBc", "/(.*)/#\\l$1$1#/"));
+    assertEquals("#abcabc#", Strings.searchReplace("aBc", "/(.*)/#\\L$1$1#/"));
+
+    assertEquals("#ABc ABc#", Strings.searchReplace("aBc", "/(.*)/#\\u$1 \\u$1#/"));
+    assertEquals("#ABC ABC#", Strings.searchReplace("aBc", "/(.*)/#\\U$1 \\U$1#/"));
+    assertEquals("#aBc aBc#", Strings.searchReplace("aBc", "/(.*)/#\\l$1 \\l$1#/"));
+    assertEquals("#abc abc#", Strings.searchReplace("aBc", "/(.*)/#\\L$1 \\L$1#/"));
+
+    assertEquals("#ABcaBc#", Strings.searchReplace("aBc", "/(?<name>.*)/#\\u${name}${name}#/"));
+    assertEquals("#ABCABC#", Strings.searchReplace("aBc", "/(?<name>.*)/#\\U${name}${name}#/"));
+    assertEquals("#aBcaBc#", Strings.searchReplace("aBc", "/(?<name>.*)/#\\l${name}${name}#/"));
+    assertEquals("#abcabc#", Strings.searchReplace("aBc", "/(?<name>.*)/#\\L${name}${name}#/"));
+
+    assertEquals("#ABc ABc#", Strings.searchReplace("aBc", "/(?<name>.*)/#\\u${name} \\u${name}#/"));
+    assertEquals("#ABC ABC#", Strings.searchReplace("aBc", "/(?<name>.*)/#\\U${name} \\U${name}#/"));
+    assertEquals("#aBc aBc#", Strings.searchReplace("aBc", "/(?<name>.*)/#\\l${name} \\l${name}#/"));
+    assertEquals("#abc abc#", Strings.searchReplace("aBc", "/(?<name>.*)/#\\L${name} \\L${name}#/"));
+  }
 }
