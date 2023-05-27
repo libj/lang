@@ -2509,7 +2509,8 @@ public final class Numbers {
   }
 
   private static boolean isNumber(String string, final boolean fraction) {
-    if (string == null || (string = string.trim()).length() == 0)
+    final int len;
+    if (string == null || (len = (string = string.trim()).length()) == 0)
       return false;
 
     boolean dotEncountered = false;
@@ -2517,7 +2518,7 @@ public final class Numbers {
     boolean minusEncountered = false;
     boolean slashEncountered = false;
     int factor = 0;
-    for (int i = string.length() - 1; i >= 0; --i) { // [N]
+    for (int i = len - 1; i >= 0; --i) { // [N]
       final char c = string.charAt(i);
       if (c < '0') {
         if (c == '/') {
@@ -2543,7 +2544,7 @@ public final class Numbers {
         }
       }
       else if ('9' < c) {
-        if (c != 'E')
+        if (c != 'E' && c != 'e')
           return false;
 
         if (factor == 0 || expEncountered)
