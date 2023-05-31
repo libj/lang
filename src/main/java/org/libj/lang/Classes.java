@@ -193,8 +193,9 @@ public final class Classes {
    * <p>
    * For example:
    * <ol>
-   * <li>The "Composite Name" of {@code java.lang.String} is {@link String}.</li>
+   * <li>The "Composite Name" of {@code java.lang.String} is {@code String}.</li>
    * <li>The "Composite Name" of {@code java.lang.Map.Entry} is {@code Map$Entry}.</li>
+   * <li>The "Composite Name" of {@code long} is {@code long}.</li>
    * </ol>
    *
    * @param cls The class or interface.
@@ -202,6 +203,9 @@ public final class Classes {
    * @throws NullPointerException If {@code cls} is null.
    */
   public static String getCompositeName(final Class<?> cls) {
+    if (cls.isPrimitive())
+      return cls.getCanonicalName();
+
     final String pkg = cls.getPackage().getName();
     return pkg.length() == 0 ? cls.getName() : cls.getName().substring(pkg.length() + 1);
   }

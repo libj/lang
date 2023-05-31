@@ -201,11 +201,12 @@ public final class BigDecimals {
    * @throws NullPointerException If {@code v} or {@code rm} is null.
    */
   public static BigDecimal setScale(BigDecimal v, final int newScale, final RoundingMode rm) {
-    if (v.scale() <= newScale + 1)
+    final int newScale1 = newScale + 1;
+    if (v.scale() <= newScale1)
       return v.setScale(newScale, rm);
 
     if (rm != RoundingMode.UNNECESSARY)
-      v = v.setScale(newScale + 1, RoundingMode.DOWN);
+      v = v.setScale(newScale1, RoundingMode.DOWN);
 
     return v.setScale(newScale, rm);
   }

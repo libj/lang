@@ -2701,14 +2701,16 @@ public final class Numbers {
    *         returned.
    */
   public static String stripTrailingZeros(final String number) {
-    if (number == null || number.length() == 0)
+    final int len;
+    if (number == null || (len = number.length()) == 0)
       return number;
 
-    final int len = number.length();
-    int i = len;
-    while (i-- > 1)
-      if (number.charAt(i) != '0' && number.charAt(i) != '.')
+    int i = len - 1; char ch; do {
+      ch = number.charAt(i);
+      if (ch != '0' && ch != '.')
         break;
+    }
+    while (--i > 0);
 
     ++i;
     return i == len || number.lastIndexOf('.', i + 1) < 0 ? number : number.substring(0, i);

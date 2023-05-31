@@ -137,6 +137,7 @@ public final class ObjectUtil {
     if (c1 == Optional.class)
       return c2 == Optional.class && equals(((Optional<?>)o1).orElse(null), ((Optional<?>)o2).orElse(null));
 
+    // FIXME: Implement RandomAccess loop
     if (o1 instanceof Iterable) {
       if (!(o2 instanceof Iterable))
         return false;
