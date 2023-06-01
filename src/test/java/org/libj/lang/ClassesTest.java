@@ -561,4 +561,20 @@ public class ClassesTest {
     assertNull(Classes.getAnnotationDeep(withIgnoreMethod, Ignore.class));
     assertFalse(Classes.isAnnotationPresentDeep(withIgnoreMethod, Ignore.class));
   }
+
+  @Test
+  public void testToPrimitiveClass() throws NoSuchMethodException {
+    final Class<?>[] expected = {boolean.class, byte.class, char.class, double.class, float.class, int.class, long.class, short.class};
+    final Class<?>[] classes = {Boolean.class, Byte.class, Character.class, Double.class, Float.class, Integer.class, Long.class, Short.class};
+    for (int i = 0, i$ = classes.length; i < i$; ++i) // [A]
+      assertEquals(expected[i], Classes.toPrimitiveClass(classes[i]));
+  }
+
+  @Test
+  public void testForNamePrimitiveOrNull() throws NoSuchMethodException, ClassNotFoundException {
+    final String[] primitiveTypeNames = {"boolean", "byte", "char", "double", "float", "int", "long", "short", "void"};
+    final Class<?>[] expected = {boolean.class, byte.class, char.class, double.class, float.class, int.class, long.class, short.class, void.class};
+    for (int i = 0, i$ = primitiveTypeNames.length; i < i$; ++i) // [A]
+      assertEquals(expected[i], Classes.forNamePrimitiveOrNull(primitiveTypeNames[i]));
+  }
 }

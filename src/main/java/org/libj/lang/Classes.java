@@ -1736,6 +1736,14 @@ public final class Classes {
     throw new UnsupportedOperationException("Unsupported class: " + primitiveType.getName());
   }
 
+  private static final String[] primitiveTypeNames = {"boolean", "byte", "char", "double", "float", "int", "long", "short", "void"};
+  private static final Class<?>[] primitiveTypeClasses = {boolean.class, byte.class, char.class, double.class, float.class, int.class, long.class, short.class, void.class};
+
+  public static Class<?> forNamePrimitiveOrNull(final String name) {
+    final int index = Arrays.binarySearch(primitiveTypeNames, name);
+    return index < 0 ? null : primitiveTypeClasses[index];
+  }
+
   public static Class<?> toPrimitiveClass(final Class<?> clazz) {
     if (clazz.isPrimitive())
       return clazz;
