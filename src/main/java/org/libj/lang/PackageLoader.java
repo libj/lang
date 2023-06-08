@@ -107,8 +107,8 @@ public class PackageLoader {
    * to load all classes from each resource.
    *
    * @param pkg The {@link Package}.
-   * @param initialize {@link Predicate} specifying which discovered classes to initialize, or {@code null} to initialize discovered
-   *          all classes.
+   * @param initialize {@link Predicate} specifying which discovered classes to initialize, or {@code null} to initialize all
+   *          discovered classes.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If {@code pkg} cannot be found in the class loader of this {@link PackageLoader} instance.
    * @throws NullPointerException If {@code pkg} is null.
@@ -206,8 +206,8 @@ public class PackageLoader {
    * to load all classes from each resource.
    *
    * @param name The name of the package.
-   * @param initialize {@link Predicate} specifying which discovered classes to initialize, or {@code null} to initialize discovered
-   *          all classes.
+   * @param initialize {@link Predicate} specifying which discovered classes to initialize, or {@code null} to initialize all
+   *          discovered classes.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the package specified by {@code name} cannot be found in the class loader of this
    *           {@link PackageLoader} instance.
@@ -229,8 +229,8 @@ public class PackageLoader {
    * @param includeSubPackages If {@code true}, classes from sub-packages of the package specified by {@code name} will be included
    *          in the returned {@link Set} (regardless of the value of {@code initialize}); if {@code false}, classes of sub-packages
    *          will not be included.
-   * @param initialize {@link Predicate} specifying which discovered classes to initialize, or {@code null} to initialize discovered
-   *          all classes.
+   * @param initialize {@link Predicate} specifying which discovered classes to initialize, or {@code null} to initialize all
+   *          discovered classes.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the package specified by {@code name} cannot be found in the class loader of this
    *           {@link PackageLoader} instance.
