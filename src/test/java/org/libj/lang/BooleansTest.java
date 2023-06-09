@@ -24,6 +24,13 @@ public class BooleansTest {
   @Test
   public void testValueOfInteger() {
     assertNull(Booleans.valueOf((Integer)null));
+    assertFalse(Booleans.valueOf(0));
+    assertTrue(Booleans.valueOf(1));
+    assertTrue(Booleans.valueOf(100));
+  }
+
+  @Test
+  public void testParseBooleanInt() {
     assertFalse(Booleans.parseBoolean(0));
     assertTrue(Booleans.parseBoolean(1));
     assertTrue(Booleans.parseBoolean(100));
@@ -35,6 +42,16 @@ public class BooleansTest {
     assertFalse(Booleans.valueOf("0"));
     assertTrue(Booleans.valueOf("true"));
     assertTrue(Booleans.valueOf("TRUE"));
+  }
+
+  @Test
+  public void testParseBooleanStringDefault() {
+    assertFalse(Booleans.parseBoolean(null, false));
+    assertTrue(Booleans.parseBoolean("0", true));
+    assertTrue(Booleans.parseBoolean("true", false));
+    assertTrue(Booleans.parseBoolean("TRUE", false));
+    assertTrue(Booleans.parseBoolean("xxx", true));
+    assertTrue(Booleans.parseBoolean("0", true));
   }
 
   @Test

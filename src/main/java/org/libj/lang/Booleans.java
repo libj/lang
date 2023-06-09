@@ -30,10 +30,33 @@ public final class Booleans {
    *
    * @param s The {@link String} containing the boolean representation to be parsed.
    * @return The {@link Boolean} represented by the string argument.
-   * @see Boolean#parseBoolean(String)
+   * @see Boolean#valueOf(String)
    */
   public static Boolean valueOf(final String s) {
     return s == null ? null : Boolean.parseBoolean(s);
+  }
+
+  /**
+   * Parses the string argument as a {@code boolean}. The returned value is {@code true} if the string argument is equal, ignoring
+   * case, to the string {@code "true"}; {@code false} if the string argument is equal, ignoring case, to the string
+   * {@code "false"}; {@code defaultValue} if the string argument is null or does not equal, ignoring case, to either {@code "true"}
+   * or {@code "false"}.
+   * <ul>
+   * <li>{@code Boolean.parseBoolean("True")} returns {@code true}.</li>
+   * <li>{@code Boolean.parseBoolean("yes")} returns {@code false}.</li>
+   * </ul>
+   *
+   * @param s The {@link String} containing the boolean representation to be parsed.
+   * @param defaultValue The value to return if {@code s} is null.
+   * @return The {@code boolean} represented by the string argument.
+   * @see Boolean#parseBoolean(String)
+   */
+  public static boolean parseBoolean(String s, final boolean defaultValue) {
+    if (s == null)
+      return defaultValue;
+
+    s = s.toLowerCase();
+    return "true".equals(s) || !"false".equals(s) && defaultValue;
   }
 
   /**
