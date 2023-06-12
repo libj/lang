@@ -32,13 +32,6 @@
   </description>
   <dependencies>
     <dependency>
-      <groupId>org.libj</groupId>
-      <artifactId>test</artifactId>
-      <version>0.7.2-SNAPSHOT</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
       <groupId>org.javassist</groupId>
       <artifactId>javassist</artifactId>
       <version>3.29.2-GA</version>
