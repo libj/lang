@@ -40,7 +40,7 @@ public class BytesTest {
 
   @Test
   public void testIndexOf() {
-    final byte[] bytes = new byte[] {1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7};
+    final byte[] bytes = {1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7};
 
     assertEquals(-1, Bytes.indexOf(new byte[] {}, new byte[] {}));
     assertEquals(-1, Bytes.indexOf(new byte[] {}, new byte[] {1}));
@@ -150,7 +150,7 @@ public class BytesTest {
 
   @Test
   public void testReadBitsFromByte() {
-    final byte[] bytes = new byte[] {0b01011011, 0b01101101};
+    final byte[] bytes = {0b01011011, 0b01101101};
     assertEquals((byte)0b00000000, Bytes.readBitsFromByte(bytes, 0, (byte)0));
     assertEquals((byte)0b00000000, Bytes.readBitsFromByte(bytes, 0, (byte)1));
     assertEquals((byte)0b00000001, Bytes.readBitsFromByte(bytes, 0, (byte)2));
@@ -177,7 +177,7 @@ public class BytesTest {
 
   @Test
   public void testReadBitsFromBytes() {
-    final byte[] bytes = new byte[] {0b01011011, 0b01101101, 0b01101001, 0b01010110};
+    final byte[] bytes = {0b01011011, 0b01101101, 0b01101001, 0b01010110};
     assertArrayEquals(new byte[] {0b00000000}, Bytes.readBitsFromBytes(bytes, 0, 0));
     assertArrayEquals(new byte[] {0b00000001}, Bytes.readBitsFromBytes(bytes, 0, 2));
     assertArrayEquals(new byte[] {0b00000101}, Bytes.readBitsFromBytes(bytes, 0, 4));
@@ -263,7 +263,7 @@ public class BytesTest {
 
   @Test
   public void testWriteBitsBFromBytes() {
-    final byte[] bytes = new byte[] {0b01011011, 0b01101101, 0b01101001, 0b01010110};
+    final byte[] bytes = {0b01011011, 0b01101101, 0b01101001, 0b01010110};
     final byte[] dest = new byte[4];
     assertEquals(3, Bytes.writeBitsB(dest, 0, bytes, (byte)3));
     assertArrayEquals(new byte[] {0b01100000, 0, 0, 0}, dest);
@@ -291,7 +291,7 @@ public class BytesTest {
 
   @Test
   public void testWriteBitsLFromBytes() {
-    final byte[] bytes = new byte[] {0b01011011, 0b01101101, 0b01101001, 0b01010110};
+    final byte[] bytes = {0b01011011, 0b01101101, 0b01101001, 0b01010110};
     final byte[] dest = new byte[4];
     assertEquals(3, Bytes.writeBitsL(dest, 0, bytes, 3));
     assertArrayEquals(new byte[] {0b01000000, 0, 0, 0}, dest);

@@ -80,7 +80,7 @@ public final class ServiceLoaders {
       if (!Character.isJavaIdentifierStart(codePoint))
         fail(service, resource, lineCount, "Illegal provider-class name: " + line);
 
-      for (int i = Character.charCount(codePoint); i < n; i += Character.charCount(codePoint)) {
+      for (int i = Character.charCount(codePoint); i < n; i += Character.charCount(codePoint)) { // [ST]
         codePoint = line.codePointAt(i);
         if (!Character.isJavaIdentifierPart(codePoint) && codePoint != '.')
           fail(service, resource, lineCount, "Illegal provider-class name: " + line);
@@ -100,7 +100,7 @@ public final class ServiceLoaders {
       final URLConnection connection = resource.openConnection();
       connection.setUseCaches(false);
       try (InputStream in = connection.getInputStream(); BufferedReader r = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
-        for (int lc = 1; (lc = parseLine(service, resource, r, lc, consumer, classLoader)) >= 0;);
+        for (int lc = 1; (lc = parseLine(service, resource, r, lc, consumer, classLoader)) >= 0;); // [ST]
       }
     }
     catch (final IOException e) {

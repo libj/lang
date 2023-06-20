@@ -2712,8 +2712,19 @@ public final class Numbers {
     }
     while (--i > 0);
 
-    ++i;
-    return i == len || number.lastIndexOf('.', i + 1) < 0 ? number : number.substring(0, i);
+    if (++i == len)
+      return number;
+
+    int j = i; do {
+      ch = number.charAt(j);
+      if (ch == 'E' || ch == 'e')
+        return number;
+
+      if (ch == '.')
+        return number.substring(0, i);
+    }
+    while (--j >= 0);
+    return number;
   }
 
   /**

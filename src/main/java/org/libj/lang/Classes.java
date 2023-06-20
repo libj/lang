@@ -809,7 +809,7 @@ public final class Classes {
       throw new IllegalStateException(e);
     }
 
-    final T oldValue = assertNotNull((T)memberValues.get(key), "%s is not a valid key", key);
+    final T oldValue = assertNotNull((T)memberValues.get(key), () -> key + " is not a valid key");
     if (newValue.getClass() != oldValue.getClass())
       throw new IllegalArgumentException(newValue.getClass().getName() + " does not match the required type " + oldValue.getClass().getName());
 

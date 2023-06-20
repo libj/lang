@@ -17,6 +17,7 @@
 package org.libj.lang;
 
 import java.util.Collection;
+import java.util.function.Supplier;
 
 /**
  * Utility methods implementing common assertion operations.
@@ -33,13 +34,35 @@ public final class Assertions {
    * </pre>
    *
    * @param value The boolean to check if true.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code value} if true.
    * @throws IllegalArgumentException If {@code value} is false.
    */
   public static boolean assertTrue(final boolean value, final String message) {
     if (!value)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the specified boolean is true. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(boolean bar) {
+   *   this.bar = Assertions.assertTrue(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The boolean to check if true.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if true.
+   * @throws IllegalArgumentException If {@code value} is false.
+   */
+  public static boolean assertTrue(final boolean value, final Supplier<String> message) {
+    if (!value)
+      throw new IllegalArgumentException(message.get());
 
     return value;
   }
@@ -99,13 +122,35 @@ public final class Assertions {
    * </pre>
    *
    * @param value The boolean to check if false.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code value} if false.
    * @throws IllegalArgumentException If {@code value} is true.
    */
   public static boolean assertFalse(final boolean value, final String message) {
     if (value)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the specified boolean is false. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(boolean bar) {
+   *   this.bar = Assertions.assertFalse(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The boolean to check if false.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if false.
+   * @throws IllegalArgumentException If {@code value} is true.
+   */
+  public static boolean assertFalse(final boolean value, final Supplier<String> message) {
+    if (value)
+      throw new IllegalArgumentException(message.get());
 
     return value;
   }
@@ -166,13 +211,36 @@ public final class Assertions {
    *
    * @param <T> The type of the reference.
    * @param obj The object reference to check for nullity.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code obj} if null.
    * @throws IllegalArgumentException If {@code obj} is not null.
    */
   public static <T>T assertNull(final T obj, final String message) {
     if (obj != null)
       throw new IllegalArgumentException(message);
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified object reference is null. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(Bar bar) {
+   *   this.bar = Assertions.assertNull(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param <T> The type of the reference.
+   * @param obj The object reference to check for nullity.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code obj} if null.
+   * @throws IllegalArgumentException If {@code obj} is not null.
+   */
+  public static <T>T assertNull(final T obj, final Supplier<String> message) {
+    if (obj != null)
+      throw new IllegalArgumentException(message.get());
 
     return obj;
   }
@@ -235,13 +303,36 @@ public final class Assertions {
    *
    * @param <T> The type of the reference.
    * @param obj The object reference to check for nullity.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code obj} if not null.
    * @throws IllegalArgumentException If {@code obj} is null.
    */
   public static <T>T assertNotNull(final T obj, final String message) {
     if (obj == null)
       throw new IllegalArgumentException(message);
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified object reference is not null. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(Bar bar) {
+   *   this.bar = Assertions.assertNonNull(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param <T> The type of the reference.
+   * @param obj The object reference to check for nullity.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code obj} if not null.
+   * @throws IllegalArgumentException If {@code obj} is null.
+   */
+  public static <T>T assertNotNull(final T obj, final Supplier<String> message) {
+    if (obj == null)
+      throw new IllegalArgumentException(message.get());
 
     return obj;
   }
@@ -304,13 +395,40 @@ public final class Assertions {
    *
    * @param <T> The component type of the reference.
    * @param obj The array reference to check for nullity.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code obj} if not null.
    * @throws IllegalArgumentException If {@code obj} is null.
    */
   public static <T>T[] assertNotNullArray(final T[] obj, final String message) {
     if (obj == null)
       throw new IllegalArgumentException(message);
+
+    for (int i = 0, i$ = obj.length; i < i$; ++i) // [A]
+      if (obj[i] == null)
+        throw new IllegalArgumentException(message + " at index " + i);
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified array reference is not null, and that none of its member references is null. This method is designed
+   * primarily for doing parameter validation in methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(Bar[] bar) {
+   *   this.bar = Assertions.assertNonNull(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param <T> The component type of the reference.
+   * @param obj The array reference to check for nullity.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code obj} if not null.
+   * @throws IllegalArgumentException If {@code obj} is null.
+   */
+  public static <T>T[] assertNotNullArray(final T[] obj, final Supplier<String> message) {
+    if (obj == null)
+      throw new IllegalArgumentException(message.get());
 
     for (int i = 0, i$ = obj.length; i < i$; ++i) // [A]
       if (obj[i] == null)
@@ -380,7 +498,7 @@ public final class Assertions {
    * </pre>
    *
    * @param obj The array to check for nullity or emptiness.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code obj} if not null or empty.
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
@@ -388,6 +506,29 @@ public final class Assertions {
     assertNotNull(obj, message);
     if (obj.length == 0)
       throw new IllegalArgumentException(message);
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(boolean ... bars) {
+   *   this.bar = Assertions.assertNonEmpty(bars, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param obj The array to check for nullity or emptiness.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code obj} if not null or empty.
+   * @throws IllegalArgumentException If {@code obj} is null or empty.
+   */
+  public static boolean[] assertNotEmpty(final boolean[] obj, final Supplier<String> message) {
+    assertNotNull(obj, message);
+    if (obj.length == 0)
+      throw new IllegalArgumentException(message.get());
 
     return obj;
   }
@@ -452,7 +593,7 @@ public final class Assertions {
    * </pre>
    *
    * @param obj The array to check for nullity or emptiness.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code obj} if not null or empty.
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
@@ -460,6 +601,29 @@ public final class Assertions {
     assertNotNull(obj, message);
     if (obj.length == 0)
       throw new IllegalArgumentException(message);
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(byte ... bars) {
+   *   this.bar = Assertions.assertNonEmpty(bars, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param obj The array to check for nullity or emptiness.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code obj} if not null or empty.
+   * @throws IllegalArgumentException If {@code obj} is null or empty.
+   */
+  public static byte[] assertNotEmpty(final byte[] obj, final Supplier<String> message) {
+    assertNotNull(obj, message);
+    if (obj.length == 0)
+      throw new IllegalArgumentException(message.get());
 
     return obj;
   }
@@ -524,7 +688,7 @@ public final class Assertions {
    * </pre>
    *
    * @param obj The array to check for nullity or emptiness.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code obj} if not null or empty.
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
@@ -532,6 +696,29 @@ public final class Assertions {
     assertNotNull(obj, message);
     if (obj.length == 0)
       throw new IllegalArgumentException(message);
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(char ... bars) {
+   *   this.bar = Assertions.assertNonEmpty(bars, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param obj The array to check for nullity or emptiness.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code obj} if not null or empty.
+   * @throws IllegalArgumentException If {@code obj} is null or empty.
+   */
+  public static char[] assertNotEmpty(final char[] obj, final Supplier<String> message) {
+    assertNotNull(obj, message);
+    if (obj.length == 0)
+      throw new IllegalArgumentException(message.get());
 
     return obj;
   }
@@ -596,7 +783,7 @@ public final class Assertions {
    * </pre>
    *
    * @param obj The array to check for nullity or emptiness.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code obj} if not null or empty.
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
@@ -604,6 +791,29 @@ public final class Assertions {
     assertNotNull(obj, message);
     if (obj.length == 0)
       throw new IllegalArgumentException(message);
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(short ... bars) {
+   *   this.bar = Assertions.assertNonEmpty(bars, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param obj The array to check for nullity or emptiness.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code obj} if not null or empty.
+   * @throws IllegalArgumentException If {@code obj} is null or empty.
+   */
+  public static short[] assertNotEmpty(final short[] obj, final Supplier<String> message) {
+    assertNotNull(obj, message);
+    if (obj.length == 0)
+      throw new IllegalArgumentException(message.get());
 
     return obj;
   }
@@ -668,7 +878,7 @@ public final class Assertions {
    * </pre>
    *
    * @param obj The array to check for nullity or emptiness.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code obj} if not null or empty.
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
@@ -676,6 +886,29 @@ public final class Assertions {
     assertNotNull(obj, message);
     if (obj.length == 0)
       throw new IllegalArgumentException(message);
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(int ... bars) {
+   *   this.bar = Assertions.assertNonEmpty(bars, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param obj The array to check for nullity or emptiness.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code obj} if not null or empty.
+   * @throws IllegalArgumentException If {@code obj} is null or empty.
+   */
+  public static int[] assertNotEmpty(final int[] obj, final Supplier<String> message) {
+    assertNotNull(obj, message);
+    if (obj.length == 0)
+      throw new IllegalArgumentException(message.get());
 
     return obj;
   }
@@ -740,7 +973,7 @@ public final class Assertions {
    * </pre>
    *
    * @param obj The array to check for nullity or emptiness.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code obj} if not null or empty.
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
@@ -748,6 +981,29 @@ public final class Assertions {
     assertNotNull(obj, message);
     if (obj.length == 0)
       throw new IllegalArgumentException(message);
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(long ... bars) {
+   *   this.bar = Assertions.assertNonEmpty(bars, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param obj The array to check for nullity or emptiness.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code obj} if not null or empty.
+   * @throws IllegalArgumentException If {@code obj} is null or empty.
+   */
+  public static long[] assertNotEmpty(final long[] obj, final Supplier<String> message) {
+    assertNotNull(obj, message);
+    if (obj.length == 0)
+      throw new IllegalArgumentException(message.get());
 
     return obj;
   }
@@ -812,7 +1068,7 @@ public final class Assertions {
    * </pre>
    *
    * @param obj The array to check for nullity or emptiness.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code obj} if not null or empty.
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
@@ -820,6 +1076,29 @@ public final class Assertions {
     assertNotNull(obj, message);
     if (obj.length == 0)
       throw new IllegalArgumentException(message);
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(float ... bars) {
+   *   this.bar = Assertions.assertNonEmpty(bars, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param obj The array to check for nullity or emptiness.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code obj} if not null or empty.
+   * @throws IllegalArgumentException If {@code obj} is null or empty.
+   */
+  public static float[] assertNotEmpty(final float[] obj, final Supplier<String> message) {
+    assertNotNull(obj, message);
+    if (obj.length == 0)
+      throw new IllegalArgumentException(message.get());
 
     return obj;
   }
@@ -884,7 +1163,7 @@ public final class Assertions {
    * </pre>
    *
    * @param obj The array to check for nullity or emptiness.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code obj} if not null or empty.
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
@@ -892,6 +1171,29 @@ public final class Assertions {
     assertNotNull(obj, message);
     if (obj.length == 0)
       throw new IllegalArgumentException(message);
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(double ... bars) {
+   *   this.bar = Assertions.assertNonEmpty(bars, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param obj The array to check for nullity or emptiness.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code obj} if not null or empty.
+   * @throws IllegalArgumentException If {@code obj} is null or empty.
+   */
+  public static double[] assertNotEmpty(final double[] obj, final Supplier<String> message) {
+    assertNotNull(obj, message);
+    if (obj.length == 0)
+      throw new IllegalArgumentException(message.get());
 
     return obj;
   }
@@ -957,7 +1259,7 @@ public final class Assertions {
    *
    * @param <T> The type of the reference.
    * @param obj The array to check for nullity or emptiness.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code obj} if not null or empty.
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
@@ -965,6 +1267,30 @@ public final class Assertions {
     assertNotNull(obj, message);
     if (obj.length == 0)
       throw new IllegalArgumentException(message);
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(Bar ... bars) {
+   *   this.bar = Assertions.assertNonEmpty(bars, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param <T> The type of the reference.
+   * @param obj The array to check for nullity or emptiness.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code obj} if not null or empty.
+   * @throws IllegalArgumentException If {@code obj} is null or empty.
+   */
+  public static <T>T[] assertNotEmpty(final T[] obj, final Supplier<String> message) {
+    assertNotNull(obj, message);
+    if (obj.length == 0)
+      throw new IllegalArgumentException(message.get());
 
     return obj;
   }
@@ -1032,7 +1358,7 @@ public final class Assertions {
    *
    * @param <T> The type of the collection reference.
    * @param obj The collection to check for nullity or emptiness.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code obj} if not null or empty.
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
@@ -1040,6 +1366,30 @@ public final class Assertions {
     assertNotNull(obj, message);
     if (obj.size() == 0)
       throw new IllegalArgumentException(message);
+
+    return obj;
+  }
+
+  /**
+   * Checks that the specified collection is not null or empty. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(Bar ... bars) {
+   *   this.bar = Assertions.assertNonEmpty(bars, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param <T> The type of the collection reference.
+   * @param obj The collection to check for nullity or emptiness.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code obj} if not null or empty.
+   * @throws IllegalArgumentException If {@code obj} is null or empty.
+   */
+  public static <T extends Collection<?>>T assertNotEmpty(final T obj, final Supplier<String> message) {
+    assertNotNull(obj, message);
+    if (obj.size() == 0)
+      throw new IllegalArgumentException(message.get());
 
     return obj;
   }
@@ -1105,7 +1455,7 @@ public final class Assertions {
    * </pre>
    *
    * @param str The string to check for nullity or emptiness.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code str} if not null or empty.
    * @throws IllegalArgumentException If {@code str} is null or empty.
    */
@@ -1113,6 +1463,29 @@ public final class Assertions {
     assertNotNull(str, message);
     if (str.length() == 0)
       throw new IllegalArgumentException(message);
+
+    return str;
+  }
+
+  /**
+   * Checks that the specified string is not null or empty. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(CharSequence str) {
+   *   this.bar = Assertions.assertNonEmpty(str, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param str The string to check for nullity or emptiness.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code str} if not null or empty.
+   * @throws IllegalArgumentException If {@code str} is null or empty.
+   */
+  public static CharSequence assertNotEmpty(final CharSequence str, final Supplier<String> message) {
+    assertNotNull(str, message);
+    if (str.length() == 0)
+      throw new IllegalArgumentException(message.get());
 
     return str;
   }
@@ -1176,13 +1549,35 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as finite.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code value} if finite.
    * @throws IllegalArgumentException If {@code value} represents infinity or {@code NaN}.
    */
   public static float assertFinite(final float value, final String message) {
     if (!Float.isFinite(value))
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is finite. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(float bar) {
+   *   this.bar = Assertions.assertFinite(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as finite.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if finite.
+   * @throws IllegalArgumentException If {@code value} represents infinity or {@code NaN}.
+   */
+  public static float assertFinite(final float value, final Supplier<String> message) {
+    if (!Float.isFinite(value))
+      throw new IllegalArgumentException(message.get());
 
     return value;
   }
@@ -1245,13 +1640,35 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as finite.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code value} if finite.
    * @throws IllegalArgumentException If {@code value} represents infinity or {@code NaN}.
    */
   public static double assertFinite(final double value, final String message) {
     if (!Double.isFinite(value))
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is finite. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(double bar) {
+   *   this.bar = Assertions.assertFinite(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as finite.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if finite.
+   * @throws IllegalArgumentException If {@code value} represents infinity or {@code NaN}.
+   */
+  public static double assertFinite(final double value, final Supplier<String> message) {
+    if (!Double.isFinite(value))
+      throw new IllegalArgumentException(message.get());
 
     return value;
   }
@@ -1336,13 +1753,35 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as positive.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code value} if positive.
    * @throws IllegalArgumentException If {@code value} is not positive.
    */
   public static byte assertPositive(final byte value, final String message) {
     if (value <= 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is positive. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(byte bar) {
+   *   this.bar = Assertions.assertPositive(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as positive.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not positive.
+   */
+  public static byte assertPositive(final byte value, final Supplier<String> message) {
+    if (value <= 0)
+      throw new IllegalArgumentException(message.get());
 
     return value;
   }
@@ -1405,13 +1844,35 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as positive.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code value} if positive.
    * @throws IllegalArgumentException If {@code value} is not positive.
    */
   public static short assertPositive(final short value, final String message) {
     if (value <= 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is positive. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(short bar) {
+   *   this.bar = Assertions.assertPositive(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as positive.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not positive.
+   */
+  public static short assertPositive(final short value, final Supplier<String> message) {
+    if (value <= 0)
+      throw new IllegalArgumentException(message.get());
 
     return value;
   }
@@ -1474,13 +1935,35 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as positive.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code value} if positive.
    * @throws IllegalArgumentException If {@code value} is not positive.
    */
   public static int assertPositive(final int value, final String message) {
     if (value <= 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is positive. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(int bar) {
+   *   this.bar = Assertions.assertPositive(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as positive.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not positive.
+   */
+  public static int assertPositive(final int value, final Supplier<String> message) {
+    if (value <= 0)
+      throw new IllegalArgumentException(message.get());
 
     return value;
   }
@@ -1543,13 +2026,35 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as positive.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code value} if positive.
    * @throws IllegalArgumentException If {@code value} is not positive.
    */
   public static long assertPositive(final long value, final String message) {
     if (value <= 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is positive. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(long bar) {
+   *   this.bar = Assertions.assertPositive(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as positive.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not positive.
+   */
+  public static long assertPositive(final long value, final Supplier<String> message) {
+    if (value <= 0)
+      throw new IllegalArgumentException(message.get());
 
     return value;
   }
@@ -1612,13 +2117,35 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as finite and positive.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code value} if positive.
    * @throws IllegalArgumentException If {@code value} is not finite or positive.
    */
   public static float assertPositive(final float value, final String message) {
     if (assertFinite(value) <= 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is finite and positive. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(float bar) {
+   *   this.bar = Assertions.assertPositive(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as finite and positive.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not finite or positive.
+   */
+  public static float assertPositive(final float value, final Supplier<String> message) {
+    if (assertFinite(value) <= 0)
+      throw new IllegalArgumentException(message.get());
 
     return value;
   }
@@ -1681,13 +2208,35 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as finite and positive.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code value} if positive.
    * @throws IllegalArgumentException If {@code value} is not finite or positive.
    */
   public static double assertPositive(final double value, final String message) {
     if (assertFinite(value) <= 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is finite and positive. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(double bar) {
+   *   this.bar = Assertions.assertPositive(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as finite and positive.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if positive.
+   * @throws IllegalArgumentException If {@code value} is not finite or positive.
+   */
+  public static double assertPositive(final double value, final Supplier<String> message) {
+    if (assertFinite(value) <= 0)
+      throw new IllegalArgumentException(message.get());
 
     return value;
   }
@@ -1729,13 +2278,35 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as not negative.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code value} if not negative.
    * @throws IllegalArgumentException If {@code value} is negative.
    */
   public static byte assertNotNegative(final byte value, final String message) {
     if (value < 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not negative. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(byte bar) {
+   *   this.bar = Assertions.assertNotNegative(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not negative.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is negative.
+   */
+  public static byte assertNotNegative(final byte value, final Supplier<String> message) {
+    if (value < 0)
+      throw new IllegalArgumentException(message.get());
 
     return value;
   }
@@ -1798,13 +2369,35 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as not negative.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code value} if not negative.
    * @throws IllegalArgumentException If {@code value} is negative.
    */
   public static short assertNotNegative(final short value, final String message) {
     if (value < 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not negative. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(short bar) {
+   *   this.bar = Assertions.assertNotNegative(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not negative.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is negative.
+   */
+  public static short assertNotNegative(final short value, final Supplier<String> message) {
+    if (value < 0)
+      throw new IllegalArgumentException(message.get());
 
     return value;
   }
@@ -1867,13 +2460,35 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as not negative.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code value} if not negative.
    * @throws IllegalArgumentException If {@code value} is negative.
    */
   public static int assertNotNegative(final int value, final String message) {
     if (value < 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not negative. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(int bar) {
+   *   this.bar = Assertions.assertNotNegative(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not negative.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is negative.
+   */
+  public static int assertNotNegative(final int value, final Supplier<String> message) {
+    if (value < 0)
+      throw new IllegalArgumentException(message.get());
 
     return value;
   }
@@ -1936,13 +2551,35 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as not negative.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code value} if not negative.
    * @throws IllegalArgumentException If {@code value} is negative.
    */
   public static long assertNotNegative(final long value, final String message) {
     if (value < 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not negative. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(long bar) {
+   *   this.bar = Assertions.assertNotNegative(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not negative.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is negative.
+   */
+  public static long assertNotNegative(final long value, final Supplier<String> message) {
+    if (value < 0)
+      throw new IllegalArgumentException(message.get());
 
     return value;
   }
@@ -2005,13 +2642,35 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as not zero.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code value} if not zero.
    * @throws IllegalArgumentException If {@code value} is zero.
    */
   public static byte assertNotZero(final byte value, final String message) {
     if (value == 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(byte bar) {
+   *   this.bar = Assertions.assertNotZero(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not zero.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
+   */
+  public static byte assertNotZero(final byte value, final Supplier<String> message) {
+    if (value == 0)
+      throw new IllegalArgumentException(message.get());
 
     return value;
   }
@@ -2074,13 +2733,35 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as not zero.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code value} if not zero.
    * @throws IllegalArgumentException If {@code value} is zero.
    */
   public static short assertNotZero(final short value, final String message) {
     if (value == 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(short bar) {
+   *   this.bar = Assertions.assertNotZero(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not zero.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
+   */
+  public static short assertNotZero(final short value, final Supplier<String> message) {
+    if (value == 0)
+      throw new IllegalArgumentException(message.get());
 
     return value;
   }
@@ -2143,13 +2824,35 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as not zero.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code value} if not zero.
    * @throws IllegalArgumentException If {@code value} is zero.
    */
   public static int assertNotZero(final int value, final String message) {
     if (value == 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(int bar) {
+   *   this.bar = Assertions.assertNotZero(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not zero.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
+   */
+  public static int assertNotZero(final int value, final Supplier<String> message) {
+    if (value == 0)
+      throw new IllegalArgumentException(message.get());
 
     return value;
   }
@@ -2212,13 +2915,35 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as not zero.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code value} if not zero.
    * @throws IllegalArgumentException If {@code value} is zero.
    */
   public static long assertNotZero(final long value, final String message) {
     if (value == 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(long bar) {
+   *   this.bar = Assertions.assertNotZero(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not zero.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
+   */
+  public static long assertNotZero(final long value, final Supplier<String> message) {
+    if (value == 0)
+      throw new IllegalArgumentException(message.get());
 
     return value;
   }
@@ -2281,13 +3006,35 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as not zero.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code value} if not zero.
    * @throws IllegalArgumentException If {@code value} is zero.
    */
   public static float assertNotZero(final float value, final String message) {
     if (value == 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(float bar) {
+   *   this.bar = Assertions.assertNotZero(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not zero.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
+   */
+  public static float assertNotZero(final float value, final Supplier<String> message) {
+    if (value == 0)
+      throw new IllegalArgumentException(message.get());
 
     return value;
   }
@@ -2350,13 +3097,35 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as not zero.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code value} if not zero.
    * @throws IllegalArgumentException If {@code value} is zero.
    */
   public static double assertNotZero(final double value, final String message) {
     if (value == 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is not zero. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(double bar) {
+   *   this.bar = Assertions.assertNotZero(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as not zero.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if not zero.
+   * @throws IllegalArgumentException If {@code value} is zero.
+   */
+  public static double assertNotZero(final double value, final Supplier<String> message) {
+    if (value == 0)
+      throw new IllegalArgumentException(message.get());
 
     return value;
   }
@@ -2419,13 +3188,35 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as finite and not negative.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code value} if not negative.
    * @throws IllegalArgumentException If {@code value} is not finite or is negative.
    */
   public static float assertNotNegative(final float value, final String message) {
     if (assertFinite(value) < 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is finite and not negative. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(float bar) {
+   *   this.bar = Assertions.assertNotNegative(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as finite and not negative.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is not finite or is negative.
+   */
+  public static float assertNotNegative(final float value, final Supplier<String> message) {
+    if (assertFinite(value) < 0)
+      throw new IllegalArgumentException(message.get());
 
     return value;
   }
@@ -2476,6 +3267,7 @@ public final class Assertions {
 
     return value;
   }
+
   /**
    * Checks that the provided value is finite and not negative. This method is designed primarily for doing parameter validation in
    * methods and constructors, as demonstrated below:
@@ -2487,13 +3279,35 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as finite and not negative.
-   * @param message The detail message to be used for the {@link IllegalArgumentException}.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
    * @return {@code value} if not negative.
    * @throws IllegalArgumentException If {@code value} is not finite or is negative.
    */
   public static double assertNotNegative(final double value, final String message) {
     if (assertFinite(value) < 0)
       throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is finite and not negative. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(double bar) {
+   *   this.bar = Assertions.assertNotNegative(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as finite and not negative.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if not negative.
+   * @throws IllegalArgumentException If {@code value} is not finite or is negative.
+   */
+  public static double assertNotNegative(final double value, final Supplier<String> message) {
+    if (assertFinite(value) < 0)
+      throw new IllegalArgumentException(message.get());
 
     return value;
   }

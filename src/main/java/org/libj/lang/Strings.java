@@ -43,7 +43,7 @@ public final class Strings {
     if (length == 0)
       return "";
 
-    assertNotNegative(length, "Length must be non-negative: %d", length);
+    assertNotNegative(length, () -> "Length must be non-negative: " + length);
 
     final char[] array = new char[length];
     for (int i = 0; i < length; ++i) // [N]
@@ -1014,7 +1014,7 @@ public final class Strings {
    * @throws ArrayIndexOutOfBoundsException If {@code str.length() * count > Integer.MAX_VALUE}.
    */
   public static String repeat(final char ch, final int count) {
-    assertNotNegative(count, "count (%d) must be greater than or equal to 0", count);
+    assertNotNegative(count, () -> "count (" + count + ") must be greater than or equal to 0");
 
     if (count == 0)
       return "";
@@ -1037,7 +1037,7 @@ public final class Strings {
    * @throws NullPointerException If {@code str} is null.
    */
   public static String repeat(final String str, final int count) {
-    assertNotNegative(count, "count (%d) must be greater than or equal to 0", count);
+    assertNotNegative(count, () -> "count (" + count + ") must be greater than or equal to 0");
 
     if (count == 0 || str.length() == 0)
       return "";
@@ -2781,7 +2781,7 @@ public final class Strings {
     boolean upperAll = false;
     Boolean lowerOne = null;
     boolean lowerAll = false;
-    for (int i = 0, i$ = str.length(); i < i$; ++i) {
+    for (int i = 0, i$ = str.length(); i < i$; ++i) { // [ST]
       final char ch = str.charAt(i);
       if (escaped) {
         escaped = false;
