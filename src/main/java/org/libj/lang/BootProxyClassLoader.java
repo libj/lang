@@ -22,7 +22,7 @@ import java.net.URLClassLoader;
 /**
  * {@link ClassLoader} that resolves classes and resources via the bootstrap class loader.
  */
-public final class BootProxyClassLoader extends URLClassLoader {
+public class BootProxyClassLoader extends URLClassLoader {
   public static final BootProxyClassLoader INSTANCE = new BootProxyClassLoader();
 
   private BootProxyClassLoader() {

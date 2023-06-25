@@ -132,15 +132,17 @@ public final class Strings {
 
   private static boolean interpolateShallow(final StringBuilder text, final Map<String,String> properties, final String open, final String close) {
     boolean changed = false;
-    for (int start = text.length() - close.length() - 1; (start = text.lastIndexOf(open, start - 1)) > -1;) { // [N]
-      final int end = text.indexOf(close, start + open.length());
+    final int openLen = open.length();
+    final int closeLen = close.length();
+    for (int start = text.length() - closeLen - 1; (start = text.lastIndexOf(open, start - 1)) > -1;) { // [N]
+      final int end = text.indexOf(close, start + openLen);
       if (end < start)
         continue;
 
-      final String key = text.substring(start + open.length(), end);
+      final String key = text.substring(start + openLen, end);
       final String value = properties.get(key);
       if (value != null) {
-        text.replace(start, end + close.length(), value);
+        text.replace(start, end + closeLen, value);
         changed = true;
       }
     }
@@ -197,18 +199,18 @@ public final class Strings {
    * @throws IllegalArgumentException If the specified {@code properties} has {@code key=value} entries that result in a loop.
    */
   public static Map<String,String> interpolate(final Map<String,String> properties, final String prefix, final String suffix) {
-    StringBuilder builder = null;
+    StringBuilder b = null;
     if (properties.size() > 0) {
       for (final Map.Entry<String,String> entry : properties.entrySet()) { // [S]
         final String value = entry.getValue();
         if (value != null) {
-          if (builder == null)
-            builder = new StringBuilder(value.length());
+          if (b == null)
+            b = new StringBuilder(value.length());
           else
-            builder.setLength(0);
+            b.setLength(0);
 
-          builder.append(value);
-          entry.setValue(interpolateDeep(builder, properties, prefix, suffix));
+          b.append(value);
+          entry.setValue(interpolateDeep(b, properties, prefix, suffix));
         }
       }
     }
@@ -296,9 +298,8 @@ public final class Strings {
     if (newLengthHint < 0)
       throw new OutOfMemoryError();
 
-    do {
+    do
       builder.replace(j, j + targetLen1, replaceString);
-    }
     while ((j = builder.lastIndexOf(targetString, j - targetLen1)) > -1);
     return true;
   }
@@ -331,13 +332,14 @@ public final class Strings {
    * @throws NullPointerException If {@code str} or {@code prefix} is null.
    */
   public static boolean startsWith(final CharSequence str, final CharSequence prefix) {
-    if (prefix.length() == 0)
+    final int len = prefix.length();
+    if (len == 0)
       return true;
 
-    if (str.length() < prefix.length())
+    if (str.length() < len)
       return false;
 
-    for (int i = 0, i$ = prefix.length(); i < i$; ++i) // [N]
+    for (int i = 0; i < len; ++i) // [N]
       if (str.charAt(i) != prefix.charAt(i))
         return false;
 
@@ -355,13 +357,14 @@ public final class Strings {
    * @throws NullPointerException If {@code str} or {@code prefix} is null.
    */
   public static boolean startsWithIgnoreCase(final CharSequence str, final CharSequence prefix) {
-    if (prefix.length() == 0)
+    int len = prefix.length();
+    if (len == 0)
       return true;
 
-    if (str.length() < prefix.length())
+    if (str.length() < len)
       return false;
 
-    for (int i = 0, i$ = prefix.length(); i < i$; ++i) { // [N]
+    for (int i = 0; i < len; ++i) { // [N]
       final char a = str.charAt(i);
       final char b = prefix.charAt(i);
       if (Character.toUpperCase(a) != Character.toUpperCase(b) && Character.toLowerCase(a) != Character.toLowerCase(b))
@@ -407,14 +410,15 @@ public final class Strings {
    * @throws NullPointerException If {@code str} or {@code suffix} is null.
    */
   public static boolean endsWith(final CharSequence str, final CharSequence suffix) {
-    if (suffix.length() == 0)
+    final int len = suffix.length();
+    if (len == 0)
       return true;
 
-    if (str.length() < suffix.length())
+    if (str.length() < len)
       return false;
 
-    final int offset = str.length() - suffix.length();
-    for (int i = suffix.length() - 1; i >= 0; --i) // [N]
+    final int offset = str.length() - len;
+    for (int i = len - 1; i >= 0; --i) // [N]
       if (str.charAt(offset + i) != suffix.charAt(i))
         return false;
 
@@ -432,14 +436,15 @@ public final class Strings {
    * @throws NullPointerException If {@code str} or {@code suffix} is null.
    */
   public static boolean endsWithIgnoreCase(final CharSequence str, final CharSequence suffix) {
-    if (suffix.length() == 0)
+    final int len = suffix.length();
+    if (len == 0)
       return true;
 
-    if (str.length() < suffix.length())
+    if (str.length() < len)
       return false;
 
-    final int offset = str.length() - suffix.length();
-    for (int i = suffix.length() - 1; i >= 0; --i) { // [N]
+    final int offset = str.length() - len;
+    for (int i = len - 1; i >= 0; --i) { // [N]
       final char a = str.charAt(offset + i);
       final char b = suffix.charAt(i);
       if (Character.toUpperCase(a) != Character.toUpperCase(b) && Character.toLowerCase(a) != Character.toLowerCase(b))
@@ -473,8 +478,8 @@ public final class Strings {
    * @throws NullPointerException If {@code str} is null.
    */
   public static boolean endsWithIgnoreCase(final CharSequence str, final char suffix) {
-    final char ch;
     final int len = str.length();
+    final char ch;
     return len > 0 && (Character.toUpperCase(ch = str.charAt(len - 1)) == Character.toUpperCase(suffix) || Character.toLowerCase(ch) == Character.toLowerCase(suffix));
   }
 
@@ -553,7 +558,8 @@ public final class Strings {
   }
 
   private static StringBuilder changeCase(final StringBuilder builder, final boolean upper, final int beginIndex, final int endIndex) {
-    if (builder.length() == 0)
+    final int length = builder.length();
+    if (length == 0)
       return builder;
 
     if (beginIndex < 0)
@@ -562,8 +568,8 @@ public final class Strings {
     if (endIndex < beginIndex)
       throw new IllegalArgumentException("start index (" + beginIndex + ") > end index (" + endIndex + ")");
 
-    if (builder.length() < beginIndex)
-      throw new IllegalArgumentException("start index (" + beginIndex + ") > string length (" + builder.length() + ")");
+    if (length < beginIndex)
+      throw new IllegalArgumentException("start index (" + beginIndex + ") > string length (" + length + ")");
 
     if (beginIndex == endIndex)
       return builder;
@@ -799,16 +805,16 @@ public final class Strings {
    * @throws NullPointerException If {@code str} is null.
    */
   public static String padAll(final String str, final Align align, final int length, final char pad, final boolean truncate) {
-    final StringBuilder builder = new StringBuilder();
+    final StringBuilder b = new StringBuilder();
     final String[] lines = str.split("[\n\r]");
     for (int i = 0, i$ = lines.length; i < i$; ++i) { // [N]
       if (i > 0)
-        builder.append('\n');
+        b.append('\n');
 
-      builder.append(pad(lines[i], align, length, pad, truncate));
+      b.append(pad(lines[i], align, length, pad, truncate));
     }
 
-    return builder.toString();
+    return b.toString();
   }
 
   public static int lengthPrintable(final CharSequence str) {
@@ -916,12 +922,12 @@ public final class Strings {
    * @return The string of UTF-8 literal hexadecimal encodings of characters of the specified {@link CharSequence}.
    */
   public static String toUTF8Literal(final CharSequence str) {
-    final int i$ = str.length();
-    final StringBuilder builder = new StringBuilder(i$ * 4);
-    for (int i = 0; i < i$; ++i) // [N]
-      builder.append(toUTF8Literal(str.charAt(i)));
+    final int length = str.length();
+    final StringBuilder b = new StringBuilder(length * 4);
+    for (int i = 0; i < length; ++i) // [N]
+      b.append(toUTF8Literal(str.charAt(i)));
 
-    return builder.toString();
+    return b.toString();
   }
 
   /**
@@ -946,15 +952,16 @@ public final class Strings {
    * @throws NullPointerException If any member of {@code strings} is null.
    */
   public static String getCommonPrefix(final String ... strings) {
-    if (strings == null || strings.length == 0)
+    final int len;
+    if (strings == null || (len = strings.length) == 0)
       return null;
 
-    if (strings.length == 1)
+    if (len == 1)
       return strings[0];
 
     final String string0 = strings[0];
     for (int i = 0, i$ = string0.length(); i < i$; ++i) // [N]
-      for (int j = 1, j$ = strings.length; j < j$; ++j) // [N]
+      for (int j = 1, j$ = len; j < j$; ++j) // [N]
         if (i == strings[j].length() || string0.charAt(i) != strings[j].charAt(i))
           return string0.substring(0, i);
 
@@ -969,11 +976,12 @@ public final class Strings {
    * @throws NullPointerException If {@code strings} or any member of {@code strings} is null.
    */
   public static String getCommonPrefix(final Collection<String> strings) {
-    if (strings == null || strings.size() == 0)
+    final int len;
+    if (strings == null || (len = strings.size()) == 0)
       return null;
 
     Iterator<String> iterator = strings.iterator();
-    if (strings.size() == 1)
+    if (len == 1)
       return iterator.next();
 
     final String string0 = iterator.next();
@@ -1039,13 +1047,13 @@ public final class Strings {
   public static String repeat(final String str, final int count) {
     assertNotNegative(count, () -> "count (" + count + ") must be greater than or equal to 0");
 
-    if (count == 0 || str.length() == 0)
+    final int length = str.length();
+    if (count == 0 || length == 0)
       return "";
 
     if (count == 1)
       return str;
 
-    final int length = str.length();
     final long longSize = (long)length * count;
     final int size = (int)longSize;
     if (size != longSize)
@@ -1065,14 +1073,13 @@ public final class Strings {
    * Encodes the specified {@link String} into a sequence of bytes using the named charset, storing the result into a new byte
    * array.
    * <p>
-   * This method differentiates itself from {@link String#getBytes(String)} by throwing the unchecked
-   * {@link UnsupportedOperationException} instead of the checked {@link UnsupportedEncodingException} if the named charset is not
-   * supported.
+   * This method differentiates itself from {@link String#getBytes(String)} by throwing the unchecked {@link RuntimeException}
+   * instead of the checked {@link UnsupportedEncodingException} if the named charset is not supported.
    *
    * @param str The string to encode.
    * @param charsetName The name of a supported {@linkplain java.nio.charset.Charset charset}.
    * @return The resultant byte array.
-   * @throws UnsupportedOperationException If the named charset is not supported.
+   * @throws RuntimeException If the named charset is not supported.
    * @throws NullPointerException If {@code str} or {@code charsetName} is null.
    * @see String#getBytes(String)
    */
@@ -1081,7 +1088,7 @@ public final class Strings {
       return str.getBytes(charsetName);
     }
     catch (final UnsupportedEncodingException e) {
-      throw new UnsupportedOperationException(e);
+      throw new RuntimeException(e);
     }
   }
 
@@ -1097,14 +1104,14 @@ public final class Strings {
       return null;
 
     int i = -1;
-    final int i$ = str.length();
-    while (++i < i$ && str.charAt(i) == ch);
-    if (i == i$)
+    final int length = str.length();
+    while (++i < length && str.charAt(i) == ch);
+    if (i == length)
       return "";
 
-    int j = i$;
+    int j = length;
     while (j > i && str.charAt(--j) == ch);
-    return i == 0 && j == i$ - 1 ? str : str.substring(i, j + 1);
+    return i == 0 && j == length - 1 ? str : str.substring(i, j + 1);
   }
 
   /**
@@ -1123,9 +1130,9 @@ public final class Strings {
     if (str == null)
       return null;
 
-    final int i$ = str.length();
-    if (i$ > 1 && str.charAt(0) == start && str.charAt(i$ - 1) == end)
-      return str.substring(1, i$ - 1);
+    final int length = str.length();
+    if (length > 1 && str.charAt(0) == start && str.charAt(length - 1) == end)
+      return str.substring(1, length - 1);
 
     return str;
   }
@@ -1281,8 +1288,8 @@ public final class Strings {
    */
   public static int indexOfUnEscaped(final CharSequence str, final CharSequence substr, final int fromIndex) {
     final int substrLen = substr.length();
+    final boolean substrIsBackslash = substrLen == 1 && substr.charAt(0) == '\\';
     boolean escaped = false;
-    final boolean substrIsBackslash = substr.length() == 1 && substr.charAt(0) == '\\';
     for (int i = Math.max(fromIndex, 0), i$ = str.length(); i < i$; ++i) { // [N]
       final char c = str.charAt(i);
       if (escaped) {
@@ -1875,12 +1882,13 @@ public final class Strings {
    * @throws NullPointerException If {@code str} is null.
    */
   public static String flipFirstCap(final String str) {
-    if (str.length() == 0)
+    final int length = str.length();
+    if (length == 0)
       return str;
 
     boolean hasLower = false;
     boolean hasUpper = false;
-    for (int i = 1, i$ = str.length(); i < i$; ++i) { // [N]
+    for (int i = 1; i < length; ++i) { // [N]
       hasLower = hasLower || Character.isLowerCase(str.charAt(i));
       hasUpper = hasUpper || Character.isUpperCase(str.charAt(i));
       if (hasLower && hasUpper)
@@ -1896,26 +1904,26 @@ public final class Strings {
   }
 
   @SuppressWarnings("rawtypes")
-  private static void appendElVar(final Map vars, final StringBuilder builder, final StringBuilder var) {
-    final String name = var.toString();
-    final Object value = vars.get(name);
+  private static void appendElVar(final StringBuilder b, final StringBuilder v, final Map vs) {
+    final String name = v.toString();
+    final Object value = vs.get(name);
     if (value != null)
-      builder.append(value);
+      b.append(value);
     else
-      builder.append('$').append('{').append(name).append('}');
+      b.append('$').append('{').append(name).append('}');
 
-    var.setLength(0);
+    v.setLength(0);
   }
 
-  private static void appendElNoMatch(final StringBuilder builder, final StringBuilder var, final char close) {
-    builder.append('$').append('{');
-    if (var.length() > 0) {
-      builder.append(var);
-      var.setLength(0);
+  private static void appendElNoMatch(final StringBuilder b, final StringBuilder v, final char close) {
+    b.append('$').append('{');
+    if (v.length() > 0) {
+      b.append(v);
+      v.setLength(0);
     }
 
     if (close != '\0')
-      builder.append(close);
+      b.append(close);
   }
 
   /**
@@ -1945,104 +1953,104 @@ public final class Strings {
    * <a href= "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.8">Java Identifiers</a>.
    *
    * @param s The string in which EL-encoded names are to be dereferenced.
-   * @param vars The map of name to value pairs.
+   * @param nameToValue The map of name to value pairs.
    * @return The specified string with EL-encoded names replaced with their mapped values. If a name is missing from the specified
    *         map, or if a name does not conform to the rules of
    *         <a href= "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.8">Java Identifiers</a>, or if the
    *         Expression Language encoding is malformed, it will remain in the string as-is.
    * @throws NullPointerException If {@code s} or {@code vars} is null.
    */
-  public static String derefEL(final String s, final Map<String,String> vars) {
-    return derefEL(vars, s);
+  public static String derefEL(final String s, final Map<String,String> nameToValue) {
+    return derefEL(nameToValue, s);
   }
 
   @SuppressWarnings("rawtypes")
-  private static String derefEL(final Map vars, final String s) {
+  private static String derefEL(final Map vs, final String s) {
     if (s.length() < 4)
       return s;
 
-    final StringBuilder builder = new StringBuilder();
-    final StringBuilder var = new StringBuilder();
+    final StringBuilder b = new StringBuilder();
+    final StringBuilder v = new StringBuilder();
     boolean escape = false;
     final int i$ = s.length();
     for (int i = 0; i < i$; ++i) { // [N]
       char ch = s.charAt(i);
       if (ch == '\\') {
-        if (var.length() > 0) {
-          builder.append('$').append('{').append(var);
-          var.setLength(0);
+        if (v.length() > 0) {
+          b.append('$').append('{').append(v);
+          v.setLength(0);
         }
 
         if (!(escape = !escape))
-          builder.append(ch);
+          b.append(ch);
       }
       else if (!escape) {
         if (ch == '$') {
-          if (var.length() > 0) {
-            appendElVar(vars, builder, var);
+          if (v.length() > 0) {
+            appendElVar(b, v, vs);
           }
 
           if (++i == i$) {
-            builder.append('$');
+            b.append('$');
           }
           else {
             ch = s.charAt(i);
             if (ch != '{') {
-              var.setLength(0);
-              builder.append('$');
+              v.setLength(0);
+              b.append('$');
               if (ch != '\\')
-                builder.append(ch);
+                b.append(ch);
             }
             else if (++i == i$) {
-              appendElNoMatch(builder, var, '\0');
+              appendElNoMatch(b, v, '\0');
             }
             else {
               ch = s.charAt(i);
               if ('a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || ch == '_' || ch == '.')
-                var.append(ch);
+                v.append(ch);
               else
-                appendElNoMatch(builder, var, ch);
+                appendElNoMatch(b, v, ch);
             }
           }
         }
-        else if (var.length() > 0) {
+        else if (v.length() > 0) {
           if ('a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || '0' <= ch && ch <= '9' || ch == '_' || ch == '.') {
-            var.append(ch);
+            v.append(ch);
           }
           else if (ch != '}') {
-            appendElNoMatch(builder, var, ch);
+            appendElNoMatch(b, v, ch);
           }
           else {
-            appendElVar(vars, builder, var);
+            appendElVar(b, v, vs);
             if (ch != '}')
-              builder.append(ch);
+              b.append(ch);
           }
         }
         else {
-          builder.append(ch);
+          b.append(ch);
         }
       }
       else {
-        if (var.length() > 0)
-          appendElVar(vars, builder, var);
+        if (v.length() > 0)
+          appendElVar(b, v, vs);
 
-        builder.append(ch);
+        b.append(ch);
         escape = false;
       }
     }
 
-    if (var.length() > 0)
-      appendElNoMatch(builder, var, '\0');
+    if (v.length() > 0)
+      appendElNoMatch(b, v, '\0');
 
-    return builder.toString();
+    return b.toString();
   }
 
-  private static void appendEvVar(final Map<String,String> vars, final StringBuilder builder, final StringBuilder var) {
-    final String variable = vars.get(var.toString());
+  private static void appendEvVar(final StringBuilder builder, final StringBuilder v, final Map<String,String> vs) {
+    final String variable = vs.get(v.toString());
     if (variable != null)
       builder.append(variable);
 
-    var.setLength(0);
+    v.setLength(0);
   }
 
   /**
@@ -2053,37 +2061,37 @@ public final class Strings {
    * <a href= "http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_10_02">IEEE Std 1003.1-2017</a>.
    *
    * @param s The string in which POSIX-compliant names are to be dereferenced.
-   * @param vars The map of name to value pairs.
+   * @param vs The map of name to value pairs.
    * @return The specified string with POSIX-compliant names replaced with their mapped values. If a name is missing from the
    *         specified map, it will remain in the string as-is.
    * @throws ParseException If the encoding of the environment variable name is malformed.
    * @throws NullPointerException If {@code s} or {@code vars} is null.
    */
-  public static String derefEV(final String s, final Map<String,String> vars) throws ParseException {
+  public static String derefEV(final String s, final Map<String,String> vs) throws ParseException {
     if (s.length() < 2)
       return s;
 
-    final StringBuilder builder = new StringBuilder();
-    final StringBuilder var = new StringBuilder();
+    final StringBuilder b = new StringBuilder();
+    final StringBuilder v = new StringBuilder();
     boolean escape = false;
     boolean bracket = false;
     final int i$ = s.length();
     for (int i = 0; i < i$; ++i) { // [N]
       char ch = s.charAt(i);
       if (ch == '\\') {
-        if (var.length() > 0)
-          appendEvVar(vars, builder, var);
+        if (v.length() > 0)
+          appendEvVar(b, v, vs);
 
         if (!(escape = !escape))
-          builder.append(ch);
+          b.append(ch);
       }
       else if (!escape) {
         if (ch == '$') {
-          if (var.length() > 0)
-            appendEvVar(vars, builder, var);
+          if (v.length() > 0)
+            appendEvVar(b, v, vs);
 
           if (++i == i$) {
-            builder.append('$');
+            b.append('$');
           }
           else {
             ch = s.charAt(i);
@@ -2099,52 +2107,52 @@ public final class Strings {
             }
 
             if ('a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || ch == '_') {
-              var.append(ch);
+              v.append(ch);
             }
             else if (!bracket) {
-              builder.append('$');
+              b.append('$');
               if (ch != '\\')
-                builder.append(ch);
+                b.append(ch);
             }
             else {
               throw new ParseException("${" + ch + ": bad substitution", i);
             }
           }
         }
-        else if (var.length() > 0) {
+        else if (v.length() > 0) {
           if ('a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || '0' <= ch && ch <= '9' || ch == '_') {
-            var.append(ch);
+            v.append(ch);
           }
           else if (bracket && ch != '}') {
-            throw new ParseException("${" + var + ch + ": bad substitution", i);
+            throw new ParseException("${" + v + ch + ": bad substitution", i);
           }
           else {
-            appendEvVar(vars, builder, var);
+            appendEvVar(b, v, vs);
             if (!bracket || ch != '}')
-              builder.append(ch);
+              b.append(ch);
           }
         }
         else {
-          builder.append(ch);
+          b.append(ch);
         }
       }
       else {
-        if (var.length() > 0)
-          appendEvVar(vars, builder, var);
+        if (v.length() > 0)
+          appendEvVar(b, v, vs);
 
-        builder.append(ch);
+        b.append(ch);
         escape = false;
       }
     }
 
-    if (var.length() > 0) {
+    if (v.length() > 0) {
       if (bracket)
-        throw new ParseException("${" + var + ": bad substitution", i$);
+        throw new ParseException("${" + v + ": bad substitution", i$);
 
-      appendEvVar(vars, builder, var);
+      appendEvVar(b, v, vs);
     }
 
-    return builder.toString();
+    return b.toString();
   }
 
   /**
@@ -2158,8 +2166,7 @@ public final class Strings {
     if (str == null)
       return false;
 
-    final int i$ = str.length();
-    for (int i = 0; i < i$; ++i) // [N]
+    for (int i = 0, i$ = str.length(); i < i$; ++i) // [N]
       if (!Character.isWhitespace(str.charAt(i)))
         return false;
 
@@ -2177,8 +2184,9 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} is empty.
    */
   public static boolean isLowerCase(final CharSequence str) {
-    assertPositive(str.length(), "Empty");
-    for (int i = 0, i$ = str.length(); i < i$; ++i) // [N]
+    final int length = str.length();
+    assertPositive(length, "Empty");
+    for (int i = 0; i < length; ++i) // [N]
       if (!Character.isLowerCase(str.charAt(i)))
         return false;
 
@@ -2196,8 +2204,9 @@ public final class Strings {
    * @throws IllegalArgumentException If {@code str} is empty.
    */
   public static boolean isUpperCase(final CharSequence str) {
-    assertPositive(str.length(), "Empty");
-    for (int i = 0, i$ = str.length(); i < i$; ++i) // [N]
+    final int length = str.length();
+    assertPositive(length, "Empty");
+    for (int i = 0; i < length; ++i) // [N]
       if (!Character.isUpperCase(str.charAt(i)))
         return false;
 
@@ -2347,11 +2356,11 @@ public final class Strings {
     if (fromIndex < 0)
       fromIndex = 0;
 
-    final int i$ = str.length();
-    if (fromIndex > i$)
+    final int length = str.length();
+    if (fromIndex > length)
       return -1;
 
-    for (int i = fromIndex; i < i$; ++i) // [N]
+    for (int i = fromIndex; i < length; ++i) // [N]
       if (str.charAt(i) == ch)
         return i;
 
@@ -2405,15 +2414,16 @@ public final class Strings {
     if (fromIndex < 0)
       fromIndex = 0;
 
-    final int i$ = str.length() - substr.length() + 1;
+    final int subStrLength = substr.length();
+    final int i$ = str.length() - subStrLength + 1;
     if (fromIndex > i$)
       return -1;
 
-    if (substr.length() == 0)
+    if (subStrLength == 0)
       return fromIndex;
 
     for (int i = fromIndex; i < i$; ++i) // [N]
-      if (regionMatches0(str, false, i, substr, 0, substr.length()))
+      if (regionMatches0(str, false, i, substr, 0, subStrLength))
         return i;
 
     return -1;
@@ -2468,8 +2478,8 @@ public final class Strings {
     if (fromIndex < 0)
       fromIndex = 0;
 
-    final int i$ = str.length();
-    if (fromIndex > i$)
+    final int length = str.length();
+    if (fromIndex > length)
       return -1;
 
     final char uCh, lCh;
@@ -2482,7 +2492,7 @@ public final class Strings {
       lCh = ch;
     }
 
-    for (int i = fromIndex; i < i$; ++i) { // [N]
+    for (int i = fromIndex; i < length; ++i) { // [N]
       ch = str.charAt(i);
       if (ch == uCh || ch == lCh)
         return i;
@@ -2540,15 +2550,16 @@ public final class Strings {
     if (fromIndex < 0)
       fromIndex = 0;
 
-    final int i$ = str.length() - substr.length() + 1;
+    final int subStrLength = substr.length();
+    final int i$ = str.length() - subStrLength + 1;
     if (fromIndex > i$)
       return -1;
 
-    if (substr.length() == 0)
+    if (subStrLength == 0)
       return fromIndex;
 
     for (int i = fromIndex; i < i$; ++i) // [N]
-      if (regionMatches0(str, true, i, substr, 0, substr.length()))
+      if (regionMatches0(str, true, i, substr, 0, subStrLength))
         return i;
 
     return -1;
@@ -2628,14 +2639,14 @@ public final class Strings {
     return intern != null ? intern : str;
   }
 
-  private static String[] split(final CharSequence str, final int i$, final char ch, final int empties, final StringBuilder builder, int index, final int depth) {
+  private static String[] split(final CharSequence str, final int i$, final char ch, final int empties, final StringBuilder b, int index, final int depth) {
     final String[] parts;
     final char c = str.charAt(index);
     if (c != ch) {
-      builder.append(c);
+      b.append(c);
       if (++index == i$) {
-        if (index != i$ || builder.length() > 0) {
-          final String part = builder.toString();
+        if (index != i$ || b.length() > 0) {
+          final String part = b.toString();
           parts = new String[depth + 1];
           parts[depth] = part;
         }
@@ -2644,12 +2655,12 @@ public final class Strings {
         }
       }
       else {
-        parts = split(str, i$, ch, empties, builder, index, depth);
+        parts = split(str, i$, ch, empties, b, index, depth);
       }
     }
     else {
-      if (++index != i$ || builder.length() > 0) {
-        final String part = builder.toString();
+      if (++index != i$ || b.length() > 0) {
+        final String part = b.toString();
         if (index == i$)
           parts = new String[depth + 1];
         else

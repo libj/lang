@@ -47,7 +47,6 @@ import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +61,7 @@ import javassist.CtMethod;
 public final class Classes {
   private static final Logger logger = LoggerFactory.getLogger(Classes.class);
   private static final Type[] EMPTY_TYPES = {};
+  private static final Class<?>[] EMPTY_CLASSES = {};
 
   /**
    * Returns the name of the declaring class of the specified class name.
@@ -128,11 +128,11 @@ public final class Classes {
     if (!Identifiers.isValid(className))
       throw new IllegalArgumentException("Not a valid java identifier: " + className);
 
-    final int limit = className.length() - 1;
+    final int length1 = className.length() - 1;
     int index = 0;
     while ((index = className.indexOf('$', index + 1)) > 1) {
       final char ch = className.charAt(index - 1);
-      if (index == limit)
+      if (index == length1)
         return className;
 
       if (ch != '.' && ch != '$')
@@ -169,20 +169,21 @@ public final class Classes {
     if (!Identifiers.isValid(className))
       throw new IllegalArgumentException("Not a valid java identifier: " + className);
 
-    final StringBuilder builder = new StringBuilder();
-    builder.append(className.charAt(0));
-    builder.append(className.charAt(1));
+    final StringBuilder b = new StringBuilder();
+    b.append(className.charAt(0));
+    b.append(className.charAt(1));
     char last = '\0';
-    for (int i = 2; i < className.length() - 1; ++i) { // [N]
+    final int length1 = className.length() - 1;
+    for (int i = 2; i < length1; ++i) { // [N]
       final char ch = className.charAt(i);
-      builder.append(last != '.' && last != '$' && ch == '$' ? '.' : ch);
+      b.append(last != '.' && last != '$' && ch == '$' ? '.' : ch);
       last = ch;
     }
 
-    if (className.length() > 2)
-      builder.append(className.charAt(className.length() - 1));
+    if (length1 > 1)
+      b.append(className.charAt(length1));
 
-    return builder.toString();
+    return b.toString();
   }
 
   /**
@@ -249,7 +250,8 @@ public final class Classes {
    * @throws NullPointerException If {@code cls} is null.
    */
   public static Type[] getSuperclassGenericTypes(final Class<?> cls) {
-    return cls.getGenericSuperclass() instanceof ParameterizedType ? ((ParameterizedType)cls.getGenericSuperclass()).getActualTypeArguments() : null;
+    final Type genericSuperclass = cls.getGenericSuperclass();
+    return genericSuperclass instanceof ParameterizedType ? ((ParameterizedType)genericSuperclass).getActualTypeArguments() : null;
   }
 
   private static <T>T visitSuperclass(final Class<?> cls, final Queue<? super Class<?>> queue, final Set<? super Class<?>> visited, final Function<? super Class<?>,T> function) {
@@ -278,8 +280,8 @@ public final class Classes {
    * @throws NullPointerException If {@code cls} null.
    */
   public static <T>T walkClassHierarchy(Class<?> cls, final Function<? super Class<?>,T> function) {
-    final Set<Class<?>> visited = new LinkedHashSet<>();
-    final Queue<Class<?>> queue = new LinkedList<>();
+    final LinkedHashSet<Class<?>> visited = new LinkedHashSet<>();
+    final LinkedList<Class<?>> queue = new LinkedList<>();
     T t;
     if ((t = visitSuperclass(cls, queue, visited, function)) != null)
       return t;
@@ -319,8 +321,8 @@ public final class Classes {
    * @throws NullPointerException If {@code cls} null.
    */
   public static Set<Class<?>> getClassHierarchy(Class<?> cls, final Predicate<? super Class<?>> forEach) {
-    final Set<Class<?>> visited = new LinkedHashSet<>();
-    final Queue<Class<?>> queue = new LinkedList<>();
+    final LinkedHashSet<Class<?>> visited = new LinkedHashSet<>();
+    final LinkedList<Class<?>> queue = new LinkedList<>();
     if (!visitSuperclass(cls, queue, visited, forEach))
       return visited;
 
@@ -494,8 +496,6 @@ public final class Classes {
     return getGenericParameters(method.getGenericReturnType());
   }
 
-  private static final Class<?>[] emptyClasses = {};
-
   /**
    * Returns the array of generic parameter classes for the specified field. If the field is not a parameterized type, this method
    * will return an empty array.
@@ -510,7 +510,7 @@ public final class Classes {
 
   public static Class<?>[] getGenericParameters(final Type genericType) {
     if (!(genericType instanceof ParameterizedType))
-      return emptyClasses;
+      return EMPTY_CLASSES;
 
     final Type[] types = ((ParameterizedType)genericType).getActualTypeArguments();
     final int len = types.length;
@@ -626,8 +626,7 @@ public final class Classes {
    *           s.checkPackageAccess()} denies access to the package of this class.
    */
   public static Field getDeclaredFieldDeep(Class<?> cls, final String name) {
-    Field field;
-    do
+    Field field; do
       field = getField(cls.getDeclaredFields(), name);
     while (field == null && (cls = cls.getSuperclass()) != null);
     return field;
@@ -1091,10 +1090,10 @@ public final class Classes {
 
     if (canWrap) {
       if (target.isPrimitive())
-        target = toWrapper(target);
+        target = box(target);
 
       if (cls.isPrimitive())
-        cls = toWrapper(cls);
+        cls = box(cls);
     }
 
     return target.isAssignableFrom(cls);
@@ -1219,8 +1218,7 @@ public final class Classes {
    * @see #getDeclaredMethodDeep(Class,String)
    */
   public static Method getDeclaredMethodDeep(Class<?> cls, final String name, final Class<?> ... parameterTypes) {
-    Method method;
-    do
+    Method method; do
       method = getDeclaredMethod(cls, name, parameterTypes);
     while (method == null && (cls = cls.getSuperclass()) != null);
     return method;
@@ -1249,8 +1247,7 @@ public final class Classes {
    * @see #getDeclaredMethodDeep(Class,String,Class...)
    */
   public static Method getDeclaredMethodDeep(Class<?> cls, final String name) {
-    Method method;
-    do
+    Method method; do
       method = getDeclaredMethod(cls, name);
     while (method == null && (cls = cls.getSuperclass()) != null);
     return method;
@@ -1439,10 +1436,8 @@ public final class Classes {
    */
   public static <A extends Annotation>A getAnnotationDeep(final Class<?> cls, final Class<A> annotationClass) {
     Class<?> parent = cls;
-    A annotation;
-    do {
+    A annotation; do
       annotation = parent.getAnnotation(annotationClass);
-    }
     while (annotation == null && (parent = parent.getSuperclass()) != null);
     return annotation;
   }
@@ -1460,11 +1455,9 @@ public final class Classes {
    * @throws NullPointerException If {@code cls} or {@code annotationClass} is null.
    */
   public static <A extends Annotation>A getAnnotationDeep(Method method, final Class<A> annotationClass) {
-    A annotation;
     Class<?> declaringClass;
-    do {
+    A annotation; do
       annotation = method.getAnnotation(annotationClass);
-    }
     while (annotation == null && (declaringClass = method.getDeclaringClass().getSuperclass()) != null && (method = getDeclaredMethodDeep(declaringClass, method.getName(), method.getParameterTypes())) != null);
     return annotation;
   }
@@ -1483,8 +1476,7 @@ public final class Classes {
    * @throws NullPointerException If {@code cls} or {@code annotationClass} is null.
    */
   public static boolean isAnnotationPresentDeep(final Class<?> cls, final Class<? extends Annotation> annotationClass) {
-    Class<?> parent = cls;
-    do
+    Class<?> parent = cls; do
       if (parent.isAnnotationPresent(annotationClass))
         return true;
     while ((parent = parent.getSuperclass()) != null);
@@ -1505,8 +1497,7 @@ public final class Classes {
    * @throws NullPointerException If {@code cls} or {@code annotationClass} is null.
    */
   public static boolean isAnnotationPresentDeep(Method method, final Class<? extends Annotation> annotationClass) {
-    Class<?> declaringClass;
-    do
+    Class<?> declaringClass; do
       if (method.isAnnotationPresent(annotationClass))
         return true;
     while ((declaringClass = method.getDeclaringClass().getSuperclass()) != null && (method = getDeclaredMethodDeep(declaringClass, method.getName(), method.getParameterTypes())) != null);
@@ -1524,8 +1515,7 @@ public final class Classes {
    */
   public static Class<?>[] getAllInterfaces(Class<?> cls) {
     Class<?>[] thisInterfaces;
-    LinkedHashSet<Class<?>> allInterfaces = null;
-    do {
+    LinkedHashSet<Class<?>> allInterfaces = null; do {
       thisInterfaces = cls.getInterfaces();
       if (thisInterfaces.length == 0)
         continue;
@@ -1566,21 +1556,19 @@ public final class Classes {
    * @throws NullPointerException If {@code cls} is null.
    */
   public static Type[] getAllGenericInterfaces(Class<?> cls) {
-    Class<?>[] thisInterfaces = null;
-    Type[] thisGenericInterfaces = null;
     LinkedHashSet<Class<?>> allInterfaces = null;
     LinkedHashSet<Type> allGenericInterfaces = null;
-    do {
-      thisInterfaces = cls.getInterfaces();
-      thisGenericInterfaces = cls.getGenericInterfaces();
-      if (thisGenericInterfaces.length > 0) {
+    Class<?>[] interfaces; Type[] genericInterfaces; do {
+      interfaces = cls.getInterfaces();
+      genericInterfaces = cls.getGenericInterfaces();
+      if (genericInterfaces.length > 0) {
         if (allGenericInterfaces == null)
           allGenericInterfaces = new LinkedHashSet<>(2);
 
-        Collections.addAll(allGenericInterfaces, thisGenericInterfaces);
+        Collections.addAll(allGenericInterfaces, genericInterfaces);
       }
 
-      if (thisInterfaces.length == 0)
+      if (interfaces.length == 0)
         continue;
 
       if (allInterfaces == null) {
@@ -1589,7 +1577,7 @@ public final class Classes {
           allGenericInterfaces = new LinkedHashSet<>(2);
       }
 
-      for (final Class<?> iface : thisInterfaces) // [A]
+      for (final Class<?> iface : interfaces) // [A]
         getAllGenericInterfaces(iface, allInterfaces, allGenericInterfaces);
     }
     while ((cls = cls.getSuperclass()) != null);
@@ -1698,11 +1686,12 @@ public final class Classes {
    * Returns the boxed {@link Class} for the specified {@code primitiveType} class. If the specified class does not represent a
    * primitive type, the same class is returned.
    *
-   * @param primitiveType The {@link Class} representing a primitive type.
+   * @param primitiveType The {@link Class} representing a primitive type to be boxed.
    * @return The boxed {@link Class} for the specified {@code primitiveType} class. If the specified class does not represent a
    *         primitive type, the same class is returned.
+   * @throws NullPointerException If {@code primitiveType} is null.
    */
-  public static Class<?> toWrapper(final Class<?> primitiveType) {
+  public static Class<?> box(final Class<?> primitiveType) {
     if (!primitiveType.isPrimitive())
       return primitiveType;
 
@@ -1736,46 +1725,56 @@ public final class Classes {
     throw new UnsupportedOperationException("Unsupported class: " + primitiveType.getName());
   }
 
-  private static final String[] primitiveTypeNames = {"boolean", "byte", "char", "double", "float", "int", "long", "short", "void"};
-  private static final Class<?>[] primitiveTypeClasses = {boolean.class, byte.class, char.class, double.class, float.class, int.class, long.class, short.class, void.class};
+  /**
+   * Returns the unboxed {@link Class} for the specified {@code objectType} class. If the specified class represents a primitive
+   * type, the same class is returned.
+   *
+   * @param objectType The {@link Class} representing an object type to be unboxed.
+   * @return The unboxed {@link Class} for the specified {@code primitiveType} class. If the specified class represents a primitive
+   *         type, the same class is returned.
+   * @throws NullPointerException If {@code objectType} is null.
+   */
+  public static Class<?> unbox(final Class<?> objectType) {
+    if (objectType.isPrimitive())
+      return objectType;
 
-  public static Class<?> forNamePrimitiveOrNull(final String name) {
-    final int index = Arrays.binarySearch(primitiveTypeNames, name);
-    return index < 0 ? null : primitiveTypeClasses[index];
-  }
-
-  public static Class<?> toPrimitiveClass(final Class<?> clazz) {
-    if (clazz.isPrimitive())
-      return clazz;
-
-    if (clazz == Integer.class)
+    if (objectType == Integer.class)
       return int.class;
 
-    if (clazz == Long.class)
+    if (objectType == Long.class)
       return long.class;
 
-    if (clazz == Double.class)
+    if (objectType == Double.class)
       return double.class;
 
-    if (clazz == Float.class)
+    if (objectType == Float.class)
       return float.class;
 
-    if (clazz == Boolean.class)
+    if (objectType == Boolean.class)
       return boolean.class;
 
-    if (clazz == Character.class)
+    if (objectType == Character.class)
       return char.class;
 
-    if (clazz == Byte.class)
+    if (objectType == Byte.class)
       return byte.class;
 
-    if (clazz == Short.class)
+    if (objectType == Short.class)
       return short.class;
 
-    if (clazz == Void.class)
+    if (objectType == Void.class)
       return void.class;
 
-    throw new UnsupportedOperationException("Unsupported class: " + clazz.getName());
+    throw new UnsupportedOperationException("Unsupported class: " + objectType.getName());
+  }
+
+  private static final Class<?>[] primitiveClasses = {boolean.class, byte.class, char.class, double.class, float.class, int.class, long.class, short.class, void.class};
+  private static final String[] primitiveNames = {"boolean", "byte", "char", "double", "float", "int", "long", "short", "void"};
+  private static final String[] primitiveInternalNames = {"Z", "B", "C", "D", "F", "I", "J", "S", "V"};
+
+  public static Class<?> forNamePrimitiveOrNull(final String name) {
+    final int index = Arrays.binarySearch(primitiveNames, name);
+    return index < 0 ? null : primitiveClasses[index];
   }
 
   private static final IdentityHashMap<Class<?>,Executable> classToExecutable = new IdentityHashMap<>();
@@ -1801,14 +1800,15 @@ public final class Classes {
   @SuppressWarnings("unchecked")
   public static <T>T newInstance(Class<T> type, final Object ... parameters) throws IllegalAccessException, InstantiationException, InvocationTargetException {
     if (type.isPrimitive())
-      type = (Class<T>)toWrapper(type);
+      type = (Class<T>)box(type);
 
     final Executable executable = classToExecutable.get(type);
     if (executable != null)
       return (T)(executable instanceof Constructor ? ((Constructor<?>)executable).newInstance(parameters) : ((Method)executable).invoke(null, parameters));
 
-    final Class<?>[] parameterTypes = new Class[parameters.length];
-    for (int i = 0, i$ = parameters.length; i < i$; ++i) // [A]
+    final int len = parameters.length;
+    final Class<?>[] parameterTypes = new Class[len];
+    for (int i = 0; i < len; ++i) // [A]
       parameterTypes[i] = parameters[i] == null ? null : parameters[i].getClass();
 
     if (parameterTypes.length == 1 && parameterTypes[0] == String.class) {
@@ -1831,13 +1831,20 @@ public final class Classes {
       return (T)constructor.newInstance(parameters);
     }
 
-    final String types = Arrays.stream(parameterTypes).map(Class::getName).collect(Collectors.joining(","));
+    final StringBuilder methodSignature = new StringBuilder();
+    for (int i = 0; i < len; ++i) { // [A]
+      if (i > 0)
+        methodSignature.append(',');
+
+      methodSignature.append(parameterTypes[i].getName());
+    }
+
     final StringBuilder message = new StringBuilder();
-    message.append(type.getName()).append(" does not define <init>(").append(types).append(')');
+    message.append(type.getName()).append(" does not define <init>(").append(methodSignature).append(')');
     if (parameterTypes.length == 1 && parameterTypes[0] == String.class)
-      message.append(", valueOf(").append(types).append("), or fromString(").append(types).append(')');
+      message.append(", valueOf(").append(methodSignature).append("), or fromString(").append(methodSignature).append(')');
     else
-      message.append(" or valueOf(").append(types).append(')');
+      message.append(" or valueOf(").append(methodSignature).append(')');
 
     throw new IllegalArgumentException(message.toString());
   }
@@ -1859,7 +1866,7 @@ public final class Classes {
    * @return The {@link Class} object for the class with the specified name, or {@code null} if the class cannot be located.
    * @exception LinkageError If the linkage fails.
    * @exception ExceptionInInitializerError If the initialization provoked by this method fails.
-   * @see java.lang.Class#forName(String)
+   * @see Class#forName(String)
    */
   public static Class<?> forNameOrNull(final String className) {
     try {
@@ -1886,7 +1893,7 @@ public final class Classes {
    * @exception ExceptionInInitializerError If the initialization provoked by this method fails.
    * @exception SecurityException If a security manager is present, and the {@code loader} is {@code null}, and the caller's class
    *              loader is not {@code null}, and the caller does not have the {@link RuntimePermission}{@code ("getClassLoader")}.
-   * @see java.lang.Class#forName(String,boolean,ClassLoader)
+   * @see Class#forName(String,boolean,ClassLoader)
    */
   public static Class<?> forNameOrNull(final String name, final boolean initialize, final ClassLoader loader) {
     try {
@@ -1902,31 +1909,31 @@ public final class Classes {
   }
 
   private static String getSignature(final Method method) {
-    final StringBuilder builder = new StringBuilder();
-    builder.append(method.getModifiers());
-    builder.append(':');
-    builder.append(method.getDeclaringClass().getName());
-    builder.append('.');
-    builder.append(method.getName());
-    final int i = builder.length();
+    final StringBuilder b = new StringBuilder();
+    b.append(method.getModifiers());
+    b.append(':');
+    b.append(method.getDeclaringClass().getName());
+    b.append('.');
+    b.append(method.getName());
+    final int i = b.length();
     for (final Class<?> parameterType : method.getParameterTypes()) // [A]
-      builder.append(',').append(getName(parameterType));
+      b.append(',').append(getName(parameterType));
 
-    if (builder.length() > i)
-      builder.setCharAt(i, '(');
+    if (b.length() > i)
+      b.setCharAt(i, '(');
     else
-      builder.append('(');
+      b.append('(');
 
-    builder.append("):");
-    builder.append(getName(method.getReturnType()));
-    return builder.toString();
+    b.append("):");
+    b.append(getName(method.getReturnType()));
+    return b.toString();
   }
 
   private static String getSignature(final CtMethod method) throws Exception {
     return method.getModifiers() + ":" + method.getLongName() + ":" + method.getReturnType().getName();
   }
 
-  private static Set<String> errorMethodSigs;
+  private static final ThreadLocal<Set<String>> errorMethodSigs = new ThreadLocal<>();
   private static Boolean hasJavaAssist;
 
   /**
@@ -1948,7 +1955,8 @@ public final class Classes {
    *         of the {@code methods}, otherwise {@code false}.
    */
   public static boolean sortDeclarativeOrder(final Method[] methods) {
-    if (methods.length == 0)
+    final int len = methods.length;
+    if (len == 0)
       return true;
 
     if (hasJavaAssist == null)
@@ -1958,16 +1966,20 @@ public final class Classes {
       return false;
 
     // First, sort the methods based on the class hierarchy
-    Arrays.sort(methods, (a, b) -> a.getDeclaringClass() == b.getDeclaringClass() ? 0 : a.getDeclaringClass().isAssignableFrom(b.getDeclaringClass()) ? -1 : 1);
+    Arrays.sort(methods, (m1, m2) -> {
+      final Class<?> c1 = m1.getDeclaringClass();
+      final Class<?> c2 = m2.getDeclaringClass();
+      return c1 == c2 ? 0 : c1.isAssignableFrom(c2) ? -1 : 1;
+    });
 
     // Create a map of the method signature to the index of the method in the methods array
-    final HashMap<String,Integer> methodSigToIndex = new HashMap<>(methods.length);
-    for (int i = 0, i$ = methods.length; i < i$; ++i) // [A]
+    final HashMap<String,Integer> methodSigToIndex = new HashMap<>(len);
+    for (int i = 0; i < len; ++i) // [A]
       methodSigToIndex.put(getSignature(methods[i]), i);
 
     // Create a composite set connecting the method to its line number
-    final Object[][] methodLineNumbers = new Object[methods.length][2];
-    for (int i = 0, i$ = methods.length; i < i$; ++i) // [A]
+    final Object[][] methodLineNumbers = new Object[len][2];
+    for (int i = 0; i < len; ++i) // [A]
       methodLineNumbers[i] = new Object[] {methods[i], null};
 
     final boolean[] success = {false};
@@ -1989,28 +2001,28 @@ public final class Classes {
         }
       }
 
-      Arrays.sort(methodLineNumbers, (a, b) -> {
-        final Class<?> clsA = ((Method)a[0]).getDeclaringClass();
-        final Class<?> clsB = ((Method)b[0]).getDeclaringClass();
-        if (clsA != clsB)
-          return clsA.isAssignableFrom(clsB) ? -1 : 1;
+      Arrays.sort(methodLineNumbers, (ml1, ml2) -> {
+        final Class<?> c1 = ((Method)ml1[0]).getDeclaringClass();
+        final Class<?> c2 = ((Method)ml2[0]).getDeclaringClass();
+        if (c1 != c2)
+          return c1.isAssignableFrom(c2) ? -1 : 1;
 
-        if (a[1] == null) {
+        if (ml1[1] == null) {
           success[0] = false;
-          warnNotFound((Method)a[0]);
-          return b[1] == null ? 0 : 1;
+          warnNotFound((Method)ml1[0]);
+          return ml2[1] == null ? 0 : 1;
         }
 
-        if (b[1] == null) {
+        if (ml2[1] == null) {
           success[0] = false;
-          warnNotFound((Method)b[0]);
-          return a[1] == null ? 0 : -1;
+          warnNotFound((Method)ml2[0]);
+          return ml1[1] == null ? 0 : -1;
         }
 
-        return Integer.compare((Integer)a[1], (Integer)b[1]);
+        return Integer.compare((Integer)ml1[1], (Integer)ml2[1]);
       });
 
-      for (int i = 0, i$ = methods.length; i < i$; ++i) // [A]
+      for (int i = 0; i < len; ++i) // [A]
         methods[i] = (Method)methodLineNumbers[i][0];
 
       return success[0];
@@ -2025,13 +2037,11 @@ public final class Classes {
       return;
 
     final String signature = getSignature(method);
+    Set<String> errorMethodSigs = Classes.errorMethodSigs.get();
     if (errorMethodSigs == null)
-      errorMethodSigs = new HashSet<>();
-    else if (errorMethodSigs.contains(signature))
-      return;
-
-    errorMethodSigs.add(signature);
-    logger.warn("sortDeclarativeOrder: Could not find " + signature);
+      Classes.errorMethodSigs.set(errorMethodSigs = new HashSet<>());
+    else if (errorMethodSigs.add(signature))
+      logger.warn("sortDeclarativeOrder: Could not find " + signature);
   }
 
   /**
@@ -2046,9 +2056,6 @@ public final class Classes {
     return className.replace('.', '/');
   }
 
-  private static final Class<?>[] primitiveClasses = {boolean.class, byte.class, char.class, double.class, float.class, int.class, long.class, short.class, void.class};
-  private static final String[] primitiveInternalNames = {"Z", "B", "C", "D", "F", "I", "J", "S", "V"};
-
   /**
    * Returns a string containing the internal names of the given classes, appended sans delimiter.
    *
@@ -2058,11 +2065,11 @@ public final class Classes {
    * @see #getInternalName(Class)
    */
   public static String getInternalName(final Class<?> ... classes) {
-    final StringBuilder builder = new StringBuilder();
+    final StringBuilder b = new StringBuilder();
     for (final Class<?> cls : classes) // [A]
-      builder.append(getInternalName(cls));
+      b.append(getInternalName(cls));
 
-    return builder.toString();
+    return b.toString();
   }
 
   /**

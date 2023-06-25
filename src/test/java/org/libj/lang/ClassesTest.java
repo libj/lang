@@ -567,7 +567,7 @@ public class ClassesTest {
     final Class<?>[] expected = {boolean.class, byte.class, char.class, double.class, float.class, int.class, long.class, short.class};
     final Class<?>[] classes = {Boolean.class, Byte.class, Character.class, Double.class, Float.class, Integer.class, Long.class, Short.class};
     for (int i = 0, i$ = classes.length; i < i$; ++i) // [A]
-      assertEquals(expected[i], Classes.toPrimitiveClass(classes[i]));
+      assertEquals(expected[i], Classes.unbox(classes[i]));
   }
 
   @Test

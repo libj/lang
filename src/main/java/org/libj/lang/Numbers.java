@@ -2196,8 +2196,7 @@ public final class Numbers {
     if (s == null)
       return defaultValue;
 
-    // FIXME: Can a NumberFormatException be avoided altogether? Yes, if
-    // FIXME: the implementation is copied.
+    // FIXME: Can a NumberFormatException be avoided altogether? Yes, if the implementation is copied.
     try {
       return Float.parseFloat(s);
     }
@@ -2217,8 +2216,7 @@ public final class Numbers {
    * @see Float#parseFloat(String)
    */
   public static float parseFloat(final String s, final float defaultValue) {
-    // FIXME: Can a NumberFormatException be avoided altogether? Yes, if
-    // FIXME: the implementation is copied.
+    // FIXME: Can a NumberFormatException be avoided altogether? Yes, if the implementation is copied.
     try {
       return s == null ? defaultValue : Float.parseFloat(s);
     }
@@ -2254,8 +2252,7 @@ public final class Numbers {
     if (s == null)
       return defaultValue;
 
-    // FIXME: Can a NumberFormatException be avoided altogether? Yes, if
-    // FIXME: the implementation is copied.
+    // FIXME: Can a NumberFormatException be avoided altogether? Yes, if the implementation is copied.
     try {
       return Double.parseDouble(s);
     }
@@ -2275,8 +2272,7 @@ public final class Numbers {
    * @see Double#parseDouble(String)
    */
   public static double parseDouble(final String s, final double defaultValue) {
-    // FIXME: Can a NumberFormatException be avoided altogether? Yes, if
-    // FIXME: the implementation is copied.
+    // FIXME: Can a NumberFormatException be avoided altogether? Yes, if the implementation is copied.
     try {
       return s == null ? defaultValue : Double.parseDouble(s);
     }
@@ -2508,9 +2504,9 @@ public final class Numbers {
     return isNumber(parts[0], true);
   }
 
-  private static boolean isNumber(String string, final boolean fraction) {
+  private static boolean isNumber(String s, final boolean isFraction) {
     final int len;
-    if (string == null || (len = (string = string.trim()).length()) == 0)
+    if (s == null || (len = (s = s.trim()).length()) == 0)
       return false;
 
     boolean dotEncountered = false;
@@ -2519,10 +2515,10 @@ public final class Numbers {
     boolean slashEncountered = false;
     int factor = 0;
     for (int i = len - 1; i >= 0; --i) { // [N]
-      final char c = string.charAt(i);
+      final char c = s.charAt(i);
       if (c < '0') {
         if (c == '/') {
-          if (!fraction || dotEncountered || expEncountered || minusEncountered || slashEncountered)
+          if (!isFraction || dotEncountered || expEncountered || minusEncountered || slashEncountered)
             return false;
 
           slashEncountered = true;
@@ -2936,7 +2932,7 @@ public final class Numbers {
    * @param numbers The numbers to be used to compute the average.
    * @return The average of the specified numbers.
    * @throws NullPointerException If {@code numbers} is null.
-   * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
+   * @throws ArrayIndexOutOfBoundsException If If {@code numbers} is an empty array.
    */
   public static BigDecimal average(final BigDecimal ... numbers) {
     BigDecimal sum = numbers[0];
@@ -2952,7 +2948,7 @@ public final class Numbers {
    * @param numbers The numbers to be used to compute the average.
    * @return The average of the specified numbers.
    * @throws NullPointerException If {@code numbers} is null.
-   * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
+   * @throws ArrayIndexOutOfBoundsException If If {@code numbers} is an empty array.
    */
   public static BigDecimal average(final BigInteger ... numbers) {
     BigDecimal sum = new BigDecimal(numbers[0]);
@@ -2968,7 +2964,7 @@ public final class Numbers {
    * @param numbers The numbers to be used to compute the average.
    * @return The average of the specified numbers.
    * @throws NullPointerException If {@code numbers} is null.
-   * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
+   * @throws ArrayIndexOutOfBoundsException If {@code numbers} is an empty array.
    */
   public static double average(final byte ... numbers) {
     long sum = numbers[0];
@@ -2984,7 +2980,7 @@ public final class Numbers {
    * @param numbers The numbers to be used to compute the average.
    * @return The average of the specified numbers.
    * @throws NullPointerException If {@code numbers} is null.
-   * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
+   * @throws ArrayIndexOutOfBoundsException If If {@code numbers} is an empty array.
    */
   public static double average(final short ... numbers) {
     long sum = numbers[0];
@@ -3000,7 +2996,7 @@ public final class Numbers {
    * @param numbers The numbers to be used to compute the average.
    * @return The average of the specified numbers.
    * @throws NullPointerException If {@code numbers} is null.
-   * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
+   * @throws ArrayIndexOutOfBoundsException If If {@code numbers} is an empty array.
    */
   public static double average(final int ... numbers) {
     long sum = numbers[0];
@@ -3016,7 +3012,7 @@ public final class Numbers {
    * @param numbers The numbers to be used to compute the average.
    * @return The average of the specified numbers.
    * @throws NullPointerException If {@code numbers} is null.
-   * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
+   * @throws ArrayIndexOutOfBoundsException If If {@code numbers} is an empty array.
    */
   public static double average(final long ... numbers) {
     long sum = numbers[0];
@@ -3032,7 +3028,7 @@ public final class Numbers {
    * @param numbers The numbers to be used to compute the average.
    * @return The average of the specified numbers.
    * @throws NullPointerException If {@code numbers} is null.
-   * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
+   * @throws ArrayIndexOutOfBoundsException If If {@code numbers} is an empty array.
    */
   public static double average(final float ... numbers) {
     double sum = numbers[0];
@@ -3048,7 +3044,7 @@ public final class Numbers {
    * @param numbers The numbers to be used to compute the average.
    * @return The average of the specified numbers.
    * @throws NullPointerException If {@code numbers} is null.
-   * @throws ArrayIndexOutOfBoundsException If {@code numbers.length == 0}.
+   * @throws ArrayIndexOutOfBoundsException If If {@code numbers} is an empty array.
    */
   public static double average(final double ... numbers) {
     double sum = numbers[0];
@@ -3084,7 +3080,7 @@ public final class Numbers {
    * @param cls The {@link Class Class&lt;? extends Number&gt;} to test.
    * @return Whether the provided {@link Class Class&lt;? extends Number&gt;} is an whole number type.
    */
-  public static boolean isWholeType(final Class<? extends Number> cls) {
+  public static boolean isWholeNumberType(final Class<? extends Number> cls) {
     if (cls == null)
       return false;
 
