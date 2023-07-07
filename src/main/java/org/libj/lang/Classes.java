@@ -791,7 +791,7 @@ public final class Classes {
    * @param key The key.
    * @param newValue The new value.
    * @return The previous value assigned to {@code key}.
-   * @throws NullPointerException If {@code annotation}, {@code key} or {@code newValue} is null.
+   * @throws NullPointerException If {@code annotation}, {@code key}, or {@code newValue} is null.
    * @throws IllegalArgumentException If {@code newValue} does not match the required type of the value for {@code key}.
    */
   @SuppressWarnings("unchecked")
@@ -1119,7 +1119,7 @@ public final class Classes {
    * @param parameterTypes The parameter array.
    * @return A {@link Method} object that reflects the specified declared method of the class or interface represented by
    *         {@code cls} (excluding inherited methods), or {@code null} if the method is not found.
-   * @throws NullPointerException If {@code cls}, {@code name} or {@code parameterTypes} is null.
+   * @throws NullPointerException If {@code cls}, {@code name}, or {@code parameterTypes} is null.
    */
   public static Method getCompatibleMethod(final Class<?> cls, final String name, final Class<?> ... parameterTypes) {
     for (final Method method : cls.getMethods()) // [A]
@@ -1590,7 +1590,7 @@ public final class Classes {
    * @param iface The interface {@link Class}.
    * @param allInterfaces The set into which all extended interfaces are to be added.
    * @param allGenericInterfaces The set into which all extended generic interfaces are to be added.
-   * @throws NullPointerException If {@code iface}, {@code allInterfaces} or {@code allGenericInterfaces} is null.
+   * @throws NullPointerException If {@code iface}, {@code allInterfaces}, or {@code allGenericInterfaces} is null.
    */
   private static void getAllGenericInterfaces(final Class<?> iface, final LinkedHashSet<Class<?>> allInterfaces, final LinkedHashSet<Type> allGenericInterfaces) {
     if (allInterfaces.contains(iface))

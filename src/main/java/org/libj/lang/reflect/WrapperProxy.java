@@ -122,10 +122,7 @@ public final class WrapperProxy {
       return false;
 
     final InvocationHandler handler = Proxy.getInvocationHandler(obj);
-    if (!(handler instanceof WrapperInvocationHandler))
-      return false;
-
-    return wrappedClass.isAssignableFrom(((WrapperInvocationHandler<?>)handler).getWrapper().getClass());
+    return handler instanceof WrapperInvocationHandler && wrappedClass.isAssignableFrom(((WrapperInvocationHandler<?>)handler).getWrapper().getClass());
   }
 
   private WrapperProxy() {

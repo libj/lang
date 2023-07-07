@@ -83,7 +83,7 @@ public final class Enumerations {
    * @param function The {@link Function} to translate objects of type {@code <T>} to type {@code <E>}.
    * @return An array of type {@code T} containing the object references in the provided {@link Enumeration}, or {@code null} if the
    *         provided {@link Enumeration} was empty.
-   * @throws NullPointerException If {@code enumeration}, {@code componentType} or {@code function} is null.
+   * @throws NullPointerException If {@code enumeration}, {@code componentType}, or {@code function} is null.
    */
   public static <T,E>E[] toArray(final Enumeration<? extends T> enumeration, final Class<E> componentType, final Function<T,E> function) {
     return recurse(enumeration, null, componentType, function, 0);
@@ -118,7 +118,7 @@ public final class Enumerations {
    * @param array The array into which the elements of the provided {@link Enumeration} are to be stored, if it is big enough;
    *          otherwise, a new array of the same runtime type is allocated for this purpose.
    * @return An array of type {@code T} containing the object references in the provided {@link Enumeration}.
-   * @throws NullPointerException If {@code enumeration}, {@code array} or {@code function} is null.
+   * @throws NullPointerException If {@code enumeration}, {@code array}, or {@code function} is null.
    */
   @SuppressWarnings("unchecked")
   public static <T,E>E[] toArray(final Enumeration<? extends T> enumeration, final E[] array, final Function<T,E> function) {

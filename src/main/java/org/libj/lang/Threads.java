@@ -73,7 +73,7 @@ public final class Threads {
    */
   public static void printThreadTrace(final Consumer<String> s) {
     final Map<Thread,StackTraceElement[]> stackTraces = Thread.getAllStackTraces();
-    final Map<Long,Thread> tidToThread = new HashMap<>(stackTraces.size());
+    final HashMap<Long,Thread> tidToThread = new HashMap<>(stackTraces.size());
     for (final Thread thread : stackTraces.keySet()) // [S]
       tidToThread.put(thread.getId(), thread);
 
@@ -85,10 +85,8 @@ public final class Threads {
 
       final ThreadInfo threadInfo = threadInfos[i];
       final Thread thread = tidToThread.get(threadInfo.getThreadId());
-      if (thread == null)
-        continue;
-
-      appendThreadTrace(builder, thread, threadInfo);
+      if (thread != null)
+        appendThreadTrace(builder, thread, threadInfo);
     }
 
     s.accept(builder.toString());

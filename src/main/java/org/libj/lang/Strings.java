@@ -195,7 +195,7 @@ public final class Strings {
    * @param suffix String suffixing the key name.
    * @return The specified map, with its values interpolated.
    * @see #interpolate(String,Map,String,String)
-   * @throws NullPointerException If {@code properties}, {@code prefix} or {@code suffix} is null.
+   * @throws NullPointerException If {@code properties}, {@code prefix}, or {@code suffix} is null.
    * @throws IllegalArgumentException If the specified {@code properties} has {@code key=value} entries that result in a loop.
    */
   public static Map<String,String> interpolate(final Map<String,String> properties, final String prefix, final String suffix) {

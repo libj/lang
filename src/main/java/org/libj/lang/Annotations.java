@@ -65,10 +65,11 @@ public final class Annotations {
       throw new RuntimeException(e);
     }
     catch (final InvocationTargetException e) {
-      if (e.getCause() instanceof RuntimeException)
-        throw (RuntimeException)e.getCause();
+      final Throwable cause = e.getCause();
+      if (cause instanceof RuntimeException)
+        throw (RuntimeException)cause;
 
-      throw new RuntimeException(e.getCause());
+      throw new RuntimeException(cause);
     }
   }
 
@@ -141,120 +142,124 @@ public final class Annotations {
     final TreeMap<String,Object> attributes = comparator != null ? new TreeMap<>(comparator) : new TreeMap<>();
     attributes.putAll(getAttributes(annotation, removeDefaults));
 
-    final StringBuilder builder = new StringBuilder("@").append(annotation.annotationType().getName()).append('(');
+    final StringBuilder b = new StringBuilder("@").append(annotation.annotationType().getName()).append('(');
     if (attributes.size() > 0) {
       final Iterator<Map.Entry<String,Object>> iterator = attributes.entrySet().iterator();
       for (int i = 0; iterator.hasNext(); ++i) { // [I]
         if (i > 0)
-          builder.append(", ");
+          b.append(", ");
 
         final Map.Entry<String,Object> entry = iterator.next();
-        builder.append(entry.getKey()).append('=');
-        appendValue(builder, comparator, entry.getValue());
+        b.append(entry.getKey()).append('=');
+        appendValue(b, comparator, entry.getValue());
       }
     }
 
-    return builder.append(')').toString();
+    return b.append(')').toString();
   }
 
-  private static void appendValue(final StringBuilder builder, final Comparator<String> comparator, final Object value) {
-    if (value instanceof String) {
-      builder.append('"').append(value).append('"');
+  private static void appendValue(final StringBuilder b, final Comparator<String> c, final Object v) {
+    if (v instanceof String) {
+      b.append('"').append(v).append('"');
     }
-    else if (value instanceof Class) {
-      builder.append(((Class<?>)value).getName()).append(".class");
-    }
-    else if (value.getClass().isArray()) {
-      builder.append('{');
-      if (value.getClass().getComponentType() == byte.class) {
-        final byte[] array = (byte[])value;
-        for (int i = 0, i$ = array.length; i < i$; ++i) { // [A]
-          if (i > 0)
-            builder.append(", ");
-
-          builder.append(array[i]);
-        }
-      }
-      else if (value.getClass().getComponentType() == char.class) {
-        final char[] array = (char[])value;
-        for (int i = 0, i$ = array.length; i < i$; ++i) { // [A]
-          if (i > 0)
-            builder.append(", ");
-
-          builder.append(array[i]);
-        }
-      }
-      else if (value.getClass().getComponentType() == short.class) {
-        final short[] array = (short[])value;
-        for (int i = 0, i$ = array.length; i < i$; ++i) { // [A]
-          if (i > 0)
-            builder.append(", ");
-
-          builder.append(array[i]);
-        }
-      }
-      else if (value.getClass().getComponentType() == int.class) {
-        final int[] array = (int[])value;
-        for (int i = 0, i$ = array.length; i < i$; ++i) { // [A]
-          if (i > 0)
-            builder.append(", ");
-
-          builder.append(array[i]);
-        }
-      }
-      else if (value.getClass().getComponentType() == long.class) {
-        final long[] array = (long[])value;
-        for (int i = 0, i$ = array.length; i < i$; ++i) { // [A]
-          if (i > 0)
-            builder.append(", ");
-
-          builder.append(array[i]);
-        }
-      }
-      else if (value.getClass().getComponentType() == double.class) {
-        final double[] array = (double[])value;
-        for (int i = 0, i$ = array.length; i < i$; ++i) { // [A]
-          if (i > 0)
-            builder.append(", ");
-
-          builder.append(array[i]);
-        }
-      }
-      else if (value.getClass().getComponentType() == float.class) {
-        final float[] array = (float[])value;
-        for (int i = 0, i$ = array.length; i < i$; ++i) { // [A]
-          if (i > 0)
-            builder.append(", ");
-
-          builder.append(array[i]);
-        }
-      }
-      else if (value.getClass().getComponentType() == boolean.class) {
-        final boolean[] array = (boolean[])value;
-        for (int i = 0, i$ = array.length; i < i$; ++i) { // [A]
-          if (i > 0)
-            builder.append(", ");
-
-          builder.append(array[i]);
-        }
-      }
-      else {
-        final Object[] array = (Object[])value;
-        for (int i = 0, i$ = array.length; i < i$; ++i) { // [A]
-          if (i > 0)
-            builder.append(", ");
-
-          appendValue(builder, comparator, array[i]);
-        }
-      }
-
-      builder.append('}');
-    }
-    else if (value instanceof Annotation) {
-      builder.append(toSortedString((Annotation)value, comparator, true));
+    else if (v instanceof Class) {
+      b.append(((Class<?>)v).getName()).append(".class");
     }
     else {
-      builder.append(value);
+      final Class<? extends Object> cls = v.getClass();
+      if (cls.isArray()) {
+        b.append('{');
+        final Class<?> componentType = cls.getComponentType();
+        if (componentType == byte.class) {
+          final byte[] a = (byte[])v;
+          for (int i = 0, i$ = a.length; i < i$; ++i) { // [A]
+            if (i > 0)
+              b.append(", ");
+
+            b.append(a[i]);
+          }
+        }
+        else if (componentType == char.class) {
+          final char[] a = (char[])v;
+          for (int i = 0, i$ = a.length; i < i$; ++i) { // [A]
+            if (i > 0)
+              b.append(", ");
+
+            b.append(a[i]);
+          }
+        }
+        else if (componentType == short.class) {
+          final short[] a = (short[])v;
+          for (int i = 0, i$ = a.length; i < i$; ++i) { // [A]
+            if (i > 0)
+              b.append(", ");
+
+            b.append(a[i]);
+          }
+        }
+        else if (componentType == int.class) {
+          final int[] a = (int[])v;
+          for (int i = 0, i$ = a.length; i < i$; ++i) { // [A]
+            if (i > 0)
+              b.append(", ");
+
+            b.append(a[i]);
+          }
+        }
+        else if (componentType == long.class) {
+          final long[] a = (long[])v;
+          for (int i = 0, i$ = a.length; i < i$; ++i) { // [A]
+            if (i > 0)
+              b.append(", ");
+
+            b.append(a[i]);
+          }
+        }
+        else if (componentType == double.class) {
+          final double[] a = (double[])v;
+          for (int i = 0, i$ = a.length; i < i$; ++i) { // [A]
+            if (i > 0)
+              b.append(", ");
+
+            b.append(a[i]);
+          }
+        }
+        else if (componentType == float.class) {
+          final float[] a = (float[])v;
+          for (int i = 0, i$ = a.length; i < i$; ++i) { // [A]
+            if (i > 0)
+              b.append(", ");
+
+            b.append(a[i]);
+          }
+        }
+        else if (componentType == boolean.class) {
+          final boolean[] a = (boolean[])v;
+          for (int i = 0, i$ = a.length; i < i$; ++i) { // [A]
+            if (i > 0)
+              b.append(", ");
+
+            b.append(a[i]);
+          }
+        }
+        else {
+          final Object[] a = (Object[])v;
+          for (int i = 0, i$ = a.length; i < i$; ++i) { // [A]
+            if (i > 0)
+              b.append(", ");
+
+            appendValue(b, c, a[i]);
+          }
+        }
+
+        b.append('}');
+      }
+      else if (v instanceof Annotation) {
+        b.append(toSortedString((Annotation)v, c, true));
+      }
+      else {
+        b.append(v);
+      }
     }
   }
 

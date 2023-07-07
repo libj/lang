@@ -84,7 +84,7 @@ public final class Bytes {
    * @param replacement The {@code byte} array to replace with.
    * @throws IllegalArgumentException If the length of {@code target} does not equal the length of {@code replacement}, or if
    *           {@code target.length != replacement.length}.
-   * @throws NullPointerException If {@code bytes}, {@code target} or {@code replacement} is null.
+   * @throws NullPointerException If {@code bytes}, {@code target}, or {@code replacement} is null.
    */
   public static void replaceAll(final byte[] bytes, final byte[] target, final byte[] replacement) {
     if (target.length != replacement.length)
