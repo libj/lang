@@ -2639,9 +2639,9 @@ public final class Strings {
     return intern != null ? intern : str;
   }
 
-  private static String[] split(final CharSequence str, final int i$, final char ch, final int empties, final StringBuilder b, int index, final int depth) {
+  private static String[] split(final CharSequence s, final int i$, final char ch, final int empties, final StringBuilder b, int index, final int depth) {
     final String[] parts;
-    final char c = str.charAt(index);
+    final char c = s.charAt(index);
     if (c != ch) {
       b.append(c);
       if (++index == i$) {
@@ -2655,7 +2655,7 @@ public final class Strings {
         }
       }
       else {
-        parts = split(str, i$, ch, empties, b, index, depth);
+        parts = split(s, i$, ch, empties, b, index, depth);
       }
     }
     else {
@@ -2664,7 +2664,7 @@ public final class Strings {
         if (index == i$)
           parts = new String[depth + 1];
         else
-          parts = split(str, i$, ch, part.length() == 0 ? empties + 1 : 0, new StringBuilder(), index, depth + 1);
+          parts = split(s, i$, ch, part.length() == 0 ? empties + 1 : 0, new StringBuilder(), index, depth + 1);
 
         parts[Math.min(parts.length - 1, depth)] = part;
       }
@@ -2672,7 +2672,7 @@ public final class Strings {
         if (index == i$)
           parts = new String[depth - empties];
         else
-          parts = split(str, i$, ch, empties, new StringBuilder(), index, depth);
+          parts = split(s, i$, ch, empties, new StringBuilder(), index, depth);
       }
     }
 
@@ -2700,10 +2700,7 @@ public final class Strings {
    * @param a The first {@link CharSequence}.
    * @param b The second {@link CharSequence}.
    * @return {@code true} if and only if the two objects are null, or the objects represent the same sequence of characters.
-   * @see String#compareTo(String)
-   * @see String#compareToIgnoreCase(String)
-   * @see String#equals(Object)
-   * @see String#equalsIgnoreCase(String)
+   * @see #equalsIgnoreCase(CharSequence,CharSequence)
    */
   public static boolean equals(final CharSequence a, final CharSequence b) {
     if (a == b)
@@ -2731,10 +2728,7 @@ public final class Strings {
    * @param b The second {@link CharSequence}.
    * @return {@code true} if and only if the two objects are null, or the objects represent the same sequence of characters,
    *         ignoring case.
-   * @see String#compareTo(String)
-   * @see String#compareToIgnoreCase(String)
-   * @see String#equals(Object)
-   * @see String#equalsIgnoreCase(String)
+   * @see #equals(CharSequence,CharSequence)
    */
   public static boolean equalsIgnoreCase(final CharSequence a, final CharSequence b) {
     if (a == b)
