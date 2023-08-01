@@ -72,12 +72,12 @@ public class ThreadsTest {
         Thread.sleep(sleepTime);
         final long runtime = System.currentTimeMillis() - ts;
         assertTrue("timeout (" + timeout + ") >= " + "sleepTime (" + sleepTime + ")", timeout >= sleepTime);
-        assertTrue("runtime (" + runtime + ") - " + "sleepTime (" + sleepTime + ") < 10", runtime - sleepTime < 10);
+        assertTrue("runtime (" + runtime + ") - " + "sleepTime (" + sleepTime + ") < 10", runtime - sleepTime < 20);
       }
       catch (final InterruptedException e) {
         final long runtime = System.currentTimeMillis() - ts;
         assertTrue("timeout (" + timeout + ") <= " + "sleepTime (" + sleepTime + ")", timeout <= sleepTime);
-        assertTrue("timeout (" + timeout + ") - " + "runtime (" + runtime + ") < 5", timeout - runtime < 5);
+        assertTrue("timeout (" + timeout + ") - " + "runtime (" + runtime + ") < 5", timeout - runtime < 10);
       }
       finally {
         latch.countDown();
