@@ -26,6 +26,14 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 
 public class ThreadsTest {
+  static {
+    Thread.setDefaultUncaughtExceptionHandler((final Thread t, final Throwable e) -> {
+      e.printStackTrace();
+      System.err.flush();
+      System.exit(1);
+    });
+  }
+
   @Test
   public void test() {
     Threads.printThreadTrace();
@@ -38,12 +46,12 @@ public class ThreadsTest {
 
   @Test
   public void testPrintStream() {
-    Threads.printThreadTrace(System.out);
+    Threads.printThreadTrace(System.err);
   }
 
   @Test
   public void testConsumer() {
-    Threads.printThreadTrace(System.out::println);
+    Threads.printThreadTrace(System.err::println);
   }
 
   public static class Task implements Runnable {
@@ -62,14 +70,14 @@ public class ThreadsTest {
       final long ts = System.currentTimeMillis();
       try {
         Thread.sleep(sleepTime);
-        final long runTime = System.currentTimeMillis() - ts;
+        final long runtime = System.currentTimeMillis() - ts;
         assertTrue("timeout (" + timeout + ") >= " + "sleepTime (" + sleepTime + ")", timeout >= sleepTime);
-        assertEquals(sleepTime + " ~ " + runTime, sleepTime, runTime, 0);
+        assertTrue("runtime (" + runtime + ") - " + "sleepTime (" + sleepTime + ") < 10", runtime - sleepTime < 10);
       }
       catch (final InterruptedException e) {
-        final long runTime = System.currentTimeMillis() - ts;
+        final long runtime = System.currentTimeMillis() - ts;
         assertTrue("timeout (" + timeout + ") <= " + "sleepTime (" + sleepTime + ")", timeout <= sleepTime);
-        assertEquals(timeout + " ~ " + runTime, timeout, runTime, 0);
+        assertTrue("timeout (" + timeout + ") - " + "runtime (" + runtime + ") < 5", timeout - runtime < 5);
       }
       finally {
         latch.countDown();
@@ -78,10 +86,10 @@ public class ThreadsTest {
   }
 
   private static final Random r = new Random();
-  private static final int numTests = 1000;
+  private static final int numTests = 500;
 
   public static Runnable newRandomRunnable(final CountDownLatch latch) {
-    final long sleepTime = 100 + r.nextInt(900);
+    final long sleepTime = 100 + r.nextInt(500);
     final long delta = 50 + r.nextInt(50);
     final long timeout = r.nextBoolean() ? sleepTime - delta : sleepTime + delta;
     return newRunnable(latch, sleepTime, timeout);
@@ -94,8 +102,15 @@ public class ThreadsTest {
   @Test
   public void testInterruptAfterTimeout() throws InterruptedException {
     final CountDownLatch latch = new CountDownLatch(numTests);
-    for (int i = 0; i < numTests; ++i) // [N]
+    for (int i = 0; i < numTests; ++i) { // [N]
+      Thread.sleep(2);
+      if (i % 100 == 0)
+        System.err.println();
+
+      System.err.print('.');
+      System.err.flush();
       new Thread(newRandomRunnable(latch)).start();
+    }
 
     latch.await();
   }

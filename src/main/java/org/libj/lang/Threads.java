@@ -30,8 +30,6 @@ import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 
 /**
@@ -119,9 +117,9 @@ public final class Threads {
   }
 
   private static class ReaperThread extends Thread {
-    private static final AtomicLong entrySequence = new AtomicLong(0);
-
     private static class Entry implements Comparable<Entry> {
+      private static final AtomicLong entrySequence = new AtomicLong(Long.MIN_VALUE);
+
       private final long sequence;
       private final Thread thread;
       private final long expireTime;
@@ -144,47 +142,41 @@ public final class Threads {
     }
 
     private final PriorityBlockingQueue<Entry> queue = new PriorityBlockingQueue<>();
-    private final ReentrantLock lock = new ReentrantLock();
-    private final Condition condition = lock.newCondition();
 
     private ReaperThread() {
-      start();
+      super("Threads.ReaperThread");
       try {
-        // Await run() to be called
-        lock.lock();
-        condition.await();
-        lock.unlock();
+        setDaemon(true);
       }
-      catch (final InterruptedException e) {
-        throw new IllegalStateException(e);
+      catch (final SecurityException e) {
       }
+
+      try {
+        setPriority(Thread.MAX_PRIORITY);
+      }
+      catch (final SecurityException e) {
+      }
+
+      start();
     }
 
     private void add(final Thread thread, final long expireTime) {
-      final Entry entry = new Entry(thread, expireTime);
-      queue.offer(entry);
-      final Entry head = queue.peek();
-      if (head == entry) {
-        lock.lock();
-        condition.signal();
-        lock.unlock();
+      queue.offer(new Entry(thread, expireTime));
+      synchronized (queue) {
+        queue.notify();
       }
     }
 
     @Override
     public void run() {
-      // Signal thread that called start()
-      lock.lock();
-      condition.signal();
-      lock.unlock();
-      while (true) {
-        final Entry entry = queue.poll();
+      Entry entry; do {
+        entry = queue.poll();
         if (entry == null) {
           try {
-            // Await Entry to be added
-            lock.lock();
-            condition.await();
-            lock.unlock();
+            // Wait for Entry to be added
+            synchronized (queue) {
+              queue.wait();
+            }
           }
           catch (final InterruptedException e) {
           }
@@ -195,32 +187,28 @@ public final class Threads {
         else {
           queue.offer(entry);
           try {
-            lock.lock();
-            condition.await(System.currentTimeMillis() - entry.expireTime, TimeUnit.MILLISECONDS);
-            lock.unlock();
+            final long timeout = System.currentTimeMillis() - entry.expireTime;
+            if (timeout > 0)
+              synchronized (this) {
+                wait(timeout);
+            }
           }
           catch (final InterruptedException e) {
           }
         }
       }
+      while (true);
     }
   }
 
   private static final AtomicReference<ReaperThread> reaper = new AtomicReference<>();
 
-  private static ReaperThread reaper() {
-    ReaperThread reaper = Threads.reaper.get();
-    if (reaper != null)
-      return reaper;
-
-    synchronized (Threads.reaper) {
-      reaper = Threads.reaper.get();
-      if (reaper != null)
-        return reaper;
-
-      reaper = new ReaperThread();
-      Threads.reaper.set(reaper);
-      return reaper;
+  private static void init() {
+    if (Threads.reaper.get() == null) {
+      synchronized (Threads.reaper) {
+        if (Threads.reaper.get() == null)
+          Threads.reaper.set(new ReaperThread());
+      }
     }
   }
 
@@ -240,8 +228,9 @@ public final class Threads {
     Objects.requireNonNull(runnable);
     assertNotNegative(timeout);
     Objects.requireNonNull(unit);
+    init();
     return () -> {
-      reaper().add(Thread.currentThread(), System.currentTimeMillis() + TimeUnit.MILLISECONDS.convert(timeout, unit));
+      reaper.get().add(Thread.currentThread(), TimeUnit.MILLISECONDS.convert(timeout, unit) + System.currentTimeMillis());
       runnable.run();
     };
   }
@@ -263,8 +252,9 @@ public final class Threads {
     Objects.requireNonNull(callable);
     assertNotNegative(timeout);
     Objects.requireNonNull(unit);
+    init();
     return () -> {
-      reaper().add(Thread.currentThread(), System.currentTimeMillis() + TimeUnit.MILLISECONDS.convert(timeout, unit));
+      reaper.get().add(Thread.currentThread(), TimeUnit.MILLISECONDS.convert(timeout, unit) + System.currentTimeMillis());
       return callable.call();
     };
   }
