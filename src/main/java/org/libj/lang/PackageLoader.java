@@ -276,12 +276,12 @@ public class PackageLoader {
     if (!resources.hasMoreElements())
       throw new PackageNotFoundException(packageName.length() > 0 ? packageName : "<default>");
 
-    Resources.traverse(resources, resourceName, includeSubPackages, (final URL root, final String path, final boolean isDirectory) -> {
-      if (isDirectory || !path.endsWith(".class"))
+    Resources.traverse(resources, resourceName, includeSubPackages, (final URL root, final String entry, final boolean isDirectory) -> {
+      if (isDirectory || !entry.endsWith(".class"))
         return true;
 
       try {
-        final String className = path.substring(0, path.length() - 6).replace('/', '.');
+        final String className = entry.substring(0, entry.length() - 6).replace('/', '.');
         final Class<?> cls = Class.forName(className, initialize, loader);
         if (predicate != null && predicate.test(cls))
           Class.forName(className, true, loader);

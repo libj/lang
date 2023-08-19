@@ -39,7 +39,7 @@ public final class Resources {
     /**
      * Performs this operation on the given arguments.
      *
-     * @param root The root location of the resource.
+     * @param root The root location of the entry.
      * @param entry The entry path off of {@code root}.
      * @param isDirectory Whether the entry represents a directory.
      * @return Whether the walk operation should continue.
@@ -49,23 +49,27 @@ public final class Resources {
 
   private static class Reporter implements Predicate<Path> {
     private final ForEachEntry callback;
-    private URL url;
+    private URL root;
     private Path path;
 
     private Reporter(final ForEachEntry callback) {
       this.callback = callback;
     }
 
-    private void update(final URL url, final Path path) {
-      this.url = url;
+    private void update(final URL root, final Path path) {
+      this.root = root;
       this.path = path;
+    }
+
+    private boolean test(final Path entry, final File file) {
+      final boolean isDirectory = file.isDirectory();
+      final String relativePath = path.relativize(entry).toString();
+      return callback.test(root, isDirectory ? relativePath + File.separator : relativePath, isDirectory);
     }
 
     @Override
     public boolean test(final Path entry) {
-      final boolean isDirectory = entry.toFile().isDirectory();
-      final String relativePath = path.relativize(entry).toString();
-      return callback.test(url, isDirectory ? relativePath + File.separator : relativePath, isDirectory);
+      return test(entry, entry.toFile());
     }
   }
 
@@ -73,7 +77,7 @@ public final class Resources {
    * Recursively traverses the tree of resource entries rooted at the provided {@code name}. For each matching entry, the
    * {@link ForEachEntry forEachEntry} predicate is called with the {@code root}, {@code entry}, and {@code isDirectory} values.
    * <p>
-   * If {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the walk operation is shortcutted.
+   * If {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the walk operation is terminated.
    * <p>
    * Resource matching behavior is as follows:
    * <ol>
@@ -87,7 +91,7 @@ public final class Resources {
    * @param classLoader The {@link ClassLoader} in which to search for resource entries.
    * @param name The name of the root resource entry.
    * @param forEachEntry The predicate that is called for each matched resource entry. If
-   *          {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the walk operation is shortcutted.
+   *          {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the walk operation is terminated.
    * @throws IOException If an I/O error has occurred.
    * @throws NullPointerException If any of the provided arguments is null.
    */
@@ -99,7 +103,7 @@ public final class Resources {
    * Non-recursively traverses the tree of resource entries rooted at the provided {@code name}. For each matching entry, the
    * {@link ForEachEntry forEachEntry} predicate is called with the {@code root}, {@code entry}, and {@code isDirectory} values.
    * <p>
-   * If {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the walk operation is shortcutted.
+   * If {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the walk operation is terminated.
    * <p>
    * Resource matching behavior is as follows:
    * <ol>
@@ -113,7 +117,7 @@ public final class Resources {
    * @param classLoader The {@link ClassLoader} in which to search for resource entries.
    * @param name The name of the root resource entry.
    * @param forEachEntry The predicate that is called for each matched resource entry. If
-   *          {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the walk operation is shortcutted.
+   *          {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the walk operation is terminated.
    * @throws IOException If an I/O error has occurred.
    * @throws NullPointerException If any of the provided arguments is null.
    */
@@ -125,7 +129,7 @@ public final class Resources {
    * Traverses the tree of resource entries rooted at the provided {@code name}. For each matching entry, the {@link ForEachEntry
    * forEachEntry} predicate is called with the {@code root}, {@code entry}, and {@code isDirectory} values.
    * <p>
-   * If {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the walk operation is shortcutted.
+   * If {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the walk operation is terminated.
    * <p>
    * Resource matching behavior is as follows:
    * <ol>
@@ -140,7 +144,7 @@ public final class Resources {
    * @param name The name of the root resource entry.
    * @param recursive Whether traversal should be recursive or not.
    * @param forEachEntry The predicate that is called for each matched resource entry. If
-   *          {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the walk operation is shortcutted.
+   *          {@link ForEachEntry#test(URL,String,boolean)} returns {@code false}, the walk operation is terminated.
    * @throws IOException If an I/O error has occurred.
    * @throws NullPointerException If any of the provided arguments is null.
    */
@@ -148,33 +152,37 @@ public final class Resources {
     if (!resources.hasMoreElements())
       return;
 
+    final int nameLen = name.length();
     Reporter reporter = null;
     do {
       final URL url = resources.nextElement();
+      final String str = url.toString();
+      final URL root = new URL(str.substring(0, str.length() - nameLen));
       if ("file".equals(url.getProtocol())) {
-        String decodedUrl;
+        final String decodedUrl;
         try {
           decodedUrl = URLDecoder.decode(url.getPath(), "UTF-8");
         }
         catch (final UnsupportedEncodingException e) {
-          decodedUrl = url.getPath();
+          throw new RuntimeException(e);
         }
 
         final File file = new File(decodedUrl);
         final Path path = file.toPath();
+
         if (reporter == null)
           reporter = new Reporter(forEachEntry);
 
-        reporter.update(url, new File(decodedUrl.substring(0, decodedUrl.length() - name.length())).toPath());
+        reporter.update(root, new File(decodedUrl.substring(0, decodedUrl.length() - nameLen)).toPath());
 
         if (file.isFile()) {
-          reporter.test(path);
+          reporter.test(path, file);
         }
         else if (recursive) {
           Files.walk(path).allMatch(reporter);
         }
         else {
-          if (name.length() == 0 && !forEachEntry.test(url, "/", true))
+          if (nameLen == 0 && !forEachEntry.test(root, "/", true))
             return;
 
           Files.list(path).allMatch(reporter);
@@ -185,20 +193,20 @@ public final class Resources {
         jarURLConnection.setUseCaches(false);
         try (final JarFile jarFile = jarURLConnection.getJarFile()) {
           final String rootName = jarURLConnection.getEntryName();
-          if (name.length() == 0)
-            forEachEntry.test(url, "/", true);
+          if (nameLen == 0)
+            forEachEntry.test(root, "/", true);
 
           final Enumeration<JarEntry> enumeration = jarFile.entries();
           while (enumeration.hasMoreElements()) {
             final JarEntry entry = enumeration.nextElement();
             final String entryName = entry.getName();
-            final int prefix = entryName.startsWith(rootName) ? rootName.length() : entryName.startsWith(name) ? name.length() : 0;
+            final int prefix = entryName.startsWith(rootName) ? rootName.length() : entryName.startsWith(name) ? nameLen : 0;
             if (prefix == 0)
               continue;
 
             final int s;
             if (recursive || (s = entryName.indexOf('/', prefix + 1)) == -1 || s == entryName.length() - 1)
-              forEachEntry.test(url, entryName, entry.isDirectory());
+              forEachEntry.test(root, entryName, entry.isDirectory());
           }
         }
       }

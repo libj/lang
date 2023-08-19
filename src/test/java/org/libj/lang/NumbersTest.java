@@ -463,7 +463,7 @@ public class NumbersTest {
   }
 
   @SuppressWarnings("unchecked")
-  private static <T extends Number>void testParse(final Function<? super String,T> function, final T ... numbers) {
+  private static <T extends Number>void testParse(final Function<String,T> function, final T ... numbers) {
     for (final T number : numbers) { // [A]
       final String str = String.valueOf(number);
       assertEquals(number, function.apply(str));

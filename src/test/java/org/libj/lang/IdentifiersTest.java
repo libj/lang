@@ -24,7 +24,7 @@ import java.util.function.Function;
 import org.junit.Test;
 
 public class IdentifiersTest {
-  private static void test(final String expected, final Function<? super String,String> function, final String value) {
+  private static void test(final String expected, final Function<String,String> function, final String value) {
     final String identifier;
     try {
       identifier = function.apply(value);
