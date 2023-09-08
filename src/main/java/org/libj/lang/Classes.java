@@ -143,17 +143,37 @@ public final class Classes {
   }
 
   /**
-   * Returns the canonical name of the specified class name, as defined by the Java Language Specification.
-   * <blockquote>
+   * Returns the canonical name of the specified class name, as defined by the Java Language Specification. <blockquote>
    * <table>
    * <caption>Examples</caption>
-   * <tr><td><b>className</b></td><td><b>returns</b></td></tr>
-   * <tr><td>{@code foo.bar.One}</td><td>{@code foo.bar.One}</td></tr>
-   * <tr><td>{@code foo.bar.One$Two}</td><td>{@code foo.bar.One.Two}</td></tr>
-   * <tr><td>{@code foo.bar.One$Two$Three}</td><td>{@code foo.bar.One.Two.Three}</td></tr>
-   * <tr><td>{@code foo.bar.One.$Two$}</td><td>{@code foo.bar.One.$Two$}</td></tr>
-   * <tr><td>{@code foo.bar.One.$Two$$Three$$$Four}</td><td>{@code foo.bar.One.$Two.$Three.$$Four}</td></tr>
-   * <tr><td>{@code foo.bar.One.$Two.$$Three$}</td><td>{@code foo.bar.One.$Two.$$Three$}</td></tr>
+   * <tr>
+   * <td><b>className</b></td>
+   * <td><b>returns</b></td>
+   * </tr>
+   * <tr>
+   * <td>{@code foo.bar.One}</td>
+   * <td>{@code foo.bar.One}</td>
+   * </tr>
+   * <tr>
+   * <td>{@code foo.bar.One$Two}</td>
+   * <td>{@code foo.bar.One.Two}</td>
+   * </tr>
+   * <tr>
+   * <td>{@code foo.bar.One$Two$Three}</td>
+   * <td>{@code foo.bar.One.Two.Three}</td>
+   * </tr>
+   * <tr>
+   * <td>{@code foo.bar.One.$Two$}</td>
+   * <td>{@code foo.bar.One.$Two$}</td>
+   * </tr>
+   * <tr>
+   * <td>{@code foo.bar.One.$Two$$Three$$$Four}</td>
+   * <td>{@code foo.bar.One.$Two.$Three.$$Four}</td>
+   * </tr>
+   * <tr>
+   * <td>{@code foo.bar.One.$Two.$$Three$}</td>
+   * <td>{@code foo.bar.One.$Two.$$Three$}</td>
+   * </tr>
    * </table>
    * </blockquote>
    *
@@ -169,18 +189,21 @@ public final class Classes {
     if (!Identifiers.isValid(className))
       throw new IllegalArgumentException("Not a valid java identifier: " + className);
 
+    final int length = className.length();
+    if (length == 1)
+      return className;
+
     final StringBuilder b = new StringBuilder();
     b.append(className.charAt(0));
-    b.append(className.charAt(1));
-    char last = '\0';
-    final int length1 = className.length() - 1;
-    for (int i = 2; i < length1; ++i) { // [N]
-      final char ch = className.charAt(i);
-      b.append(last != '.' && last != '$' && ch == '$' ? '.' : ch);
-      last = ch;
+
+    final int length1 = length - 1;
+    char ch, prev = '\0';
+    for (int i = 1; i < length1; ++i, prev = ch) { // [N]
+      ch = className.charAt(i);
+      b.append(prev != '.' && prev != '$' && ch == '$' ? '.' : ch);
     }
 
-    if (length1 > 1)
+    if (length1 > 0)
       b.append(className.charAt(length1));
 
     return b.toString();

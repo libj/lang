@@ -440,7 +440,8 @@ public class NumbersTest {
   @Test
   public void testStripTrailingZeros() {
     assertNull(Numbers.stripTrailingZeros(null));
-    assertEquals("7.0E-10", Numbers.stripTrailingZeros("7.0E-10"));
+    assertEquals("7E-10", Numbers.stripTrailingZeros("7.0E-10"));
+    assertEquals("5.4E+100", Numbers.stripTrailingZeros("5.4000E+100"));
     assertEquals("5.4", Numbers.stripTrailingZeros("5.4000"));
     assertEquals("500", Numbers.stripTrailingZeros("500"));
     assertEquals("0500", Numbers.stripTrailingZeros("0500"));

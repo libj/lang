@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
  * @see <a href= "https://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.8">JLS 3.8 Identifiers</a>
  */
 public final class Identifiers {
+  // FIXME: Replace with char-by-char implementation
   private static final Pattern unqualifiedJavaIdentifierPattern = Pattern.compile("[a-zA-Z_$][a-zA-Z\\d_$]*");
   private static final Pattern qualifiedJavaIdentifierPattern = Pattern.compile("((" + unqualifiedJavaIdentifierPattern + ")\\.)*" + unqualifiedJavaIdentifierPattern.pattern());
 

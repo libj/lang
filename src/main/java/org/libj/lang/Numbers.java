@@ -2701,7 +2701,8 @@ public final class Numbers {
     if (number == null || (len = number.length()) == 0)
       return number;
 
-    int i = len - 1; char ch; do {
+    char ch;
+    int i = len - 1; do {
       ch = number.charAt(i);
       if (ch != '0' && ch != '.')
         break;
@@ -2713,8 +2714,15 @@ public final class Numbers {
 
     int j = i; do {
       ch = number.charAt(j);
-      if (ch == 'E' || ch == 'e')
-        return number;
+      if (ch == 'E' || ch == 'e') {
+        i = j; do {
+          ch = number.charAt(--j);
+          if (ch != '0' && ch != '.')
+            break;
+        }
+        while (j > 0);
+        return j < 0 ? number : number.substring(0, j + 1) + number.substring(i);
+      }
 
       if (ch == '.')
         return number.substring(0, i);

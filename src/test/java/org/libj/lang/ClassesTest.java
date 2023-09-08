@@ -177,6 +177,7 @@ public class ClassesTest {
     catch (final IllegalArgumentException e) {
     }
 
+    assertEquals("I", Classes.toCanonicalClassName("I"));
     assertEquals("Id", Classes.toCanonicalClassName("Id"));
     assertEquals("Ids", Classes.toCanonicalClassName("Ids"));
     assertEquals("$Two", Classes.toCanonicalClassName("$Two"));
