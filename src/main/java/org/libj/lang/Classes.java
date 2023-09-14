@@ -1633,7 +1633,7 @@ public final class Classes {
    * @throws NullPointerException If {@code classes} or a member of {@code classes} is null.
    * @throws IllegalArgumentException If the number of arguments in the {@code classes} parameter is 0.
    */
-  public static Class<?> getGreatestCommonSuperclass(final Class<?> ... classes) {
+  public static Class<?> getGreatestCommonSuperclass(final Class<?> ... classes) { // FIXME: Implement Collection alternative
     if (classes.length == 0)
       throw new IllegalArgumentException("Number of arguments must be greater than 0");
 
@@ -1657,7 +1657,7 @@ public final class Classes {
    * @throws IllegalArgumentException If the number of arguments in the {@code classes} parameter is 0.
    */
   @SafeVarargs
-  public static <T>Class<?> getGreatestCommonSuperclass(final T ... objects) {
+  public static <T>Class<?> getGreatestCommonSuperclass(final T ... objects) { // FIXME: Implement Collection alternative
     if (objects.length == 0)
       throw new IllegalArgumentException("Number of arguments must be greater than 0");
 
