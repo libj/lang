@@ -525,10 +525,9 @@ public class ClassesTest {
   }
 
   @Test
-  public void testSortDeclarativeOrder() {
-    // FIXME: Implement more tests
+  public void testSortDeclarativeOrder() throws ClassNotFoundException {
     final Method[] methods = BootProxyClassLoader.class.getDeclaredMethods();
-    Classes.sortDeclarativeOrder(methods);
+    Classes.sortDeclarativeOrder(methods, true);
     final String str = Arrays.toString(methods);
     assertTrue(str, str.startsWith("[public java.lang.Class org.libj.lang.BootProxyClassLoader.findClass(java.lang.String) throws java.lang.ClassNotFoundException, public java.lang.Class org.libj.lang.BootProxyClassLoader.loadClass(java.lang.String,boolean) throws java.lang.ClassNotFoundException, public java.lang.Class org.libj.lang.BootProxyClassLoader.loadClassOrNull(java.lang.String), public java.lang.Class org.libj.lang.BootProxyClassLoader.loadClassOrNull(java.lang.String,boolean)"));
   }

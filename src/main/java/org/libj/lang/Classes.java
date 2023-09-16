@@ -855,6 +855,14 @@ public final class Classes {
   }
 
   @FunctionalInterface
+  private interface MethodRecurser<A> extends SuperclassRecurser<Method,A> {
+    @Override
+    default Method[] members(final Class<?> container) {
+      return container.getMethods();
+    }
+  }
+
+  @FunctionalInterface
   private interface DeclaredMethodRecurser<A> extends SuperclassRecurser<Method,A> {
     @Override
     default Method[] members(final Class<?> container) {
@@ -876,6 +884,8 @@ public final class Classes {
   private static final Repeat.Recurser<Class<?>,Method,Object> declaredMethodRecurser = (DeclaredMethodRecurser<Object>)(member, arg) -> true;
   private static final Repeat.Recurser<Class<?>,Method,Predicate<Method>> declaredMethodWithPredicateRecurser = (DeclaredMethodRecurser<Predicate<Method>>)(member, arg) -> arg.test(member);
   private static final Repeat.Recurser<Class<?>,Method,Class<? extends Annotation>> declaredMethodWithAnnotationRecurser = (DeclaredMethodRecurser<Class<? extends Annotation>>)(member, arg) -> member.getAnnotation(arg) != null;
+  private static final Repeat.Recurser<Class<?>,Method,Predicate<Method>> methodWithPredicateRecurser = (MethodRecurser<Predicate<Method>>)(member, arg) -> arg.test(member);
+  private static final Repeat.Recurser<Class<?>,Method,Class<? extends Annotation>> methodWithAnnotationRecurser = (MethodRecurser<Class<? extends Annotation>>)(member, arg) -> member.getAnnotation(arg) != null;
   private static final Repeat.Recurser<Class<?>,Class<?>,Class<? extends Annotation>> classWithAnnotationRecurser = (DeclaredClassRecurser<Class<? extends Annotation>>)(member, arg) -> member.getAnnotation(arg) != null;
 
   private static final BiPredicate<Field,Class<? extends Annotation>> declaredFieldWithAnnotationFilter = (m, a) -> m.getAnnotation(a) != null;
@@ -1355,6 +1365,42 @@ public final class Classes {
    */
   public static Method[] getDeclaredMethodsWithAnnotationDeep(final Class<?> cls, final Class<? extends Annotation> annotationType) {
     return Repeat.Recursive.inverted(cls, cls.getDeclaredMethods(), Method.class, declaredMethodWithAnnotationRecurser, annotationType);
+  }
+
+  /**
+   * Returns an array of public {@link Method} objects declared in {@code cls} (including inherited methods), for which the provided
+   * {@link Predicate} returns {@code true}.
+   * <p>
+   * If {@code cls} represents an array type, a primitive type, or void, then this method returns an array of length 0.
+   * <p>
+   * The elements in the returned array are sorted reflecting the inheritance graph of {@code cls}, whereby inherited methods are
+   * first, and member methods are last.
+   *
+   * @param cls The class in which to find declared methods.
+   * @param predicate The {@link Predicate} used to decide whether the method should be included in the returned array.
+   * @return An array of {@link Method} objects declared in {@code cls} (including inherited methods).
+   * @throws NullPointerException If {@code cls} or {@code predicate} is null.
+   */
+  public static Method[] getMethods(final Class<?> cls, final Predicate<Method> predicate) {
+    return Repeat.Recursive.ordered(cls.getMethods(), Method.class, methodWithPredicateRecurser, predicate);
+  }
+
+  /**
+   * Returns an array of public {@link Method} objects declared in {@code cls} (including inherited methods) that have an annotation
+   * of {@code annotationType}.
+   * <p>
+   * If {@code cls} represents an array type, a primitive type, or void, then this method returns an array of length 0.
+   * <p>
+   * The elements in the returned array are not sorted and are not in any particular order.
+   *
+   * @param cls The class in which to find declared methods.
+   * @param annotationType The type of the annotation to match.
+   * @return An array of {@link Method} objects declared in {@code cls} (excluding inherited methods) that have an annotation of
+   *         {@code annotationType}.
+   * @throws NullPointerException If {@code cls} or {@code annotationType} is null.
+   */
+  public static Method[] getMethodsWithAnnotation(final Class<?> cls, final Class<? extends Annotation> annotationType) {
+    return Repeat.Recursive.ordered(cls.getMethods(), Method.class, methodWithAnnotationRecurser, annotationType);
   }
 
   /**
@@ -1974,25 +2020,27 @@ public final class Classes {
    *           module, and therefore must be provided explicitly. This function will return {@code false} if Javassist is not
    *           present on the system classpath.
    * @param methods The {@code Method} array to be sorted.
+   * @param superFirst If {@code true}, methods belonging to super classes are ordered first, otherwise they are ordered last.
    * @return {@code true} if Javassist is present on the system classpath and line number information is available in the bytecode
    *         of the {@code methods}, otherwise {@code false}.
+   * @throws ClassNotFoundException If {@link javassist.ClassPool} is not present on the classpath.
    */
-  public static boolean sortDeclarativeOrder(final Method[] methods) {
+  public static boolean sortDeclarativeOrder(final Method[] methods, final boolean superFirst) throws ClassNotFoundException {
     final int len = methods.length;
     if (len == 0)
       return true;
 
     if (hasJavaAssist == null)
-      hasJavaAssist = forNameOrNull("javassist.ClassPool") != null;
+      hasJavaAssist = Class.forName("javassist.ClassPool") != null;
 
     if (!hasJavaAssist)
       return false;
 
     // First, sort the methods based on the class hierarchy
-    Arrays.sort(methods, (m1, m2) -> {
+    Arrays.sort(methods, (final Method m1, final Method m2) -> {
       final Class<?> c1 = m1.getDeclaringClass();
       final Class<?> c2 = m2.getDeclaringClass();
-      return c1 == c2 ? 0 : c1.isAssignableFrom(c2) ? -1 : 1;
+      return c1 == c2 ? 0 : c1.isAssignableFrom(c2) == superFirst ? -1 : 1;
     });
 
     // Create a map of the method signature to the index of the method in the methods array
@@ -2005,11 +2053,11 @@ public final class Classes {
     for (int i = 0; i < len; ++i) // [A]
       methodLineNumbers[i] = new Object[] {methods[i], null};
 
-    final boolean[] success = {false};
+    final boolean[] success = {true};
     try {
       final ClassPool pool = ClassPool.getDefault();
       Class<?> cls, last = null;
-      for (int i = 0, i$ = methodLineNumbers.length; i < i$; ++i, last = cls) { // [A]
+      for (int i = 0; i < len; ++i, last = cls) { // [A]
         cls = methods[i].getDeclaringClass();
         if (cls != last) {
           final CtClass ctClass = pool.get(cls.getName());
@@ -2017,18 +2065,18 @@ public final class Classes {
             final Integer index = methodSigToIndex.get(getSignature(ctMethod));
             if (index != null) {
               final int lineNumber = ctMethod.getMethodInfo().getLineNumber(0);
-              success[0] |= lineNumber != -1;
+              success[0] &= lineNumber != -1;
               methodLineNumbers[index][1] = lineNumber;
             }
           }
         }
       }
 
-      Arrays.sort(methodLineNumbers, (ml1, ml2) -> {
+      Arrays.sort(methodLineNumbers, (final Object[] ml1, final Object[] ml2) -> {
         final Class<?> c1 = ((Method)ml1[0]).getDeclaringClass();
         final Class<?> c2 = ((Method)ml2[0]).getDeclaringClass();
         if (c1 != c2)
-          return c1.isAssignableFrom(c2) ? -1 : 1;
+          return c1.isAssignableFrom(c2) == superFirst ? -1 : 1;
 
         if (ml1[1] == null) {
           success[0] = false;
@@ -2064,7 +2112,7 @@ public final class Classes {
     if (errorMethodSigs == null)
       Classes.errorMethodSigs.set(errorMethodSigs = new HashSet<>());
     else if (errorMethodSigs.add(signature))
-      logger.warn("sortDeclarativeOrder: Could not find " + signature);
+      logger.warn(Classes.class.getName() + "#sortDeclarativeOrder: Could not find " + signature);
   }
 
   /**
