@@ -139,7 +139,7 @@ public class Base32 extends DataEncoding<byte[],String> {
   }
 
   /**
-   * Create a new {@link Base32} object with the provided raw bytes.
+   * Creates a new {@link Base32} object with the provided raw bytes.
    *
    * @param bytes The raw bytes.
    */
@@ -148,7 +148,7 @@ public class Base32 extends DataEncoding<byte[],String> {
   }
 
   /**
-   * Create a new {@link Base32} object with the provided base32-encoded string value.
+   * Creates a new {@link Base32} object with the provided base32-encoded string value.
    *
    * @param base32 The base32-encoded string value.
    */
