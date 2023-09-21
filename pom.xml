@@ -22,10 +22,10 @@
   <parent>
     <groupId>org.libj</groupId>
     <artifactId>libj</artifactId>
-    <version>0.9.8</version>
+    <version>0.9.9-SNAPSHOT</version>
   </parent>
   <artifactId>lang</artifactId>
-  <version>0.8.0</version>
+  <version>0.8.1-SNAPSHOT</version>
   <name>LibJ Lang</name>
   <description>
     Supplementary utilities for classes that belong to java.lang, or are considered essential as to justify existence in java.lang.
