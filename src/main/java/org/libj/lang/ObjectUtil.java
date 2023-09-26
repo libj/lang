@@ -36,7 +36,7 @@ public final class ObjectUtil {
    * @return The input argument.
    * @see java.util.function.Function#identity()
    */
-  public static <T>T identity(final T obj) {
+  public static <T> T identity(final T obj) {
     return obj;
   }
 
@@ -78,7 +78,7 @@ public final class ObjectUtil {
    * @throws NullPointerException If {@code obj} is null.
    */
   @SuppressWarnings("unchecked")
-  public static <T extends Cloneable>T clone(final T obj) {
+  public static <T extends Cloneable> T clone(final T obj) {
     final Class<?> cls = obj.getClass();
     Method cloneMethod = classToCloneMethod.get(cls);
     if (cloneMethod == null) {
@@ -203,8 +203,8 @@ public final class ObjectUtil {
    * Returns the hash code of a non-{@code null} argument and 0 for a {@code null} argument.
    * <p>
    * This method differentiates itself from {@link Objects#hashCode(Object)} by recursively invoking this same method when computing
-   * the hash code of arrays and {@link Iterable}s. This effectively merges the functionality of {@link Objects#hashCode(Object)}
-   * and {@link Arrays#hashCode(Object[])} into one method.
+   * the hash code of arrays and {@link Iterable}s. This effectively merges the functionality of {@link Objects#hashCode(Object)} and
+   * {@link Arrays#hashCode(Object[])} into one method.
    *
    * @param obj An object
    * @return The hash code of a non-{@code null} argument and 0 for a {@code null} argument.

@@ -166,6 +166,7 @@ public final class Strings {
    * This performance of this algorithm is {@code O(n^2)} by nature. If the specified {@link Map} has {@code key=value} entries that
    * result in a loop, this method will throw a {@link IllegalArgumentException}.
    * <p>
+   * @formatter:off
    * <blockquote>
    * <b>Example:</b>
    * <p>
@@ -189,6 +190,7 @@ public final class Strings {
    * <tr><td>adj2</td><td>lazy</td></tr>
    * </table>
    * </blockquote>
+   * @formatter:on
    *
    * @param properties The map to interpolate.
    * @param prefix String prefixing the key name.
@@ -222,6 +224,7 @@ public final class Strings {
    * Interpolates the specified string by matching {@code prefix + key + suffix} substring and replacing it with the <i>value</i> of
    * the {@code key=value} mapping in the properties {@link Map}.
    * <p>
+   * @formatter:off
    * <blockquote>
    * <b>Example:</b>
    * <p>
@@ -237,6 +240,7 @@ public final class Strings {
    * <p>
    * <b>Output</b>: {@code The quick brown fox jumps over the lazy dog}
    * </blockquote>
+   * @formatter:on
    *
    * @param text The string to interpolate.
    * @param properties The map with key=value entries for interpolation.
@@ -306,8 +310,8 @@ public final class Strings {
 
   /**
    * Replaces each substring of the specified {@link StringBuilder} that matches the given {@code target} sequence with the given
-   * {@code replacement} sequence. If a replacement operation results in a {@link StringBuilder} with substrings that match the
-   * given {@code target} sequence, each substring will be replaced as well.
+   * {@code replacement} sequence. If a replacement operation results in a {@link StringBuilder} with substrings that match the given
+   * {@code target} sequence, each substring will be replaced as well.
    *
    * @param builder The {@link StringBuilder} in which all substrings are to be replaced.
    * @param target The sequence to be replaced.
@@ -327,8 +331,8 @@ public final class Strings {
    *
    * @param str The {@link CharSequence}.
    * @param prefix The prefix.
-   * @return {@code true} if the {@code prefix} character sequence is a prefix of {@code str}; {@code false} otherwise. Note also
-   *         that {@code true} will be returned if {@code prefix} is an empty string or is equal to {@code str}.
+   * @return {@code true} if the {@code prefix} character sequence is a prefix of {@code str}; {@code false} otherwise. Note also that
+   *         {@code true} will be returned if {@code prefix} is an empty string or is equal to {@code str}.
    * @throws NullPointerException If {@code str} or {@code prefix} is null.
    */
   public static boolean startsWith(final CharSequence str, final CharSequence prefix) {
@@ -351,9 +355,8 @@ public final class Strings {
    *
    * @param str The {@link CharSequence}.
    * @param prefix The prefix.
-   * @return {@code true} if the {@code prefix} character sequence is a prefix of {@code str}, ignoring case; {@code false}
-   *         otherwise. Note also that {@code true} will be returned if {@code prefix} is an empty string or is equal to
-   *         {@code str}.
+   * @return {@code true} if the {@code prefix} character sequence is a prefix of {@code str}, ignoring case; {@code false} otherwise.
+   *         Note also that {@code true} will be returned if {@code prefix} is an empty string or is equal to {@code str}.
    * @throws NullPointerException If {@code str} or {@code prefix} is null.
    */
   public static boolean startsWithIgnoreCase(final CharSequence str, final CharSequence prefix) {
@@ -405,8 +408,8 @@ public final class Strings {
    *
    * @param str The {@link CharSequence}.
    * @param suffix The suffix.
-   * @return {@code true} if the {@code suffix} character sequence is a suffix of {@code str}; {@code false} otherwise. Note also
-   *         that {@code true} will be returned if {@code suffix} is an empty string or is equal to {@code str}.
+   * @return {@code true} if the {@code suffix} character sequence is a suffix of {@code str}; {@code false} otherwise. Note also that
+   *         {@code true} will be returned if {@code suffix} is an empty string or is equal to {@code str}.
    * @throws NullPointerException If {@code str} or {@code suffix} is null.
    */
   public static boolean endsWith(final CharSequence str, final CharSequence suffix) {
@@ -430,9 +433,8 @@ public final class Strings {
    *
    * @param str The {@link CharSequence}.
    * @param suffix The suffix.
-   * @return {@code true} if the {@code suffix} character sequence is a suffix of {@code str}, ignoring case; {@code false}
-   *         otherwise. Note also that {@code true} will be returned if {@code suffix} is an empty string or is equal to
-   *         {@code str}.
+   * @return {@code true} if the {@code suffix} character sequence is a suffix of {@code str}, ignoring case; {@code false} otherwise.
+   *         Note also that {@code true} will be returned if {@code suffix} is an empty string or is equal to {@code str}.
    * @throws NullPointerException If {@code str} or {@code suffix} is null.
    */
   public static boolean endsWithIgnoreCase(final CharSequence str, final CharSequence suffix) {
@@ -459,8 +461,8 @@ public final class Strings {
    *
    * @param str The {@link CharSequence}.
    * @param suffix The suffix.
-   * @return {@code true} if the {@code suffix} character sequence is a suffix of {@code str}; {@code false} otherwise. Note also
-   *         that {@code true} will be returned if {@code suffix} is an empty string or is equal to {@code str}.
+   * @return {@code true} if the {@code suffix} character sequence is a suffix of {@code str}; {@code false} otherwise. Note also that
+   *         {@code true} will be returned if {@code suffix} is an empty string or is equal to {@code str}.
    * @throws NullPointerException If {@code str} is null.
    */
   public static boolean endsWith(final CharSequence str, final char suffix) {
@@ -581,15 +583,15 @@ public final class Strings {
   }
 
   /**
-   * Converts the characters in the specified {@link StringBuilder} spanning the provided index range to lowercase using case
-   * mapping information from the UnicodeData file.
+   * Converts the characters in the specified {@link StringBuilder} spanning the provided index range to lowercase using case mapping
+   * information from the UnicodeData file.
    *
    * @param builder The {@link StringBuilder}.
    * @param beginIndex The beginning index, inclusive.
    * @param endIndex The ending index, exclusive.
    * @return The specified {@link StringBuilder}, with the characters spanning the index range converted to lowercase.
    * @throws IllegalArgumentException If the {@code beginIndex} is negative, or {@code endIndex} is larger than the length of the
-   *              {@link StringBuilder}, or {@code beginIndex} is larger than {@code endIndex}.
+   *           {@link StringBuilder}, or {@code beginIndex} is larger than {@code endIndex}.
    * @throws NullPointerException If {@code builder} is null.
    * @see Character#toLowerCase(char)
    */
@@ -604,8 +606,7 @@ public final class Strings {
    * @param builder The {@link StringBuilder}.
    * @param beginIndex The beginning index, inclusive.
    * @return The specified {@link StringBuilder}, with all the characters following the provided begin index converted to lowercase.
-   * @throws IllegalArgumentException If the {@code beginIndex} is negative or larger than the length of the
-   *              {@link StringBuilder}.
+   * @throws IllegalArgumentException If the {@code beginIndex} is negative or larger than the length of the {@link StringBuilder}.
    * @throws NullPointerException If {@code builder} is null.
    * @see Character#toLowerCase(char)
    */
@@ -614,15 +615,15 @@ public final class Strings {
   }
 
   /**
-   * Converts the characters in the specified {@link StringBuilder} spanning the provided index range to uppercase using case
-   * mapping information from the UnicodeData file.
+   * Converts the characters in the specified {@link StringBuilder} spanning the provided index range to uppercase using case mapping
+   * information from the UnicodeData file.
    *
    * @param builder The {@link StringBuilder}.
    * @param beginIndex The beginning index, inclusive.
    * @param endIndex The ending index, exclusive.
    * @return The specified {@link StringBuilder}, with the characters spanning the index range converted to uppercase.
    * @throws IllegalArgumentException If the {@code beginIndex} is negative, or {@code endIndex} is larger than the length of the
-   *              {@link StringBuilder}, or {@code beginIndex} is larger than {@code endIndex}.
+   *           {@link StringBuilder}, or {@code beginIndex} is larger than {@code endIndex}.
    * @throws NullPointerException If {@code builder} is null.
    * @see Character#toLowerCase(char)
    */
@@ -637,8 +638,7 @@ public final class Strings {
    * @param builder The {@link StringBuilder}.
    * @param beginIndex The beginning index, inclusive.
    * @return The specified {@link StringBuilder}, with all the characters following the provided begin index converted to uppercase.
-   * @throws IllegalArgumentException If the {@code beginIndex} is negative or larger than the length of the
-   *              {@link StringBuilder}.
+   * @throws IllegalArgumentException If the {@code beginIndex} is negative or larger than the length of the {@link StringBuilder}.
    * @throws NullPointerException If {@code builder} is null.
    * @see Character#toLowerCase(char)
    */
@@ -648,8 +648,8 @@ public final class Strings {
 
   /**
    * Returns a padded representation of the specified length for the provided string. If {@code length > str.length()}, preceding
-   * characters are filled with spaces ({@code ' '}). If {@code length == str.length()}, the provided string instance is returned.
-   * If {@code length < str.length()}, this method throws {@link IllegalArgumentException}.
+   * characters are filled with spaces ({@code ' '}). If {@code length == str.length()}, the provided string instance is returned. If
+   * {@code length < str.length()}, this method throws {@link IllegalArgumentException}.
    * <p>
    * This method is equivalent to calling {@code pad(str, align, length, ' ')}.
    *
@@ -685,8 +685,8 @@ public final class Strings {
 
   /**
    * Returns a padded representation of the specified length for the provided string. If {@code length > str.length()}, preceding
-   * characters are filled with spaces ({@code ' '}). If {@code length == str.length()}, the provided string instance is returned.
-   * If {@code length < str.length()}, this method throws {@link IllegalArgumentException}.
+   * characters are filled with spaces ({@code ' '}). If {@code length == str.length()}, the provided string instance is returned. If
+   * {@code length < str.length()}, this method throws {@link IllegalArgumentException}.
    * <p>
    * This method is equivalent to calling {@code padLeft(str, length, ' ')}.
    *
@@ -724,8 +724,8 @@ public final class Strings {
 
   /**
    * Returns a padded representation of the specified length for the provided string. If {@code length > string.length()}, preceding
-   * characters are filled with the specified {@code pad} char. If {@code length == string.length()}, the provided string instance
-   * is returned. If {@code length < string.length()}, this method throws {@link IllegalArgumentException}.
+   * characters are filled with the specified {@code pad} char. If {@code length == string.length()}, the provided string instance is
+   * returned. If {@code length < string.length()}, this method throws {@link IllegalArgumentException}.
    *
    * @param str The string to pad.
    * @param align Alignment to be used for string.
@@ -759,8 +759,8 @@ public final class Strings {
 
   /**
    * Returns a padded representation of the specified length for the provided string. If {@code length > string.length()}, preceding
-   * characters are filled with the specified {@code pad} char. If {@code length == string.length()}, the provided string instance
-   * is returned. If {@code length < string.length()}, this method throws {@link IllegalArgumentException}.
+   * characters are filled with the specified {@code pad} char. If {@code length == string.length()}, the provided string instance is
+   * returned. If {@code length < string.length()}, this method throws {@link IllegalArgumentException}.
    *
    * @param str The string to pad.
    * @param align Alignment to be used for string.
@@ -885,9 +885,9 @@ public final class Strings {
   }
 
   /**
-   * Returns the hexadecimal representation of the specified value up to the provided digits. If the number of digits is less than
-   * the full length of the hexadecimal representation, the extra most significant digits are truncated. If the number of digits is
-   * less than the full length of the hexadecimal representation, the resultant string is left-padded with zeros ({@code '0'}).
+   * Returns the hexadecimal representation of the specified value up to the provided digits. If the number of digits is less than the
+   * full length of the hexadecimal representation, the extra most significant digits are truncated. If the number of digits is less
+   * than the full length of the hexadecimal representation, the resultant string is left-padded with zeros ({@code '0'}).
    *
    * @param value The value to convert to hexadecimal representation.
    * @param digits The number of digits to return, least significant digits first.
@@ -931,10 +931,10 @@ public final class Strings {
   }
 
   /**
-   * Returns a base 26 representation of {@code n} in alphabetical digits. The {@code 0}th string is {@code "a"}, and the
-   * {@code 25}th is {@code "z"}. For {@code n} between {@code 26} and {@code 51}, the resulting string is 2 characters in length,
-   * and starts with {@code 'a'}. For {@code n} between {@code 52} and {@code 77}, the resulting string is 2 characters in length,
-   * and starts with {@code 'b'}. In effect, this method
+   * Returns a base 26 representation of {@code n} in alphabetical digits. The {@code 0}th string is {@code "a"}, and the {@code 25}th
+   * is {@code "z"}. For {@code n} between {@code 26} and {@code 51}, the resulting string is 2 characters in length, and starts with
+   * {@code 'a'}. For {@code n} between {@code 52} and {@code 77}, the resulting string is 2 characters in length, and starts with
+   * {@code 'b'}. In effect, this method
    *
    * @param n The decimal value to convert into a base 26 representation of {@code n} in alphabetical digits.
    * @return A base 26 representation of {@code n} in alphabetical digits.
@@ -1070,11 +1070,10 @@ public final class Strings {
   }
 
   /**
-   * Encodes the specified {@link String} into a sequence of bytes using the named charset, storing the result into a new byte
-   * array.
+   * Encodes the specified {@link String} into a sequence of bytes using the named charset, storing the result into a new byte array.
    * <p>
-   * This method differentiates itself from {@link String#getBytes(String)} by throwing the unchecked {@link RuntimeException}
-   * instead of the checked {@link UnsupportedEncodingException} if the named charset is not supported.
+   * This method differentiates itself from {@link String#getBytes(String)} by throwing the unchecked {@link RuntimeException} instead
+   * of the checked {@link UnsupportedEncodingException} if the named charset is not supported.
    *
    * @param str The string to encode.
    * @param charsetName The name of a supported {@linkplain java.nio.charset.Charset charset}.
@@ -1152,20 +1151,20 @@ public final class Strings {
   }
 
   /**
-   * Returns the index within the provided {@link CharSequence} of the last occurrence of the specified character, searching
-   * backward starting at the specified index. If no such character occurs in this string at or before position {@code fromIndex},
-   * then {@code -1} is returned.
+   * Returns the index within the provided {@link CharSequence} of the last occurrence of the specified character, searching backward
+   * starting at the specified index. If no such character occurs in this string at or before position {@code fromIndex}, then
+   * {@code -1} is returned.
    * <p>
    * All indices are specified in {@code char} values (Unicode code units).
    *
    * @param str The {@link CharSequence}.
    * @param ch A character (Unicode code point).
-   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is
-   *          greater than or equal to the length of the provided {@link CharSequence}, it has the same effect as if it were equal
-   *          to one less than the length of this string: this entire string may be searched. If it is negative, it has the same
-   *          effect as if it were -1: -1 is returned.
-   * @return The index of the last occurrence of the character in the character sequence represented by this object that is less
-   *         than or equal to {@code fromIndex}, or {@code -1} if the character does not occur before that point.
+   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the provided {@link CharSequence}, it has the same effect as if it were equal to one less
+   *          than the length of this string: this entire string may be searched. If it is negative, it has the same effect as if it
+   *          were -1: -1 is returned.
+   * @return The index of the last occurrence of the character in the character sequence represented by this object that is less than
+   *         or equal to {@code fromIndex}, or {@code -1} if the character does not occur before that point.
    * @throws NullPointerException If {@code str} is null.
    */
   public static int lastIndexOf(final CharSequence str, final char ch, final int fromIndex) {
@@ -1196,18 +1195,18 @@ public final class Strings {
   }
 
   /**
-   * Returns the index within the provided {@link CharSequence} of the last occurrence of the specified substring, searching
-   * backward starting at the specified index. If no such substring occurs in this string at or before position {@code fromIndex},
-   * then {@code -1} is returned.
+   * Returns the index within the provided {@link CharSequence} of the last occurrence of the specified substring, searching backward
+   * starting at the specified index. If no such substring occurs in this string at or before position {@code fromIndex}, then
+   * {@code -1} is returned.
    * <p>
    * All indices are specified in {@code char} values (Unicode code units).
    *
    * @param str The {@link CharSequence}.
    * @param substr A substring.
-   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is
-   *          greater than or equal to the length of the provided {@link CharSequence}, it has the same effect as if it were equal
-   *          to one less than the length of this string: this entire string may be searched. If it is negative, it has the same
-   *          effect as if it were -1: -1 is returned.
+   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the provided {@link CharSequence}, it has the same effect as if it were equal to one less
+   *          than the length of this string: this entire string may be searched. If it is negative, it has the same effect as if it
+   *          were -1: -1 is returned.
    * @return The index of the last occurrence of the substring in the {@link CharSequence} represented by this object that is less
    *         than or equal to {@code fromIndex}, or {@code -1} if the substring does not occur before that point.
    * @throws NullPointerException If {@code str} or {@code substr} is null.
@@ -1231,10 +1230,10 @@ public final class Strings {
    *
    * @param str The {@link CharSequence}.
    * @param ch The character to find.
-   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is
-   *          greater than or equal to the length of the string, it has the same effect as if it were equal to one less than the
-   *          length of the string: the entire string may be searched. If it is negative, it has the same effect as if it were
-   *          {@code -1}: {@code -1} is returned.
+   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the string, it has the same effect as if it were equal to one less than the length of the
+   *          string: the entire string may be searched. If it is negative, it has the same effect as if it were {@code -1}:
+   *          {@code -1} is returned.
    * @return The index within the specified {@link CharSequence} of the first occurrence of the provided character that is not
    *         escaped, starting the search at the specified index, or {@code -1} if the unescaped character is not found.
    * @throws NullPointerException If {@code str} is null.
@@ -1259,13 +1258,13 @@ public final class Strings {
   }
 
   /**
-   * Returns the index within the specified string of the first occurrence of the provided character that is not escaped, starting
-   * the search at the specified index.
+   * Returns the index within the specified string of the first occurrence of the provided character that is not escaped, starting the
+   * search at the specified index.
    *
    * @param str The string.
    * @param ch The character to find.
-   * @return The index within the specified string of the first occurrence of the provided character that is not escaped, starting
-   *         the search at the specified index, or {@code -1} if the unescaped character is not found.
+   * @return The index within the specified string of the first occurrence of the provided character that is not escaped, starting the
+   *         search at the specified index, or {@code -1} if the unescaped character is not found.
    * @throws NullPointerException If {@code str} is null.
    */
   public static int indexOfUnEscaped(final CharSequence str, final char ch) {
@@ -1278,10 +1277,10 @@ public final class Strings {
    *
    * @param str The {@link CharSequence}.
    * @param substr The substring to find.
-   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is
-   *          greater than or equal to the length of the string, it has the same effect as if it were equal to one less than the
-   *          length of the string: the entire string may be searched. If it is negative, it has the same effect as if it were
-   *          {@code -1}: {@code -1} is returned.
+   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the string, it has the same effect as if it were equal to one less than the length of the
+   *          string: the entire string may be searched. If it is negative, it has the same effect as if it were {@code -1}:
+   *          {@code -1} is returned.
    * @return The index within the specified {@link CharSequence} of the first occurrence of the provided substring that is not
    *         escaped, starting the search at the specified index, or {@code -1} if the unescaped substring is not found.
    * @throws NullPointerException If {@code str} or {@code substr} is null.
@@ -1308,13 +1307,13 @@ public final class Strings {
   }
 
   /**
-   * Returns the index within the specified string of the first occurrence of the provided substring that is not escaped, starting
-   * the search at the specified index.
+   * Returns the index within the specified string of the first occurrence of the provided substring that is not escaped, starting the
+   * search at the specified index.
    *
    * @param str The string.
    * @param substr The substring to find.
-   * @return The index within the specified string of the first occurrence of the provided substring that is not escaped, starting
-   *         the search at the specified index, or {@code -1} if the unescaped substring is not found.
+   * @return The index within the specified string of the first occurrence of the provided substring that is not escaped, starting the
+   *         search at the specified index, or {@code -1} if the unescaped substring is not found.
    * @throws NullPointerException If {@code str} or {@code substr} is null.
    */
   public static int indexOfUnEscaped(final CharSequence str, final CharSequence substr) {
@@ -1322,17 +1321,17 @@ public final class Strings {
   }
 
   /**
-   * Returns the index within the specified {@link CharSequence} of the last occurrence of the provided character that is not
-   * escaped, searching backward starting at the specified index.
+   * Returns the index within the specified {@link CharSequence} of the last occurrence of the provided character that is not escaped,
+   * searching backward starting at the specified index.
    *
    * @param str The {@link CharSequence}.
    * @param ch The character to find.
-   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is
-   *          greater than or equal to the length of the string, it has the same effect as if it were equal to one less than the
-   *          length of the string: the entire string may be searched. If it is negative, it has the same effect as if it were
-   *          {@code -1}: {@code -1} is returned.
-   * @return The index within the specified {@link CharSequence} of the last occurrence of the provided character that is not
-   *         escaped, searching backward starting at the specified index, or {@code -1} if the unescaped character is not found.
+   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the string, it has the same effect as if it were equal to one less than the length of the
+   *          string: the entire string may be searched. If it is negative, it has the same effect as if it were {@code -1}:
+   *          {@code -1} is returned.
+   * @return The index within the specified {@link CharSequence} of the last occurrence of the provided character that is not escaped,
+   *         searching backward starting at the specified index, or {@code -1} if the unescaped character is not found.
    * @throws NullPointerException If {@code str} is null.
    */
   public static int lastIndexOfUnEscaped(final CharSequence str, final char ch, int fromIndex) {
@@ -1359,8 +1358,8 @@ public final class Strings {
    *
    * @param str The string.
    * @param ch The character to find.
-   * @return The index within the specified string of the last occurrence of the provided character that is not escaped, or
-   *         {@code -1} if the unescaped character is not found.
+   * @return The index within the specified string of the last occurrence of the provided character that is not escaped, or {@code -1}
+   *         if the unescaped character is not found.
    * @throws NullPointerException If {@code str} is null.
    */
   public static int lastIndexOfUnEscaped(final CharSequence str, final char ch) {
@@ -1368,17 +1367,17 @@ public final class Strings {
   }
 
   /**
-   * Returns the index within the specified {@link CharSequence} of the last occurrence of the provided substring that is not
-   * escaped, searching backward starting at the specified index.
+   * Returns the index within the specified {@link CharSequence} of the last occurrence of the provided substring that is not escaped,
+   * searching backward starting at the specified index.
    *
    * @param str The {@link CharSequence}.
    * @param substr The substring to find.
-   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is
-   *          greater than or equal to the length of the string, it has the same effect as if it were equal to one less than the
-   *          length of the string: the entire string may be searched. If it is negative, it has the same effect as if it were
-   *          {@code -1}: {@code -1} is returned.
-   * @return The index within the specified {@link CharSequence} of the last occurrence of the provided substring that is not
-   *         escaped, searching backward starting at the specified index, or {@code -1} if the unescaped substring is not found.
+   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the string, it has the same effect as if it were equal to one less than the length of the
+   *          string: the entire string may be searched. If it is negative, it has the same effect as if it were {@code -1}:
+   *          {@code -1} is returned.
+   * @return The index within the specified {@link CharSequence} of the last occurrence of the provided substring that is not escaped,
+   *         searching backward starting at the specified index, or {@code -1} if the unescaped substring is not found.
    * @throws NullPointerException If {@code str} or {@code substr} is null.
    */
   public static int lastIndexOfUnEscaped(final CharSequence str, final CharSequence substr, int fromIndex) {
@@ -1405,8 +1404,8 @@ public final class Strings {
    *
    * @param str The string.
    * @param substr The substring to find.
-   * @return The index within the specified string of the last occurrence of the provided substring that is not escaped, or
-   *         {@code -1} if the unescaped character is not found.
+   * @return The index within the specified string of the last occurrence of the provided substring that is not escaped, or {@code -1}
+   *         if the unescaped character is not found.
    * @throws NullPointerException If {@code str} or {@code substr} is null.
    */
   public static int lastIndexOfUnEscaped(final CharSequence str, final CharSequence substr) {
@@ -1420,10 +1419,10 @@ public final class Strings {
    *
    * @param str The string.
    * @param ch The character to find.
-   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is
-   *          greater than or equal to the length of the string, it has the same effect as if it were equal to one less than the
-   *          length of the string: the entire string may be searched. If it is negative, it has the same effect as if it were
-   *          {@code -1}: {@code -1} is returned.
+   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the string, it has the same effect as if it were equal to one less than the length of the
+   *          string: the entire string may be searched. If it is negative, it has the same effect as if it were {@code -1}:
+   *          {@code -1} is returned.
    * @return The index within the specified string of the first occurrence of the provided character that is not within a quoted
    *         section of the string, or {@code -1} if the character is not found in an unquoted section.
    * @throws NullPointerException If {@code str} is null.
@@ -1468,10 +1467,10 @@ public final class Strings {
    *
    * @param str The string.
    * @param substr The substring to find.
-   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is
-   *          greater than or equal to the length of the string, it has the same effect as if it were equal to one less than the
-   *          length of the string: the entire string may be searched. If it is negative, it has the same effect as if it were
-   *          {@code -1}: {@code -1} is returned.
+   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the string, it has the same effect as if it were equal to one less than the length of the
+   *          string: the entire string may be searched. If it is negative, it has the same effect as if it were {@code -1}:
+   *          {@code -1} is returned.
    * @return The index within the specified string of the first occurrence of the provided substring that is not within a quoted
    *         section of the string, or {@code -1} if the substring is not found in an unquoted section.
    * @throws NullPointerException If {@code str} or {@code substr} is null.
@@ -1512,15 +1511,15 @@ public final class Strings {
 
   /**
    * Returns the index within the specified string of the last occurrence of the provided character that is not within a quoted
-   * section of the string, searching backward starting at the specified index. A quoted section of a string ends with a
-   * double-quote character ({@code '"'}) and starts with a double-quote character or the start of the string.
+   * section of the string, searching backward starting at the specified index. A quoted section of a string ends with a double-quote
+   * character ({@code '"'}) and starts with a double-quote character or the start of the string.
    *
    * @param str The string.
    * @param ch The character to find.
-   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is
-   *          greater than or equal to the length of the string, it has the same effect as if it were equal to one less than the
-   *          length of the string: the entire string may be searched. If it is negative, it has the same effect as if it were
-   *          {@code -1}: {@code -1} is returned.
+   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the string, it has the same effect as if it were equal to one less than the length of the
+   *          string: the entire string may be searched. If it is negative, it has the same effect as if it were {@code -1}:
+   *          {@code -1} is returned.
    * @return The index within the specified string of the first occurrence of the provided character that is not within a quoted
    *         section of the string, or {@code -1} if the character is not found in an unquoted section.
    * @throws NullPointerException If {@code str} is null.
@@ -1563,15 +1562,15 @@ public final class Strings {
 
   /**
    * Returns the index within the specified string of the last occurrence of the provided substring that is not within a quoted
-   * section of the string, searching backward starting at the specified index. A quoted section of a string ends with a
-   * double-quote character ({@code '"'}) and starts with a double-quote character or the start of the string.
+   * section of the string, searching backward starting at the specified index. A quoted section of a string ends with a double-quote
+   * character ({@code '"'}) and starts with a double-quote character or the start of the string.
    *
    * @param str The string.
    * @param substr The substring to find.
-   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is
-   *          greater than or equal to the length of the string, it has the same effect as if it were equal to one less than the
-   *          length of the string: the entire string may be searched. If it is negative, it has the same effect as if it were
-   *          {@code -1}: {@code -1} is returned.
+   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the string, it has the same effect as if it were equal to one less than the length of the
+   *          string: the entire string may be searched. If it is negative, it has the same effect as if it were {@code -1}:
+   *          {@code -1} is returned.
    * @return The index within the specified string of the first occurrence of the provided substring that is not within a quoted
    *         section of the string, or {@code -1} if the substring is not found in an unquoted section.
    * @throws NullPointerException If {@code str} or {@code substr} is null.
@@ -1622,10 +1621,10 @@ public final class Strings {
    * @param ch The character to find.
    * @param open The {@code char} indicating the start of an enclosure.
    * @param close The {@code char} indicating the end of an enclosure.
-   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is
-   *          greater than or equal to the length of the string, it has the same effect as if it were equal to one less than the
-   *          length of the string: the entire string may be searched. If it is negative, it has the same effect as if it were
-   *          {@code -1}: {@code -1} is returned.
+   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the string, it has the same effect as if it were equal to one less than the length of the
+   *          string: the entire string may be searched. If it is negative, it has the same effect as if it were {@code -1}:
+   *          {@code -1} is returned.
    * @return The index within the specified string of the first occurrence of the provided character that is not within an enclosed
    *         section of the string, or {@code -1} if the character is not found in an unenclosed section.
    * @throws NullPointerException If {@code str} is null.
@@ -1652,8 +1651,8 @@ public final class Strings {
 
   /**
    * Returns the index within the specified string of the first occurrence of the provided character that is not within an enclosed
-   * section of the string. An enclosed section of a string starts with the provided {@code open} character and ends with the
-   * provided {@code close} character or the end of the string.
+   * section of the string. An enclosed section of a string starts with the provided {@code open} character and ends with the provided
+   * {@code close} character or the end of the string.
    *
    * @param str The string.
    * @param ch The character to find.
@@ -1676,10 +1675,10 @@ public final class Strings {
    * @param substr The substring to find.
    * @param open The {@code char} indicating the start of an enclosure.
    * @param close The {@code char} indicating the end of an enclosure.
-   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is
-   *          greater than or equal to the length of the string, it has the same effect as if it were equal to one less than the
-   *          length of the string: the entire string may be searched. If it is negative, it has the same effect as if it were
-   *          {@code -1}: {@code -1} is returned.
+   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the string, it has the same effect as if it were equal to one less than the length of the
+   *          string: the entire string may be searched. If it is negative, it has the same effect as if it were {@code -1}:
+   *          {@code -1} is returned.
    * @return The index within the specified string of the first occurrence of the provided substring that is not within an enclosed
    *         section of the string, or {@code -1} if the substring is not found in an unenclosed section.
    * @throws NullPointerException If {@code str} or {@code substr} is null.
@@ -1707,8 +1706,8 @@ public final class Strings {
 
   /**
    * Returns the index within the specified string of the first occurrence of the provided substring that is not within an enclosed
-   * section of the string. An enclosed section of a string starts with the provided {@code open} character and ends with the
-   * provided {@code close} character or the end of the string.
+   * section of the string. An enclosed section of a string starts with the provided {@code open} character and ends with the provided
+   * {@code close} character or the end of the string.
    *
    * @param str The string.
    * @param substr The substring to find.
@@ -1730,15 +1729,15 @@ public final class Strings {
    * {@code open} {@code char} followed by a {@code close} {@code char}, within which space no other unmatched {@code open} or
    * {@code close} {@code char} can exist.
    *
-   * @implNote The leading {@code open} {@code char} corresponding to the ending {@code close} {@code char} that is sought is
-   *           expected to not be present, or is on an index that is less than {@code fromIndex}.
+   * @implNote The leading {@code open} {@code char} corresponding to the ending {@code close} {@code char} that is sought is expected
+   *           to not be present, or is on an index that is less than {@code fromIndex}.
    * @param str The string.
    * @param open The {@code char} indicating a scope open.
    * @param close The {@code char} indicating a scope close.
-   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is
-   *          greater than or equal to the length of the string, it has the same effect as if it were equal to one less than the
-   *          length of the string: the entire string may be searched. If it is negative, it has the same effect as if it were
-   *          {@code -1}: {@code -1} is returned.
+   * @param fromIndex The index to start the search from. There is no restriction on the value of {@code fromIndex}. If it is greater
+   *          than or equal to the length of the string, it has the same effect as if it were equal to one less than the length of the
+   *          string: the entire string may be searched. If it is negative, it has the same effect as if it were {@code -1}:
+   *          {@code -1} is returned.
    * @return The index within the specified string of the provided {@code close} {@code char} corresponding to the matching scope of
    *         the given {@code open} {@code char}, starting the search at the specified {@code fromIndex}, or {@code -1} if the close
    *         scope is not found.
@@ -1769,8 +1768,8 @@ public final class Strings {
    * {@code open} {@code char} followed by a {@code close} {@code char}, within which space no other unmatched {@code open} or
    * {@code close} {@code char} can exist.
    *
-   * @implNote The leading {@code open} {@code char} corresponding to the ending {@code close} {@code char} that is sought is
-   *           expected to not be present.
+   * @implNote The leading {@code open} {@code char} corresponding to the ending {@code close} {@code char} that is sought is expected
+   *           to not be present.
    * @param str The string.
    * @param open The {@code char} indicating a scope open.
    * @param close The {@code char} indicating a scope close.
@@ -1838,44 +1837,26 @@ public final class Strings {
   }
 
   /**
-   * Flips the capitalization of the first character of the specified string. If the string is in ALLCAPS from the second character
-   * to the end, this method returns the original string. This method is reversible, as in: if the resulting string is used as the
-   * input, the original input string will be returned.
+   * Flips the capitalization of the first character of the specified string. If the string is in ALLCAPS from the second character to
+   * the end, this method returns the original string. This method is reversible, as in: if the resulting string is used as the input,
+   * the original input string will be returned.
    * <p>
-   * <blockquote> <b>Example:</b>
+   * @formatter:off
+   * <blockquote>
+   * <b>Example:</b>
    * <p>
    * <table>
    * <caption>Example</caption>
-   * <tr>
-   * <td><b>Input</b></td>
-   * <td><b>Output</b></td>
-   * </tr>
-   * <tr>
-   * <td>foo</td>
-   * <td>Foo</td>
-   * </tr>
-   * <tr>
-   * <td>fooBar</td>
-   * <td>FooBar</td>
-   * </tr>
-   * <tr>
-   * <td>BAR</td>
-   * <td>BAR</td>
-   * </tr>
-   * <tr>
-   * <td>fOO</td>
-   * <td>fOO</td>
-   * </tr>
-   * <tr>
-   * <td>baR</td>
-   * <td>BaR</td>
-   * </tr>
-   * <tr>
-   * <td>FooBar</td>
-   * <td>fooBar</td>
-   * </tr>
+   * <tr><td><b>Input</b></td><td><b>Output</b></td></tr>
+   * <tr><td>foo</td><td>Foo</td></tr>
+   * <tr><td>fooBar</td><td>FooBar</td></tr>
+   * <tr><td>BAR</td><td>BAR</td></tr>
+   * <tr><td>fOO</td><td>fOO</td></tr>
+   * <tr><td>baR</td><td>BaR</td></tr>
+   * <tr><td>FooBar</td><td>fooBar</td></tr>
    * </table>
    * </blockquote>
+   * @formatter:on
    *
    * @param str The string.
    * @return The specified string with its first character's capitalization flipped, as per the described rules.
@@ -2178,8 +2159,7 @@ public final class Strings {
    * {@link Character#LOWERCASE_LETTER}.
    *
    * @param str The {@link CharSequence}.
-   * @return {@code true} if all characters in the specified {@link CharSequence} are lower-case characters; otherwise
-   *         {@code false}.
+   * @return {@code true} if all characters in the specified {@link CharSequence} are lower-case characters; otherwise {@code false}.
    * @throws NullPointerException If {@code str} is null.
    * @throws IllegalArgumentException If {@code str} is empty.
    */
@@ -2198,8 +2178,7 @@ public final class Strings {
    * {@link Character#UPPERCASE_LETTER}.
    *
    * @param str The {@link CharSequence}.
-   * @return {@code true} if all characters in the specified {@link CharSequence} are upper-case characters; otherwise
-   *         {@code false}.
+   * @return {@code true} if all characters in the specified {@link CharSequence} are upper-case characters; otherwise {@code false}.
    * @throws NullPointerException If {@code str} is null.
    * @throws IllegalArgumentException If {@code str} is empty.
    */
@@ -2726,8 +2705,8 @@ public final class Strings {
    *
    * @param a The first {@link CharSequence}.
    * @param b The second {@link CharSequence}.
-   * @return {@code true} if and only if the two objects are null, or the objects represent the same sequence of characters,
-   *         ignoring case.
+   * @return {@code true} if and only if the two objects are null, or the objects represent the same sequence of characters, ignoring
+   *         case.
    * @see #equals(CharSequence,CharSequence)
    */
   public static boolean equalsIgnoreCase(final CharSequence a, final CharSequence b) {
@@ -2751,9 +2730,8 @@ public final class Strings {
   private static final Pattern replacePattern = Pattern.compile("^/((([^/])|(\\\\/))+)/((([^/])|(\\\\/))+)/$");
 
   /**
-   * Returns the resulting string after the invocation of the provided {@code searchReplaceRegex} on the specified {@code str}, or
-   * the original {@code str} if {@code rename} is null. The RegEx pattern provided in {@code searchReplaceRegex} must be in the
-   * form:
+   * Returns the resulting string after the invocation of the provided {@code searchReplaceRegex} on the specified {@code str}, or the
+   * original {@code str} if {@code rename} is null. The RegEx pattern provided in {@code searchReplaceRegex} must be in the form:
    *
    * <pre>
    * {@code /<search>/<replace>/}
@@ -2761,8 +2739,8 @@ public final class Strings {
    *
    * @param str The string on which to invoke the {@code searchReplaceRegex}.
    * @param searchReplaceRegex The {@code /search/replace} RegEx pattern to invoke on {@code str}.
-   * @return the resulting string after the invocation of the provided {@code searchReplaceRegex} on the specified {@code str}, or
-   *         the original {@code str} if {@code rename} is null.
+   * @return the resulting string after the invocation of the provided {@code searchReplaceRegex} on the specified {@code str}, or the
+   *         original {@code str} if {@code rename} is null.
    * @throws IllegalArgumentException If {@code rename} is malformed.
    * @throws NullPointerException If {@code path} is null.
    * @implNote This implementation supports Replacement Text Case Conversion via {@code \\l}, {@code \\u}, {@code \\L}, and

@@ -32,7 +32,7 @@ import java.util.stream.StreamSupport;
  */
 public final class Enumerations {
   @SuppressWarnings("unchecked")
-  private static <E>E[] recurse(final Enumeration<? extends E> enumeration, final E[] dest, final Class<E> componentType, final int depth) {
+  private static <E> E[] recurse(final Enumeration<? extends E> enumeration, final E[] dest, final Class<E> componentType, final int depth) {
     if (!enumeration.hasMoreElements())
       return dest != null && dest.length >= depth ? dest : depth == 0 ? null : (E[])Array.newInstance(componentType, depth);
 
@@ -43,7 +43,7 @@ public final class Enumerations {
   }
 
   @SuppressWarnings("unchecked")
-  private static <T,E>E[] recurse(final Enumeration<? extends T> enumeration, final E[] dest, final Class<E> componentType, final Function<T,E> function, final int depth) {
+  private static <T,E> E[] recurse(final Enumeration<? extends T> enumeration, final E[] dest, final Class<E> componentType, final Function<T,E> function, final int depth) {
     if (!enumeration.hasMoreElements())
       return dest != null && dest.length >= depth ? dest : depth == 0 ? null : (E[])Array.newInstance(componentType, depth);
 
@@ -54,8 +54,8 @@ public final class Enumerations {
   }
 
   /**
-   * Returns an array of type {@code <T>} containing the object references in the provided {@link Enumeration}, or {@code null} if
-   * the provided {@link Enumeration} was empty.
+   * Returns an array of type {@code <T>} containing the object references in the provided {@link Enumeration}, or {@code null} if the
+   * provided {@link Enumeration} was empty.
    *
    * @implNote This implementation uses a recursive algorithm for optimal performance, and may fail if the provided
    *           {@link Enumeration} contains ~8000+ elements.
@@ -66,13 +66,13 @@ public final class Enumerations {
    *         provided {@link Enumeration} was empty.
    * @throws NullPointerException If {@code enumeration} or {@code componentType} is null.
    */
-  public static <T>T[] toArray(final Enumeration<? extends T> enumeration, final Class<T> componentType) {
+  public static <T> T[] toArray(final Enumeration<? extends T> enumeration, final Class<T> componentType) {
     return recurse(enumeration, null, componentType, 0);
   }
 
   /**
-   * Returns an array of type {@code <T>} containing the object references in the provided {@link Enumeration}, or {@code null} if
-   * the provided {@link Enumeration} was empty.
+   * Returns an array of type {@code <T>} containing the object references in the provided {@link Enumeration}, or {@code null} if the
+   * provided {@link Enumeration} was empty.
    *
    * @implNote This implementation uses a recursive algorithm for optimal performance, and may fail if the provided
    *           {@link Enumeration} contains ~8000+ elements.
@@ -85,7 +85,7 @@ public final class Enumerations {
    *         provided {@link Enumeration} was empty.
    * @throws NullPointerException If {@code enumeration}, {@code componentType}, or {@code function} is null.
    */
-  public static <T,E>E[] toArray(final Enumeration<? extends T> enumeration, final Class<E> componentType, final Function<T,E> function) {
+  public static <T,E> E[] toArray(final Enumeration<? extends T> enumeration, final Class<E> componentType, final Function<T,E> function) {
     return recurse(enumeration, null, componentType, function, 0);
   }
 
@@ -102,7 +102,7 @@ public final class Enumerations {
    * @throws NullPointerException If {@code enumeration} or {@code array} is null.
    */
   @SuppressWarnings("unchecked")
-  public static <T>T[] toArray(final Enumeration<? extends T> enumeration, final T[] array) {
+  public static <T> T[] toArray(final Enumeration<? extends T> enumeration, final T[] array) {
     return recurse(enumeration, array, (Class<T>)array.getClass().getComponentType(), 0);
   }
 
@@ -121,7 +121,7 @@ public final class Enumerations {
    * @throws NullPointerException If {@code enumeration}, {@code array}, or {@code function} is null.
    */
   @SuppressWarnings("unchecked")
-  public static <T,E>E[] toArray(final Enumeration<? extends T> enumeration, final E[] array, final Function<T,E> function) {
+  public static <T,E> E[] toArray(final Enumeration<? extends T> enumeration, final E[] array, final Function<T,E> function) {
     return recurse(enumeration, array, (Class<E>)array.getClass().getComponentType(), function, 0);
   }
 
@@ -136,7 +136,7 @@ public final class Enumerations {
    * @return A {@link List} of type {@code T} containing the object references in the specified {@link Enumeration}.
    * @throws NullPointerException If {@code enumeration} or {@code componentType} is null.
    */
-  public static <T>List<T> asList(final Enumeration<? extends T> enumeration, final Class<T> componentType) {
+  public static <T> List<T> asList(final Enumeration<? extends T> enumeration, final Class<T> componentType) {
     return Arrays.asList(toArray(enumeration, componentType));
   }
 
@@ -149,7 +149,7 @@ public final class Enumerations {
    * @return A {@link Stream} containing the object references in the specified {@link Enumeration}.
    * @throws NullPointerException If {@code enumeration} is null.
    */
-  public static <T>Stream<T> asStream(final Enumeration<T> enumeration) {
+  public static <T> Stream<T> asStream(final Enumeration<T> enumeration) {
     return StreamSupport.stream(new Spliterators.AbstractSpliterator<T>(Long.MAX_VALUE, Spliterator.ORDERED) {
       @Override
       public boolean tryAdvance(final Consumer<? super T> action) {
@@ -188,7 +188,7 @@ public final class Enumerations {
    * @param o The sole object to be stored in the returned set.
    * @return An {@link Enumeration} containing only the specified object.
    */
-  public static <T>Enumeration<T> singleton(final T o) {
+  public static <T> Enumeration<T> singleton(final T o) {
     return new Enumeration<T>() {
       private boolean hasNext = true;
 

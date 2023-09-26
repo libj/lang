@@ -68,8 +68,8 @@ public final class Systems {
    *
    * @param key The name of the system property to find.
    * @param defaultValue The value to return if a value for {@code key} exists.
-   * @return The value resulting from the system property indicated by the specified {@code key}, which if not present results in
-   *         the {@code defaultValue}.
+   * @return The value resulting from the system property indicated by the specified {@code key}, which if not present results in the
+   *         {@code defaultValue}.
    * @throws SecurityException If a security manager exists and its {@link SecurityManager#checkPermission checkPermission} method
    *           doesn't allow access to the {@code key}.
    * @see System#getProperty(String)
@@ -85,8 +85,8 @@ public final class Systems {
   }
 
   /**
-   * Returns the {@code boolean} value resulting from the system property indicated by the specified {@code primaryKey}, which if
-   * not present is sought by the {@code fallbackKey}, which if not present results in the {@code defaultValue}.
+   * Returns the {@code boolean} value resulting from the system property indicated by the specified {@code primaryKey}, which if not
+   * present is sought by the {@code fallbackKey}, which if not present results in the {@code defaultValue}.
    * <p>
    * First, if there is a security manager, its {@link SecurityManager#checkPropertyAccess(String)} method is called with the key as
    * its argument. This may result in a {@link SecurityException}.
@@ -99,8 +99,8 @@ public final class Systems {
    * @throws SecurityException If a security manager exists and its {@link SecurityManager#checkPermission checkPermission} method
    *           doesn't allow access to the {@code primaryKey} or {@code fallbackKey}.
    * @see System#getProperty(String)
-   * @implNote If a value for {@code primaryKey} or {@code fallbackKey} exist, but does not represent a parsable {@code boolean},
-   *           this method will return {@code defaultValue}.
+   * @implNote If a value for {@code primaryKey} or {@code fallbackKey} exist, but does not represent a parsable {@code boolean}, this
+   *           method will return {@code defaultValue}.
    */
   public static boolean getProperty(final String primaryKey, final String fallbackKey, final boolean defaultValue) {
     final String value = System.getProperty(primaryKey);
@@ -111,16 +111,16 @@ public final class Systems {
   }
 
   /**
-   * Returns the {@code boolean} value resulting from the system property indicated by the specified {@code key}, which if not
-   * present results in the {@code defaultValue}.
+   * Returns the {@code boolean} value resulting from the system property indicated by the specified {@code key}, which if not present
+   * results in the {@code defaultValue}.
    * <p>
    * First, if there is a security manager, its {@link SecurityManager#checkPropertyAccess(String)} method is called with the key as
    * its argument. This may result in a {@link SecurityException}.
    *
    * @param key The name of the system property to find.
    * @param defaultValue The value to return if a value for {@code key} exists.
-   * @return The value resulting from the system property indicated by the specified {@code key}, which if not present results in
-   *         the {@code defaultValue}.
+   * @return The value resulting from the system property indicated by the specified {@code key}, which if not present results in the
+   *         {@code defaultValue}.
    * @throws SecurityException If a security manager exists and its {@link SecurityManager#checkPermission checkPermission} method
    *           doesn't allow access to the {@code key}.
    * @see System#getProperty(String)

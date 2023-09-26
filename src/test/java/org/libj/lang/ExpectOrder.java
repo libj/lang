@@ -27,5 +27,6 @@ import java.lang.annotation.Target;
 @Repeatable(ExpectOrders.class)
 public @interface ExpectOrder {
   DeclarativeOrderPolicy policy();
+
   int order();
 }

@@ -254,7 +254,7 @@ public class ClassesTest {
   public void testGetAllGenericInterfaces() {
     final Type[] interfaces = Classes.getAllGenericInterfaces(Z.class);
     assertEquals(3, interfaces.length);
-//    assertEquals("[org.libj.lang.ClassesTest$X<java.lang.Integer, U>, org.libj.lang.ClassesTest$W<T>]", Arrays.toString(interfaces));
+    // assertEquals("[org.libj.lang.ClassesTest$X<java.lang.Integer, U>, org.libj.lang.ClassesTest$W<T>]", Arrays.toString(interfaces));
   }
 
   @Test
@@ -366,7 +366,7 @@ public class ClassesTest {
     assertEquals("found", Classes.walkClassHierarchy(LinkedList.class, c -> c == Serializable.class ? "found" : null));
   }
 
-  private static <T>Collection<T> asCollection(final Collection<T> c, final T[] a, final int fromIndex, final int toIndex) {
+  private static <T> Collection<T> asCollection(final Collection<T> c, final T[] a, final int fromIndex, final int toIndex) {
     for (int i = fromIndex; i < toIndex; ++i) // [N]
       c.add(a[i]);
 

@@ -38,9 +38,9 @@ public final class Booleans {
 
   /**
    * Parses the string argument as a {@code boolean}. The returned value is {@code true} if the string argument is equal, ignoring
-   * case, to the string {@code "true"}; {@code false} if the string argument is equal, ignoring case, to the string
-   * {@code "false"}; {@code defaultValue} if the string argument is null or does not equal, ignoring case, to either {@code "true"}
-   * or {@code "false"}.
+   * case, to the string {@code "true"}; {@code false} if the string argument is equal, ignoring case, to the string {@code "false"};
+   * {@code defaultValue} if the string argument is null or does not equal, ignoring case, to either {@code "true"} or
+   * {@code "false"}.
    * <ul>
    * <li>{@code Boolean.parseBoolean("True")} returns {@code true}.</li>
    * <li>{@code Boolean.parseBoolean("yes")} returns {@code false}.</li>

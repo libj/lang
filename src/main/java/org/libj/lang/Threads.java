@@ -169,7 +169,8 @@ public final class Threads {
 
     @Override
     public void run() {
-      Entry entry; do {
+      Entry entry;
+      do {
         entry = queue.poll();
         if (entry == null) {
           try {
@@ -191,7 +192,7 @@ public final class Threads {
             if (timeout > 0)
               synchronized (this) {
                 wait(timeout);
-            }
+              }
           }
           catch (final InterruptedException e) {
           }
@@ -248,7 +249,7 @@ public final class Threads {
    * @throws NullPointerException If {@code callable} or {@code unit} is null.
    * @throws IllegalArgumentException If {@code timeout} is negative.
    */
-  public static <V>Callable<V> interruptAfterTimeout(final Callable<V> callable, final long timeout, final TimeUnit unit) {
+  public static <V> Callable<V> interruptAfterTimeout(final Callable<V> callable, final long timeout, final TimeUnit unit) {
     Objects.requireNonNull(callable);
     assertNotNegative(timeout);
     Objects.requireNonNull(unit);

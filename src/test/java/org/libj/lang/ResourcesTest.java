@@ -33,7 +33,7 @@ public class ResourcesTest {
   public void testListJUnit() throws IOException {
     final AtomicInteger counter = new AtomicInteger();
     Resources.list(ClassLoader.getSystemClassLoader(), "junit/", (final URL root, final String entry, final boolean isDirectory) -> {
-      if (logger.isDebugEnabled()) logger.debug(root + entry);
+      if (logger.isDebugEnabled()) { logger.debug(root + entry); }
       counter.getAndIncrement();
       return true;
     });
@@ -44,7 +44,7 @@ public class ResourcesTest {
   public void testWalkJUnit() throws IOException {
     final AtomicInteger counter = new AtomicInteger();
     Resources.walk(ClassLoader.getSystemClassLoader(), "junit/", (final URL root, final String entry, final boolean isDirectory) -> {
-      if (logger.isDebugEnabled()) logger.debug(root + entry);
+      if (logger.isDebugEnabled()) { logger.debug(root + entry); }
       counter.getAndIncrement();
       return true;
     });
@@ -55,7 +55,7 @@ public class ResourcesTest {
   public void testListJUnitRunner() throws IOException {
     final AtomicInteger counter = new AtomicInteger();
     Resources.list(ClassLoader.getSystemClassLoader(), "junit/runner/", (final URL root, final String entry, final boolean isDirectory) -> {
-      if (logger.isDebugEnabled()) logger.debug(root + entry);
+      if (logger.isDebugEnabled()) { logger.debug(root + entry); }
       counter.getAndIncrement();
       return true;
     });
@@ -66,7 +66,7 @@ public class ResourcesTest {
   public void testWalkJUnitRunner() throws IOException {
     final AtomicInteger counter = new AtomicInteger();
     Resources.walk(ClassLoader.getSystemClassLoader(), "junit/runner/", (final URL root, final String entry, final boolean isDirectory) -> {
-      if (logger.isDebugEnabled()) logger.debug(root + entry);
+      if (logger.isDebugEnabled()) { logger.debug(root + entry); }
       counter.getAndIncrement();
       return true;
     });
@@ -77,7 +77,7 @@ public class ResourcesTest {
   public void testListLibJRunner() throws IOException {
     final AtomicInteger counter = new AtomicInteger();
     Resources.list(ClassLoader.getSystemClassLoader(), "org/junit/", (final URL root, final String entry, final boolean isDirectory) -> {
-      if (logger.isDebugEnabled()) logger.debug(root + entry);
+      if (logger.isDebugEnabled()) { logger.debug(root + entry); }
       counter.getAndIncrement();
       return true;
     });
@@ -88,7 +88,7 @@ public class ResourcesTest {
   public void testWalkLibJRunner() throws IOException {
     final AtomicInteger counter = new AtomicInteger();
     Resources.walk(ClassLoader.getSystemClassLoader(), "org/junit/", (final URL root, final String entry, final boolean isDirectory) -> {
-      if (logger.isDebugEnabled()) logger.debug(root + entry);
+      if (logger.isDebugEnabled()) { logger.debug(root + entry); }
       counter.getAndIncrement();
       return true;
     });

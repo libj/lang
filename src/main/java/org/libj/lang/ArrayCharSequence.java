@@ -108,8 +108,8 @@ public abstract class ArrayCharSequence implements CharSequence, Serializable {
    * @param count The count.
    * @return A new {@link ArrayCharSequence} with the specified string, with the char sequence range as {@code offset} to
    *         {@code count}.
-   * @throws IndexOutOfBoundsException If {@code offset} is negative, {@code count} is negative, or {@code str.length()} is less
-   *           than {@code offset + count}.
+   * @throws IndexOutOfBoundsException If {@code offset} is negative, {@code count} is negative, or {@code str.length()} is less than
+   *           {@code offset + count}.
    * @throws NullPointerException If {@code str} is null.
    */
   public static ArrayCharSequence of(final String str, final int offset, final int count) {

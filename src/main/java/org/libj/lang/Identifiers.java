@@ -132,10 +132,10 @@ public final class Identifiers {
   }
 
   /**
-   * Transforms a string into a valid Java Identifier. Strings that start with an illegal character are prepended with
-   * {@code prefix}. Strings that are Java Reserved Words are prepended with {@code prefix}. All other illegal characters are
-   * substituted with the string value mapped to the key of the character in {@code substitutes}. If the mapping is missing, the
-   * character is substituted with the {@code substitute} char.
+   * Transforms a string into a valid Java Identifier. Strings that start with an illegal character are prepended with {@code prefix}.
+   * Strings that are Java Reserved Words are prepended with {@code prefix}. All other illegal characters are substituted with the
+   * string value mapped to the key of the character in {@code substitutes}. If the mapping is missing, the character is substituted
+   * with the {@code substitute} char.
    *
    * @param string The input string.
    * @param prefix The character that will be prepended to the string if the first character is not valid.
@@ -169,10 +169,10 @@ public final class Identifiers {
   }
 
   /**
-   * Transforms a string into a valid Java Identifier. Strings that start with an illegal character are prepended with
-   * {@code prefix}. Strings that are Java Reserved Words are prepended with {@code prefix}. All other illegal characters are
-   * substituted with the string value mapped to the key of the character in {@code substitutes}. If the mapping is missing, the
-   * illegal character is omitted.
+   * Transforms a string into a valid Java Identifier. Strings that start with an illegal character are prepended with {@code prefix}.
+   * Strings that are Java Reserved Words are prepended with {@code prefix}. All other illegal characters are substituted with the
+   * string value mapped to the key of the character in {@code substitutes}. If the mapping is missing, the illegal character is
+   * omitted.
    *
    * @param string The input string.
    * @param prefix The character that will be prepended to the string if the first character is not valid.
@@ -186,9 +186,9 @@ public final class Identifiers {
   }
 
   /**
-   * Transforms a string into a valid Java Identifier. Strings that start with an illegal character are prepended with
-   * {@code prefix}. Strings that are Java Reserved Words are prepended with {@code prefix}. All other illegal characters are
-   * substituted with the {@code substitute} char.
+   * Transforms a string into a valid Java Identifier. Strings that start with an illegal character are prepended with {@code prefix}.
+   * Strings that are Java Reserved Words are prepended with {@code prefix}. All other illegal characters are substituted with the
+   * {@code substitute} char.
    *
    * @param string The input string.
    * @param prefix The character that will be prepended to the string if the first character is not valid.
@@ -202,9 +202,9 @@ public final class Identifiers {
   }
 
   /**
-   * Transforms a string into a valid Java Identifier. Strings that start with an illegal character are prepended with
-   * {@code prefix}. Strings that are Java Reserved Words are prepended with {@code prefix}. All other illegal characters are
-   * substituted with the {@code substitute} char.
+   * Transforms a string into a valid Java Identifier. Strings that start with an illegal character are prepended with {@code prefix}.
+   * Strings that are Java Reserved Words are prepended with {@code prefix}. All other illegal characters are substituted with the
+   * {@code substitute} char.
    *
    * @param string The input string.
    * @param prefix The character that will be prepended to the string if the first character is not valid.
@@ -218,9 +218,8 @@ public final class Identifiers {
   }
 
   /**
-   * Transforms a string into a valid Java Identifier. Strings that start with an illegal character are prepended with
-   * {@code prefix}. Strings that are Java Reserved Words are prepended with {@code prefix}. All other illegal characters are
-   * omitted.
+   * Transforms a string into a valid Java Identifier. Strings that start with an illegal character are prepended with {@code prefix}.
+   * Strings that are Java Reserved Words are prepended with {@code prefix}. All other illegal characters are omitted.
    *
    * @param string The input string.
    * @param prefix The character that will be prepended to the string if the first character is not valid.
@@ -317,10 +316,10 @@ public final class Identifiers {
   /**
    * Transforms a string into a valid Java Identifier that meets suggested package name guidelines. Strings that are Java Reserved
    * Words are prepended with {@code prefix}. Strings that start with an illegal character are prepended with {@code _}. All other
-   * illegal characters are substituted {@code _}. If the domain name contains a hyphen, or any other special character not allowed
-   * in an identifier, convert it into an underscore. If any of the resulting package name components are keywords, append an
-   * underscore to them. If any of the resulting package name components start with a digit, or any other character that is not
-   * allowed as an initial character of an identifier, have an underscore prefixed to the component.
+   * illegal characters are substituted {@code _}. If the domain name contains a hyphen, or any other special character not allowed in
+   * an identifier, convert it into an underscore. If any of the resulting package name components are keywords, append an underscore
+   * to them. If any of the resulting package name components start with a digit, or any other character that is not allowed as an
+   * initial character of an identifier, have an underscore prefixed to the component.
    *
    * @param string The input string.
    * @param substitutes Function to dereference illegal characters to their substitutions.
@@ -341,10 +340,10 @@ public final class Identifiers {
   /**
    * Transforms a string into a valid Java Identifier that meets suggested package name guidelines. Strings that are Java Reserved
    * Words are prepended with {@code prefix}. Strings that start with an illegal character are prepended with {@code _}. All other
-   * illegal characters are substituted {@code _}. If the domain name contains a hyphen, or any other special character not allowed
-   * in an identifier, convert it into an underscore. If any of the resulting package name components are keywords, append an
-   * underscore to them. If any of the resulting package name components start with a digit, or any other character that is not
-   * allowed as an initial character of an identifier, have an underscore prefixed to the component.
+   * illegal characters are substituted {@code _}. If the domain name contains a hyphen, or any other special character not allowed in
+   * an identifier, convert it into an underscore. If any of the resulting package name components are keywords, append an underscore
+   * to them. If any of the resulting package name components start with a digit, or any other character that is not allowed as an
+   * initial character of an identifier, have an underscore prefixed to the component.
    *
    * @param string The input string.
    * @return The string transformed to a valid Java Identifier that meets suggested package name guidelines.
@@ -418,8 +417,7 @@ public final class Identifiers {
 
   /**
    * Transforms a string into a valid Java Identifier in camelCase. Strings that start with an illegal character are prepended with
-   * {@code prefix}. Strings that are Java Reserved Words are prepended with {@code prefix}. All other illegal characters are
-   * omitted.
+   * {@code prefix}. Strings that are Java Reserved Words are prepended with {@code prefix}. All other illegal characters are omitted.
    *
    * @param string The input string.
    * @param prefix The character that will be prepended to the string if the first character is not valid.
@@ -434,8 +432,7 @@ public final class Identifiers {
 
   /**
    * Transforms a string into a valid Java Identifier in camelCase. Strings that start with an illegal character are prepended with
-   * {@code prefix}. Strings that are Java Reserved Words are prepended with {@code prefix}. All other illegal characters are
-   * omitted.
+   * {@code prefix}. Strings that are Java Reserved Words are prepended with {@code prefix}. All other illegal characters are omitted.
    *
    * @param string The input string.
    * @param prefix The character that will be prepended to the string if the first character is not valid.
@@ -638,8 +635,8 @@ public final class Identifiers {
   /**
    * Transforms a string into a valid Java Identifier in lower-camelCase. Strings that start with an illegal character are prepended
    * with {@code _}. Strings that are Java Reserved Words are prepended with {@code _}. All other illegal characters are substituted
-   * with the string value mapped to the key of the character in {@code substitutes}. If the mapping is missing, the illegal
-   * character is omitted.
+   * with the string value mapped to the key of the character in {@code substitutes}. If the mapping is missing, the illegal character
+   * is omitted.
    *
    * @param string The input string.
    * @param substitutes The mapping of illegal characters to their substitutions.

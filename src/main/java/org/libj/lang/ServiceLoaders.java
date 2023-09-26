@@ -58,10 +58,10 @@ public final class ServiceLoaders {
   }
 
   /**
-   * Parse a single line from the given configuration file, adding the name on the line to set of names if not already seen.
-   * Copied from ServiceLoader#parseLine.
+   * Parse a single line from the given configuration file, adding the name on the line to set of names if not already seen. Copied
+   * from ServiceLoader#parseLine.
    */
-  private static <S>int parseLine(final Class<S> service, final URL resource, final BufferedReader reader, final int lineCount, final Consumer<? extends Class<? super S>> consumer, final ClassLoader classLoader) throws IOException {
+  private static <S> int parseLine(final Class<S> service, final URL resource, final BufferedReader reader, final int lineCount, final Consumer<? extends Class<? super S>> consumer, final ClassLoader classLoader) throws IOException {
     String line = reader.readLine();
     if (line == null)
       return -1;
@@ -95,7 +95,7 @@ public final class ServiceLoaders {
   /**
    * Parse the content of the given URL as a provider-configuration file.
    */
-  private static <S>void parse(final URL resource, final Class<S> service, final Consumer<? extends Class<? super S>> consumer, final ClassLoader classLoader) {
+  private static <S> void parse(final URL resource, final Class<S> service, final Consumer<? extends Class<? super S>> consumer, final ClassLoader classLoader) {
     try {
       final URLConnection connection = resource.openConnection();
       connection.setUseCaches(false);
@@ -119,7 +119,7 @@ public final class ServiceLoaders {
    * @throws ServiceConfigurationError If something goes wrong while loading a service provider.
    * @see ServiceLoader#load(Class)
    */
-  public static <S>void load(final Class<S> service, final Consumer<? extends Class<? super S>> consumer) throws IOException {
+  public static <S> void load(final Class<S> service, final Consumer<? extends Class<? super S>> consumer) throws IOException {
     load(service, Thread.currentThread().getContextClassLoader(), consumer);
   }
 
@@ -129,14 +129,14 @@ public final class ServiceLoaders {
    *
    * @param <S> The type parameter of the service class.
    * @param service The interface or abstract class representing the service.
-   * @param classLoader The {@link ClassLoader} to be used to load provider-configuration files and provider classes, or
-   *          {@code null} if the system class loader (or, failing that, the bootstrap class loader) is to be used.
+   * @param classLoader The {@link ClassLoader} to be used to load provider-configuration files and provider classes, or {@code null}
+   *          if the system class loader (or, failing that, the bootstrap class loader) is to be used.
    * @param consumer The callback {@link Consumer} to be called for each found provider class.
    * @throws IOException If an I/O error has occurred.
    * @throws ServiceConfigurationError If something goes wrong while loading a service provider.
    * @see ServiceLoader#load(Class,ClassLoader)
    */
-  public static <S>void load(final Class<S> service, final ClassLoader classLoader, final Consumer<? extends Class<? super S>> consumer) throws IOException {
+  public static <S> void load(final Class<S> service, final ClassLoader classLoader, final Consumer<? extends Class<? super S>> consumer) throws IOException {
     final String resourceName = "META-INF/services/" + service.getName();
     final Enumeration<URL> resources = classLoader == null ? ClassLoader.getSystemResources(resourceName) : classLoader.getResources(resourceName);
     while (resources.hasMoreElements())

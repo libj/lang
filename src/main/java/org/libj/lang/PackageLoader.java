@@ -38,8 +38,7 @@ public class PackageLoader {
   private static final ConcurrentHashMap<ClassLoader,PackageLoader> instances = new ConcurrentHashMap<>();
 
   /**
-   * Returns a {@link PackageLoader} that uses the system class loader for the discovery of packages and the loading of their
-   * classes.
+   * Returns a {@link PackageLoader} that uses the system class loader for the discovery of packages and the loading of their classes.
    *
    * @return The {@link PackageLoader} that uses the system class loader for the discovery of packages and the loading of their
    *         classes.
@@ -85,8 +84,8 @@ public class PackageLoader {
    * Load and initialize each class in the specified {@link Package} and its sub-packages.
    * <p>
    * Packages are discovered by searching for path resources in the {@link PackageLoader#classLoader} of this {@link PackageLoader}.
-   * If the package exists in multiple locations, such as jar files and/or directories, each of the resource locations will be used
-   * to load all classes from each resource.
+   * If the package exists in multiple locations, such as jar files and/or directories, each of the resource locations will be used to
+   * load all classes from each resource.
    *
    * @param pkg The {@link Package}.
    * @return Set of classes discovered, loaded, and initialized.
@@ -103,8 +102,8 @@ public class PackageLoader {
    * Load and initialize each class in the specified {@link Package} and its sub-packages.
    * <p>
    * Packages are discovered by searching for path resources in the {@link PackageLoader#classLoader} of this {@link PackageLoader}.
-   * If the package exists in multiple locations, such as jar files and/or directories, each of the resource locations will be used
-   * to load all classes from each resource.
+   * If the package exists in multiple locations, such as jar files and/or directories, each of the resource locations will be used to
+   * load all classes from each resource.
    *
    * @param pkg The {@link Package}.
    * @param initialize {@link Predicate} specifying which discovered classes to initialize, or {@code null} to initialize all
@@ -122,8 +121,8 @@ public class PackageLoader {
    * Load and initialize each class in the specified {@link Package} and its sub-packages.
    * <p>
    * Packages are discovered by searching for path resources in the {@link PackageLoader#classLoader} of this {@link PackageLoader}.
-   * If the package exists in multiple locations, such as jar files and/or directories, each of the resource locations will be used
-   * to load all classes from each resource.
+   * If the package exists in multiple locations, such as jar files and/or directories, each of the resource locations will be used to
+   * load all classes from each resource.
    *
    * @param pkg The {@link Package}.
    * @param initialize If {@code true}, initialize discovered classes; if {@code false}, do not initialize discovered classes.
@@ -141,13 +140,13 @@ public class PackageLoader {
    * Load and initialize each class in the specified {@link Package}.
    * <p>
    * Packages are discovered by searching for path resources in the {@link PackageLoader#classLoader} of this {@link PackageLoader}.
-   * If the package exists in multiple locations, such as jar files and/or directories, each of the resource locations will be used
-   * to load all classes from each resource.
+   * If the package exists in multiple locations, such as jar files and/or directories, each of the resource locations will be used to
+   * load all classes from each resource.
    *
    * @param pkg The {@link Package}.
-   * @param includeSubPackages If {@code true}, classes from sub-packages of the package specified by {@code name} will be included
-   *          in the returned {@link Set} (regardless of the value of {@code initialize}); if {@code false}, classes of sub-packages
-   *          will not be included.
+   * @param includeSubPackages If {@code true}, classes from sub-packages of the package specified by {@code name} will be included in
+   *          the returned {@link Set} (regardless of the value of {@code initialize}); if {@code false}, classes of sub-packages will
+   *          not be included.
    * @param initialize If {@code true}, initialize discovered classes; if {@code false}, do not initialize discovered classes.
    * @return Set of discovered classes, whether they were initialized or not.
    * @throws IOException If an I/O error has occurred.
@@ -163,8 +162,8 @@ public class PackageLoader {
    * Load and initialize each class in the package specified by {@code name} (including classes in sub-packages).
    * <p>
    * Packages are discovered by searching for path resources in the {@link PackageLoader#classLoader} of this {@link PackageLoader}.
-   * If the package exists in multiple locations, such as jar files and/or directories, each of the resource locations will be used
-   * to load all classes from each resource.
+   * If the package exists in multiple locations, such as jar files and/or directories, each of the resource locations will be used to
+   * load all classes from each resource.
    *
    * @param name The name of the package.
    * @return Set of classes discovered, loaded, and initialized.
@@ -182,8 +181,8 @@ public class PackageLoader {
    * Load and initialize each class in the package specified by {@code name} (including classes in sub-packages).
    * <p>
    * Packages are discovered by searching for path resources in the {@link PackageLoader#classLoader} of this {@link PackageLoader}.
-   * If the package exists in multiple locations, such as jar files and/or directories, each of the resource locations will be used
-   * to load all classes from each resource.
+   * If the package exists in multiple locations, such as jar files and/or directories, each of the resource locations will be used to
+   * load all classes from each resource.
    *
    * @param name The name of the package.
    * @param initialize If {@code true}, initialize discovered classes; if {@code false}, do not initialize discovered classes.
@@ -202,8 +201,8 @@ public class PackageLoader {
    * Load and initialize each class in the package specified by {@code name} (including classes in sub-packages).
    * <p>
    * Packages are discovered by searching for path resources in the {@link PackageLoader#classLoader} of this {@link PackageLoader}.
-   * If the package exists in multiple locations, such as jar files and/or directories, each of the resource locations will be used
-   * to load all classes from each resource.
+   * If the package exists in multiple locations, such as jar files and/or directories, each of the resource locations will be used to
+   * load all classes from each resource.
    *
    * @param name The name of the package.
    * @param initialize {@link Predicate} specifying which discovered classes to initialize, or {@code null} to initialize all
@@ -222,13 +221,13 @@ public class PackageLoader {
    * Load and initialize each class in the package specified by {@code name}.
    * <p>
    * Packages are discovered by searching for path resources in the {@link PackageLoader#classLoader} of this {@link PackageLoader}.
-   * If the package exists in multiple locations, such as jar files and/or directories, each of the resource locations will be used
-   * to load all classes from each resource.
+   * If the package exists in multiple locations, such as jar files and/or directories, each of the resource locations will be used to
+   * load all classes from each resource.
    *
    * @param name The name of the package.
-   * @param includeSubPackages If {@code true}, classes from sub-packages of the package specified by {@code name} will be included
-   *          in the returned {@link Set} (regardless of the value of {@code initialize}); if {@code false}, classes of sub-packages
-   *          will not be included.
+   * @param includeSubPackages If {@code true}, classes from sub-packages of the package specified by {@code name} will be included in
+   *          the returned {@link Set} (regardless of the value of {@code initialize}); if {@code false}, classes of sub-packages will
+   *          not be included.
    * @param initialize {@link Predicate} specifying which discovered classes to initialize, or {@code null} to initialize all
    *          discovered classes.
    * @throws IOException If an I/O error has occurred.
@@ -245,13 +244,13 @@ public class PackageLoader {
    * Load and initialize each class in the package specified by {@code name}.
    * <p>
    * Packages are discovered by searching for path resources in the {@link PackageLoader#classLoader} of this {@link PackageLoader}.
-   * If the package exists in multiple locations, such as jar files and/or directories, each of the resource locations will be used
-   * to load all classes from each resource.
+   * If the package exists in multiple locations, such as jar files and/or directories, each of the resource locations will be used to
+   * load all classes from each resource.
    *
    * @param name The name of the package.
-   * @param includeSubPackages If {@code true}, classes from sub-packages of the package specified by {@code name} will be included
-   *          in the returned {@link Set} (regardless of the value of {@code initialize}); if {@code false}, classes of sub-packages
-   *          will not be included.
+   * @param includeSubPackages If {@code true}, classes from sub-packages of the package specified by {@code name} will be included in
+   *          the returned {@link Set} (regardless of the value of {@code initialize}); if {@code false}, classes of sub-packages will
+   *          not be included.
    * @param initialize If {@code true}, initialize discovered classes; if {@code false}, do not initialize discovered classes.
    * @return Set of classes discovered, loaded, and initialized.
    * @throws IOException If an I/O error has occurred.
@@ -287,7 +286,7 @@ public class PackageLoader {
           Class.forName(className, true, loader);
       }
       catch (final ClassNotFoundException | VerifyError e) {
-        if (logger.isTraceEnabled()) logger.trace("Problem loading package: " + (packageName.length() > 0 ? packageName : "<default>"), e);
+        if (logger.isTraceEnabled()) { logger.trace("Problem loading package: " + (packageName.length() > 0 ? packageName : "<default>"), e); }
       }
       catch (final NoClassDefFoundError ignored) {
       }

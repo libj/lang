@@ -90,8 +90,8 @@ public class BytesReadWriteTest {
     int offset = writeLengthSize(dest, lengthSize);
     offset = encode(dest, offset, ordinal, length, lengthSize, text);
 
-//    if (debug)
-//      System.out.println(dest);
+    // if (debug)
+    // System.out.println(dest);
 
     // Decode...
     final byte lengthSizeDecoded = getLengthSize(dest[0]);
@@ -103,7 +103,7 @@ public class BytesReadWriteTest {
     assertEquals(length, lengthDecoded);
     final byte[] decodedText = Bytes.readBitsFromBytes(dest, offset + 2 + lengthSizeDecoded, lengthDecoded * 8L);
     assertArrayEquals(text, decodedText);
-//    System.err.println(out);
+    // System.err.println(out);
   }
 
   @Test

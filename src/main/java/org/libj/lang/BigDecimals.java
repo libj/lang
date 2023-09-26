@@ -123,8 +123,8 @@ public final class BigDecimals {
    * Returns a canonical representation for the {@link BigDecimal} object.
    *
    * @param n The {@link BigDecimal} to intern.
-   * @return A {@link BigDecimal} that has the same contents as the specified {@link BigDecimal}, but is guaranteed to be from a
-   *         pool of unique instances.
+   * @return A {@link BigDecimal} that has the same contents as the specified {@link BigDecimal}, but is guaranteed to be from a pool
+   *         of unique instances.
    * @throws NullPointerException If {@code n} is null.
    */
   public static BigDecimal intern(final BigDecimal n) {
@@ -182,20 +182,19 @@ public final class BigDecimals {
    * Returns a {@link BigDecimal} whose scale is the specified value, and whose unscaled value is determined by multiplying or
    * dividing the provided {@link BigDecimal}'s unscaled value by the appropriate power of ten to maintain its overall value.
    * <p>
-   * This method differentiates itself from {@link BigDecimal#setScale(int,RoundingMode)} in the way the given {@link RoundingMode}
-   * is applied. For {@code newScale} values that require rounding, unlike in {@link BigDecimal#setScale(int,RoundingMode)}, this
-   * method first scales the provided {@link BigDecimal} to {@code newScale + 1}, rounding down. It thereafter performs scales the
-   * resulting {@link BigDecimal} to the specified {@code newScale} with the given {@link RoundingMode}.
+   * This method differentiates itself from {@link BigDecimal#setScale(int,RoundingMode)} in the way the given {@link RoundingMode} is
+   * applied. For {@code newScale} values that require rounding, unlike in {@link BigDecimal#setScale(int,RoundingMode)}, this method
+   * first scales the provided {@link BigDecimal} to {@code newScale + 1}, rounding down. It thereafter performs scales the resulting
+   * {@link BigDecimal} to the specified {@code newScale} with the given {@link RoundingMode}.
    * <p>
-   * This behavior ensures that only the last decimal value affects the rounding, so as to align in behavior with most other
-   * analogous algorithms.
+   * This behavior ensures that only the last decimal value affects the rounding, so as to align in behavior with most other analogous
+   * algorithms.
    *
    * @param v The {@link BigDecimal}.
    * @param newScale Scale of the {@code BigDecimal} value to be returned.
    * @param rm The {@link RoundingMode}.
    * @return A {@link BigDecimal} whose scale is the specified value, and whose unscaled value is determined by multiplying or
-   *         dividing the provided {@link BigDecimal}'s unscaled value by the appropriate power of ten to maintain its overall
-   *         value.
+   *         dividing the provided {@link BigDecimal}'s unscaled value by the appropriate power of ten to maintain its overall value.
    * @throws ArithmeticException If {@code rm} is {@link RoundingMode#UNNECESSARY} and the specified scaling operation would require
    *           rounding.
    * @throws NullPointerException If {@code v} or {@code rm} is null.

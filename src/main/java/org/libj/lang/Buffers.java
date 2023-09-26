@@ -126,8 +126,8 @@ public final class Buffers {
    * The {@code resize} argument behaves by the following rules:
    * <ul>
    * <li>If {@code resize == 0}, do not resize the array. An {@link ArrayIndexOutOfBoundsException} will be thrown.</li>
-   * <li>If {@code resize > 0}, set the size of the array to the value of the index of the short that {@code bit} belongs to, plus
-   * 1, multiplied by {@code resize}:
+   * <li>If {@code resize > 0}, set the size of the array to the value of the index of the short that {@code bit} belongs to, plus 1,
+   * multiplied by {@code resize}:
    *
    * <pre>
    * {@code
@@ -357,8 +357,8 @@ public final class Buffers {
   }
 
   /**
-   * Returns the value of the bit at the specified index. The value is {@code true} if the bit with the index {@code bit} is
-   * currently set in {@code buf}, otherwise the result is {@code false}.
+   * Returns the value of the bit at the specified index. The value is {@code true} if the bit with the index {@code bit} is currently
+   * set in {@code buf}, otherwise the result is {@code false}.
    *
    * @param buf The {@code byte[]} buffer.
    * @param bit The bit index.
@@ -372,8 +372,8 @@ public final class Buffers {
   }
 
   /**
-   * Returns the value of the bit at the specified index. The value is {@code true} if the bit with the index {@code bit} is
-   * currently set in {@code buf}, otherwise the result is {@code false}.
+   * Returns the value of the bit at the specified index. The value is {@code true} if the bit with the index {@code bit} is currently
+   * set in {@code buf}, otherwise the result is {@code false}.
    *
    * @param buf The {@code char[]} buffer.
    * @param bit The bit index.
@@ -387,8 +387,8 @@ public final class Buffers {
   }
 
   /**
-   * Returns the value of the bit at the specified index. The value is {@code true} if the bit with the index {@code bit} is
-   * currently set in {@code buf}, otherwise the result is {@code false}.
+   * Returns the value of the bit at the specified index. The value is {@code true} if the bit with the index {@code bit} is currently
+   * set in {@code buf}, otherwise the result is {@code false}.
    *
    * @param buf The {@code short[]} buffer.
    * @param bit The bit index.
@@ -402,8 +402,8 @@ public final class Buffers {
   }
 
   /**
-   * Returns the value of the bit at the specified index. The value is {@code true} if the bit with the index {@code bit} is
-   * currently set in {@code buf}, otherwise the result is {@code false}.
+   * Returns the value of the bit at the specified index. The value is {@code true} if the bit with the index {@code bit} is currently
+   * set in {@code buf}, otherwise the result is {@code false}.
    *
    * @param buf The {@code int[]} buffer.
    * @param bit The bit index.
@@ -417,8 +417,8 @@ public final class Buffers {
   }
 
   /**
-   * Returns the value of the bit at the specified index. The value is {@code true} if the bit with the index {@code bit} is
-   * currently set in {@code buf}, otherwise the result is {@code false}.
+   * Returns the value of the bit at the specified index. The value is {@code true} if the bit with the index {@code bit} is currently
+   * set in {@code buf}, otherwise the result is {@code false}.
    *
    * @param buf The {@code long[]} buffer.
    * @param bit The bit index.
@@ -432,8 +432,8 @@ public final class Buffers {
   }
 
   /**
-   * Returns the "logical size" of {@code buf}: the index of the byte with the highest set bit in {@code buf}, plus one. Returns
-   * zero if {@code buf} contains no set bits.
+   * Returns the "logical size" of {@code buf}: the index of the byte with the highest set bit in {@code buf}, plus one. Returns zero
+   * if {@code buf} contains no set bits.
    *
    * @param buf The {@code byte[]} buffer.
    * @return The logical size of the {@code buf}.
@@ -450,8 +450,8 @@ public final class Buffers {
   }
 
   /**
-   * Returns the "logical size" of {@code buf}: the index of the char with the highest set bit in {@code buf}, plus one. Returns
-   * zero if {@code buf} contains no set bits.
+   * Returns the "logical size" of {@code buf}: the index of the char with the highest set bit in {@code buf}, plus one. Returns zero
+   * if {@code buf} contains no set bits.
    *
    * @param buf The {@code char[]} buffer.
    * @return The logical size of the {@code buf}.
@@ -468,8 +468,8 @@ public final class Buffers {
   }
 
   /**
-   * Returns the "logical size" of {@code buf}: the index of the short with the highest set bit in {@code buf}, plus one. Returns
-   * zero if {@code buf} contains no set bits.
+   * Returns the "logical size" of {@code buf}: the index of the short with the highest set bit in {@code buf}, plus one. Returns zero
+   * if {@code buf} contains no set bits.
    *
    * @param buf The {@code short[]} buffer.
    * @return The logical size of the {@code buf}.
@@ -504,8 +504,8 @@ public final class Buffers {
   }
 
   /**
-   * Returns the "logical size" of {@code buf}: the index of the long with the highest set bit in {@code buf}, plus one. Returns
-   * zero if {@code buf} contains no set bits.
+   * Returns the "logical size" of {@code buf}: the index of the long with the highest set bit in {@code buf}, plus one. Returns zero
+   * if {@code buf} contains no set bits.
    *
    * @param buf The {@code long[]} buffer.
    * @return The logical size of the {@code buf}.

@@ -39,7 +39,7 @@ public final class Throwables {
    * @return The exception based on the method's logic, described above.
    * @throws NullPointerException If {@code target} or {@code suppressed} is null.
    */
-  public static <T extends Throwable>T addSuppressed(final T target, final T suppressed) {
+  public static <T extends Throwable> T addSuppressed(final T target, final T suppressed) {
     if (suppressed == null)
       return target;
 
@@ -59,7 +59,7 @@ public final class Throwables {
    * @return The exception based on the method's logic, described above.
    * @throws NullPointerException If {@code target} or {@code suppressed} is null.
    */
-  public static <T extends Throwable>T addSuppressed(final T target, final Exception[] suppressed) {
+  public static <T extends Throwable> T addSuppressed(final T target, final Exception[] suppressed) {
     return addSuppressed0(target, suppressed, 0, suppressed.length);
   }
 
@@ -69,23 +69,23 @@ public final class Throwables {
    * @param <T> The type parameter of the exception.
    * @param target The target exception.
    * @param suppressed The suppressed exceptions.
-   * @param fromIndex The index (inclusive) of the first element in {@code suppressed}. If {@code fromIndex > toIndex}, the
-   *          exceptions in {@code suppressed} will be traversed in reverse order.
-   * @param toIndex The index (exclusive) of the last element in {@code suppressed}. If {@code toIndex > fromIndex}, the exceptions
-   *          in {@code suppressed} will be traversed in regular order.
+   * @param fromIndex The index (inclusive) of the first element in {@code suppressed}. If {@code fromIndex > toIndex}, the exceptions
+   *          in {@code suppressed} will be traversed in reverse order.
+   * @param toIndex The index (exclusive) of the last element in {@code suppressed}. If {@code toIndex > fromIndex}, the exceptions in
+   *          {@code suppressed} will be traversed in regular order.
    * @return The exception based on the method's logic, described above.
    * @throws NullPointerException If {@code target} or {@code suppressed} is null.
-   * @throws IndexOutOfBoundsException If {@code off} is negative, {@code len} is negative, or {@code suppressed.length} is less
-   *           than {@code off + len}.
+   * @throws IndexOutOfBoundsException If {@code off} is negative, {@code len} is negative, or {@code suppressed.length} is less than
+   *           {@code off + len}.
    */
-  public static <T extends Throwable>T addSuppressed(final T target, final Exception[] suppressed, final int fromIndex, final int toIndex) {
+  public static <T extends Throwable> T addSuppressed(final T target, final Exception[] suppressed, final int fromIndex, final int toIndex) {
     if (fromIndex == toIndex)
       return target;
 
     return addSuppressed0(target, suppressed, fromIndex, toIndex);
   }
 
-  private static <T extends Throwable>T addSuppressed0(final T target, final Exception[] suppressed, final int fromIndex, final int toIndex) {
+  private static <T extends Throwable> T addSuppressed0(final T target, final Exception[] suppressed, final int fromIndex, final int toIndex) {
     if (fromIndex < toIndex)
       for (int i = fromIndex; i < toIndex; ++i) // [N]
         target.addSuppressed(suppressed[i]);
@@ -105,7 +105,7 @@ public final class Throwables {
    * @return The exception based on the method's logic, described above.
    * @throws NullPointerException If {@code target} or {@code suppressed} is null.
    */
-  public static <T extends Throwable>T addSuppressed(final T target, final List<Exception> suppressed) {
+  public static <T extends Throwable> T addSuppressed(final T target, final List<Exception> suppressed) {
     return addSuppressed0(target, suppressed, 0, suppressed.size());
   }
 
@@ -115,23 +115,23 @@ public final class Throwables {
    * @param <T> The type parameter of the exception.
    * @param target The target exception.
    * @param suppressed The suppressed exceptions.
-   * @param fromIndex The index (inclusive) of the first element in {@code suppressed}. If {@code fromIndex > toIndex}, the
-   *          exceptions in {@code suppressed} will be traversed in reverse order.
-   * @param toIndex The index (exclusive) of the last element in {@code suppressed}. If {@code toIndex > fromIndex}, the exceptions
-   *          in {@code suppressed} will be traversed in regular order.
+   * @param fromIndex The index (inclusive) of the first element in {@code suppressed}. If {@code fromIndex > toIndex}, the exceptions
+   *          in {@code suppressed} will be traversed in reverse order.
+   * @param toIndex The index (exclusive) of the last element in {@code suppressed}. If {@code toIndex > fromIndex}, the exceptions in
+   *          {@code suppressed} will be traversed in regular order.
    * @return The exception based on the method's logic, described above.
    * @throws NullPointerException If {@code target} or {@code suppressed} is null.
-   * @throws IndexOutOfBoundsException If {@code off} is negative, {@code len} is negative, or {@code suppressed.length} is less
-   *           than {@code off + len}.
+   * @throws IndexOutOfBoundsException If {@code off} is negative, {@code len} is negative, or {@code suppressed.length} is less than
+   *           {@code off + len}.
    */
-  public static <T extends Throwable>T addSuppressed(final T target, final List<Exception> suppressed, final int fromIndex, final int toIndex) {
+  public static <T extends Throwable> T addSuppressed(final T target, final List<Exception> suppressed, final int fromIndex, final int toIndex) {
     if (fromIndex == toIndex)
       return target;
 
     return addSuppressed0(target, suppressed, fromIndex, toIndex);
   }
 
-  private static <T extends Throwable>T addSuppressed0(final T target, final List<Exception> suppressed, final int fromIndex, final int toIndex) {
+  private static <T extends Throwable> T addSuppressed0(final T target, final List<Exception> suppressed, final int fromIndex, final int toIndex) {
     if (fromIndex < toIndex)
       for (int i = fromIndex; i < toIndex; ++i) // [N]
         target.addSuppressed(suppressed.get(i));
@@ -166,7 +166,7 @@ public final class Throwables {
    * @return The {@link Throwable} being copied to.
    * @throws NullPointerException If {@code from} or {@code to} is null.
    */
-  public static <F extends Throwable,T extends F>T copy(final F from, final T to) {
+  public static <F extends Throwable,T extends F> T copy(final F from, final T to) {
     to.initCause(from.getCause());
     to.setStackTrace(from.getStackTrace());
     for (final Throwable suppressed : from.getSuppressed()) // [A]

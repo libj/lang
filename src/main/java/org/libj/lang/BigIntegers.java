@@ -59,8 +59,8 @@ public final class BigIntegers {
    * Returns a canonical representation for the {@link BigInteger} object.
    *
    * @param n The {@link BigInteger} to intern.
-   * @return A {@link BigInteger} that has the same contents as the specified {@link BigInteger}, but is guaranteed to be from a
-   *         pool of unique instances.
+   * @return A {@link BigInteger} that has the same contents as the specified {@link BigInteger}, but is guaranteed to be from a pool
+   *         of unique instances.
    * @throws NullPointerException If {@code n} is null.
    */
   public static BigInteger intern(final BigInteger n) {

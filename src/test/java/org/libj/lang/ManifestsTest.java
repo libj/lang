@@ -34,6 +34,7 @@ public class ManifestsTest {
 
     Manifests.getManifest(ManifestsTest.class);
   }
+
   @Test
   public void testGetManifests() throws IOException {
     try {

@@ -218,8 +218,8 @@ public final class Resources {
   }
 
   /**
-   * Returns an {@link URL} to a resource by the specified name, or, if not found, to a file by the same name (in the current
-   * working directory).
+   * Returns an {@link URL} to a resource by the specified name, or, if not found, to a file by the same name (in the current working
+   * directory).
    *
    * @param name The name of the resource.
    * @return An {@link URL} to a resource by the specified name, or, if not found, to a file by the same name.
@@ -243,8 +243,8 @@ public final class Resources {
   }
 
   /**
-   * Returns an {@link URL} to a file by the specified name (in the current working directory), or, if not found, to a resource by
-   * the same name.
+   * Returns an {@link URL} to a file by the specified name (in the current working directory), or, if not found, to a resource by the
+   * same name.
    *
    * @param name The name of the resource.
    * @return An {@link URL} to a file by the specified name, or, if not found, to a resource by the same name.

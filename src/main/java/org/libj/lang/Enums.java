@@ -24,7 +24,7 @@ import java.util.List;
  */
 public final class Enums {
   @SuppressWarnings("unchecked")
-  private static <T extends Enum<T>>T[] recurseValueOf(final Class<T> type, final String[] names, final int length, final int index, final int depth) {
+  private static <T extends Enum<T>> T[] recurseValueOf(final Class<T> type, final String[] names, final int length, final int index, final int depth) {
     if (index == length)
       return (T[])Array.newInstance(type, depth);
 
@@ -45,8 +45,8 @@ public final class Enums {
   }
 
   /**
-   * Returns an array of type {@code <T>} containing the results of {@link Enum#valueOf(Class,String)} applied to each of the
-   * provided {@code names}.
+   * Returns an array of type {@code <T>} containing the results of {@link Enum#valueOf(Class,String)} applied to each of the provided
+   * {@code names}.
    * <p>
    * All names that do not match a constant in the specified enum class are omitted in the returned array.
    *
@@ -55,12 +55,12 @@ public final class Enums {
    * @param <T> The type parameter of the specified {@link Enum}.
    * @param type The class for the type {@code <T>}.
    * @param names The string array of names on which to apply {@link Enum#valueOf(Class,String)}.
-   * @return An array of type {@code <T>} containing the results of {@link Enum#valueOf(Class,String)} applied to each of the
-   *         provided {@code names}.
+   * @return An array of type {@code <T>} containing the results of {@link Enum#valueOf(Class,String)} applied to each of the provided
+   *         {@code names}.
    * @throws IllegalArgumentException If the specified class object does not represent an enum type.
    * @throws NullPointerException If {@code type} or {@code names} is null.
    */
-  public static <T extends Enum<T>>T[] valueOf(final Class<T> type, final String ... names) {
+  public static <T extends Enum<T>> T[] valueOf(final Class<T> type, final String ... names) {
     return recurseValueOf(type, names, names.length, 0, 0);
   }
 
@@ -80,7 +80,7 @@ public final class Enums {
    * @throws NullPointerException If {@code type} or {@code names} is null.
    * @throws IllegalArgumentException If the specified class object does not represent an enum type.
    */
-  public static <T extends Enum<T>>T[] valueOf(final Class<T> type, final List<String> names) {
+  public static <T extends Enum<T>> T[] valueOf(final Class<T> type, final List<String> names) {
     return valueOf(type, names.toArray(new String[names.size()]));
   }
 
@@ -99,7 +99,7 @@ public final class Enums {
      * @throws NullPointerException If {@code enums} or a member of {@code enums} is null.
      */
     @SafeVarargs
-    public static <E extends Enum<?>>byte toggle(byte mask, final E ... enums) {
+    public static <E extends Enum<?>> byte toggle(byte mask, final E ... enums) {
       for (int i = 0, i$ = enums.length; i < i$; ++i) // [A]
         mask ^= 1 << enums[i].ordinal();
 
@@ -116,7 +116,7 @@ public final class Enums {
      * @throws NullPointerException If {@code enums} or a member of {@code enums} is null.
      */
     @SafeVarargs
-    public static <E extends Enum<?>>short toggle(short mask, final E ... enums) {
+    public static <E extends Enum<?>> short toggle(short mask, final E ... enums) {
       for (int i = 0, i$ = enums.length; i < i$; ++i) // [A]
         mask ^= 1 << enums[i].ordinal();
 
@@ -133,7 +133,7 @@ public final class Enums {
      * @throws NullPointerException If {@code enums} or a member of {@code enums} is null.
      */
     @SafeVarargs
-    public static <E extends Enum<?>>int toggle(int mask, final E ... enums) {
+    public static <E extends Enum<?>> int toggle(int mask, final E ... enums) {
       for (int i = 0, i$ = enums.length; i < i$; ++i) // [A]
         mask ^= 1 << enums[i].ordinal();
 
@@ -150,7 +150,7 @@ public final class Enums {
      * @throws NullPointerException If {@code enums} or a member of {@code enums} is null.
      */
     @SafeVarargs
-    public static <E extends Enum<?>>long toggle(long mask, final E ... enums) {
+    public static <E extends Enum<?>> long toggle(long mask, final E ... enums) {
       for (int i = 0, i$ = enums.length; i < i$; ++i) // [A]
         mask ^= 1 << enums[i].ordinal();
 
@@ -167,7 +167,7 @@ public final class Enums {
      * @throws NullPointerException If {@code enums} or a member of {@code enums} is null.
      */
     @SafeVarargs
-    public static <E extends Enum<?>>byte set(byte mask, final E ... enums) {
+    public static <E extends Enum<?>> byte set(byte mask, final E ... enums) {
       for (int i = 0, i$ = enums.length; i < i$; ++i) // [A]
         mask |= 1 << enums[i].ordinal();
 
@@ -184,7 +184,7 @@ public final class Enums {
      * @throws NullPointerException If {@code enums} or a member of {@code enums} is null.
      */
     @SafeVarargs
-    public static <E extends Enum<?>>short set(short mask, final E ... enums) {
+    public static <E extends Enum<?>> short set(short mask, final E ... enums) {
       for (int i = 0, i$ = enums.length; i < i$; ++i) // [A]
         mask |= 1 << enums[i].ordinal();
 
@@ -201,7 +201,7 @@ public final class Enums {
      * @throws NullPointerException If {@code enums} or a member of {@code enums} is null.
      */
     @SafeVarargs
-    public static <E extends Enum<?>>int set(int mask, final E ... enums) {
+    public static <E extends Enum<?>> int set(int mask, final E ... enums) {
       for (int i = 0, i$ = enums.length; i < i$; ++i) // [A]
         mask |= 1 << enums[i].ordinal();
 
@@ -218,7 +218,7 @@ public final class Enums {
      * @throws NullPointerException If {@code enums} or a member of {@code enums} is null.
      */
     @SafeVarargs
-    public static <E extends Enum<?>>long set(long mask, final E ... enums) {
+    public static <E extends Enum<?>> long set(long mask, final E ... enums) {
       for (int i = 0, i$ = enums.length; i < i$; ++i) // [A]
         mask |= 1 << enums[i].ordinal();
 
@@ -235,7 +235,7 @@ public final class Enums {
      * @throws NullPointerException If {@code enums} or a member of {@code enums} is null.
      */
     @SafeVarargs
-    public static <E extends Enum<?>>byte unset(byte mask, final E ... enums) {
+    public static <E extends Enum<?>> byte unset(byte mask, final E ... enums) {
       for (int i = 0, i$ = enums.length; i < i$; ++i) // [A]
         mask &= 1 << enums[i].ordinal();
 
@@ -252,7 +252,7 @@ public final class Enums {
      * @throws NullPointerException If {@code enums} or a member of {@code enums} is null.
      */
     @SafeVarargs
-    public static <E extends Enum<?>>short unset(short mask, final E ... enums) {
+    public static <E extends Enum<?>> short unset(short mask, final E ... enums) {
       for (int i = 0, i$ = enums.length; i < i$; ++i) // [A]
         mask &= 1 << enums[i].ordinal();
 
@@ -269,7 +269,7 @@ public final class Enums {
      * @throws NullPointerException If {@code enums} or a member of {@code enums} is null.
      */
     @SafeVarargs
-    public static <E extends Enum<?>>int unset(int mask, final E ... enums) {
+    public static <E extends Enum<?>> int unset(int mask, final E ... enums) {
       for (int i = 0, i$ = enums.length; i < i$; ++i) // [A]
         mask &= 1 << enums[i].ordinal();
 
@@ -286,7 +286,7 @@ public final class Enums {
      * @throws NullPointerException If {@code enums} or a member of {@code enums} is null.
      */
     @SafeVarargs
-    public static <E extends Enum<?>>long unset(long mask, final E ... enums) {
+    public static <E extends Enum<?>> long unset(long mask, final E ... enums) {
       for (int i = 0, i$ = enums.length; i < i$; ++i) // [A]
         mask &= 1 << enums[i].ordinal();
 
@@ -406,7 +406,7 @@ public final class Enums {
      * @throws NullPointerException If {@code values} is null.
      */
     @SafeVarargs
-    public static <E extends Enum<?>>E[] toArray(final byte mask, final E ... values) {
+    public static <E extends Enum<?>> E[] toArray(final byte mask, final E ... values) {
       return toArray(values, mask, Byte.SIZE, 0, 0);
     }
 
@@ -423,7 +423,7 @@ public final class Enums {
      * @throws NullPointerException If {@code values} is null.
      */
     @SafeVarargs
-    public static <E extends Enum<?>>E[] toArray(final short mask, final E ... values) {
+    public static <E extends Enum<?>> E[] toArray(final short mask, final E ... values) {
       return toArray(values, mask, Short.SIZE, 0, 0);
     }
 
@@ -440,7 +440,7 @@ public final class Enums {
      * @throws NullPointerException If {@code values} is null.
      */
     @SafeVarargs
-    public static <E extends Enum<?>>E[] toArray(final int mask, final E ... values) {
+    public static <E extends Enum<?>> E[] toArray(final int mask, final E ... values) {
       return toArray(values, mask, Integer.SIZE, 0, 0);
     }
 
@@ -457,12 +457,12 @@ public final class Enums {
      * @throws NullPointerException If {@code values} is null.
      */
     @SafeVarargs
-    public static <E extends Enum<?>>E[] toArray(final long mask, final E ... values) {
+    public static <E extends Enum<?>> E[] toArray(final long mask, final E ... values) {
       return toArray(values, mask, 0, 0);
     }
 
     @SuppressWarnings("unchecked")
-    private static <E extends Enum<?>>E[] toArray(final E[] values, final int mask, final int size, final int index, final int depth) {
+    private static <E extends Enum<?>> E[] toArray(final E[] values, final int mask, final int size, final int index, final int depth) {
       for (int i = index; i < size; ++i) { // [N]
         if ((mask & (1 << i)) != 0) {
           final E enm = values[i];
@@ -476,7 +476,7 @@ public final class Enums {
     }
 
     @SuppressWarnings("unchecked")
-    private static <E extends Enum<?>>E[] toArray(final E[] values, final long mask, final int index, final int depth) {
+    private static <E extends Enum<?>> E[] toArray(final E[] values, final long mask, final int index, final int depth) {
       for (int i = index; i < Long.SIZE; ++i) { // [N]
         if ((mask & (1 << i)) != 0) {
           final E enm = values[i];

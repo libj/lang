@@ -807,8 +807,8 @@ public class StringsTest {
 
     assertEquals(0, Strings.split("", ' ').length);
 
-//    final String ch = "W";
-//    final String str = "WigWW";
+    // final String ch = "W";
+    // final String str = "WigWW";
     for (int i = 0; i < 1000000; ++i) { // [N]
       String str = Strings.getRandomAlphaNumeric(5);
       final String ch = Strings.getRandomAlphaNumeric(1);

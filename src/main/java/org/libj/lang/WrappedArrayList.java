@@ -75,7 +75,7 @@ public class WrappedArrayList<E> extends ArrayList<E> {
 
   @Override
   @SuppressWarnings("unchecked")
-  public <T>T[] toArray(final T[] a) {
+  public <T> T[] toArray(final T[] a) {
     final int size = this.size;
     if (a.length < size)
       return Arrays.copyOf(this.elementData, size, (Class<? extends T[]>)a.getClass());
@@ -399,7 +399,8 @@ public class WrappedArrayList<E> extends ArrayList<E> {
 
     final Object[] es = elementData;
     if (other instanceof RandomAccess) {
-      int o = 0; do // [RA]
+      int o = 0;
+      do // [RA]
         if (o == o$ || !Objects.equals(es[from], other.get(o++)))
           return false;
       while (++from < to);
@@ -513,7 +514,7 @@ public class WrappedArrayList<E> extends ArrayList<E> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T>T[] toArray(final T[] a) {
+    public <T> T[] toArray(final T[] a) {
       final int size = this.size;
       if (a.length < size)
         return (T[])Arrays.copyOfRange(root.elementData, offset, offset + size, a.getClass());
@@ -674,8 +675,7 @@ public class WrappedArrayList<E> extends ArrayList<E> {
         public WrappedArrayList<E>.ArrayListSpliterator trySplit() {
           final int hi = getFence(), lo = index, mid = (lo + hi) >>> 1;
           // ArrayListSpliterator can be used here as the source is already bound
-          return (lo >= mid) ? null : // divide range in half unless too small
-            root.new ArrayListSpliterator(lo, index = mid, expectedModCount);
+          return (lo >= mid) ? null : root.new ArrayListSpliterator(lo, index = mid, expectedModCount); // divide range in half unless too small
         }
 
         @Override

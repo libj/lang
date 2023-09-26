@@ -55,7 +55,7 @@ public class PackageLoaderTest {
       classNames.add(loadedClass.getName());
 
     for (final String testClass : testClasses) { // [A]
-      if (logger.isDebugEnabled()) logger.debug(testClass);
+      if (logger.isDebugEnabled()) { logger.debug(testClass); }
       assertTrue(testClass, classNames.contains(testClass));
       assertTrue(testClass, classLoader.isClassLoaded(testClass));
     }

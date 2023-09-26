@@ -78,9 +78,8 @@ public final class Assertions {
    * </pre>
    *
    * @param value The boolean to check if true.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code value} if true.
@@ -166,9 +165,8 @@ public final class Assertions {
    * </pre>
    *
    * @param value The boolean to check if false.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code value} if false.
@@ -215,7 +213,7 @@ public final class Assertions {
    * @return {@code obj} if null.
    * @throws IllegalArgumentException If {@code obj} is not null.
    */
-  public static <T>T assertNull(final T obj, final String message) {
+  public static <T> T assertNull(final T obj, final String message) {
     if (obj != null)
       throw new IllegalArgumentException(message);
 
@@ -238,7 +236,7 @@ public final class Assertions {
    * @return {@code obj} if null.
    * @throws IllegalArgumentException If {@code obj} is not null.
    */
-  public static <T>T assertNull(final T obj, final Supplier<String> message) {
+  public static <T> T assertNull(final T obj, final Supplier<String> message) {
     if (obj != null)
       throw new IllegalArgumentException(message.get());
 
@@ -257,15 +255,14 @@ public final class Assertions {
    *
    * @param <T> The type of the reference.
    * @param obj The object reference to check for nullity.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code obj} if null.
    * @throws IllegalArgumentException If {@code obj} is not null.
    */
-  public static <T>T assertNull(final T obj, final String format, final Object ... args) {
+  public static <T> T assertNull(final T obj, final String format, final Object ... args) {
     if (obj != null)
       throw new IllegalArgumentException(String.format(format, args));
 
@@ -287,7 +284,7 @@ public final class Assertions {
    * @return {@code obj} if null.
    * @throws IllegalArgumentException If {@code obj} is not null.
    */
-  public static <T>T assertNull(final T obj) {
+  public static <T> T assertNull(final T obj) {
     return assertNull(obj, "not null");
   }
 
@@ -307,7 +304,7 @@ public final class Assertions {
    * @return {@code obj} if not null.
    * @throws IllegalArgumentException If {@code obj} is null.
    */
-  public static <T>T assertNotNull(final T obj, final String message) {
+  public static <T> T assertNotNull(final T obj, final String message) {
     if (obj == null)
       throw new IllegalArgumentException(message);
 
@@ -330,7 +327,7 @@ public final class Assertions {
    * @return {@code obj} if not null.
    * @throws IllegalArgumentException If {@code obj} is null.
    */
-  public static <T>T assertNotNull(final T obj, final Supplier<String> message) {
+  public static <T> T assertNotNull(final T obj, final Supplier<String> message) {
     if (obj == null)
       throw new IllegalArgumentException(message.get());
 
@@ -349,15 +346,14 @@ public final class Assertions {
    *
    * @param <T> The type of the reference.
    * @param obj The object reference to check for nullity.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code obj} if not null.
    * @throws IllegalArgumentException If {@code obj} is null.
    */
-  public static <T>T assertNotNull(final T obj, final String format, final Object ... args) {
+  public static <T> T assertNotNull(final T obj, final String format, final Object ... args) {
     if (obj == null)
       throw new IllegalArgumentException(String.format(format, args));
 
@@ -379,7 +375,7 @@ public final class Assertions {
    * @return {@code obj} if not null.
    * @throws IllegalArgumentException If {@code obj} is null.
    */
-  public static <T>T assertNotNull(final T obj) {
+  public static <T> T assertNotNull(final T obj) {
     return assertNotNull(obj, "null");
   }
 
@@ -399,7 +395,7 @@ public final class Assertions {
    * @return {@code obj} if not null.
    * @throws IllegalArgumentException If {@code obj} is null.
    */
-  public static <T>T[] assertNotNullArray(final T[] obj, final String message) {
+  public static <T> T[] assertNotNullArray(final T[] obj, final String message) {
     if (obj == null)
       throw new IllegalArgumentException(message);
 
@@ -426,7 +422,7 @@ public final class Assertions {
    * @return {@code obj} if not null.
    * @throws IllegalArgumentException If {@code obj} is null.
    */
-  public static <T>T[] assertNotNullArray(final T[] obj, final Supplier<String> message) {
+  public static <T> T[] assertNotNullArray(final T[] obj, final Supplier<String> message) {
     if (obj == null)
       throw new IllegalArgumentException(message.get());
 
@@ -449,15 +445,14 @@ public final class Assertions {
    *
    * @param <T> The component type of the reference.
    * @param obj The array reference to check for nullity.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code obj} if not null.
    * @throws IllegalArgumentException If {@code obj} is null.
    */
-  public static <T>T[] assertNotNullArray(final T[] obj, final String format, final Object ... args) {
+  public static <T> T[] assertNotNullArray(final T[] obj, final String format, final Object ... args) {
     if (obj == null)
       throw new IllegalArgumentException(String.format(format, args));
 
@@ -483,13 +478,13 @@ public final class Assertions {
    * @return {@code obj} if not null.
    * @throws IllegalArgumentException If {@code obj} is null.
    */
-  public static <T>T[] assertNotNullArray(final T[] obj) {
+  public static <T> T[] assertNotNullArray(final T[] obj) {
     return assertNotNullArray(obj, "null");
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(boolean ... bars) {
@@ -511,8 +506,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(boolean ... bars) {
@@ -534,8 +529,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(boolean ... bars) {
@@ -544,9 +539,8 @@ public final class Assertions {
    * </pre>
    *
    * @param obj The array to check for nullity or emptiness.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Assertions.referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code obj} if not null or empty.
@@ -561,8 +555,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(boolean ... bars) {
@@ -583,8 +577,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(byte ... bars) {
@@ -606,8 +600,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(byte ... bars) {
@@ -629,8 +623,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(byte ... bars) {
@@ -639,9 +633,8 @@ public final class Assertions {
    * </pre>
    *
    * @param obj The array to check for nullity or emptiness.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Assertions.referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code obj} if not null or empty.
@@ -656,8 +649,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(byte ... bars) {
@@ -678,8 +671,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(char ... bars) {
@@ -701,8 +694,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(char ... bars) {
@@ -724,8 +717,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(char ... bars) {
@@ -734,9 +727,8 @@ public final class Assertions {
    * </pre>
    *
    * @param obj The array to check for nullity or emptiness.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Assertions.referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code obj} if not null or empty.
@@ -751,8 +743,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(char ... bars) {
@@ -773,8 +765,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(short ... bars) {
@@ -796,8 +788,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(short ... bars) {
@@ -819,8 +811,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(short ... bars) {
@@ -829,9 +821,8 @@ public final class Assertions {
    * </pre>
    *
    * @param obj The array to check for nullity or emptiness.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Assertions.referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code obj} if not null or empty.
@@ -846,8 +837,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(short ... bars) {
@@ -868,8 +859,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(int ... bars) {
@@ -891,8 +882,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(int ... bars) {
@@ -914,8 +905,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(int ... bars) {
@@ -924,9 +915,8 @@ public final class Assertions {
    * </pre>
    *
    * @param obj The array to check for nullity or emptiness.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Assertions.referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code obj} if not null or empty.
@@ -941,8 +931,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(int ... bars) {
@@ -963,8 +953,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(long ... bars) {
@@ -986,8 +976,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(long ... bars) {
@@ -1009,8 +999,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(long ... bars) {
@@ -1019,9 +1009,8 @@ public final class Assertions {
    * </pre>
    *
    * @param obj The array to check for nullity or emptiness.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Assertions.referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code obj} if not null or empty.
@@ -1036,8 +1025,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(long ... bars) {
@@ -1058,8 +1047,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(float ... bars) {
@@ -1081,8 +1070,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(float ... bars) {
@@ -1104,8 +1093,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(float ... bars) {
@@ -1114,9 +1103,8 @@ public final class Assertions {
    * </pre>
    *
    * @param obj The array to check for nullity or emptiness.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Assertions.referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code obj} if not null or empty.
@@ -1131,8 +1119,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(float ... bars) {
@@ -1153,8 +1141,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(double ... bars) {
@@ -1176,8 +1164,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(double ... bars) {
@@ -1199,8 +1187,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(double ... bars) {
@@ -1209,9 +1197,8 @@ public final class Assertions {
    * </pre>
    *
    * @param obj The array to check for nullity or emptiness.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Assertions.referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code obj} if not null or empty.
@@ -1226,8 +1213,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(double ... bars) {
@@ -1248,8 +1235,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(Bar ... bars) {
@@ -1263,7 +1250,7 @@ public final class Assertions {
    * @return {@code obj} if not null or empty.
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
-  public static <T>T[] assertNotEmpty(final T[] obj, final String message) {
+  public static <T> T[] assertNotEmpty(final T[] obj, final String message) {
     assertNotNull(obj, message);
     if (obj.length == 0)
       throw new IllegalArgumentException(message);
@@ -1272,8 +1259,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(Bar ... bars) {
@@ -1287,7 +1274,7 @@ public final class Assertions {
    * @return {@code obj} if not null or empty.
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
-  public static <T>T[] assertNotEmpty(final T[] obj, final Supplier<String> message) {
+  public static <T> T[] assertNotEmpty(final T[] obj, final Supplier<String> message) {
     assertNotNull(obj, message);
     if (obj.length == 0)
       throw new IllegalArgumentException(message.get());
@@ -1296,8 +1283,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(Bar ... bars) {
@@ -1307,15 +1294,14 @@ public final class Assertions {
    *
    * @param <T> The type of the reference.
    * @param obj The array to check for nullity or emptiness.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code obj} if not null or empty.
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
-  public static <T>T[] assertNotEmpty(final T[] obj, final String format, final Object ... args) {
+  public static <T> T[] assertNotEmpty(final T[] obj, final String format, final Object ... args) {
     assertNotNull(obj, format, args);
     if (obj.length == 0)
       throw new IllegalArgumentException(String.format(format, args));
@@ -1324,8 +1310,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in
-   * methods and constructors, as demonstrated below:
+   * Checks that the specified array is not null or empty. This method is designed primarily for doing parameter validation in methods
+   * and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(Bar ... bars) {
@@ -1338,7 +1324,7 @@ public final class Assertions {
    * @return {@code obj} if not null or empty.
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
-  public static <T>T[] assertNotEmpty(final T[] obj) {
+  public static <T> T[] assertNotEmpty(final T[] obj) {
     assertNotNull(obj, "null");
     if (obj.length == 0)
       throw new IllegalArgumentException("empty");
@@ -1362,7 +1348,7 @@ public final class Assertions {
    * @return {@code obj} if not null or empty.
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
-  public static <T extends Collection<?>>T assertNotEmpty(final T obj, final String message) {
+  public static <T extends Collection<?>> T assertNotEmpty(final T obj, final String message) {
     assertNotNull(obj, message);
     if (obj.size() == 0)
       throw new IllegalArgumentException(message);
@@ -1386,7 +1372,7 @@ public final class Assertions {
    * @return {@code obj} if not null or empty.
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
-  public static <T extends Collection<?>>T assertNotEmpty(final T obj, final Supplier<String> message) {
+  public static <T extends Collection<?>> T assertNotEmpty(final T obj, final Supplier<String> message) {
     assertNotNull(obj, message);
     if (obj.size() == 0)
       throw new IllegalArgumentException(message.get());
@@ -1406,15 +1392,14 @@ public final class Assertions {
    *
    * @param <T> The type of the collection reference.
    * @param obj The collection to check for nullity or emptiness.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code obj} if not null or empty.
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
-  public static <T extends Collection<?>>T assertNotEmpty(final T obj, final String format, final Object ... args) {
+  public static <T extends Collection<?>> T assertNotEmpty(final T obj, final String format, final Object ... args) {
     if (assertNotNull(obj, format, args).size() == 0)
       throw new IllegalArgumentException(String.format(format, args));
 
@@ -1436,7 +1421,7 @@ public final class Assertions {
    * @return {@code obj} if not null or empty.
    * @throws IllegalArgumentException If {@code obj} is null or empty.
    */
-  public static <T extends Collection<?>>T assertNotEmpty(final T obj) {
+  public static <T extends Collection<?>> T assertNotEmpty(final T obj) {
     assertNotNull(obj, "null");
     if (obj.size() == 0)
       throw new IllegalArgumentException("empty");
@@ -1501,9 +1486,8 @@ public final class Assertions {
    * </pre>
    *
    * @param str The string to check for nullity or emptiness.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code str} if not null or empty.
@@ -1593,9 +1577,8 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as finite.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code value} if finite.
@@ -1684,9 +1667,8 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as finite.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code value} if finite.
@@ -1719,7 +1701,6 @@ public final class Assertions {
 
     return value;
   }
-
 
   /**
    * Checks that the provided value is positive. This method is designed primarily for doing parameter validation in methods and
@@ -1797,9 +1778,8 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as positive.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code value} if positive.
@@ -1888,9 +1868,8 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as positive.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code value} if positive.
@@ -1979,9 +1958,8 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as positive.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code value} if positive.
@@ -2070,9 +2048,8 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as positive.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code value} if positive.
@@ -2161,9 +2138,8 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as finite and positive.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code value} if positive.
@@ -2242,8 +2218,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks that the provided value is finite and positive. This method is designed primarily for doing parameter validation in methods and
-   * constructors, as demonstrated below:
+   * Checks that the provided value is finite and positive. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
    *
    * <pre>
    * public Foo(double bar) {
@@ -2252,9 +2228,8 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as finite and positive.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code value} if positive.
@@ -2322,9 +2297,8 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as not negative.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code value} if not negative.
@@ -2413,9 +2387,8 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as not negative.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code value} if not negative.
@@ -2504,9 +2477,8 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as not negative.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code value} if not negative.
@@ -2595,9 +2567,8 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as not negative.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code value} if not negative.
@@ -2686,9 +2657,8 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as not zero.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code value} if not zero.
@@ -2777,9 +2747,8 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as not zero.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code value} if not zero.
@@ -2868,9 +2837,8 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as not zero.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code value} if not zero.
@@ -2959,9 +2927,8 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as not zero.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code value} if not zero.
@@ -3050,9 +3017,8 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as not zero.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code value} if not zero.
@@ -3141,9 +3107,8 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as not zero.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code value} if not zero.
@@ -3232,9 +3197,8 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as finite and not negative.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code value} if not negative.
@@ -3323,9 +3287,8 @@ public final class Assertions {
    * </pre>
    *
    * @param value The value to assert as finite and not negative.
-   * @param format The detail message
-   *          <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a> to be used for the
-   *          {@link IllegalArgumentException}.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
    * @param args Arguments referenced by the format specifiers in the format string to be passed to
    *          {@link String#format(String,Object...)}.
    * @return {@code value} if not negative.
@@ -3442,8 +3405,8 @@ public final class Assertions {
    * @param min The minimum bound of the range (inclusive).
    * @param max The maximum bound of the range (inclusive).
    * @return {@code value} if it is in range.
-   * @throws IllegalArgumentException If {@code value} is not in range, or if {@code min} is not less than or equal to {@code max},
-   *           or if any of the provided values are not finite.
+   * @throws IllegalArgumentException If {@code value} is not in range, or if {@code min} is not less than or equal to {@code max}, or
+   *           if any of the provided values are not finite.
    */
   public static float assertRangeMinMax(final float value, final float min, final float max) {
     assertFinite(value);
@@ -3466,8 +3429,8 @@ public final class Assertions {
    * @param min The minimum bound of the range (inclusive).
    * @param max The maximum bound of the range (inclusive).
    * @return {@code value} if it is in range.
-   * @throws IllegalArgumentException If {@code value} is not in range, or if {@code min} is not less than or equal to {@code max},
-   *           or if any of the provided values are not finite.
+   * @throws IllegalArgumentException If {@code value} is not in range, or if {@code min} is not less than or equal to {@code max}, or
+   *           if any of the provided values are not finite.
    */
   public static double assertRangeMinMax(final double value, final double min, final double max) {
     assertFinite(value);
@@ -3484,8 +3447,7 @@ public final class Assertions {
   }
 
   /**
-   * Checks if the given {@code offset} and {@code length} are non-negative. If not, throws an
-   * {@link ArrayIndexOutOfBoundsException}.
+   * Checks if the given {@code offset} and {@code length} are non-negative. If not, throws an {@link ArrayIndexOutOfBoundsException}.
    *
    * @param offset The offset in an array.
    * @param length The length of an array.
@@ -3500,8 +3462,8 @@ public final class Assertions {
   }
 
   /**
-   * Checks if the given {@code fromIndex} and {@code toIndex} are in range. If not, throws an
-   * {@link ArrayIndexOutOfBoundsException} or {@link IllegalArgumentException}.
+   * Checks if the given {@code fromIndex} and {@code toIndex} are in range. If not, throws an {@link ArrayIndexOutOfBoundsException}
+   * or {@link IllegalArgumentException}.
    *
    * @param fromIndex The from index.
    * @param toIndex The to index.
@@ -3536,8 +3498,7 @@ public final class Assertions {
   }
 
   /**
-   * Checks if the given {@code offset} and {@code length} are non-negative. If not, throws an
-   * {@link ArrayIndexOutOfBoundsException}.
+   * Checks if the given {@code offset} and {@code length} are non-negative. If not, throws an {@link ArrayIndexOutOfBoundsException}.
    *
    * @param offsetLabel The string label of the "offset" parameter.
    * @param offset The offset in an array.

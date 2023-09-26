@@ -101,7 +101,7 @@ public class RepeatTest {
     for (int i = 0; i < 10000000; ++i) // [N]
       array = Repeat.<Integer,Object>iterative(values1, Integer.class, filter, null);
 
-    if (logger.isInfoEnabled()) logger.info("iterative: " + (System.currentTimeMillis() - start) + "ms " + (mem - Runtime.getRuntime().freeMemory()) + " bytes");
+    if (logger.isInfoEnabled()) { logger.info("iterative: " + (System.currentTimeMillis() - start) + "ms " + (mem - Runtime.getRuntime().freeMemory()) + " bytes"); }
     assertArrayEquals(new Integer[] {1, 4, 5, 6, 8}, array);
 
     array = Repeat.<Integer,Object>iterative(values2, Integer.class, filter, null);
@@ -118,7 +118,7 @@ public class RepeatTest {
     for (int i = 0; i < 10000000; ++i) // [N]
       array = Repeat.Recursive.<Integer,Object>ordered(values1, Integer.class, filter, null);
 
-    if (logger.isInfoEnabled()) logger.info("recursive: " + (System.currentTimeMillis() - start) + "ms " + (mem - Runtime.getRuntime().freeMemory()) + " bytes");
+    if (logger.isInfoEnabled()) { logger.info("recursive: " + (System.currentTimeMillis() - start) + "ms " + (mem - Runtime.getRuntime().freeMemory()) + " bytes"); }
     assertArrayEquals(new Integer[] {1, 4, 5, 6, 8}, array);
 
     array = Repeat.Recursive.<Integer,Object>ordered(values2, Integer.class, filter, null);

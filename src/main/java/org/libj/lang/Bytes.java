@@ -162,8 +162,8 @@ public final class Bytes {
   /**
    * Returns a {@code byte} array representing the provided {@code int} value with big- or little- endian encoding.
    * <p>
-   * A Java {@code int} is 4 bytes in size. If the {@code byte} array is shorter than 4 bytes minus the offset, the missing bytes
-   * are skipped. For each missing byte, the byte sequence is shifted such that the least significant bytes are skipped first.
+   * A Java {@code int} is 4 bytes in size. If the {@code byte} array is shorter than 4 bytes minus the offset, the missing bytes are
+   * skipped. For each missing byte, the byte sequence is shifted such that the least significant bytes are skipped first.
    *
    * @param i The {@code int} value.
    * @param bytes The destination {@code byte[]} array.
@@ -210,8 +210,8 @@ public final class Bytes {
   /**
    * Returns a {@code byte} array representing the provided {@code long} value with big- or little- endian encoding.
    * <p>
-   * A Java {@code long} is 8 bytes in size. If the {@code byte} array is shorter than 8 bytes minus the offset, the missing bytes
-   * are skipped. For each missing byte, the byte sequence is shifted such that the least significant bytes are skipped first.
+   * A Java {@code long} is 8 bytes in size. If the {@code byte} array is shorter than 8 bytes minus the offset, the missing bytes are
+   * skipped. For each missing byte, the byte sequence is shifted such that the least significant bytes are skipped first.
    *
    * @param l The {@code long} value.
    * @param bytes The destination {@code byte[]} array.
@@ -304,8 +304,8 @@ public final class Bytes {
   }
 
   /**
-   * Create a signed {@code short} or an unsigned {@code int} representation of a source {@code byte} array with big- or
-   * little-endian encoding.
+   * Create a signed {@code short} or an unsigned {@code int} representation of a source {@code byte} array with big- or little-endian
+   * encoding.
    * <p>
    * A Java {@code short} is 2 bytes in size. If the {@code byte} array is shorter than 2 bytes minus the offset, the missing bytes
    * are considered as the equivalent of 0x0.
@@ -345,8 +345,8 @@ public final class Bytes {
   /**
    * Create a signed {@code int} representation of a source {@code byte} array with big- or little-endian encoding.
    * <p>
-   * A Java {@code int} is 4 bytes in size. If the {@code byte} array is shorter than 4 bytes minus the offset, the missing bytes
-   * are considered as the equivalent of {@code 0x0}.
+   * A Java {@code int} is 4 bytes in size. If the {@code byte} array is shorter than 4 bytes minus the offset, the missing bytes are
+   * considered as the equivalent of {@code 0x0}.
    *
    * @param src The source {@code byte} array.
    * @param offset The byte offset into the source {@code byte} array.
@@ -359,11 +359,11 @@ public final class Bytes {
   }
 
   /**
-   * Create a signed {@code int} or an unsigned {@code long} representation of a source {@code byte} array with big- or
-   * little-endian encoding.
+   * Create a signed {@code int} or an unsigned {@code long} representation of a source {@code byte} array with big- or little-endian
+   * encoding.
    * <p>
-   * A Java {@code int} is 4 bytes in size. If the {@code byte} array is shorter than 4 bytes minus the offset, the missing bytes
-   * are considered as the equivalent of {@code 0x0}.
+   * A Java {@code int} is 4 bytes in size. If the {@code byte} array is shorter than 4 bytes minus the offset, the missing bytes are
+   * considered as the equivalent of {@code 0x0}.
    *
    * @param src The source {@code byte} array.
    * @param offset The byte offset into the source {@code byte} array.
@@ -412,8 +412,8 @@ public final class Bytes {
   /**
    * Create a signed {@code long} representation of a source {@code byte} array with big- or little-endian encoding.
    * <p>
-   * A Java {@code long} is 8 bytes in size. If the {@code byte} array is shorter than 8 bytes minus the offset, the missing bytes
-   * are considered as the equivalent of {@code 0x0}.
+   * A Java {@code long} is 8 bytes in size. If the {@code byte} array is shorter than 8 bytes minus the offset, the missing bytes are
+   * considered as the equivalent of {@code 0x0}.
    *
    * @param src The source {@code byte} array.
    * @param offset The byte offset into the source {@code byte} array.
@@ -559,9 +559,9 @@ public final class Bytes {
 
   /**
    * Write a number of bits from a source {@code byte} array to a destination {@code byte} array at an offset. The bits are counted
-   * from right to left (least significant to most significant, as per big-endian encoding). The offset is counted left to right
-   * (most significant to least significant, as per big-endian encoding). If {@code bits > 8}, the starting bit to be read is the
-   * least significant bit in the {@code bits % 8} position in the source array.
+   * from right to left (least significant to most significant, as per big-endian encoding). The offset is counted left to right (most
+   * significant to least significant, as per big-endian encoding). If {@code bits > 8}, the starting bit to be read is the least
+   * significant bit in the {@code bits % 8} position in the source array.
    * <p>
    * Examples:
    * <p>
@@ -590,8 +590,8 @@ public final class Bytes {
 
   /**
    * Write a number of bits from a source {@code byte} to a destination {@code byte} array at an offset. The bits are counted from
-   * right to left (least significant to most significant, as per little-endian encoding). The offset is counted left to right
-   * (least significant to most significant, as per little-endian encoding).
+   * right to left (least significant to most significant, as per little-endian encoding). The offset is counted left to right (least
+   * significant to most significant, as per little-endian encoding).
    * <p>
    * Examples:
    * <p>
@@ -653,9 +653,9 @@ public final class Bytes {
 
   /**
    * Returns the {@code byte} representation from reading a number of bits (0 to 8) from a source {@code byte} array at an offset,
-   * read in the direction of most significant bit to least significant bit. This method returns the value of the read byte as
-   * shifted to fill the least significant bits first, allowing the front of the byte to encode a value as if the bits were in the
-   * tail of the byte. Java uses big-endian encoding, placing the most significant bits at the front of the byte.
+   * read in the direction of most significant bit to least significant bit. This method returns the value of the read byte as shifted
+   * to fill the least significant bits first, allowing the front of the byte to encode a value as if the bits were in the tail of the
+   * byte. Java uses big-endian encoding, placing the most significant bits at the front of the byte.
    *
    * @param src The source {@code byte} array.
    * @param offset The offset in bits.

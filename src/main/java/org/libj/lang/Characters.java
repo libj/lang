@@ -39,6 +39,7 @@ public final class Characters {
   /**
    * Returns the escaped representation of the specified character.
    *
+   * @formatter:off
    * <blockquote>
    * <table>
    * <caption>Escape Sequences</caption>
@@ -61,6 +62,7 @@ public final class Characters {
    * <tr><td><code>\<b>7</b></code></td><td>7</td></tr>
    * </table>
    * </blockquote>
+   * @formatter:on
    *
    * @implSpec This method only supports single-character escape sequences, and therefore does not handle 2-digit or 3-digit octal
    *           escape sequences, or 4-hex-digit unicode sequences.
@@ -80,7 +82,8 @@ public final class Characters {
 
   /**
    * Tests whether the specified character is escapable
-   * <p>
+   *
+   * @formatter:off
    * <blockquote>
    * <table>
    * <caption>Escape Sequences</caption>
@@ -103,6 +106,7 @@ public final class Characters {
    * <tr><td><code>\<b>7</b></code></td><td>7</td></tr>
    * </table>
    * </blockquote>
+   * @formatter:on
    *
    * @implSpec This method only supports single-character escape sequences, and therefore does not handle 2-digit or 3-digit octal
    *           escape sequences, or 4-hex-digit unicode sequences.
@@ -130,8 +134,8 @@ public final class Characters {
    * Converts the provided string to a new character array, or returns {@code null} if {@code str} is null.
    *
    * @param str The string to convert to a new character array.
-   * @return A newly allocated character array whose length is the length of the provided string and whose contents are initialized
-   *         to contain the character sequence represented by the provided string, or returns {@code null} if {@code str} is null.
+   * @return A newly allocated character array whose length is the length of the provided string and whose contents are initialized to
+   *         contain the character sequence represented by the provided string, or returns {@code null} if {@code str} is null.
    */
   public static char[] valueOf(final String str) {
     return str == null ? null : str.toCharArray();

@@ -43,8 +43,8 @@ public final class WrapperProxy {
    * specified {@code obj} instance.
    *
    * @implNote The runtime type of the returned instance will <i>not be</i> of a concrete class, but rather a composition of all
-   *           super-interfaces of the concrete class {@code <T>}. It is therefore not possible to cast the instance returned by
-   *           this method to a concrete class, but rather any super-interface of the concrete class.
+   *           super-interfaces of the concrete class {@code <T>}. It is therefore not possible to cast the instance returned by this
+   *           method to a concrete class, but rather any super-interface of the concrete class.
    * @param <T> The type parameter of the specified arguments.
    * @param obj The target object instance to wrap.
    * @param wrapper The wrapping object.
@@ -52,7 +52,7 @@ public final class WrapperProxy {
    *         instance, or, {@code wrapper} if {@code obj == wrapper}, or if {@code target} or {@code wrapper} is null.
    */
   @SuppressWarnings("unchecked")
-  public static <T>T wrap(final T obj, final T wrapper) {
+  public static <T> T wrap(final T obj, final T wrapper) {
     if (obj == null || wrapper == null || obj == wrapper)
       return wrapper;
 
@@ -117,7 +117,7 @@ public final class WrapperProxy {
    * @return Whether the specified object is a proxy of a wrapped instance type matching the provided {@code wrappedClass}.
    * @throws NullPointerException If {@code obj} or {@code wrappedClass} is null.
    */
-  public static <T>boolean isWrapper(final T obj, final Class<T> wrappedClass) {
+  public static <T> boolean isWrapper(final T obj, final Class<T> wrappedClass) {
     if (!Proxy.isProxyClass(obj.getClass()))
       return false;
 

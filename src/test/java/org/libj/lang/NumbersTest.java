@@ -464,7 +464,7 @@ public class NumbersTest {
   }
 
   @SuppressWarnings("unchecked")
-  private static <T extends Number>void testParse(final Function<String,T> function, final T ... numbers) {
+  private static <T extends Number> void testParse(final Function<String,T> function, final T ... numbers) {
     for (final T number : numbers) { // [A]
       final String str = String.valueOf(number);
       assertEquals(number, function.apply(str));
@@ -477,7 +477,7 @@ public class NumbersTest {
   }
 
   @SuppressWarnings("unchecked")
-  private static <T extends Number>void testParseRadix(final ObjIntFunction<String,T> function, final int radix, final T ... numbers) {
+  private static <T extends Number> void testParseRadix(final ObjIntFunction<String,T> function, final int radix, final T ... numbers) {
     for (final T number : numbers) { // [A]
       final String str = Long.toString(number.longValue(), radix);
       assertEquals(number, function.apply(str, radix));
