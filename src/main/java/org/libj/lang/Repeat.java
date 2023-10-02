@@ -18,7 +18,6 @@ package org.libj.lang;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.BiPredicate;
 
@@ -314,7 +313,7 @@ public final class Repeat {
     @SuppressWarnings("unchecked")
     protected <M,A> M[] simple(final M[] array, final Class<M> type, final BiPredicate<? super M,A> predicate, final A arg) {
       super.simple(array, type, predicate, arg);
-      final List<M> list = new ArrayList<>(array.length);
+      final ArrayList<M> list = new ArrayList<>(array.length);
       for (int i = 0, i$ = array.length; i < i$; ++i) // [A]
         if (predicate.test(array[i], arg))
           list.add(array[i]);
