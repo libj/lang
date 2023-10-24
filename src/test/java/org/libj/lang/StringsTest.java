@@ -885,6 +885,34 @@ public class StringsTest {
   }
 
   @Test
+  public void testIsWhitespace() {
+    try {
+      assertTrue(Strings.isWhitespace(null));
+      fail("Expected NullPointerException");
+    }
+    catch (final NullPointerException e) {
+    }
+
+    assertTrue(Strings.isWhitespace("\t \r\n \t \r\n"));
+    assertFalse(Strings.isWhitespace("\t \r\nX\t \r\n"));
+  }
+
+  @Test
+  public void testHasWhitespace() {
+    try {
+      assertTrue(Strings.hasWhitespace(null));
+      fail("Expected NullPointerException");
+    }
+    catch (final NullPointerException e) {
+    }
+
+    assertTrue(Strings.hasWhitespace("fndsiofas\tfnsdio"));
+    assertTrue(Strings.hasWhitespace("fndsio fasfnsdio"));
+    assertTrue(Strings.hasWhitespace("fndsiofasfns\ndio"));
+    assertFalse(Strings.hasWhitespace("fnaofknsdoifdonsi"));
+  }
+
+  @Test
   public void testSearchReplace() {
     try {
       Strings.searchReplace((String)null, "/a/b/");

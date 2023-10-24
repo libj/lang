@@ -2142,16 +2142,30 @@ public final class Strings {
    * @param str The {@link String} to test.
    * @return {@code true} if the specified string is fully comprised of whitespace characters. This method returns {@code true} for
    *         empty strings and {@code false} for null.
+   * @throws NullPointerException If {@code str} is null.
    */
   public static boolean isWhitespace(final CharSequence str) {
-    if (str == null)
-      return false;
-
     for (int i = 0, i$ = str.length(); i < i$; ++i) // [N]
       if (!Character.isWhitespace(str.charAt(i)))
         return false;
 
     return true;
+  }
+
+  /**
+   * Tests if the specified string is contains a whitespace character.
+   *
+   * @param str The {@link String} to test.
+   * @return {@code true} if the specified string is fully comprised of whitespace characters. This method returns {@code true} for
+   *         empty strings and {@code false} for null.
+   * @throws NullPointerException If {@code str} is null.
+   */
+  public static boolean hasWhitespace(final CharSequence str) {
+    for (int i = 0, i$ = str.length(); i < i$; ++i) // [N]
+      if (Character.isWhitespace(str.charAt(i)))
+        return true;
+
+    return false;
   }
 
   /**
