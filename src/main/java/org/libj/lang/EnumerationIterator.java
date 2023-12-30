@@ -20,9 +20,20 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Objects;
 
+/**
+ * An {@link Iterator} over an {@link Enumeration}.
+ *
+ * @param <E> The type parameter of the {@link Enumeration}.
+ */
 public class EnumerationIterator<E> implements Iterator<E> {
   private final Enumeration<E> enumeration;
 
+  /**
+   * Creates a new {@link EnumerationIterator} with the provided {@link Enumeration}.
+   *
+   * @param enumeration The {@link Enumeration} backing this {@link EnumerationIterator}.
+   * @throws NullPointerException If {@code enumeration} is null.
+   */
   public EnumerationIterator(final Enumeration<E> enumeration) {
     this.enumeration = Objects.requireNonNull(enumeration);
   }
@@ -37,6 +48,9 @@ public class EnumerationIterator<E> implements Iterator<E> {
     return enumeration.nextElement();
   }
 
+  /**
+   * Throws {@link UnsupportedOperationException}, because removing elements from an {@link Enumeration} is not supported.
+   */
   @Override
   public void remove() {
     throw new UnsupportedOperationException();

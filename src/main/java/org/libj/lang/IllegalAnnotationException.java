@@ -51,6 +51,6 @@ public class IllegalAnnotationException extends RuntimeException {
    * @return The {@link Annotation} that is the subject of this exception.
    */
   public Annotation annotation() {
-    return this.annotation;
+    return annotation;
   }
 }

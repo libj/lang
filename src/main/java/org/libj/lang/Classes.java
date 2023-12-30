@@ -660,8 +660,7 @@ public final class Classes {
    */
   @SuppressWarnings("unchecked")
   public static <T> Constructor<T> getConstructor(final Class<T> cls, final Class<?> ... parameterTypes) {
-    final Constructor<?>[] constructors = cls.getConstructors();
-    for (final Constructor<?> constructor : constructors) // [A]
+    for (final Constructor<?> constructor : cls.getConstructors()) // [A]
       if (isMatch(constructor, parameterTypes))
         return (Constructor<T>)constructor;
 
@@ -688,8 +687,7 @@ public final class Classes {
    */
   @SuppressWarnings("unchecked")
   public static <T> Constructor<T> getConstructor(final Class<T> cls) {
-    final Constructor<?>[] constructors = cls.getConstructors();
-    for (final Constructor<?> constructor : constructors) // [A]
+    for (final Constructor<?> constructor : cls.getConstructors()) // [A]
       if (constructor.getParameterCount() == 0)
         return (Constructor<T>)constructor;
 
@@ -717,8 +715,7 @@ public final class Classes {
    */
   @SuppressWarnings("unchecked")
   public static <T> Constructor<T> getCompatibleConstructor(final Class<T> cls, final Class<?> ... parameterTypes) {
-    final Constructor<?>[] constructors = cls.getConstructors();
-    for (final Constructor<?> constructor : constructors) // [A]
+    for (final Constructor<?> constructor : cls.getConstructors()) // [A]
       if (isCompatible(constructor.getParameterTypes(), parameterTypes))
         return (Constructor<T>)constructor;
 
@@ -748,8 +745,7 @@ public final class Classes {
    */
   @SuppressWarnings("unchecked")
   public static <T> Constructor<T> getDeclaredConstructor(final Class<T> cls, final Class<?> ... parameterTypes) {
-    final Constructor<?>[] constructors = cls.getDeclaredConstructors();
-    for (final Constructor<?> constructor : constructors) // [A]
+    for (final Constructor<?> constructor : cls.getDeclaredConstructors()) // [A]
       if (isMatch(constructor, parameterTypes))
         return (Constructor<T>)constructor;
 
@@ -778,8 +774,7 @@ public final class Classes {
    */
   @SuppressWarnings("unchecked")
   public static <T> Constructor<T> getDeclaredConstructor(final Class<T> cls) {
-    final Constructor<?>[] constructors = cls.getDeclaredConstructors();
-    for (final Constructor<?> constructor : constructors) // [A]
+    for (final Constructor<?> constructor : cls.getDeclaredConstructors()) // [A]
       if (constructor.getParameterCount() == 0)
         return (Constructor<T>)constructor;
 

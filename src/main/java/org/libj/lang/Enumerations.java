@@ -174,6 +174,7 @@ public final class Enumerations {
    * @param enumeration The {@link Enumeration}.
    * @return The size of the provided {@link Enumeration}.
    * @throws NullPointerException If {@code enumeration} is null.
+   * @implNote After the execution of this method, the provided {@link Enumeration} will be fully consumed.
    */
   public static int getSize(final Enumeration<?> enumeration) {
     int size = 0;

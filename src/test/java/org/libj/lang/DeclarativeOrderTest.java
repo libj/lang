@@ -26,10 +26,10 @@ public class DeclarativeOrderTest {
   private static void test(final DeclarativeOrderPolicy declarativeOrderPolicy) throws ClassNotFoundException {
     final Method[] methods = declarativeOrderPolicy.getMethods(DeclarativeOrderTest0.class, Test.class);
     assertTrue(Classes.sortDeclarativeOrder(methods, declarativeOrderPolicy.isSuperFirst()));
-    for (int i = 0, i$ = methods.length; i < i$; ++i) {
+    for (int i = 0; i < methods.length; ++i) { // [A]
       final Method method = methods[i];
       final ExpectOrders expectOrders = method.getAnnotation(ExpectOrders.class);
-      for (final ExpectOrder expectOrder : expectOrders.value())
+      for (final ExpectOrder expectOrder : expectOrders.value()) // [A]
         if (expectOrder.policy() == declarativeOrderPolicy)
           assertEquals(i + "  " + method.getDeclaringClass().getName() + ":" + method.getName() + " " + expectOrder.order(), expectOrder.order(), i);
     }

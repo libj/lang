@@ -33,7 +33,7 @@ public class DeclarativeOrderTest2 {
     final StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
     final Method method = getClass().getMethod(stackTraceElements[2].getMethodName());
     final ExpectOrders expectOrders = method.getAnnotation(ExpectOrders.class);
-    for (final ExpectOrder expectOrder : expectOrders.value())
+    for (final ExpectOrder expectOrder : expectOrders.value()) // [A]
       if (expectOrder.policy() == PUBLIC_SUPER_FIRST)
         assertEquals(index + "  " + method.getDeclaringClass().getName() + ":" + method.getName() + " " + expectOrder.order(), expectOrder.order(), index);
 
