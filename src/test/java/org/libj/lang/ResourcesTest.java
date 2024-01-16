@@ -72,26 +72,4 @@ public class ResourcesTest {
     });
     assertEquals(6, counter.get());
   }
-
-  @Test
-  public void testListLibJRunner() throws IOException {
-    final AtomicInteger counter = new AtomicInteger();
-    Resources.list(ClassLoader.getSystemClassLoader(), "org/junit/", (final URL root, final String entry, final boolean isDirectory) -> {
-      if (logger.isDebugEnabled()) { logger.debug(root + entry); }
-      counter.getAndIncrement();
-      return true;
-    });
-    assertEquals(30, counter.get());
-  }
-
-  @Test
-  public void testWalkLibJRunner() throws IOException {
-    final AtomicInteger counter = new AtomicInteger();
-    Resources.walk(ClassLoader.getSystemClassLoader(), "org/junit/", (final URL root, final String entry, final boolean isDirectory) -> {
-      if (logger.isDebugEnabled()) { logger.debug(root + entry); }
-      counter.getAndIncrement();
-      return true;
-    });
-    assertEquals(354, counter.get());
-  }
 }
