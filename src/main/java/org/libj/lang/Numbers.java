@@ -2672,16 +2672,48 @@ public final class Numbers {
     return String.valueOf(Math.round(n * factor) / factor);
   }
 
-  /**
-   * Strips trailing zeroes after a decimal point in the specified string.
-   * <p>
-   * This method accepts a string that represents a number. The behavior of this method is undefined for non-number string.
-   *
-   * @param number The {@link String} representing a number.
-   * @return The string with trailing zeroes stripped if the string represents a decimal number; otherwise the original string is
-   *         returned.
-   */
-  public static String stripTrailingZeros(final String number) {
+  private abstract static class StripTrailingZeros<S extends CharSequence> {
+    abstract S substring(S s, int end);
+    abstract S delete(S s, int start, int end);
+  }
+
+  private static final StripTrailingZeros<String> string = new StripTrailingZeros<String>() {
+    @Override
+    String substring(final String s, final int end) {
+      return s.substring(0, end);
+    }
+
+    @Override
+    String delete(final String s, final int start, final int end) {
+      return s.substring(0, start) + s.substring(end);
+    }
+  };
+
+  private static final StripTrailingZeros<StringBuilder> stringBuilder = new StripTrailingZeros<StringBuilder>() {
+    @Override
+    StringBuilder substring(final StringBuilder s, final int end) {
+      return s.delete(end, s.length());
+    }
+
+    @Override
+    StringBuilder delete(final StringBuilder s, final int start, final int end) {
+      return s.delete(start, end);
+    }
+  };
+
+  private static final StripTrailingZeros<StringBuffer> stringBuffer = new StripTrailingZeros<StringBuffer>() {
+    @Override
+    StringBuffer substring(final StringBuffer s, final int end) {
+      return s.delete(end, s.length());
+    }
+
+    @Override
+    StringBuffer delete(final StringBuffer s, final int start, final int end) {
+      return s.delete(start, end);
+    }
+  };
+
+  public static <T extends CharSequence> T stripTrailingZeros(final T number, final StripTrailingZeros<T> x) {
     final int len;
     if (number == null || (len = number.length()) == 0)
       return number;
@@ -2709,14 +2741,56 @@ public final class Numbers {
             break;
         }
         while (j > 0);
-        return j < 0 ? number : number.substring(0, j + 1) + number.substring(i);
+        return j < 0 ? number : x.delete(number, j + 1, i);
       }
 
       if (ch == '.')
-        return number.substring(0, i);
+        return x.substring(number, i);
     }
     while (--j >= 0);
     return number;
+  }
+
+  /**
+   * Strips trailing zeroes after a decimal point in the specified {@link String}.
+   * <p>
+   * This method accepts a string that represents a number. The behavior of this method is undefined for a {@link String} that does
+   * not represent a number.
+   *
+   * @param number The {@link String} representing a number.
+   * @return The {@link String} with trailing zeroes stripped if the string represents a decimal number; otherwise the original
+   *         {@link String} is returned.
+   */
+  public static String stripTrailingZeros(final String number) {
+    return stripTrailingZeros(number, string);
+  }
+
+  /**
+   * Strips trailing zeroes after a decimal point in the specified {@link StringBuffer}.
+   * <p>
+   * This method accepts a string that represents a number. The behavior of this method is undefined for a {@link StringBuffer} that
+   * does not represent a number.
+   *
+   * @param number The {@link String} representing a number.
+   * @return The {@link StringBuffer} with trailing zeroes stripped if the string represents a decimal number; otherwise the returned
+   *         {@link StringBuffer} is unchanged.
+   */
+  public static StringBuffer stripTrailingZeros(final StringBuffer number) {
+    return stripTrailingZeros(number, stringBuffer);
+  }
+
+  /**
+   * Strips trailing zeroes after a decimal point in the specified {@link StringBuilder}.
+   * <p>
+   * This method accepts a string that represents a number. The behavior of this method is undefined for a {@link StringBuilder} that
+   * does not represent a number.
+   *
+   * @param number The {@link String} representing a number.
+   * @return The {@link StringBuilder} with trailing zeroes stripped if the string represents a decimal number; otherwise the returned
+   *         {@link StringBuilder} is unchanged.
+   */
+  public static StringBuilder stripTrailingZeros(final StringBuilder number) {
+    return stripTrailingZeros(number, stringBuilder);
   }
 
   /**

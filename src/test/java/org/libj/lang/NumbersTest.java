@@ -437,19 +437,27 @@ public class NumbersTest {
     assertEquals(BigDecimal.ONE, Numbers.toBigDecimal(BigInteger.ONE));
   }
 
+  private static void testStripTrailingZeros(final String expected, final String value) {
+    assertEquals(expected, Numbers.stripTrailingZeros(value));
+    assertEquals(expected, Numbers.stripTrailingZeros(new StringBuffer(value)).toString());
+    assertEquals(expected, Numbers.stripTrailingZeros(new StringBuilder(value)).toString());
+  }
+
   @Test
   public void testStripTrailingZeros() {
-    assertNull(Numbers.stripTrailingZeros(null));
-    assertEquals("7E-10", Numbers.stripTrailingZeros("7.0E-10"));
-    assertEquals("5.4E+100", Numbers.stripTrailingZeros("5.4000E+100"));
-    assertEquals("5.4", Numbers.stripTrailingZeros("5.4000"));
-    assertEquals("500", Numbers.stripTrailingZeros("500"));
-    assertEquals("0500", Numbers.stripTrailingZeros("0500"));
-    assertEquals("0.1", Numbers.stripTrailingZeros("0.100"));
-    assertEquals("0", Numbers.stripTrailingZeros("0.000"));
-    assertEquals("1", Numbers.stripTrailingZeros("1.000"));
-    assertEquals("xxx", Numbers.stripTrailingZeros("xxx"));
-    assertEquals("xxx00", Numbers.stripTrailingZeros("xxx00"));
+    assertNull(Numbers.stripTrailingZeros((String)null));
+    assertNull(Numbers.stripTrailingZeros((StringBuffer)null));
+    assertNull(Numbers.stripTrailingZeros((StringBuilder)null));
+    testStripTrailingZeros("7E-10", "7.0E-10");
+    testStripTrailingZeros("5.4E+100", "5.4000E+100");
+    testStripTrailingZeros("5.4", "5.4000");
+    testStripTrailingZeros("500", "500");
+    testStripTrailingZeros("0500", "0500");
+    testStripTrailingZeros("0.1", "0.100");
+    testStripTrailingZeros("0", "0.000");
+    testStripTrailingZeros("1", "1.000");
+    testStripTrailingZeros("xxx", "xxx");
+    testStripTrailingZeros("xxx00", "xxx00");
   }
 
   @Test
