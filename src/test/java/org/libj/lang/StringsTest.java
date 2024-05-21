@@ -34,6 +34,20 @@ public class StringsTest {
   private static final Random r = new Random();
 
   @Test
+  public void testIsNullOrEmpty() {
+    assertTrue(Strings.isNullOrEmpty(null));
+    assertTrue(Strings.isNullOrEmpty(""));
+    assertFalse(Strings.isNullOrEmpty(" "));
+  }
+
+  @Test
+  public void testEmptyToNull() {
+    assertNull(null);
+    assertNull(Strings.emptyToNull(""));
+    assertNotNull(Strings.emptyToNull(" "));
+  }
+
+  @Test
   public void testIndexOf1() {
     for (int i = 0; i < 10000; ++i) { // [N]
       final String str = Strings.getRandomAlphaNumeric(256);

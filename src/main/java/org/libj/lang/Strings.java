@@ -53,6 +53,26 @@ public final class Strings {
   }
 
   /**
+   * Returns {@code true} if the given string is null or its length is {@code 0}, otherwise {@code false}.
+   *
+   * @param string The string to check.
+   * @return {@code true} if the string is null or its length is {@code 0}, otherwise {@code false}.
+   */
+  public static boolean isNullOrEmpty(final String string) {
+    return string == null || string.length() == 0;
+  }
+
+  /**
+   * Returns the given string if it is nonempty; otherwise {@code null}.
+   *
+   * @param string The string to test.
+   * @return The given string if it is nonempty; otherwise {@code null}.
+   */
+  public static String emptyToNull(final String string) {
+    return string == null || string.length() == 0 ? null : string;
+  }
+
+  /**
    * Returns a randomly constructed alphanumeric string of the specified length.
    *
    * @param secureRandom The {@link SecureRandom} instance for generation of random values.
