@@ -16,41 +16,204 @@
 
 package org.libj.lang;
 
-import java.util.Arrays;
+import java.io.ByteArrayOutputStream;
 
 /**
  * Encodes and decodes Base32.
  *
  * @see <a href="http://www.faqs.org/rfcs/rfc3548.html">RFC3548</a>
  */
-public class Base32 extends DataEncoding<byte[],String> {
-  private static final String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
-  private static final int[] lookup = {
-    0xFF, 0xFF, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
-    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-    0xFF, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06,
-    0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E,
-    0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16,
-    0x17, 0x18, 0x19, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-    0xFF, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06,
-    0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E,
-    0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16,
-    0x17, 0x18, 0x19, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
-  };
+public class Base32 {
+  private static final String lower = "abcdefghijklmnopqrstuvwxyz234567=";
+  private static final String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567=";
+
+  private static int blockLenToPadding(final int blocklen) {
+    switch (blocklen) {
+      case 1:
+        return 6;
+
+      case 2:
+        return 4;
+
+      case 3:
+        return 3;
+
+      case 4:
+        return 1;
+
+      case 5:
+        return 0;
+
+      default:
+        return -1;
+    }
+  }
+
+  private static int paddingToBlockLen(final int padlen) {
+    switch (padlen) {
+      case 6:
+        return 1;
+
+      case 4:
+        return 2;
+
+      case 3:
+        return 3;
+
+      case 1:
+        return 4;
+
+      case 0:
+        return 5;
+
+      default:
+        return -1;
+    }
+  }
+
+  static String encode(final byte[] data, final int offset, final int len, final String lower, final String upper, final boolean padding, final boolean uppercase) {
+    final String alphabet = uppercase ? upper : lower;
+    final ByteArrayOutputStream os = new ByteArrayOutputStream();
+    for (int i = 0, i$ = (len + 4) / 5; i < i$; ++i) {
+      final short s[] = new short[5];
+      final int t[] = new int[8];
+      int blocklen = 5;
+      for (int j = 0; j < 5; ++j) {
+        if ((i * 5 + j) < len) {
+          s[j] = (short)(data[offset + i * 5 + j] & 0xFF);
+        }
+        else {
+          s[j] = 0;
+          --blocklen;
+        }
+      }
+
+      final int padlen = blockLenToPadding(blocklen);
+      // convert the 5 byte block into 8 characters (values 0-31).
+      // upper 5 bits from first byte
+      t[0] = (byte)((s[0] >> 3) & 0x1F);
+      // lower 3 bits from 1st byte, upper 2 bits from 2nd.
+      t[1] = (byte)(((s[0] & 0x07) << 2) | ((s[1] >> 6) & 0x03));
+      // bits 5-1 from 2nd.
+      t[2] = (byte)((s[1] >> 1) & 0x1F);
+      // lower 1 bit from 2nd, upper 4 from 3rd
+      t[3] = (byte)(((s[1] & 0x01) << 4) | ((s[2] >> 4) & 0x0F));
+      // lower 4 from 3rd, upper 1 from 4th.
+      t[4] = (byte)(((s[2] & 0x0F) << 1) | ((s[3] >> 7) & 0x01));
+      // bits 6-2 from 4th
+      t[5] = (byte)((s[3] >> 2) & 0x1F);
+      // lower 2 from 4th, upper 3 from 5th;
+      t[6] = (byte)(((s[3] & 0x03) << 3) | ((s[4] >> 5) & 0x07));
+      // lower 5 from 5th;
+      t[7] = (byte)(s[4] & 0x1F);
+      // write out the actual characters.
+      for (int j = 0, j$ = t.length - padlen; j < j$; ++j)
+        os.write(alphabet.charAt(t[j]));
+
+      // write out the padding (if any)
+      if (padding)
+        for (int j = t.length - padlen, j$ = t.length; j < j$; ++j)
+          os.write('=');
+    }
+
+    return new String(os.toByteArray());
+  }
+
+  static byte[] decode(final String base32, final String alphabet, final boolean padding) {
+    final byte[] bytes = base32.getBytes();
+    final ByteArrayOutputStream bs = new ByteArrayOutputStream();
+    for (int i = 0, i$ = bytes.length; i < i$; ++i) {
+      final char c = (char)bytes[i];
+      if (!Character.isWhitespace(c))
+        bs.write((byte)Character.toUpperCase(c));
+    }
+
+    if (!padding) {
+      while (bs.size() % 8 != 0)
+        bs.write('=');
+    }
+    else if (bs.size() % 8 != 0) {
+      return null;
+    }
+
+    final byte[] in = bs.toByteArray();
+    bs.reset();
+    for (int i = 0, i$ = in.length / 8; i < i$; ++i) {
+      final short[] s = new short[8];
+      final int[] t = new int[5];
+      int padlen = 8;
+      for (int j = 0; j < 8; ++j) {
+        final char c = (char)in[i * 8 + j];
+        if (c == '=')
+          break;
+
+        s[j] = (short)alphabet.indexOf(in[i * 8 + j]);
+        if (s[j] < 0)
+          return null;
+
+        --padlen;
+      }
+
+      final int blocklen = paddingToBlockLen(padlen);
+      if (blocklen < 0)
+        return null;
+
+      // all 5 bits of 1st, high 3 (of 5) of 2nd
+      t[0] = (s[0] << 3) | s[1] >> 2;
+      // lower 2 of 2nd, all 5 of 3rd, high 1 of 4th
+      t[1] = ((s[1] & 0x03) << 6) | (s[2] << 1) | (s[3] >> 4);
+      // lower 4 of 4th, high 4 of 5th
+      t[2] = ((s[3] & 0x0F) << 4) | ((s[4] >> 1) & 0x0F);
+      // lower 1 of 5th, all 5 of 6th, high 2 of 7th
+      t[3] = (s[4] << 7) | (s[5] << 2) | (s[6] >> 3);
+      // lower 3 of 7th, all of 8th
+      t[4] = ((s[6] & 0x07) << 5) | s[7];
+      for (int j = 0; j < blocklen; ++j)
+        bs.write((byte)(t[j] & 0xFF));
+    }
+
+    return bs.toByteArray();
+  }
 
   /**
-   * Returns the base32 encoding of the provided {@code bytes} array.
+   * Returns the base32 encoding of the provided {@code bytes} array, with padding, and in uppercase.
    *
    * @param bytes The bytes to encode.
    * @return The base32 encoding of the provided {@code bytes} array.
    * @throws NullPointerException If {@code bytes} is null.
    */
   public static String encode(final byte[] bytes) {
-    return encode(bytes, 0, bytes.length);
+    return encode(bytes, 0, bytes.length, lower, upper, true, true);
   }
 
   /**
-   * Returns the base32 encoding of the provided {@code bytes} array.
+   * Returns the base32 encoding of the provided {@code bytes} array, with the provided {@code padding} argument, and in uppercase.
+   *
+   * @param bytes The bytes to encode.
+   * @param padding Whether to include padding.
+   * @return The base32 encoding of the provided {@code bytes} array.
+   * @throws NullPointerException If {@code bytes} is null.
+   */
+  public static String encode(final byte[] bytes, final boolean padding) {
+    return encode(bytes, 0, bytes.length, lower, upper, padding, true);
+  }
+
+  /**
+   * Returns the base32 encoding of the provided {@code bytes} array, with the provided {@code padding} and {@code uppercase}
+   * arguments.
+   *
+   * @param bytes The bytes to encode.
+   * @param padding Whether to include padding.
+   * @param uppercase Whether to encode with uppercase characters.
+   * @return The base32 encoding of the provided {@code bytes} array.
+   * @throws NullPointerException If {@code bytes} is null.
+   */
+  public static String encode(final byte[] bytes, final boolean padding, final boolean uppercase) {
+    return encode(bytes, 0, bytes.length, lower, upper, padding, uppercase);
+  }
+
+  /**
+   * Returns the base32 encoding of the provided {@code bytes} array, with padding, and in uppercase.
    *
    * @param bytes The bytes to encode.
    * @param offset The initial offset.
@@ -59,28 +222,37 @@ public class Base32 extends DataEncoding<byte[],String> {
    * @throws NullPointerException If {@code bytes} is null.
    */
   public static String encode(final byte[] bytes, final int offset, final int len) {
-    final StringBuilder base32 = new StringBuilder((bytes.length + 7) * 8 / 5);
-    for (int i = offset, index = 0, digit, by0, by1; i < len + offset;) { // [N]
-      by0 = (bytes[i] >= 0) ? bytes[i] : (bytes[i] + 256);
-      if (index > 3) {
-        by1 = i + 1 < bytes.length ? bytes[i + 1] < 0 ? bytes[i + 1] + 256 : bytes[i + 1] : 0;
-        digit = by0 & (0xFF >> index);
-        index = (index + 5) % 8;
-        digit <<= index;
-        digit |= by1 >> (8 - index);
-        ++i;
-      }
-      else {
-        digit = (by0 >> (8 - (index + 5))) & 0x1F;
-        index = (index + 5) % 8;
-        if (index == 0)
-          ++i;
-      }
+    return encode(bytes, offset, len, lower, upper, true, false);
+  }
 
-      base32.append(alphabet.charAt(digit));
-    }
+  /**
+   * Returns the base32 encoding of the provided {@code bytes} array, with the provided {@code padding} argument, and in uppercase.
+   *
+   * @param bytes The bytes to encode.
+   * @param offset The initial offset.
+   * @param len The length.
+   * @param padding Whether to include padding.
+   * @return The base32 encoding of the provided {@code bytes} array.
+   * @throws NullPointerException If {@code bytes} is null.
+   */
+  public static String encode(final byte[] bytes, final int offset, final int len, final boolean padding) {
+    return encode(bytes, offset, len, lower, upper, padding, false);
+  }
 
-    return base32.toString();
+  /**
+   * Returns the base32 encoding of the provided {@code bytes} array, with the provided {@code padding} and {@code uppercase}
+   * arguments.
+   *
+   * @param bytes The bytes to encode.
+   * @param offset The initial offset.
+   * @param len The length.
+   * @param padding Whether to include padding.
+   * @param uppercase Whether to encode with uppercase characters.
+   * @return The base32 encoding of the provided {@code bytes} array.
+   * @throws NullPointerException If {@code bytes} is null.
+   */
+  public static String encode(final byte[] bytes, final int offset, final int len, final boolean padding, final boolean uppercase) {
+    return encode(bytes, offset, len, lower, upper, padding, uppercase);
   }
 
   /**
@@ -91,100 +263,21 @@ public class Base32 extends DataEncoding<byte[],String> {
    * @throws NullPointerException If {@code base32} is null.
    */
   public static byte[] decode(final String base32) {
-    final byte[] bytes = new byte[base32.length() * 5 / 8];
-    decode(base32, bytes, 0);
-    return bytes;
+    return decode(base32, upper, true);
   }
 
   /**
-   * Decode the {@code base32} string into the provided {@code bytes} array.
+   * Returns a {@code new byte[]} of the decoded {@code base32} string.
    *
    * @param base32 The base32 string.
-   * @param bytes The {@code bytes} array.
-   * @param offset The offset into the {@code bytes} array.
-   * @throws ArrayIndexOutOfBoundsException If the size of {@code bytes} is not big enough, or if {@code offset} causes the index to
-   *           go out of bounds.
-   * @throws NullPointerException If {@code base32} or {@code bytes} is null.
+   * @param padding Whether to consider padding when decoding.
+   * @return A {@code new byte[]} of the decoded {@code base32} string.
+   * @throws NullPointerException If {@code base32} is null.
    */
-  public static void decode(final String base32, final byte[] bytes, int offset) {
-    for (int i = 0, i$ = base32.length(), index = 0, ch, digit; i < i$; ++i) { // [N]
-      ch = base32.charAt(i) - '0';
-      if (ch < 0 || lookup.length < ch)
-        continue;
-
-      digit = lookup[ch];
-      if (digit == 0xFF)
-        continue;
-
-      if (index <= 3) {
-        index = (index + 5) % 8;
-        if (index == 0) {
-          bytes[offset] |= digit;
-          if (++offset >= bytes.length)
-            break;
-        }
-        else {
-          bytes[offset] |= digit << (8 - index);
-        }
-      }
-      else {
-        index = (index + 5) % 8;
-        bytes[offset] |= (digit >>> index);
-        if (++offset >= bytes.length)
-          break;
-
-        bytes[offset] |= digit << (8 - index);
-      }
-    }
+  public static byte[] decode(final String base32, final boolean padding) {
+    return decode(base32, upper, padding);
   }
 
-  /**
-   * Creates a new {@link Base32} object with the provided raw bytes.
-   *
-   * @param bytes The raw bytes.
-   */
-  public Base32(final byte[] bytes) {
-    super(bytes, null);
-  }
-
-  /**
-   * Creates a new {@link Base32} object with the provided base32-encoded string value.
-   *
-   * @param base32 The base32-encoded string value.
-   */
-  public Base32(final String base32) {
-    super(null, base32);
-  }
-
-  @Override
-  public byte[] getData() {
-    return data == null ? data = decode(encoded) : data;
-  }
-
-  @Override
-  public String getEncoded() {
-    return encoded == null ? encoded = encode(data) : encoded;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (obj == this)
-      return true;
-
-    if (!(obj instanceof Base32))
-      return false;
-
-    final Base32 that = (Base32)obj;
-    return encoded != null && that.encoded != null ? encoded.equalsIgnoreCase(that.encoded) : Arrays.equals(getData(), that.getData());
-  }
-
-  @Override
-  public int hashCode() {
-    return 31 + Arrays.hashCode(getData());
-  }
-
-  @Override
-  public String toString() {
-    return getEncoded();
+  Base32() {
   }
 }

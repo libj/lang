@@ -16,33 +16,14 @@
 
 package org.libj.lang;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
-public class Base32Test {
+public class Base32HexTest extends Base32Test {
+  @Override
   String encode(final byte[] data, final boolean padding, final boolean uppercase) {
-    return Base32.encode(data, padding, uppercase);
+    return Base32Hex.encode(data, padding, uppercase);
   }
 
+  @Override
   byte[] decode(final String base32, final boolean padding) {
-    return Base32.decode(base32, padding);
-  }
-
-  private void test(final boolean padding, final boolean uppercase) {
-    for (int i = 0; i < 200; ++i) { // [N]
-      final byte[] arg = Strings.getRandomAlphaNumeric((int)(Math.random() * i * i)).getBytes();
-      final String encoded = encode(arg, padding, uppercase);
-      final byte[] decoded = decode(encoded, padding);
-      assertArrayEquals(arg, decoded);
-    }
-  }
-
-  @Test
-  public void test() {
-    test(true, true);
-    test(true, false);
-    test(false, true);
-    test(false, false);
+    return Base32Hex.decode(base32, padding);
   }
 }
