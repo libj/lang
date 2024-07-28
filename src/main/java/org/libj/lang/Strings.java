@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
@@ -39,7 +40,7 @@ public final class Strings {
   private static final char[] alphaNumeric = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
   private static final SecureRandom secureRandom = new SecureRandom();
 
-  private static String getRandom(final SecureRandom secureRandom, final int length, final int start, final int len) {
+  private static String getRandom(final Random random, final int length, final int start, final int len) {
     if (length == 0)
       return "";
 
@@ -47,7 +48,7 @@ public final class Strings {
 
     final char[] array = new char[length];
     for (int i = 0; i < length; ++i) // [N]
-      array[i] = alphaNumeric[start + secureRandom.nextInt(len)];
+      array[i] = alphaNumeric[start + random.nextInt(len)];
 
     return new String(array);
   }
@@ -75,14 +76,14 @@ public final class Strings {
   /**
    * Returns a randomly constructed alphanumeric string of the specified length.
    *
-   * @param secureRandom The {@link SecureRandom} instance for generation of random values.
+   * @param random The {@link Random} instance for generation of random values.
    * @param len The length of the string to construct.
    * @return A randomly constructed alphanumeric string of the specified length.
-   * @throws NullPointerException If {@code secureRandom} is null.
+   * @throws NullPointerException If {@code random} is null.
    * @throws IllegalArgumentException If {@code len} is negative.
    */
-  public static String getRandomAlphaNumeric(final SecureRandom secureRandom, final int len) {
-    return getRandom(secureRandom, len, 0, alphaNumeric.length);
+  public static String getRandomAlphaNumeric(final Random random, final int len) {
+    return getRandom(random, len, 0, alphaNumeric.length);
   }
 
   /**
@@ -101,14 +102,14 @@ public final class Strings {
   /**
    * Returns a randomly constructed alpha string of the specified length.
    *
-   * @param secureRandom The {@link SecureRandom} instance for generation of random values.
+   * @param random The {@link Random} instance for generation of random values.
    * @param len The length of the string to construct.
    * @return A randomly constructed alpha string of the specified length.
-   * @throws NullPointerException If {@code secureRandom} is null.
+   * @throws NullPointerException If {@code random} is null.
    * @throws IllegalArgumentException If {@code len} is negative.
    */
-  public static String getRandomAlpha(final SecureRandom secureRandom, final int len) {
-    return getRandom(secureRandom, len, 0, alphaNumeric.length - 10);
+  public static String getRandomAlpha(final Random random, final int len) {
+    return getRandom(random, len, 0, alphaNumeric.length - 10);
   }
 
   /**
@@ -127,14 +128,14 @@ public final class Strings {
   /**
    * Returns a randomly constructed numeric string of the specified length.
    *
-   * @param secureRandom The {@link SecureRandom} instance for generation of random values.
+   * @param random The {@link Random} instance for generation of random values.
    * @param len The length of the string to construct.
    * @return A randomly constructed numeric string of the specified length.
-   * @throws NullPointerException If {@code secureRandom} is null.
+   * @throws NullPointerException If {@code random} is null.
    * @throws IllegalArgumentException If {@code len} is negative.
    */
-  public static String getRandomNumeric(final SecureRandom secureRandom, final int len) {
-    return getRandom(secureRandom, len, alphaNumeric.length - 10, 10);
+  public static String getRandomNumeric(final Random random, final int len) {
+    return getRandom(random, len, alphaNumeric.length - 10, 10);
   }
 
   /**
@@ -156,14 +157,13 @@ public final class Strings {
     final int closeLen = close.length();
     for (int start = text.length() - closeLen - 1; (start = text.lastIndexOf(open, start - 1)) > -1;) { // [N]
       final int end = text.indexOf(close, start + openLen);
-      if (end < start)
-        continue;
-
-      final String key = text.substring(start + openLen, end);
-      final String value = properties.get(key);
-      if (value != null) {
-        text.replace(start, end + closeLen, value);
-        changed = true;
+      if (end >= start) {
+        final String key = text.substring(start + openLen, end);
+        final String value = properties.get(key);
+        if (value != null) {
+          text.replace(start, end + closeLen, value);
+          changed = true;
+        }
       }
     }
 
