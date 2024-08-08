@@ -2255,7 +2255,7 @@ public final class Strings {
    * @throws NullPointerException If {@code str} is null.
    * @throws IllegalArgumentException If the number of spaces is negative.
    */
-  public static StringBuilder indent(final String str, final int spaces) {
+  public static StringBuilder indent(final CharSequence str, final int spaces) {
     return indent(new StringBuilder(str), spaces);
   }
 
