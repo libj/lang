@@ -2653,26 +2653,24 @@ public final class Strings {
   }
 
   private static String[] split(final CharSequence s, final int i$, final char ch, final int empties, final StringBuilder b, int index, final int depth) {
-    final String[] parts;
-    final char c = s.charAt(index);
-    if (c != ch) {
-      b.append(c);
-      if (++index == i$) {
-        if (index != i$ || b.length() > 0) {
-          final String part = b.toString();
-          parts = new String[depth + 1];
-          parts[depth] = part;
-        }
-        else {
-          parts = new String[depth - empties];
-        }
+    while (true) {
+      final char c = s.charAt(index);
+      if (c != ch) {
+        b.append(c);
+        if (++index != i$)
+          continue;
+
+        if (index == i$ && b.length() == 0)
+          return new String[depth - empties];
+
+        final String part = b.toString();
+        final String[] parts = new String[depth + 1];
+        parts[depth] = part;
+        return parts;
       }
-      else {
-        parts = split(s, i$, ch, empties, b, index, depth);
-      }
-    }
-    else {
+
       if (++index != i$ || b.length() > 0) {
+        final String[] parts;
         final String part = b.toString();
         if (index == i$)
           parts = new String[depth + 1];
@@ -2680,16 +2678,14 @@ public final class Strings {
           parts = split(s, i$, ch, part.length() == 0 ? empties + 1 : 0, new StringBuilder(), index, depth + 1);
 
         parts[Math.min(parts.length - 1, depth)] = part;
+        return parts;
       }
-      else {
-        if (index == i$)
-          parts = new String[depth - empties];
-        else
-          parts = split(s, i$, ch, empties, new StringBuilder(), index, depth);
-      }
-    }
 
-    return parts;
+      if (index == i$)
+        return new String[depth - empties];
+
+      return split(s, i$, ch, empties, new StringBuilder(), index, depth);
+    }
   }
 
   /**

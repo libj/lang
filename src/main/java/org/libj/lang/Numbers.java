@@ -2347,7 +2347,7 @@ public final class Numbers {
   private static final String MIN_LONG = "-9223372036854775808";
   private static final String MAX_LONG = "9223372036854775807";
 
-  public static Number parseNumber(final String str) {
+  public static Number parseNumberWhole(final String str) {
     final int len;
     if (str == null || (len = str.length()) == 0)
       return null;
@@ -2469,15 +2469,19 @@ public final class Numbers {
    *
    * @param s The string to test.
    * @return {@code true} if the specified string represents a number, or a number with a fraction of two numbers.
+   * @see #isNumber(String)
    */
-  public static boolean isNumber(String s) {
-    if (s == null || (s = s.trim()).length() == 0)
+  public static boolean isNumberWithFraction(String s) {
+    final int len;
+    if (s == null || (len = (s = s.trim()).length()) == 0)
       return false;
+
+    int spaces = 0;
+    for (int i = 0; i < len; ++i)
+      if (s.charAt(i) == ' ' && ++spaces > 2)
+        return false;
 
     final String[] parts = Strings.split(s, ' ');
-    if (parts.length > 2)
-      return false;
-
     if (parts.length == 2) {
       final int slash = parts[1].indexOf('/');
       if (slash < 0)
@@ -2489,7 +2493,20 @@ public final class Numbers {
     return isNumber(parts[0], true);
   }
 
-  private static boolean isNumber(String s, final boolean isFraction) {
+  /**
+   * Tests whether the specified string represents a number.
+   * <p>
+   * This method supports exponent form (i.e. {@code 3.2E-5}).
+   *
+   * @param s The string to test.
+   * @return {@code true} if the specified string represents a number.
+   * @see #isNumberWithFraction(String)
+   */
+  public static boolean isNumber(String s) {
+    return isNumber(s, false);
+  }
+
+  public static boolean isNumber(String s, final boolean isFraction) {
     final int len;
     if (s == null || (len = (s = s.trim()).length()) == 0)
       return false;
@@ -2520,7 +2537,7 @@ public final class Numbers {
 
           minusEncountered = true;
         }
-        else if (!expEncountered && c != '+') {
+        else if (c != '+') {
           return false;
         }
       }

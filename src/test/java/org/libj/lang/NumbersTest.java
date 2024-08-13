@@ -230,102 +230,102 @@ public class NumbersTest {
   }
 
   @Test
-  public void testParseNumberByteMin() {
+  public void testParseNumberWholeByteMin() {
     final Byte v = Byte.MIN_VALUE;
     String s = v.toString();
-    Number t = Numbers.parseNumber(s);
+    Number t = Numbers.parseNumberWhole(s);
     assertEquals(v, t);
     s = s.substring(0, s.length() - 1) + "9";
-    t = Numbers.parseNumber(s);
+    t = Numbers.parseNumberWhole(s);
     assertEquals(Short.valueOf(s), t);
   }
 
   @Test
-  public void testParseNumberByteMax() {
+  public void testParseNumberWholeByteMax() {
     final Byte v = Byte.MAX_VALUE;
     String s = v.toString();
-    Number t = Numbers.parseNumber(s);
+    Number t = Numbers.parseNumberWhole(s);
     assertEquals(v, t);
     s = s.substring(0, s.length() - 1) + "8";
-    t = Numbers.parseNumber(s);
+    t = Numbers.parseNumberWhole(s);
     assertEquals(Short.valueOf(s), t);
     s = "+" + s;
-    t = Numbers.parseNumber(s);
+    t = Numbers.parseNumberWhole(s);
     assertEquals(Short.valueOf(s), t);
   }
 
   @Test
-  public void testParseNumberShortMin() {
+  public void testParseNumberWholeShortMin() {
     final Short v = Short.MIN_VALUE;
     String s = v.toString();
-    Number t = Numbers.parseNumber(s);
+    Number t = Numbers.parseNumberWhole(s);
     assertEquals(v, t);
     s = s.substring(0, s.length() - 1) + "9";
-    t = Numbers.parseNumber(s);
+    t = Numbers.parseNumberWhole(s);
     assertEquals(Integer.valueOf(s), t);
   }
 
   @Test
-  public void testParseNumberShortMax() {
+  public void testParseNumberWholeShortMax() {
     final Short v = Short.MAX_VALUE;
     String s = v.toString();
-    Number t = Numbers.parseNumber(s);
+    Number t = Numbers.parseNumberWhole(s);
     assertEquals(v, t);
     s = s.substring(0, s.length() - 1) + "8";
-    t = Numbers.parseNumber(s);
+    t = Numbers.parseNumberWhole(s);
     assertEquals(Integer.valueOf(s), t);
     s = "+" + s;
-    t = Numbers.parseNumber(s);
+    t = Numbers.parseNumberWhole(s);
     assertEquals(Integer.valueOf(s), t);
   }
 
   @Test
-  public void testParseNumberIntMin() {
+  public void testParseNumberWholeIntMin() {
     final Integer v = Integer.MIN_VALUE;
     String s = v.toString();
-    Number t = Numbers.parseNumber(s);
+    Number t = Numbers.parseNumberWhole(s);
     assertEquals(v, t);
     s = s.substring(0, s.length() - 1) + "9";
-    t = Numbers.parseNumber(s);
+    t = Numbers.parseNumberWhole(s);
     assertEquals(Long.valueOf(s), t);
   }
 
   @Test
-  public void testParseNumberIntMax() {
+  public void testParseNumberWholeIntMax() {
     final Integer v = Integer.MAX_VALUE;
     String s = v.toString();
-    Number t = Numbers.parseNumber(s);
+    Number t = Numbers.parseNumberWhole(s);
     assertEquals(v, t);
     s = s.substring(0, s.length() - 1) + "8";
-    t = Numbers.parseNumber(s);
+    t = Numbers.parseNumberWhole(s);
     assertEquals(Long.valueOf(s), t);
     s = "+" + s;
-    t = Numbers.parseNumber(s);
+    t = Numbers.parseNumberWhole(s);
     assertEquals(Long.valueOf(s), t);
   }
 
   @Test
-  public void testParseNumberLongMin() {
+  public void testParseNumberWholeLongMin() {
     final Long v = Long.MIN_VALUE;
     String s = v.toString();
-    Number t = Numbers.parseNumber(s);
+    Number t = Numbers.parseNumberWhole(s);
     assertEquals(v, t);
     s = s.substring(0, s.length() - 1) + "9";
-    t = Numbers.parseNumber(s);
+    t = Numbers.parseNumberWhole(s);
     assertEquals(new BigInteger(s), t);
   }
 
   @Test
-  public void testParseNumberLongMax() {
+  public void testParseNumberWholeLongMax() {
     final Long v = Long.MAX_VALUE;
     String s = v.toString();
-    Number t = Numbers.parseNumber(s);
+    Number t = Numbers.parseNumberWhole(s);
     assertEquals(v, t);
     s = s.substring(0, s.length() - 1) + "8";
-    t = Numbers.parseNumber(s);
+    t = Numbers.parseNumberWhole(s);
     assertEquals(new BigInteger(s), t);
     s = "+" + s;
-    t = Numbers.parseNumber(s);
+    t = Numbers.parseNumberWhole(s);
     assertEquals(new BigInteger(s), t);
   }
 
@@ -340,10 +340,10 @@ public class NumbersTest {
     assertTrue(Numbers.isNumber(" -6.022E23"));
     assertTrue(Numbers.isNumber(" 6.626068E-34"));
     assertTrue(Numbers.isNumber("-6.626068E-34 "));
-    assertTrue(Numbers.isNumber("-6.626068E-34 24/49"));
+    assertTrue(Numbers.isNumberWithFraction("-6.626068E-34 24/49"));
     assertTrue(Numbers.isNumber("-6.6991202137503775E+18"));
     assertTrue(Numbers.isNumber("-6.6991202137503775E-18"));
-    assertTrue(Numbers.isNumber("3/5"));
+    assertTrue(Numbers.isNumberWithFraction("3/5"));
 
     assertFalse(Numbers.isNumber(null));
     assertFalse(Numbers.isNumber(""));
