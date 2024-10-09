@@ -33,4 +33,24 @@ public class ThrowablesTest {
     assertToString(new Exception());
     assertToString(new IOException());
   }
+
+  @Test
+  public void testToCauseNameString() {
+    final NullPointerException e0 = new NullPointerException();
+    final UnsupportedOperationException e1 = new UnsupportedOperationException(e0);
+    final RuntimeException e2 = new RuntimeException(e1);
+    final IllegalStateException e3 = new IllegalStateException(e2);
+
+    assertEquals("java.lang.IllegalStateException java.lang.RuntimeException java.lang.UnsupportedOperationException java.lang.NullPointerException", Throwables.toCauseNameString(e3));
+    assertEquals("java.lang.RuntimeException java.lang.UnsupportedOperationException java.lang.NullPointerException", Throwables.toCauseNameString(e2));
+    assertEquals("java.lang.UnsupportedOperationException java.lang.NullPointerException", Throwables.toCauseNameString(e1));
+    assertEquals("java.lang.NullPointerException", Throwables.toCauseNameString(e0));
+
+    try {
+      Throwables.toCauseNameString(null);
+      fail("Expected NullPointerException");
+    }
+    catch (final NullPointerException e) {
+    }
+  }
 }

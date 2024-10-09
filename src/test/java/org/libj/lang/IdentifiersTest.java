@@ -74,7 +74,7 @@ public class IdentifiersTest {
     catch (final IllegalArgumentException e) {
     }
     try {
-      Identifiers.toIdentifier("@foo", '\0', c -> c == '@' ? "1!" : null);
+      Identifiers.toIdentifier("@foo", '\0', (final Character c) -> c == '@' ? "1!" : null);
       fail("Expected IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {
@@ -83,9 +83,9 @@ public class IdentifiersTest {
     test("foo", function, "@foo");
     assertEquals("$foo", Identifiers.toIdentifier("@foo", '_', '$'));
     assertEquals("_1$foo", Identifiers.toIdentifier("@foo", Collections.singletonMap('@', "1$")));
-    assertEquals("_1$foo", Identifiers.toIdentifier("@foo", c -> c == '@' ? "1$" : null));
+    assertEquals("_1$foo", Identifiers.toIdentifier("@foo", (final Character c) -> c == '@' ? "1$" : null));
     assertEquals("$1foo", Identifiers.toIdentifier("@foo", Collections.singletonMap('@', "$1")));
-    assertEquals("$1foo", Identifiers.toIdentifier("@foo", c -> c == '@' ? "$1" : null));
+    assertEquals("$1foo", Identifiers.toIdentifier("@foo", (final Character c) -> c == '@' ? "$1" : null));
 
     test(null, function, null);
     test("", function, "");
@@ -102,7 +102,7 @@ public class IdentifiersTest {
     test("_foo", function, "_foo");
 
     try {
-      Identifiers.toIdentifier("@foo", '\0', c -> "1$");
+      Identifiers.toIdentifier("@foo", '\0', (final Character c) -> "1$");
       fail("Expected IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {
@@ -118,13 +118,13 @@ public class IdentifiersTest {
     }
 
     assertEquals("_class", Identifiers.toIdentifier("class", '\0', Collections.singletonMap(null, "_")));
-    assertEquals("_class", Identifiers.toIdentifier("class", '\0', c -> c == null ? "_" : null));
+    assertEquals("_class", Identifiers.toIdentifier("class", '\0', (final Character c) -> c == null ? "_" : null));
   }
 
   @Test
   public void testUnicode() {
     final char prefix = '\0';
-    final Function<Character,String> substitutions = c -> c == null ? "_" : c != '_' ? "_" + Integer.toHexString(c) : "__";
+    final Function<Character,String> substitutions = (final Character c) -> c == null ? "_" : c != '_' ? "_" + Integer.toHexString(c) : "__";
     assertEquals("__", Identifiers.toInstanceCase("_", prefix, substitutions));
     assertEquals("_2e_2a", Identifiers.toInstanceCase(".*", prefix, substitutions));
   }

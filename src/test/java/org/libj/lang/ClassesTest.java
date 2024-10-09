@@ -337,7 +337,7 @@ public class ClassesTest {
   @Test
   public void testGetClassHierarchy() {
     try {
-      Classes.getClassHierarchy(null, c -> false);
+      Classes.getClassHierarchy(null, (final Class<?> c) -> false);
       fail("Expected NullPointerException");
     }
     catch (final NullPointerException e) {
@@ -346,24 +346,24 @@ public class ClassesTest {
     final Class<?>[] hierarchy = {LinkedList.class, AbstractSequentialList.class, List.class, Deque.class, Cloneable.class, Serializable.class, AbstractList.class, Collection.class, Queue.class, AbstractCollection.class, Iterable.class, Object.class};
 
     assertEquals(asCollection(new LinkedHashSet<>(), hierarchy, 0, hierarchy.length), Classes.getClassHierarchy(LinkedList.class, null));
-    assertEquals(asCollection(new LinkedHashSet<>(), hierarchy, 0, hierarchy.length), Classes.getClassHierarchy(LinkedList.class, c -> true));
-    assertEquals(asCollection(new LinkedHashSet<>(), hierarchy, 0, 6), Classes.getClassHierarchy(LinkedList.class, c -> c != Serializable.class));
-    assertEquals(asCollection(new LinkedHashSet<>(), hierarchy, 0, 9), Classes.getClassHierarchy(LinkedList.class, c -> c != Queue.class));
+    assertEquals(asCollection(new LinkedHashSet<>(), hierarchy, 0, hierarchy.length), Classes.getClassHierarchy(LinkedList.class, (final Class<?> c) -> true));
+    assertEquals(asCollection(new LinkedHashSet<>(), hierarchy, 0, 6), Classes.getClassHierarchy(LinkedList.class, (final Class<?> c) -> c != Serializable.class));
+    assertEquals(asCollection(new LinkedHashSet<>(), hierarchy, 0, 9), Classes.getClassHierarchy(LinkedList.class, (final Class<?> c) -> c != Queue.class));
   }
 
   @Test
   public void testWalkClassHierarchy() {
     try {
-      Classes.walkClassHierarchy(null, c -> false);
+      Classes.walkClassHierarchy(null, (final Class<?> c) -> false);
       fail("Expected NullPointerException");
     }
     catch (final NullPointerException e) {
     }
 
     assertNull(Classes.walkClassHierarchy(LinkedList.class, null));
-    assertNull(Classes.walkClassHierarchy(LinkedList.class, c -> c == Integer.class ? "found" : null));
-    assertEquals("found", Classes.walkClassHierarchy(LinkedList.class, c -> c == Queue.class ? "found" : null));
-    assertEquals("found", Classes.walkClassHierarchy(LinkedList.class, c -> c == Serializable.class ? "found" : null));
+    assertNull(Classes.walkClassHierarchy(LinkedList.class, (final Class<?> c) -> c == Integer.class ? "found" : null));
+    assertEquals("found", Classes.walkClassHierarchy(LinkedList.class, (final Class<?> c) -> c == Queue.class ? "found" : null));
+    assertEquals("found", Classes.walkClassHierarchy(LinkedList.class, (final Class<?> c) -> c == Serializable.class ? "found" : null));
   }
 
   private static <T> Collection<T> asCollection(final Collection<T> c, final T[] a, final int fromIndex, final int toIndex) {

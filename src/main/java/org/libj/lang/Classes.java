@@ -217,7 +217,8 @@ public final class Classes {
       return cls.getCanonicalName();
 
     final String pkg = cls.getPackage().getName();
-    return pkg.length() == 0 ? cls.getName() : cls.getName().substring(pkg.length() + 1);
+    final int len = pkg.length();
+    return len == 0 ? cls.getName() : cls.getName().substring(len + 1);
   }
 
   /**
@@ -241,7 +242,8 @@ public final class Classes {
       return cls.getCanonicalName();
 
     final String pkg = cls.getPackage().getName();
-    return pkg.length() == 0 ? cls.getCanonicalName() : cls.getCanonicalName().substring(pkg.length() + 1);
+    final int len = pkg.length();
+    return len == 0 ? cls.getCanonicalName() : cls.getCanonicalName().substring(len + 1);
   }
 
   /**
@@ -782,7 +784,8 @@ public final class Classes {
   }
 
   private static boolean isMatch(final Constructor<?> constructor, final Class<?>[] parameterTypes) {
-    return parameterTypes == null || parameterTypes.length == 0 ? constructor.getParameterCount() == 0 : parameterTypes.length == constructor.getParameterCount() && Arrays.equals(constructor.getParameterTypes(), parameterTypes);
+    final int len;
+    return parameterTypes == null || (len = parameterTypes.length) == 0 ? constructor.getParameterCount() == 0 : len == constructor.getParameterCount() && Arrays.equals(constructor.getParameterTypes(), parameterTypes);
   }
 
   /**
@@ -1018,10 +1021,11 @@ public final class Classes {
   }
 
   private static boolean isCompatible(final Class<?>[] parameterTypes, final Class<?>[] args) {
-    if (parameterTypes.length != args.length)
+    final int len = parameterTypes.length;
+    if (len != args.length)
       return false;
 
-    for (int i = 0, i$ = parameterTypes.length; i < i$; ++i) // [A]
+    for (int i = 0; i < len; ++i) // [A]
       if (args[i] != null && !isAssignableFrom(parameterTypes[i], args[i], true))
         return false;
 
@@ -1667,14 +1671,15 @@ public final class Classes {
    * @throws IllegalArgumentException If the number of arguments in the {@code classes} parameter is 0.
    */
   public static Class<?> getGreatestCommonSuperclass(final Class<?> ... classes) { // FIXME: Implement Collection alternative
-    if (classes.length == 0)
+    final int len = classes.length;
+    if (len == 0)
       throw new IllegalArgumentException("Number of arguments must be greater than 0");
 
-    if (classes.length == 1)
+    if (len == 1)
       return classes[0];
 
     Class<?> gcc = getGreatestCommonSuperclass(classes[0], classes[1]);
-    for (int i = 2; i < classes.length && gcc != null; ++i) // [A]
+    for (int i = 2; i < len && gcc != null; ++i) // [A]
       gcc = getGreatestCommonSuperclass(gcc, classes[i]);
 
     return gcc;
@@ -1728,11 +1733,12 @@ public final class Classes {
 
   @SafeVarargs
   private static <T> Class<?> getGreatestCommonSuperclass0(final T ... objects) {
-    if (objects.length == 1)
+    final int len = objects.length;
+    if (len == 1)
       return objects[0].getClass();
 
     Class<?> gcc = getGreatestCommonSuperclass(objects[0].getClass(), objects[1].getClass());
-    for (int i = 2; i < objects.length && gcc != null; ++i) // [A]
+    for (int i = 2; i < len && gcc != null; ++i) // [A]
       gcc = getGreatestCommonSuperclass(gcc, objects[i].getClass());
 
     return gcc;

@@ -143,6 +143,24 @@ public final class Throwables {
   }
 
   /**
+   * Returns a string of the name of the specified {@link Throwable throwable} concatenated with the space-delimited names of its
+   * {@link Throwable#getCause() causes}.
+   *
+   * @param t The throwable.
+   * @return A string of the name of the specified {@link Throwable throwable} concatenated with the space-delimited names of its
+   *         {@link Throwable#getCause() causes}.
+   * @throws NullPointerException If {@code t} is null.
+   */
+  public static String toCauseNameString(Throwable t) {
+    final StringBuilder b = new StringBuilder();
+    b.append(t.getClass().getName());
+    while ((t = t.getCause()) != null)
+      b.append(' ').append(t.getClass().getName());
+
+    return b.toString();
+  }
+
+  /**
    * Returns the string representation of the specified {@link Throwable throwable} and its backtrace.
    *
    * @param t The throwable.

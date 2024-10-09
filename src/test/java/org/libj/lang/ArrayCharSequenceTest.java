@@ -25,8 +25,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class ArrayCharSequenceTest {
-  private static final Function<String,ArrayCharSequence> buf = s -> ArrayCharSequence.of(s.toCharArray());
-  private static final Function<String,ArrayCharSequence> str = s -> ArrayCharSequence.of(s);
+  private static final Function<String,ArrayCharSequence> buf = (final String s) -> ArrayCharSequence.of(s.toCharArray());
+  private static final Function<String,ArrayCharSequence> str = (final String s) -> ArrayCharSequence.of(s);
   private static final Random r = new Random();
 
   private static void assertEquals(final CharSequence expected, final CharSequence actual) {
