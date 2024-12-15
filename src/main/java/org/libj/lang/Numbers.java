@@ -2678,13 +2678,34 @@ public final class Numbers {
   }
 
   /**
-   * Returns a string representation of the specified {@code double} to the provided number of decimal places.
+   * Returns a string representation of the specified {@code double} rounded to the provided number of decimal places.
    *
    * @param n The {@code double}.
    * @param decimals The number of decimal places.
-   * @return A string representation of the specified {@code double} to the provided number of decimal places.
+   * @return A string representation of the specified {@code double} rounded to the provided number of decimal places.
    */
   public static String toString(final double n, final int decimals) {
+    if (decimals == 0)
+      return String.valueOf((int)Math.round(n));
+
+    if (decimals == 1)
+      return String.valueOf(Math.round(n * 10) / 10d);
+
+    if (decimals == 2)
+      return String.valueOf(Math.round(n * 100) / 100d);
+
+    if (decimals == 3)
+      return String.valueOf(Math.round(n * 1000) / 1000d);
+
+    if (decimals == 4)
+      return String.valueOf(Math.round(n * 10000) / 10000d);
+
+    if (decimals == 5)
+      return String.valueOf(Math.round(n * 100000) / 100000d);
+
+    if (decimals == 6)
+      return String.valueOf(Math.round(n * 1000000) / 1000000d);
+
     final double factor = StrictMath.pow(10, decimals);
     return String.valueOf(Math.round(n * factor) / factor);
   }
