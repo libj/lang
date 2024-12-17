@@ -188,10 +188,10 @@ public final class Threads {
         else {
           queue.offer(entry);
           try {
-            final long timeout = System.currentTimeMillis() - entry.expireTime;
-            if (timeout > 0)
+            final long timeoutMs = System.currentTimeMillis() - entry.expireTime;
+            if (timeoutMs > 0)
               synchronized (this) {
-                wait(timeout);
+                wait(timeoutMs);
               }
           }
           catch (final InterruptedException e) {

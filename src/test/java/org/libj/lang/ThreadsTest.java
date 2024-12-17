@@ -56,28 +56,28 @@ public class ThreadsTest {
 
   public static class Task implements Runnable {
     private final CountDownLatch latch;
-    private final long sleepTime;
-    private final long timeout;
+    private final long sleepTimeMs;
+    private final long timeoutMs;
 
-    public Task(final CountDownLatch latch, final long sleepTime, final long timeout) {
+    public Task(final CountDownLatch latch, final long sleepTimeMs, final long timeoutMs) {
       this.latch = latch;
-      this.sleepTime = sleepTime;
-      this.timeout = timeout;
+      this.sleepTimeMs = sleepTimeMs;
+      this.timeoutMs = timeoutMs;
     }
 
     @Override
     public void run() {
       final long ts = System.currentTimeMillis();
       try {
-        Thread.sleep(sleepTime);
+        Thread.sleep(sleepTimeMs);
         final long runtime = System.currentTimeMillis() - ts;
-        assertTrue("timeout (" + timeout + ") >= " + "sleepTime (" + sleepTime + ")", timeout >= sleepTime);
-        assertTrue("runtime (" + runtime + ") - " + "sleepTime (" + sleepTime + ") < 10", runtime - sleepTime < 20);
+        assertTrue("timeout (" + timeoutMs + ") >= " + "sleepTime (" + sleepTimeMs + ")", timeoutMs >= sleepTimeMs);
+        assertTrue("runtime (" + runtime + ") - " + "sleepTime (" + sleepTimeMs + ") < 10", runtime - sleepTimeMs < 20);
       }
       catch (final InterruptedException e) {
         final long runtime = System.currentTimeMillis() - ts;
-        assertTrue("timeout (" + timeout + ") <= " + "sleepTime (" + sleepTime + ")", timeout <= sleepTime);
-        assertTrue("timeout (" + timeout + ") - " + "runtime (" + runtime + ") < 5", timeout - runtime < 10);
+        assertTrue("timeout (" + timeoutMs + ") <= " + "sleepTime (" + sleepTimeMs + ")", timeoutMs <= sleepTimeMs);
+        assertTrue("timeout (" + timeoutMs + ") - " + "runtime (" + runtime + ") < 5", timeoutMs - runtime < 10);
       }
       finally {
         latch.countDown();
@@ -89,14 +89,14 @@ public class ThreadsTest {
   private static final int numTests = 500;
 
   public static Runnable newRandomRunnable(final CountDownLatch latch) {
-    final long sleepTime = 100 + r.nextInt(500);
-    final long delta = 50 + r.nextInt(50);
-    final long timeout = r.nextBoolean() ? sleepTime - delta : sleepTime + delta;
-    return newRunnable(latch, sleepTime, timeout);
+    final long sleepTimeMs = 100 + r.nextInt(500);
+    final long deltaMs = 50 + r.nextInt(50);
+    final long timeoutMs = r.nextBoolean() ? sleepTimeMs - deltaMs : sleepTimeMs + deltaMs;
+    return newRunnable(latch, sleepTimeMs, timeoutMs);
   }
 
-  public static Runnable newRunnable(final CountDownLatch latch, final long sleep, final long timeout) {
-    return Threads.interruptAfterTimeout(new Task(latch, sleep, timeout), timeout, TimeUnit.MILLISECONDS);
+  public static Runnable newRunnable(final CountDownLatch latch, final long sleepMs, final long timeoutMs) {
+    return Threads.interruptAfterTimeout(new Task(latch, sleepMs, timeoutMs), timeoutMs, TimeUnit.MILLISECONDS);
   }
 
   @Test
