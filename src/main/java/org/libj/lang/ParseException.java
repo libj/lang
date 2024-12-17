@@ -19,7 +19,7 @@ package org.libj.lang;
 /**
  * Signals that an error has been reached unexpectedly while parsing.
  */
-public class ParseException extends Exception {
+public class ParseException extends RuntimeException {
   /**
    * The zero-based character offset into the string being parsed at which the error was found during parsing.
    */
