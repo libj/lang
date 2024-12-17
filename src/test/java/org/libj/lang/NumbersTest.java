@@ -132,6 +132,7 @@ public class NumbersTest {
 
     @Test
     public void testLongOfInts() {
+      assertEquals(0L, Numbers.Composite.encode(0, 0));
       for (int i = 0; i < 10000; ++i) { // [N]
         final int[] expected = randomInts(2);
         final long encoded = Numbers.Composite.encode(expected[0], expected[1]);
@@ -142,6 +143,7 @@ public class NumbersTest {
 
     @Test
     public void testLongOfShorts() {
+      assertEquals(0L, Numbers.Composite.encode((short)0, (short)0, (short)0, (short)0));
       for (int i = 0; i < 10000; ++i) { // [N]
         final short[] expected = randomShorts(4);
         final long encoded1 = Numbers.Composite.encode(expected[0], expected[1], expected[2], expected[3]);
@@ -154,6 +156,7 @@ public class NumbersTest {
 
     @Test
     public void testLongOfBytes() {
+      assertEquals(0L, Numbers.Composite.encode((byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0));
       for (int i = 0; i < 10000; ++i) { // [N]
         final byte[] expected = randomBytes(8);
         final long encoded1 = Numbers.Composite.encode(expected[0], expected[1], expected[2], expected[3], expected[4], expected[5], expected[6], expected[7]);
@@ -168,6 +171,7 @@ public class NumbersTest {
 
     @Test
     public void testLongOfIntFloat() {
+      assertEquals(0L, Numbers.Composite.encode(0, (float)0));
       for (int i = 0; i < 10000; ++i) { // [N]
         final int expectedInt = randomInt();
         final float expectedFloat = randomFloat();
@@ -179,6 +183,7 @@ public class NumbersTest {
 
     @Test
     public void testLongOfFloats() {
+      assertEquals(0L, Numbers.Composite.encode((float)0, (float)0));
       for (int i = 0; i < 10000; ++i) { // [N]
         final float[] expected = randomFloats(2);
         final long encoded = Numbers.Composite.encode(expected[0], expected[1]);
@@ -189,6 +194,7 @@ public class NumbersTest {
 
     @Test
     public void testLongOfFloatInt() {
+      assertEquals(0L, Numbers.Composite.encode((float)0, 0));
       for (int i = 0; i < 10000; ++i) { // [N]
         final float expectedFloat = randomFloat();
         final int expectedInt = randomInt();
@@ -200,6 +206,7 @@ public class NumbersTest {
 
     @Test
     public void testIntOfShorts() {
+      assertEquals(0L, Numbers.Composite.encode((short)0, (short)0));
       for (int i = 0; i < 10000; ++i) { // [N]
         final short[] expected = randomShorts(2);
         final int encoded = Numbers.Composite.encode(expected[0], expected[1]);
@@ -210,6 +217,7 @@ public class NumbersTest {
 
     @Test
     public void testIntOfBytes() {
+      assertEquals(0, Numbers.Composite.encode((byte)0, (byte)0, (byte)0, (byte)0));
       for (int i = 0; i < 10000; ++i) { // [N]
         final byte[] expected = randomBytes(4);
         final int encoded = Numbers.Composite.encode(expected[0], expected[1], expected[2], expected[3]);
@@ -220,6 +228,7 @@ public class NumbersTest {
 
     @Test
     public void testShortOfBytes() {
+      assertEquals((short)0, Numbers.Composite.encode((byte)0, (byte)0));
       for (int i = 0; i < 10000; ++i) { // [N]
         final byte[] expected = randomBytes(2);
         final short encoded = Numbers.Composite.encode(expected[0], expected[1]);
