@@ -288,7 +288,7 @@ public final class Bytes {
   }
 
   /**
-   * Create a signed {@code short} representation of a source {@code byte} array with big- or little-endian encoding.
+   * Create a {@code short} representation of a source {@code byte} array with big- or little-endian encoding.
    * <p>
    * A Java {@code short} is 2 bytes in size. If the {@code byte} array is shorter than 2 bytes minus the offset, the missing bytes
    * are considered as the equivalent of 0x0.
@@ -296,7 +296,7 @@ public final class Bytes {
    * @param src The source {@code byte} array.
    * @param offset The byte offset into the source byte array.
    * @param isBigEndian Is value in big-endian encoding.
-   * @return A signed {@code short} representation of a {@code byte} array.
+   * @return A {@code short} representation of a {@code byte} array.
    * @throws NullPointerException If {@code src} is null.
    */
   public static short toShort(final byte[] src, final int offset, final boolean isBigEndian) {
@@ -304,7 +304,7 @@ public final class Bytes {
   }
 
   /**
-   * Create a signed {@code short} or an unsigned {@code int} representation of a source {@code byte} array with big- or little-endian
+   * Create a {@code short} or an unsigned {@code int} representation of a source {@code byte} array with big- or little-endian
    * encoding.
    * <p>
    * A Java {@code short} is 2 bytes in size. If the {@code byte} array is shorter than 2 bytes minus the offset, the missing bytes
@@ -314,7 +314,7 @@ public final class Bytes {
    * @param offset The byte offset into the source {@code byte} array.
    * @param isBigEndian Is value in big-endian encoding.
    * @param signed If {@code true}, return signed {@code short} value. If {@code false}, return unsigned {@code int} value.
-   * @return A signed {@code short} or an unsigned {@code int} representation of a byte array.
+   * @return A {@code short} or an unsigned {@code int} representation of a byte array.
    * @throws NullPointerException If {@code src} is null.
    */
   public static int toShort(final byte[] src, int offset, final boolean isBigEndian, final boolean signed) {
@@ -343,7 +343,7 @@ public final class Bytes {
   }
 
   /**
-   * Create a signed {@code int} representation of a source {@code byte} array with big- or little-endian encoding.
+   * Create a {@code int} representation of a source {@code byte} array with big- or little-endian encoding.
    * <p>
    * A Java {@code int} is 4 bytes in size. If the {@code byte} array is shorter than 4 bytes minus the offset, the missing bytes are
    * considered as the equivalent of {@code 0x0}.
@@ -351,7 +351,7 @@ public final class Bytes {
    * @param src The source {@code byte} array.
    * @param offset The byte offset into the source {@code byte} array.
    * @param isBigEndian Is value in big-endian encoding.
-   * @return A signed {@code int} representation of a {@code byte} array.
+   * @return A {@code int} representation of a {@code byte} array.
    * @throws NullPointerException If {@code src} is null.
    */
   public static int toInt(final byte[] src, final int offset, final boolean isBigEndian) {
@@ -359,7 +359,7 @@ public final class Bytes {
   }
 
   /**
-   * Create a signed {@code int} or an unsigned {@code long} representation of a source {@code byte} array with big- or little-endian
+   * Create a {@code int} or an unsigned {@code long} representation of a source {@code byte} array with big- or little-endian
    * encoding.
    * <p>
    * A Java {@code int} is 4 bytes in size. If the {@code byte} array is shorter than 4 bytes minus the offset, the missing bytes are
@@ -369,7 +369,7 @@ public final class Bytes {
    * @param offset The byte offset into the source {@code byte} array.
    * @param isBigEndian Is value in big-endian encoding.
    * @param signed If {@code true}, return signed {@code int} value. If {@code false}, return unsigned {@code long} value.
-   * @return A signed {@code int} or an unsigned {@code long} representation of a {@code byte} array.
+   * @return A {@code int} or an unsigned {@code long} representation of a {@code byte} array.
    * @throws NullPointerException If {@code src} is null.
    */
   public static long toInt(final byte[] src, int offset, final boolean isBigEndian, final boolean signed) {
@@ -410,7 +410,7 @@ public final class Bytes {
   }
 
   /**
-   * Create a signed {@code long} representation of a source {@code byte} array with big- or little-endian encoding.
+   * Create a {@code long} representation of a source {@code byte} array with big- or little-endian encoding.
    * <p>
    * A Java {@code long} is 8 bytes in size. If the {@code byte} array is shorter than 8 bytes minus the offset, the missing bytes are
    * considered as the equivalent of {@code 0x0}.
@@ -418,10 +418,9 @@ public final class Bytes {
    * @param src The source {@code byte} array.
    * @param offset The byte offset into the source {@code byte} array.
    * @param isBigEndian Is value in big-endian encoding.
-   * @return A signed long representation of a {@code byte} array.
+   * @return A long representation of a {@code byte} array.
    * @throws NullPointerException If {@code src} is null.
    */
-  // FIXME: Support unsigned
   public static long toLong(final byte[] src, int offset, final boolean isBigEndian) {
     long value = 0;
     if (isBigEndian) {

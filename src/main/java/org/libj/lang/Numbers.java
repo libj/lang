@@ -39,65 +39,6 @@ public final class Numbers {
    */
   public static final class Unsigned {
     /**
-     * Return an <i>unsigned</i> {@code byte} equal to the value of the argument.
-     *
-     * @param int8 The unsigned 8-bit magnitude of the {@code long} to be returned.
-     * @return An <i>unsigned</i> {@code short} equal to the value of the argument.
-     * @throws ArithmeticException If {@code int8} is negative or is too big to fit in 8 bits of an unsigned {@code byte}.
-     */
-    public static byte toUINT8(final short int8) {
-      if ((int8 >> 8) != 0)
-        throw new ArithmeticException(int8 + " is too big to fit in 8 bits of an unsigned byte");
-
-      return (byte)int8;
-    }
-
-    /**
-     * Return an <i>unsigned</i> {@code short} equal to the value of the argument.
-     *
-     * @param int16 The unsigned 16-bit magnitude of the {@code long} to be returned.
-     * @return An <i>unsigned</i> {@code int} equal to the value of the argument.
-     * @throws ArithmeticException If {@code int16} is negative or is too big to fit in 16 bits of an unsigned {@code short}.
-     */
-    public static short toUINT16(final int int16) {
-      if ((int16 >> 16) != 0)
-        throw new ArithmeticException(int16 + " is too big to fit in 16 bits of an unsigned short");
-
-      return (short)int16;
-    }
-
-    /**
-     * Return an <i>unsigned</i> {@code int} equal to the value of the argument.
-     *
-     * @param int32 The unsigned 32-bit magnitude of the {@code long} to be returned.
-     * @return An <i>unsigned</i> {@code long} equal to the value of the argument.
-     * @throws ArithmeticException If {@code int32} is negative or is too big to fit in 32 bits of an unsigned {@code int}.
-     */
-    public static int toUINT32(final long int32) {
-      if ((int32 >> 32) != 0)
-        throw new ArithmeticException(int32 + " is too big to fit in 32 bits of an unsigned int");
-
-      return (int)int32;
-    }
-
-    /**
-     * Return an <i>unsigned</i> {@code long} equal to the value of the argument.
-     *
-     * @param int64 The unsigned 64-bit magnitude of the {@link BigInteger} to be returned.
-     * @return An <i>unsigned</i> {@code long} equal to the value of the argument.
-     * @throws ArithmeticException If {@code int64} is negative or is too big to fit in 64 bits of an unsigned {@code long}.
-     */
-    public static long toUINT64(final BigInteger int64) {
-      if (int64.signum() < 0)
-        throw new ArithmeticException(int64 + " must be positive");
-
-      if (int64.bitLength() > 64)
-        throw new ArithmeticException(int64 + " is too big to fit in 64 bits of an unsigned long");
-
-      return int64.longValue();
-    }
-
-    /**
      * Returns the unsigned representation of the provided {@link BigInteger} as a {@code byte} array. The provided {@link BigInteger}
      * must be positive.
      *

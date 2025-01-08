@@ -37,40 +37,51 @@ import java.util.function.UnaryOperator;
 
 /**
  * A list that wraps a java array. This class differentiates itself from the implementation returned by
- * {@link Arrays#asList(Object...)} by allowing subclassing.
+ * {@link Arrays#asList(Object...)}:
+ * <ol>
+ * <li>Extending {@link ArrayList}.</li>
+ * <li>Allowing subclassing.</li>
+ * </ol>
  *
  * @param <E> The type of elements in this list.
  */
-public class WrappedArrayList<E> extends ArrayList<E> {
+public class ToArrayList<E> extends ArrayList<E> {
   /**
-   * The empty {@link WrappedArrayList} (immutable). This list is serializable.
+   * The empty {@link ToArrayList} (immutable). This list is serializable.
    */
   @SuppressWarnings("rawtypes")
-  public static final WrappedArrayList EMPTY_LIST = new WrappedArrayList<>();
+  public static final ToArrayList EMPTY_LIST = new ToArrayList<>();
 
   protected final E[] elementData;
   private final int size;
 
   /**
-   * Creates a new {@link WrappedArrayList} that wraps the provided {@code objs} array.
+   * Creates a new {@link ToArrayList} that wraps the provided {@code objs} array.
    *
    * @param objs The array to wrap.
    * @throws NullPointerException If {@code objs} is null.
    */
   @SafeVarargs
-  public WrappedArrayList(final E ... objs) {
-    elementData = Objects.requireNonNull(objs);
+  public ToArrayList(final E ... objs) {
     size = objs.length;
+    elementData = objs;
   }
 
   @Override
   public int size() {
-    return elementData.length;
+    return size;
   }
 
+  /**
+   * Returns the {@linkplain #elementData underlying array} of this {@link ToArrayList}.
+   *
+   * @implNote This implementation breaks the original contract of {@link ArrayList#toArray()} by returning the
+   *           {@linkplain #elementData underlying array} of this {@link ToArrayList}, which is "non-safe", as the access to the
+   *           {@linkplain #elementData underlying array} allows callers to modify the contents of this {@link ToArrayList}.
+   */
   @Override
   public Object[] toArray() {
-    return elementData.clone();
+    return elementData;
   }
 
   @Override
@@ -151,9 +162,13 @@ public class WrappedArrayList<E> extends ArrayList<E> {
     Arrays.sort(elementData, c);
   }
 
+  /**
+   * @implNote The {@linkplain #elementData underlying array} of the returned clone will be the same reference as that of this
+   *           {@link ToArrayList}.
+   */
   @Override
-  public WrappedArrayList<E> clone() {
-    return new WrappedArrayList<>(elementData.clone());
+  public ToArrayList<E> clone() {
+    return new ToArrayList<>(elementData.clone());
   }
 
   @Override
@@ -274,7 +289,7 @@ public class WrappedArrayList<E> extends ArrayList<E> {
       if (i >= size)
         throw new NoSuchElementException();
 
-      final Object[] elementData = WrappedArrayList.this.elementData;
+      final Object[] elementData = ToArrayList.this.elementData;
       cursor = i + 1;
       return (E)elementData[lastRet = i];
     }
@@ -288,7 +303,7 @@ public class WrappedArrayList<E> extends ArrayList<E> {
     @SuppressWarnings("unchecked")
     public void forEachRemaining(final Consumer<? super E> action) {
       Objects.requireNonNull(action);
-      final int size = WrappedArrayList.this.size;
+      final int size = ToArrayList.this.size;
       int i = cursor;
       if (i < size) {
         final Object[] es = elementData;
@@ -329,7 +344,7 @@ public class WrappedArrayList<E> extends ArrayList<E> {
       if (i < 0)
         throw new NoSuchElementException();
 
-      final E[] elementData = WrappedArrayList.this.elementData;
+      final E[] elementData = ToArrayList.this.elementData;
       cursor = i;
       return elementData[lastRet = i];
 
@@ -340,13 +355,13 @@ public class WrappedArrayList<E> extends ArrayList<E> {
       if (lastRet < 0)
         throw new IllegalStateException();
 
-      WrappedArrayList.this.set(lastRet, e);
+      ToArrayList.this.set(lastRet, e);
     }
 
     @Override
     public void add(final E e) {
       final int i = cursor;
-      WrappedArrayList.this.add(i, e);
+      ToArrayList.this.add(i, e);
       cursor = i + 1;
     }
   }
@@ -428,14 +443,14 @@ public class WrappedArrayList<E> extends ArrayList<E> {
   }
 
   private static class SubList<E> extends AbstractList<E> implements RandomAccess {
-    private final WrappedArrayList<E> root;
+    private final ToArrayList<E> root;
     private final int offset;
     private int size;
 
     /**
      * Constructs a sublist of an arbitrary ArrayList.
      */
-    private SubList(final WrappedArrayList<E> root, final int fromIndex, final int toIndex) {
+    private SubList(final ToArrayList<E> root, final int fromIndex, final int toIndex) {
       this.root = root;
       this.offset = fromIndex;
       this.size = toIndex - fromIndex;
@@ -672,7 +687,7 @@ public class WrappedArrayList<E> extends ArrayList<E> {
         }
 
         @Override
-        public WrappedArrayList<E>.ArrayListSpliterator trySplit() {
+        public ToArrayList<E>.ArrayListSpliterator trySplit() {
           final int hi = getFence(), lo = index, mid = (lo + hi) >>> 1;
           // ArrayListSpliterator can be used here as the source is already bound
           return (lo >= mid) ? null : root.new ArrayListSpliterator(lo, index = mid, expectedModCount); // divide range in half unless too small
@@ -697,7 +712,7 @@ public class WrappedArrayList<E> extends ArrayList<E> {
         public void forEachRemaining(final Consumer<? super E> action) {
           Objects.requireNonNull(action);
           final int mc;
-          final WrappedArrayList<E> lst = root;
+          final ToArrayList<E> lst = root;
           final Object[] a = lst.elementData;
           int i, hi = fence; // hoist accesses and checks from loop
           if (hi < 0) {

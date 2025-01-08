@@ -34,43 +34,22 @@ public class NumbersTest {
     private static final int numTests = 1000000;
 
     @Test
-    public void testToUINT8() {
+    public void testLongToUINT() {
       for (int i = 0; i < numTests; ++i) { // [N]
-        final short signed = (short)(Math.abs((short)random.nextInt()) & 0xff);
-        final byte unsigned = toUINT8(signed);
-        assertEquals(signed, (short)Byte.toUnsignedInt(unsigned));
+        final long valueLong = Long.MAX_VALUE - Math.abs(random.nextInt());
+        final String valueLongStr = Long.toUnsignedString(valueLong);
+
+        final BigInteger value0 = new BigInteger(valueLongStr);
+        final byte[] unsignedBytes = toUINT(value0);
+        final BigInteger value1 = toUnsignedBigInteger(unsignedBytes);
+
+        assertEquals(valueLongStr, value1.toString());
+        assertEquals(value0, value1);
       }
     }
 
     @Test
-    public void testToUINT16() {
-      for (int i = 0; i < numTests; ++i) { // [N]
-        final int signed = Math.abs(random.nextInt()) & 0xffff;
-        final short unsigned = toUINT16(signed);
-        assertEquals(signed, Short.toUnsignedInt(unsigned));
-      }
-    }
-
-    @Test
-    public void testToUINT32() {
-      for (int i = 0; i < numTests; ++i) { // [N]
-        final long signed = Math.abs(random.nextLong()) & 0xffffffffL;
-        final int unsigned = toUINT32(signed);
-        assertEquals(signed, Integer.toUnsignedLong(unsigned));
-      }
-    }
-
-    @Test
-    public void testToUINT64() {
-      for (int i = 0; i < numTests; ++i) { // [N]
-        final BigInteger signed = BigIntegers.valueOf(1, random.nextLong());
-        final long unsigned = toUINT64(signed);
-        assertEquals(signed, toUnsignedBigInteger(unsigned));
-      }
-    }
-
-    @Test
-    public void testToUINT() {
+    public void testBigIntegerToUINT() {
       for (int i = 0; i < numTests; ++i) { // [N]
         final BigInteger signed = new BigInteger(Strings.getRandomNumeric(Math.abs(random.nextInt()) % 100 + 1));
         final byte[] unsigned = toUINT(signed);

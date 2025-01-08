@@ -1875,14 +1875,14 @@ public final class Classes {
 
     if (parameterTypes.length == 1 && parameterTypes[0] == String.class) {
       final Method fromString = Classes.getMethod(type, "fromString", parameterTypes);
-      if (fromString != null && Modifier.isStatic(fromString.getModifiers())) {
+      if (fromString != null && fromString.getReturnType() == type && Modifier.isStatic(fromString.getModifiers())) {
         classToExecutable.put(type, fromString);
         return (T)fromString.invoke(null, parameters);
       }
     }
 
     final Method valueOf = Classes.getCompatibleMethod(type, "valueOf", parameterTypes);
-    if (valueOf != null && Modifier.isStatic(valueOf.getModifiers())) {
+    if (valueOf != null && valueOf.getReturnType() == type && Modifier.isStatic(valueOf.getModifiers())) {
       classToExecutable.put(type, valueOf);
       return (T)valueOf.invoke(null, parameters);
     }

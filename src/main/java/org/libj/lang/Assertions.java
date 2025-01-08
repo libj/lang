@@ -2243,6 +2243,546 @@ public final class Assertions {
   }
 
   /**
+   * Checks that the provided value is negative. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(byte bar) {
+   *   this.bar = Assertions.assertNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as negative.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not negative.
+   */
+  public static byte assertNegative(final byte value) {
+    if (value >= 0)
+      throw new IllegalArgumentException(value + " is not negative");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is negative. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(byte bar) {
+   *   this.bar = Assertions.assertNegative(bar, "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as negative.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not negative.
+   */
+  public static byte assertNegative(final byte value, final String message) {
+    if (value >= 0)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is negative. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(byte bar) {
+   *   this.bar = Assertions.assertNegative(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as negative.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not negative.
+   */
+  public static byte assertNegative(final byte value, final Supplier<String> message) {
+    if (value >= 0)
+      throw new IllegalArgumentException(message.get());
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is negative. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(byte bar) {
+   *   this.bar = Assertions.assertNegative(bar, "%s", "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as negative.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format string to be passed to
+   *          {@link String#format(String,Object...)}.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not negative.
+   */
+  public static byte assertNegative(final byte value, final String format, final Object ... args) {
+    if (value >= 0)
+      throw new IllegalArgumentException(String.format(format, args));
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is negative. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(short bar) {
+   *   this.bar = Assertions.assertNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as negative.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not negative.
+   */
+  public static short assertNegative(final short value) {
+    if (value >= 0)
+      throw new IllegalArgumentException(value + " is not negative");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is negative. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(short bar) {
+   *   this.bar = Assertions.assertNegative(bar, "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as negative.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not negative.
+   */
+  public static short assertNegative(final short value, final String message) {
+    if (value >= 0)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is negative. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(short bar) {
+   *   this.bar = Assertions.assertNegative(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as negative.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not negative.
+   */
+  public static short assertNegative(final short value, final Supplier<String> message) {
+    if (value >= 0)
+      throw new IllegalArgumentException(message.get());
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is negative. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(short bar) {
+   *   this.bar = Assertions.assertNegative(bar, "%s", "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as negative.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format string to be passed to
+   *          {@link String#format(String,Object...)}.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not negative.
+   */
+  public static short assertNegative(final short value, final String format, final Object ... args) {
+    if (value >= 0)
+      throw new IllegalArgumentException(String.format(format, args));
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is negative. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(int bar) {
+   *   this.bar = Assertions.assertNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as negative.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not negative.
+   */
+  public static int assertNegative(final int value) {
+    if (value >= 0)
+      throw new IllegalArgumentException(value + " is not negative");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is negative. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(int bar) {
+   *   this.bar = Assertions.assertNegative(bar, "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as negative.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not negative.
+   */
+  public static int assertNegative(final int value, final String message) {
+    if (value >= 0)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is negative. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(int bar) {
+   *   this.bar = Assertions.assertNegative(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as negative.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not negative.
+   */
+  public static int assertNegative(final int value, final Supplier<String> message) {
+    if (value >= 0)
+      throw new IllegalArgumentException(message.get());
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is negative. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(int bar) {
+   *   this.bar = Assertions.assertNegative(bar, "%s", "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as negative.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format string to be passed to
+   *          {@link String#format(String,Object...)}.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not negative.
+   */
+  public static int assertNegative(final int value, final String format, final Object ... args) {
+    if (value >= 0)
+      throw new IllegalArgumentException(String.format(format, args));
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is negative. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(long bar) {
+   *   this.bar = Assertions.assertNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as negative.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not negative.
+   */
+  public static long assertNegative(final long value) {
+    if (value >= 0)
+      throw new IllegalArgumentException(value + " is not negative");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is negative. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(long bar) {
+   *   this.bar = Assertions.assertNegative(bar, "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as negative.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not negative.
+   */
+  public static long assertNegative(final long value, final String message) {
+    if (value >= 0)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is negative. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(long bar) {
+   *   this.bar = Assertions.assertNegative(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as negative.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not negative.
+   */
+  public static long assertNegative(final long value, final Supplier<String> message) {
+    if (value >= 0)
+      throw new IllegalArgumentException(message.get());
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is negative. This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(long bar) {
+   *   this.bar = Assertions.assertNegative(bar, "%s", "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as negative.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format string to be passed to
+   *          {@link String#format(String,Object...)}.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not negative.
+   */
+  public static long assertNegative(final long value, final String format, final Object ... args) {
+    if (value >= 0)
+      throw new IllegalArgumentException(String.format(format, args));
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is finite and negative. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(float bar) {
+   *   this.bar = Assertions.assertNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as finite and negative.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not finite or negative.
+   */
+  public static float assertNegative(final float value) {
+    if (assertFinite(value) >= 0)
+      throw new IllegalArgumentException(value + " is not negative");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is finite and negative. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(float bar) {
+   *   this.bar = Assertions.assertNegative(bar, "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as finite and negative.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not finite or negative.
+   */
+  public static float assertNegative(final float value, final String message) {
+    if (assertFinite(value) >= 0)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is finite and negative. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(float bar) {
+   *   this.bar = Assertions.assertNegative(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as finite and negative.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not finite or negative.
+   */
+  public static float assertNegative(final float value, final Supplier<String> message) {
+    if (assertFinite(value) >= 0)
+      throw new IllegalArgumentException(message.get());
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is finite and negative. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(float bar) {
+   *   this.bar = Assertions.assertNegative(bar, "%s", "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as finite and negative.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format string to be passed to
+   *          {@link String#format(String,Object...)}.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not finite or negative.
+   */
+  public static float assertNegative(final float value, final String format, final Object ... args) {
+    if (assertFinite(value) >= 0)
+      throw new IllegalArgumentException(String.format(format, args));
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is finite and negative. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(double bar) {
+   *   this.bar = Assertions.assertNegative(bar);
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as finite and negative.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not finite or negative.
+   */
+  public static double assertNegative(final double value) {
+    if (assertFinite(value) >= 0)
+      throw new IllegalArgumentException(value + " is not negative");
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is finite and negative. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(double bar) {
+   *   this.bar = Assertions.assertNegative(bar, "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as finite and negative.
+   * @param message Detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not finite or negative.
+   */
+  public static double assertNegative(final double value, final String message) {
+    if (assertFinite(value) >= 0)
+      throw new IllegalArgumentException(message);
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is finite and negative. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(double bar) {
+   *   this.bar = Assertions.assertNegative(bar, () -> "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as finite and negative.
+   * @param message {@link Supplier} of detailed message to be used for the {@link IllegalArgumentException}.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not finite or negative.
+   */
+  public static double assertNegative(final double value, final Supplier<String> message) {
+    if (assertFinite(value) >= 0)
+      throw new IllegalArgumentException(message.get());
+
+    return value;
+  }
+
+  /**
+   * Checks that the provided value is finite and negative. This method is designed primarily for doing parameter validation in
+   * methods and constructors, as demonstrated below:
+   *
+   * <pre>
+   * public Foo(double bar) {
+   *   this.bar = Assertions.assertNegative(bar, "%s", "Value is invalid");
+   * }
+   * </pre>
+   *
+   * @param value The value to assert as finite and negative.
+   * @param format The detail message <a href= "https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax">format</a>
+   *          to be used for the {@link IllegalArgumentException}.
+   * @param args Arguments referenced by the format specifiers in the format string to be passed to
+   *          {@link String#format(String,Object...)}.
+   * @return {@code value} if negative.
+   * @throws IllegalArgumentException If {@code value} is not finite or negative.
+   */
+  public static double assertNegative(final double value, final String format, final Object ... args) {
+    if (assertFinite(value) >= 0)
+      throw new IllegalArgumentException(String.format(format, args));
+
+    return value;
+  }
+
+  /**
    * Checks that the provided value is not negative. This method is designed primarily for doing parameter validation in methods and
    * constructors, as demonstrated below:
    *
