@@ -37,20 +37,23 @@ import java.util.regex.Pattern;
  */
 public final class Strings {
   public static final String[] EMPTY_ARRAY = {};
-  private static final char[] alphaNumeric = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+  private static final byte[] alphaNumeric = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
   private static final SecureRandom secureRandom = new SecureRandom();
 
-  private static String getRandom(final Random random, final int length, final int start, final int len) {
+  private static void getRandom(final Random random, final byte[] bytes, final int off, final int len, final int start, final int bound) {
+    for (int i = off, i$ = off + len; i < i$; ++i) // [N]
+      bytes[i] = alphaNumeric[start + random.nextInt(bound)];
+  }
+
+  private static String getRandom(final Random random, final int length, final int start, final int bound) {
     if (length == 0)
       return "";
 
     assertNotNegative(length, () -> "Length must be non-negative: " + length);
 
-    final char[] array = new char[length];
-    for (int i = 0; i < length; ++i) // [N]
-      array[i] = alphaNumeric[start + random.nextInt(len)];
-
-    return new String(array);
+    final byte[] bytes = new byte[length];
+    getRandom(random, bytes, 0, length, start, bound);
+    return new String(bytes);
   }
 
   /**
@@ -136,6 +139,168 @@ public final class Strings {
    */
   public static String getRandomNumeric(final Random random, final int len) {
     return getRandom(random, len, alphaNumeric.length - 10, 10);
+  }
+
+  /**
+   * Fills the specified {@code bytes} from offset {@code off} for {@code len} bytes with random alphanumeric ASCII characters.
+   *
+   * @param random The {@link Random} instance for generation of random values.
+   * @param bytes The byte array to fill.
+   * @param off The starting offset into the byte array.
+   * @param len The number of bytes to fill.
+   * @throws NullPointerException If {@code random} or {@code bytes} is null.
+   * @throws IllegalArgumentException If {@code len} is negative.
+   * @throws ArrayIndexOutOfBoundsException If {@code off} is out of bounds.
+   */
+  public static void getRandomAlphaNumeric(final Random random, final byte[] bytes, final int off, final int len) {
+    getRandom(random, bytes, off, len, 0, alphaNumeric.length);
+  }
+
+  /**
+   * Fills the specified {@code bytes} with random alphanumeric ASCII characters.
+   *
+   * @param random The {@link Random} instance for generation of random values.
+   * @param bytes The byte array to fill.
+   * @throws NullPointerException If {@code random} or {@code bytes} is null.
+   * @throws IllegalArgumentException If {@code len} is negative.
+   * @throws ArrayIndexOutOfBoundsException If {@code off} is out of bounds.
+   */
+  public static void getRandomAlphaNumeric(final Random random, final byte[] bytes) {
+    getRandom(random, bytes, 0, bytes.length, 0, alphaNumeric.length);
+  }
+
+  /**
+   * Fills the specified {@code bytes} from offset {@code off} for {@code len} bytes with random alphanumeric ASCII characters.
+   *
+   * @param bytes The byte array to fill.
+   * @param off The starting offset into the byte array.
+   * @param len The number of bytes to fill.
+   * @throws NullPointerException If {@code random} or {@code bytes} is null.
+   * @throws IllegalArgumentException If {@code len} is negative.
+   * @throws ArrayIndexOutOfBoundsException If {@code off} is out of bounds.
+   */
+  public static void getRandomAlphaNumeric(final byte[] bytes, final int off, final int len) {
+    getRandom(secureRandom, bytes, off, len, 0, alphaNumeric.length);
+  }
+
+  /**
+   * Fills the specified {@code bytes} with random alphanumeric ASCII characters.
+   *
+   * @param bytes The byte array to fill.
+   * @throws NullPointerException If {@code random} or {@code bytes} is null.
+   * @throws IllegalArgumentException If {@code len} is negative.
+   * @throws ArrayIndexOutOfBoundsException If {@code off} is out of bounds.
+   */
+  public static void getRandomAlphaNumeric(final byte[] bytes) {
+    getRandom(secureRandom, bytes, 0, bytes.length, 0, alphaNumeric.length);
+  }
+
+  /**
+   * Fills the specified {@code bytes} from offset {@code off} for {@code len} bytes with random alpha ASCII characters.
+   *
+   * @param random The {@link Random} instance for generation of random values.
+   * @param bytes The byte array to fill.
+   * @param off The starting offset into the byte array.
+   * @param len The number of bytes to fill.
+   * @throws NullPointerException If {@code random} or {@code bytes} is null.
+   * @throws IllegalArgumentException If {@code len} is negative.
+   * @throws ArrayIndexOutOfBoundsException If {@code off} is out of bounds.
+   */
+  public static void getRandomAlpha(final Random random, final byte[] bytes, final int off, final int len) {
+    getRandom(random, bytes, off, len, 0, alphaNumeric.length - 10);
+  }
+
+  /**
+   * Fills the specified {@code bytes} with random alpha ASCII characters.
+   *
+   * @param random The {@link Random} instance for generation of random values.
+   * @param bytes The byte array to fill.
+   * @throws NullPointerException If {@code random} or {@code bytes} is null.
+   * @throws IllegalArgumentException If {@code len} is negative.
+   * @throws ArrayIndexOutOfBoundsException If {@code off} is out of bounds.
+   */
+  public static void getRandomAlpha(final Random random, final byte[] bytes) {
+    getRandom(random, bytes, 0, bytes.length, 0, alphaNumeric.length - 10);
+  }
+
+  /**
+   * Fills the specified {@code bytes} from offset {@code off} for {@code len} bytes with random alpha ASCII characters.
+   *
+   * @param bytes The byte array to fill.
+   * @param off The starting offset into the byte array.
+   * @param len The number of bytes to fill.
+   * @throws NullPointerException If {@code random} or {@code bytes} is null.
+   * @throws IllegalArgumentException If {@code len} is negative.
+   * @throws ArrayIndexOutOfBoundsException If {@code off} is out of bounds.
+   */
+  public static void getRandomAlpha(final byte[] bytes, final int off, final int len) {
+    getRandom(secureRandom, bytes, off, len, 0, alphaNumeric.length - 10);
+  }
+
+  /**
+   * Fills the specified {@code bytes} with random alpha ASCII characters.
+   *
+   * @param bytes The byte array to fill.
+   * @throws NullPointerException If {@code random} or {@code bytes} is null.
+   * @throws IllegalArgumentException If {@code len} is negative.
+   * @throws ArrayIndexOutOfBoundsException If {@code off} is out of bounds.
+   */
+  public static void getRandomAlpha(final byte[] bytes) {
+    getRandom(secureRandom, bytes, 0, bytes.length, 0, alphaNumeric.length - 10);
+  }
+
+  /**
+   * Fills the specified {@code bytes} from offset {@code off} for {@code len} bytes with random numeric ASCII characters.
+   *
+   * @param random The {@link Random} instance for generation of random values.
+   * @param bytes The byte array to fill.
+   * @param off The starting offset into the byte array.
+   * @param len The number of bytes to fill.
+   * @throws NullPointerException If {@code random} or {@code bytes} is null.
+   * @throws IllegalArgumentException If {@code len} is negative.
+   * @throws ArrayIndexOutOfBoundsException If {@code off} is out of bounds.
+   */
+  public static void getRandomNumeric(final Random random, final byte[] bytes, final int off, final int len) {
+    getRandom(random, bytes, off, len, alphaNumeric.length - 10, 10);
+  }
+
+  /**
+   * Fills the specified {@code bytes} with random numeric ASCII characters.
+   *
+   * @param random The {@link Random} instance for generation of random values.
+   * @param bytes The byte array to fill.
+   * @throws NullPointerException If {@code random} or {@code bytes} is null.
+   * @throws IllegalArgumentException If {@code len} is negative.
+   * @throws ArrayIndexOutOfBoundsException If {@code off} is out of bounds.
+   */
+  public static void getRandomNumeric(final Random random, final byte[] bytes) {
+    getRandom(random, bytes, 0, bytes.length, alphaNumeric.length - 10, 10);
+  }
+
+  /**
+   * Fills the specified {@code bytes} from offset {@code off} for {@code len} bytes with random numeric ASCII characters.
+   *
+   * @param bytes The byte array to fill.
+   * @param off The starting offset into the byte array.
+   * @param len The number of bytes to fill.
+   * @throws NullPointerException If {@code random} or {@code bytes} is null.
+   * @throws IllegalArgumentException If {@code len} is negative.
+   * @throws ArrayIndexOutOfBoundsException If {@code off} is out of bounds.
+   */
+  public static void getRandomNumeric(final byte[] bytes, final int off, final int len) {
+    getRandom(secureRandom, bytes, off, len, alphaNumeric.length - 10, 10);
+  }
+
+  /**
+   * Fills the specified {@code bytes} with random numeric ASCII characters.
+   *
+   * @param bytes The byte array to fill.
+   * @throws NullPointerException If {@code random} or {@code bytes} is null.
+   * @throws IllegalArgumentException If {@code len} is negative.
+   * @throws ArrayIndexOutOfBoundsException If {@code off} is out of bounds.
+   */
+  public static void getRandomNumeric(final byte[] bytes) {
+    getRandom(secureRandom, bytes, 0, bytes.length, alphaNumeric.length - 10, 10);
   }
 
   /**
@@ -577,6 +742,28 @@ public final class Strings {
       builder.setCharAt(i, Character.toUpperCase(builder.charAt(i)));
 
     return builder;
+  }
+
+  /**
+   * Converts the provided object to string via {@link Object#toString()}, and transforms the result to lower case. Or returns
+   * {@code null} if the provided object is null.
+   *
+   * @param obj The object.
+   * @return The provided object as a string converted to LOWER CASE, or {@code null} if the provided object is null.
+   */
+  public static String toStringLowerCase(final Object obj) {
+    return obj == null ? "null" : obj.toString().toLowerCase();
+  }
+
+  /**
+   * Converts the provided object to string via {@link Object#toString()}, and transforms the result to UPPER CASE. Or returns
+   * {@code NULL} if the provided object is null.
+   *
+   * @param obj The object.
+   * @return The provided object as a string converted to UPPER CASE, or {@code NULL} if the provided object is null.
+   */
+  public static String toStringUpperCase(final Object obj) {
+    return obj == null ? "NULL" : obj.toString().toUpperCase();
   }
 
   private static StringBuilder changeCase(final StringBuilder builder, final boolean upper, final int beginIndex, final int endIndex) {
@@ -1032,61 +1219,58 @@ public final class Strings {
   }
 
   /**
-   * Returns a string consisting of a specific number of concatenated repetitions of an input character. For example,
+   * Returns a {@link StringBuilder} consisting of a specific number of concatenated repetitions of an input character. For example,
    * {@code Strings.repeat('a', 3)} returns the string {@code "aaa"}.
    *
    * @param ch The {@code char} to repeat.
    * @param count A nonnegative number of times to repeat the specified {@code char}.
-   * @return A string containing the specified {@code char} repeated {@code count} times; an empty string if {@code count == 0}.
+   * @return A {@link StringBuilder} containing the specified {@code char} repeated {@code count} times; an empty string if
+   *         {@code count == 0}.
    * @throws IllegalArgumentException If {@code count < 0}.
    * @throws ArrayIndexOutOfBoundsException If {@code str.length() * count > Integer.MAX_VALUE}.
    */
-  public static String repeat(final char ch, final int count) {
+  public static StringBuilder repeat(final char ch, final int count) {
     assertNotNegative(count, () -> "count (" + count + ") must be greater than or equal to 0");
 
-    if (count == 0)
-      return "";
+    final StringBuilder b = new StringBuilder(count);
+    for (int i = 0; i < count; ++i)
+      b.append(ch);
 
-    final char[] chars = new char[count];
-    Arrays.fill(chars, ch);
-    return new String(chars);
+    return b;
   }
 
   /**
-   * Returns a string consisting of a specific number of concatenated repetitions of an input string. For example,
+   * Returns a {@link StringBuilder} consisting of a specific number of concatenated repetitions of an input string. For example,
    * {@code Strings.repeat("ha", 3)} returns the string {@code "hahaha"}.
    *
    * @param str Any non-null string.
    * @param count A nonnegative number of times to repeat the specified string.
-   * @return A string containing the specified {@code str} repeated {@code count} times; an empty string if {@code count == 0}; the
-   *         {@code str} if {@code count == 1}.
+   * @return A {@link StringBuilder} containing the specified {@code str} repeated {@code count} times; an empty string if
+   *         {@code count == 0}; the {@code str} if {@code count == 1}.
    * @throws ArrayIndexOutOfBoundsException If {@code str.length() * count > Integer.MAX_VALUE}.
    * @throws IllegalArgumentException If {@code count < 0}.
    * @throws NullPointerException If {@code str} is null.
    */
-  public static String repeat(final String str, final int count) {
+  public static StringBuilder repeat(final String str, final int count) {
     assertNotNegative(count, () -> "count (" + count + ") must be greater than or equal to 0");
 
     final int length = str.length();
     if (count == 0 || length == 0)
-      return "";
+      return new StringBuilder(0);
 
     if (count == 1)
-      return str;
+      return new StringBuilder(str);
 
     final long longSize = (long)length * count;
     final int size = (int)longSize;
     if (size != longSize)
       throw new ArrayIndexOutOfBoundsException("Required array size too large: " + longSize);
 
-    final char[] chars = new char[size];
-    str.getChars(0, length, chars, 0);
-    int n = length;
-    for (; n < size - n; n <<= 1) // [N]
-      System.arraycopy(chars, 0, chars, n, n);
+    final StringBuilder b = new StringBuilder(size);
+    for (int i = 0; i < count; ++i)
+      b.append(str);
 
-    System.arraycopy(chars, 0, chars, n, size - n);
-    return new String(chars);
+    return b;
   }
 
   /**
@@ -2227,19 +2411,70 @@ public final class Strings {
   }
 
   /**
-   * Returns a {@code long}-valued hash code for the specified {@link CharSequence}, using the same algorithm as in
-   * {@link String#hashCode()}.
+   * Returns a {@code int}-valued hash code for the specified {@link CharSequence}.
+   *
+   * @param str The {@link CharSequence}.
+   * @return The {@code int}-valued hash code value for the specified {@link CharSequence}.
+   * @see String#hashCode()
+   * @implNote This method uses the same algorithm as in {@link String#hashCode()}.
+   */
+  public static int hashAsInt(final CharSequence str) {
+    return hashAsInt(str, 0, str.length());
+  }
+
+  /**
+   * Returns a {@code int}-valued hash code for the specified {@link CharSequence}, starting at {@code off} offset, for {@code len}
+   * number of characters to consider.
+   *
+   * @param str The {@link CharSequence}.
+   * @param off The starting offset into the string.
+   * @param len The number of characters to consider.
+   * @return The {@code int}-valued hash code value for the specified {@link CharSequence}.
+   * @see String#hashCode()
+   * @throws IndexOutOfBoundsException If {@code off} and {@code len} fall outside the length of the specified {@link CharSequence}.
+   * @implNote This method uses the same algorithm as in {@link String#hashCode()}.
+   */
+  public static int hashAsInt(final CharSequence str, final int off, final int len) {
+    if (str == null)
+      return 0;
+
+    int hash = 0;
+    for (int i = off; i < len; ++i) // [N]
+      hash = 31 * hash + str.charAt(i);
+
+    return hash;
+  }
+
+  /**
+   * Returns a {@code long}-valued hash code for the specified {@link CharSequence}.
    *
    * @param str The {@link CharSequence}.
    * @return The {@code long}-valued hash code value for the specified {@link CharSequence}.
    * @see String#hashCode()
+   * @implNote This method uses the same algorithm as in {@link String#hashCode()}.
    */
-  public static long hash(final CharSequence str) {
+  public static long hashAsLong(final CharSequence str) {
+    return hashAsLong(str, 0, str.length());
+  }
+
+  /**
+   * Returns a {@code long}-valued hash code for the specified {@link CharSequence}, starting at {@code off} offset, for {@code len}
+   * number of characters to consider.
+   *
+   * @param str The {@link CharSequence}.
+   * @param off The starting offset into the string.
+   * @param len The number of characters to consider.
+   * @return The {@code long}-valued hash code value for the specified {@link CharSequence}.
+   * @see String#hashCode()
+   * @throws IndexOutOfBoundsException If {@code off} and {@code len} fall outside the length of the specified {@link CharSequence}.
+   * @implNote This method uses the same algorithm as in {@link String#hashCode()}.
+   */
+  public static long hashAsLong(final CharSequence str, final int off, final int len) {
     if (str == null)
       return 0;
 
     long hash = 0;
-    for (int i = 0, i$ = str.length(); i < i$; ++i) // [N]
+    for (int i = off; i < len; ++i) // [N]
       hash = 31 * hash + str.charAt(i);
 
     return hash;
@@ -2273,7 +2508,7 @@ public final class Strings {
     if (spaces == 0)
       return str;
 
-    final String indent = repeat(' ', spaces);
+    final StringBuilder indent = repeat(' ', spaces);
     Strings.replace(str, "\n\n", "\7\n");
 
     for (int i = str.length(); i > 0 && (i = Strings.lastIndexOf(str, '\n', i - 1)) > -1;) // [X]
@@ -2851,6 +3086,35 @@ public final class Strings {
       }
 
       b.append(ch);
+    }
+
+    return b.toString();
+  }
+
+  /**
+   * Returns the given word (in {@code camelCase} form) to its {@code snake_case} version with all lowercase letters.
+   *
+   * @param camelCase The word in {@code camelCase}
+   * @return The given word (in {@code camelCase} form) to its {@code snake_case} version with all lowercase letters.
+   * @implNote This method does not sanitize the string for use as a {@code snake_case} variable in any specific programming language.
+   * @implSpec All uppercase letterns are replaced with their lowercase counterparts prefixed with {@code '_'}.
+   */
+  public static String toSnakeCase(final String camelCase) {
+    if (camelCase == null)
+      return null;
+
+    final int length = camelCase.length();
+    if (length == 0)
+      return camelCase;
+
+    final StringBuilder b = new StringBuilder(length + length / 2);
+    for (int i = 0; i < length; ++i) {
+      final char ch = camelCase.charAt(i);
+      final char lch = Character.toLowerCase(ch);
+      if (ch != lch)
+        b.append('_').append(lch);
+      else
+        b.append(ch);
     }
 
     return b.toString();

@@ -446,10 +446,10 @@ public class StringsTest {
     catch (final IllegalArgumentException e) {
     }
 
-    assertEquals("a", Strings.repeat("a", 1));
-    assertEquals("aa", Strings.repeat("a", 2));
-    assertEquals("abab", Strings.repeat("ab", 2));
-    assertEquals("ab ab ab ", Strings.repeat("ab ", 3));
+    assertEquals("a", Strings.repeat("a", 1).toString());
+    assertEquals("aa", Strings.repeat("a", 2).toString());
+    assertEquals("abab", Strings.repeat("ab", 2).toString());
+    assertEquals("ab ab ab ", Strings.repeat("ab ", 3).toString());
 
     try {
       Strings.repeat("abcdefghijklmnopqrstuvwxyz", 353892843);
@@ -961,5 +961,21 @@ public class StringsTest {
     assertEquals("#ABC ABC#", Strings.searchReplace("aBc", "/(?<name>.*)/#\\U${name} \\U${name}#/"));
     assertEquals("#aBc aBc#", Strings.searchReplace("aBc", "/(?<name>.*)/#\\l${name} \\l${name}#/"));
     assertEquals("#abc abc#", Strings.searchReplace("aBc", "/(?<name>.*)/#\\L${name} \\L${name}#/"));
+  }
+
+  @Test
+  public void testToSnakeCase() {
+    final String[][] tests = {
+      {null, null},
+      {"", ""},
+      {"H", "_h"},
+      {"Hello", "_hello"},
+      {"hello", "hello"},
+      {"helloWorld", "hello_world"}
+    };
+
+    for (final String[] test : tests) {
+      assertEquals(test[1], Strings.toSnakeCase(test[0]));
+    }
   }
 }

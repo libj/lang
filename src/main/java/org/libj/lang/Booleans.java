@@ -73,10 +73,40 @@ public final class Booleans {
   /**
    * Returns {@link Boolean#FALSE} if {@code i == 0}, otherwise {@link Boolean#TRUE}.
    *
+   * @param i The {@code byte}.
+   * @return {@link Boolean#FALSE} if {@code i == 0}, otherwise {@link Boolean#TRUE}.
+   */
+  public static boolean parseBoolean(final byte i) {
+    return i == 0 ? Boolean.FALSE : Boolean.TRUE;
+  }
+
+  /**
+   * Returns {@link Boolean#FALSE} if {@code i == 0}, otherwise {@link Boolean#TRUE}.
+   *
+   * @param i The {@code short}.
+   * @return {@link Boolean#FALSE} if {@code i == 0}, otherwise {@link Boolean#TRUE}.
+   */
+  public static boolean parseBoolean(final short i) {
+    return i == 0 ? Boolean.FALSE : Boolean.TRUE;
+  }
+
+  /**
+   * Returns {@link Boolean#FALSE} if {@code i == 0}, otherwise {@link Boolean#TRUE}.
+   *
    * @param i The {@code int}.
    * @return {@link Boolean#FALSE} if {@code i == 0}, otherwise {@link Boolean#TRUE}.
    */
   public static boolean parseBoolean(final int i) {
+    return i == 0 ? Boolean.FALSE : Boolean.TRUE;
+  }
+
+  /**
+   * Returns {@link Boolean#FALSE} if {@code i == 0}, otherwise {@link Boolean#TRUE}.
+   *
+   * @param i The {@code long}.
+   * @return {@link Boolean#FALSE} if {@code i == 0}, otherwise {@link Boolean#TRUE}.
+   */
+  public static boolean parseBoolean(final long i) {
     return i == 0 ? Boolean.FALSE : Boolean.TRUE;
   }
 
@@ -96,6 +126,36 @@ public final class Booleans {
    * @param b The {@code boolean}.
    * @return {@code 0} if {@code b == false}, otherwise {@code 1}.
    */
+  public static short shortValue(final boolean b) {
+    return b ? (short)1 : 0;
+  }
+
+  /**
+   * Returns {@code 0} if {@code b == false}, otherwise {@code 1}.
+   *
+   * @param b The {@code boolean}.
+   * @return {@code 0} if {@code b == false}, otherwise {@code 1}.
+   */
+  public static int intValue(final boolean b) {
+    return b ? 1 : 0;
+  }
+
+  /**
+   * Returns {@code 0} if {@code b == false}, otherwise {@code 1}.
+   *
+   * @param b The {@code boolean}.
+   * @return {@code 0} if {@code b == false}, otherwise {@code 1}.
+   */
+  public static long longValue(final boolean b) {
+    return b ? 1 : 0;
+  }
+
+  /**
+   * Returns {@code 0} if {@code b == false}, otherwise {@code 1}.
+   *
+   * @param b The {@code boolean}.
+   * @return {@code 0} if {@code b == false}, otherwise {@code 1}.
+   */
   public static double doubleValue(final boolean b) {
     return b ? 1 : 0;
   }
@@ -107,7 +167,37 @@ public final class Booleans {
    * @return {@code 0} if {@code b == false}, {@code 1} if {@code b == true}, and {@code null} if {@code b == null}.
    */
   public static Byte toByte(final Boolean b) {
-    return b == null ? null : b ? (byte)1 : 0;
+    return b == null ? null : b ? Byte.valueOf((byte)1) : 0;
+  }
+
+  /**
+   * Returns {@code 0} if {@code b == false}, {@code 1} if {@code b == true}, and {@code null} if {@code b == null}.
+   *
+   * @param b The {@code boolean}.
+   * @return {@code 0} if {@code b == false}, {@code 1} if {@code b == true}, and {@code null} if {@code b == null}.
+   */
+  public static Short toShort(final Boolean b) {
+    return b == null ? null : b ? Short.valueOf((short)1) : 0;
+  }
+
+  /**
+   * Returns {@code 0} if {@code b == false}, {@code 1} if {@code b == true}, and {@code null} if {@code b == null}.
+   *
+   * @param b The {@code boolean}.
+   * @return {@code 0} if {@code b == false}, {@code 1} if {@code b == true}, and {@code null} if {@code b == null}.
+   */
+  public static Integer toInteger(final Boolean b) {
+    return b == null ? null : b ? Integer.valueOf(1) : 0;
+  }
+
+  /**
+   * Returns {@code 0} if {@code b == false}, {@code 1} if {@code b == true}, and {@code null} if {@code b == null}.
+   *
+   * @param b The {@code boolean}.
+   * @return {@code 0} if {@code b == false}, {@code 1} if {@code b == true}, and {@code null} if {@code b == null}.
+   */
+  public static Long toLong(final Boolean b) {
+    return b == null ? null : b ? Long.valueOf(1) : 0;
   }
 
   private Booleans() {

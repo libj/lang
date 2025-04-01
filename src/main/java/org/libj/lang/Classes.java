@@ -1049,8 +1049,8 @@ public final class Classes {
   }
 
   /**
-   * Determines if the class or interface represented by {@code target} is either the same as, or is a superclass or superinterface
-   * of, the class or interface represented by the specified {@code cls} parameter.
+   * Determines if the class or interface represented by {@code target} is either the same as, or is a superclass or superinterface of
+   * the class or interface represented by the specified {@code cls} parameter.
    * <p>
    * This method differentiates itself from {@link Class#isAssignableFrom(Class)} by wrapping primitive types. This method is also
    * able to properly ascertain whether the {@code cls} class is assignment compatible with the {@code target} class, in case the two
@@ -1067,7 +1067,7 @@ public final class Classes {
    * @param target The target class.
    * @param cls The argument class.
    * @return Whether the class or interface represented by {@code target} is either the same as, or is a superclass or superinterface
-   *         of, the class or interface represented by the specified {@code cls} parameter.
+   *         of the class or interface represented by the specified {@code cls} parameter.
    * @throws NullPointerException If {@code target} or {@code cls} is null.
    */
   public static boolean isAssignableFrom(final Class<?> target, final Class<?> cls) {
@@ -1075,8 +1075,8 @@ public final class Classes {
   }
 
   /**
-   * Determines if the class or interface represented by {@code target} is either the same as, or is a superclass or superinterface
-   * of, the class or interface represented by the specified {@code cls} parameter.
+   * Determines if the class or interface represented by {@code target} is either the same as, or is a superclass or superinterface of
+   * the class or interface represented by the specified {@code cls} parameter.
    * <p>
    * This method differentiates itself from {@link Class#isAssignableFrom(Class)} by conditionally wrapping primitive types, if
    * {@code canWrap == true}. This method is also able to properly ascertain whether the {@code cls} class is assignment compatible
@@ -1086,7 +1086,7 @@ public final class Classes {
    * @param cls The argument class.
    * @param canWrap If {@code true}, this method will check compatibility of the wrapped form of a primitive type.
    * @return Whether the class or interface represented by {@code target} is either the same as, or is a superclass or superinterface
-   *         of, the class or interface represented by the specified {@code cls} parameter.
+   *         of the class or interface represented by the specified {@code cls} parameter.
    * @throws NullPointerException If {@code target} or {@code cls} is null.
    */
   public static boolean isAssignableFrom(Class<?> target, Class<?> cls, final boolean canWrap) {

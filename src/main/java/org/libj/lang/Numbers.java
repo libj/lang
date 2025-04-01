@@ -2692,17 +2692,19 @@ public final class Numbers {
     }
   };
 
-  public static <T extends CharSequence> T stripTrailingZeros(final T number, final StripTrailingZeros<T> x) {
+  private static <T extends CharSequence> T stripTrailingZeros(final T number, final StripTrailingZeros<T> s) {
     final int len;
     if (number == null || (len = number.length()) == 0)
       return number;
 
-    char ch;
+    char ch0 = '\0', ch;
     int i = len - 1;
     do {
       ch = number.charAt(i);
-      if (ch != '0' && ch != '.')
+      if (ch != '0' && ch != '.' || ch0 == '.')
         break;
+
+      ch0 = ch;
     }
     while (--i > 0);
 
@@ -2720,11 +2722,11 @@ public final class Numbers {
             break;
         }
         while (j > 0);
-        return j < 0 ? number : x.delete(number, j + 1, i);
+        return j < 0 ? number : s.delete(number, j + 1, i);
       }
 
       if (ch == '.')
-        return x.substring(number, i);
+        return s.substring(number, i);
     }
     while (--j >= 0);
     return number;
@@ -3627,6 +3629,70 @@ public final class Numbers {
 
     Objects.requireNonNull(a);
     throw new UnsupportedOperationException("Unsupported type: " + a.getClass().getName());
+  }
+
+  /**
+   * Casts the given {@code double} to an {@code byte} only if an exact conversion is possible, otherwise throws
+   * {@link ArithmeticException}.
+   *
+   * @param value The {@code double} value to cast to {@code byte}.
+   * @return The given {@code double} to an {@code byte} only if an exact conversion is possible.
+   * @throws ArithmeticException If an exact conversion of the given {@code double} value is not possible.
+   */
+  public static byte toByteExact(final double value) {
+    final byte i = (byte)value;
+    if (i != value)
+      throw new ArithmeticException();
+
+    return i;
+  }
+
+  /**
+   * Casts the given {@code double} to an {@code short} only if an exact conversion is possible, otherwise throws
+   * {@link ArithmeticException}.
+   *
+   * @param value The {@code double} value to cast to {@code short}.
+   * @return The given {@code double} to an {@code short} only if an exact conversion is possible.
+   * @throws ArithmeticException If an exact conversion of the given {@code double} value is not possible.
+   */
+  public static short toShortExact(final double value) {
+    final short i = (short)value;
+    if (i != value)
+      throw new ArithmeticException();
+
+    return i;
+  }
+
+  /**
+   * Casts the given {@code double} to an {@code int} only if an exact conversion is possible, otherwise throws
+   * {@link ArithmeticException}.
+   *
+   * @param value The {@code double} value to cast to {@code int}.
+   * @return The given {@code double} to an {@code int} only if an exact conversion is possible.
+   * @throws ArithmeticException If an exact conversion of the given {@code double} value is not possible.
+   */
+  public static int toIntExact(final double value) {
+    final int i = (int)value;
+    if (i != value)
+      throw new ArithmeticException();
+
+    return i;
+  }
+
+  /**
+   * Casts the given {@code double} to an {@code long} only if an exact conversion is possible, otherwise throws
+   * {@link ArithmeticException}.
+   *
+   * @param value The {@code double} value to cast to {@code long}.
+   * @return The given {@code double} to an {@code long} only if an exact conversion is possible.
+   * @throws ArithmeticException If an exact conversion of the given {@code double} value is not possible.
+   */
+  public static long toLongExact(final double value) {
+    final long i = (long)value;
+    if (i != value)
+      throw new ArithmeticException();
+
+    return i;
   }
 
   private Numbers() {

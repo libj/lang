@@ -436,6 +436,10 @@ public class NumbersTest {
     assertNull(Numbers.stripTrailingZeros((String)null));
     assertNull(Numbers.stripTrailingZeros((StringBuffer)null));
     assertNull(Numbers.stripTrailingZeros((StringBuilder)null));
+    testStripTrailingZeros("0", "0.0");
+    testStripTrailingZeros("30", "30.0");
+    testStripTrailingZeros("30", "30.00");
+    testStripTrailingZeros("300", "300.00");
     testStripTrailingZeros("7E-10", "7.0E-10");
     testStripTrailingZeros("5.4E+100", "5.4000E+100");
     testStripTrailingZeros("5.4", "5.4000");
@@ -784,6 +788,66 @@ public class NumbersTest {
       final boolean expected = Math.ceil(Math.log(x) / log2) == Math.floor(Math.log(x) / log2);
       final boolean actual = Numbers.isPowerOf2(x);
       assertEquals("" + x, expected, actual);
+    }
+  }
+
+  @Test
+  public void testToByteExact() {
+    for (byte i = -127; i < 127; ++i)
+      assertEquals(i, Numbers.toByteExact(i));
+
+    for (double i = 127.5; i < 127.5; ++i) {
+      try {
+        Numbers.toByteExact(i);
+        fail("Expected ArithmeticException");
+      }
+      catch (final ArithmeticException e) {
+      }
+    }
+  }
+
+  @Test
+  public void testToShortExact() {
+    for (byte i = -127; i < 127; ++i)
+      assertEquals(i, Numbers.toShortExact(i));
+
+    for (double i = 127.5; i < 127.5; ++i) {
+      try {
+        Numbers.toShortExact(i);
+        fail("Expected ArithmeticException");
+      }
+      catch (final ArithmeticException e) {
+      }
+    }
+  }
+
+  @Test
+  public void testToIntExact() {
+    for (byte i = -127; i < 127; ++i)
+      assertEquals(i, Numbers.toIntExact(i));
+
+    for (double i = 127.5; i < 127.5; ++i) {
+      try {
+        Numbers.toIntExact(i);
+        fail("Expected ArithmeticException");
+      }
+      catch (final ArithmeticException e) {
+      }
+    }
+  }
+
+  @Test
+  public void testToLongExact() {
+    for (byte i = -127; i < 127; ++i)
+      assertEquals(i, Numbers.toLongExact(i));
+
+    for (double i = 127.5; i < 127.5; ++i) {
+      try {
+        Numbers.toLongExact(i);
+        fail("Expected ArithmeticException");
+      }
+      catch (final ArithmeticException e) {
+      }
     }
   }
 }

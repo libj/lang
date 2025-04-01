@@ -51,7 +51,7 @@ public final class Assertions {
    *
    * <pre>
    * public Foo(boolean bar) {
-   *   this.bar = Assertions.assertTrue(bar, () -> "Value is invalid");
+   *   this.bar = Assertions.assertTrue(bar, () -&gt; "Value is invalid");
    * }
    * </pre>
    *
