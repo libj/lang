@@ -210,6 +210,18 @@ public final class BigDecimals {
     return v.setScale(newScale, rm);
   }
 
+  /**
+   * Returns a string representation of the provided {@link BigDecimal} without trailing zeros or an exponent field.
+   *
+   * @param d The {@link BigDecimal}.
+   * @return A string representation of the provided {@link BigDecimal} without trailing zeros or an exponent field.
+   * @see BigDecimal#stripTrailingZeros()
+   * @see BigDecimal#toPlainString()
+   */
+  public static String toString(final BigDecimal d) {
+    return d.stripTrailingZeros().toPlainString();
+  }
+
   private BigDecimals() {
   }
 }
